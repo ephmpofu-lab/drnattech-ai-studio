@@ -12,7 +12,11 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as PublicationsRouteImport } from './routes/publications'
 import { Route as PortfolioRouteImport } from './routes/portfolio'
 import { Route as InsightsRouteImport } from './routes/insights'
+import { Route as FrameworksThreeStructuralLawsRouteImport } from './routes/frameworks-three-structural-laws'
+import { Route as FrameworksSkaidoRouteImport } from './routes/frameworks-skaido'
+import { Route as FrameworksRouteImport } from './routes/frameworks'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AisaRouteImport } from './routes/aisa'
 import { Route as AiAgentRouteImport } from './routes/ai-agent'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -33,9 +37,30 @@ const InsightsRoute = InsightsRouteImport.update({
   path: '/insights',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FrameworksThreeStructuralLawsRoute =
+  FrameworksThreeStructuralLawsRouteImport.update({
+    id: '/frameworks-three-structural-laws',
+    path: '/frameworks-three-structural-laws',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const FrameworksSkaidoRoute = FrameworksSkaidoRouteImport.update({
+  id: '/frameworks-skaido',
+  path: '/frameworks-skaido',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FrameworksRoute = FrameworksRouteImport.update({
+  id: '/frameworks',
+  path: '/frameworks',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AisaRoute = AisaRouteImport.update({
+  id: '/aisa',
+  path: '/aisa',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AiAgentRoute = AiAgentRouteImport.update({
@@ -63,7 +88,11 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/ai-agent': typeof AiAgentRoute
+  '/aisa': typeof AisaRoute
   '/contact': typeof ContactRoute
+  '/frameworks': typeof FrameworksRoute
+  '/frameworks-skaido': typeof FrameworksSkaidoRoute
+  '/frameworks-three-structural-laws': typeof FrameworksThreeStructuralLawsRoute
   '/insights': typeof InsightsRoute
   '/portfolio': typeof PortfolioRoute
   '/publications': typeof PublicationsRoute
@@ -73,7 +102,11 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/ai-agent': typeof AiAgentRoute
+  '/aisa': typeof AisaRoute
   '/contact': typeof ContactRoute
+  '/frameworks': typeof FrameworksRoute
+  '/frameworks-skaido': typeof FrameworksSkaidoRoute
+  '/frameworks-three-structural-laws': typeof FrameworksThreeStructuralLawsRoute
   '/insights': typeof InsightsRoute
   '/portfolio': typeof PortfolioRoute
   '/publications': typeof PublicationsRoute
@@ -84,7 +117,11 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/ai-agent': typeof AiAgentRoute
+  '/aisa': typeof AisaRoute
   '/contact': typeof ContactRoute
+  '/frameworks': typeof FrameworksRoute
+  '/frameworks-skaido': typeof FrameworksSkaidoRoute
+  '/frameworks-three-structural-laws': typeof FrameworksThreeStructuralLawsRoute
   '/insights': typeof InsightsRoute
   '/portfolio': typeof PortfolioRoute
   '/publications': typeof PublicationsRoute
@@ -96,7 +133,11 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/ai-agent'
+    | '/aisa'
     | '/contact'
+    | '/frameworks'
+    | '/frameworks-skaido'
+    | '/frameworks-three-structural-laws'
     | '/insights'
     | '/portfolio'
     | '/publications'
@@ -106,7 +147,11 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/ai-agent'
+    | '/aisa'
     | '/contact'
+    | '/frameworks'
+    | '/frameworks-skaido'
+    | '/frameworks-three-structural-laws'
     | '/insights'
     | '/portfolio'
     | '/publications'
@@ -116,7 +161,11 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/ai-agent'
+    | '/aisa'
     | '/contact'
+    | '/frameworks'
+    | '/frameworks-skaido'
+    | '/frameworks-three-structural-laws'
     | '/insights'
     | '/portfolio'
     | '/publications'
@@ -127,7 +176,11 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AiAgentRoute: typeof AiAgentRoute
+  AisaRoute: typeof AisaRoute
   ContactRoute: typeof ContactRoute
+  FrameworksRoute: typeof FrameworksRoute
+  FrameworksSkaidoRoute: typeof FrameworksSkaidoRoute
+  FrameworksThreeStructuralLawsRoute: typeof FrameworksThreeStructuralLawsRoute
   InsightsRoute: typeof InsightsRoute
   PortfolioRoute: typeof PortfolioRoute
   PublicationsRoute: typeof PublicationsRoute
@@ -157,11 +210,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InsightsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/frameworks-three-structural-laws': {
+      id: '/frameworks-three-structural-laws'
+      path: '/frameworks-three-structural-laws'
+      fullPath: '/frameworks-three-structural-laws'
+      preLoaderRoute: typeof FrameworksThreeStructuralLawsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/frameworks-skaido': {
+      id: '/frameworks-skaido'
+      path: '/frameworks-skaido'
+      fullPath: '/frameworks-skaido'
+      preLoaderRoute: typeof FrameworksSkaidoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/frameworks': {
+      id: '/frameworks'
+      path: '/frameworks'
+      fullPath: '/frameworks'
+      preLoaderRoute: typeof FrameworksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/aisa': {
+      id: '/aisa'
+      path: '/aisa'
+      fullPath: '/aisa'
+      preLoaderRoute: typeof AisaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ai-agent': {
@@ -199,7 +280,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AiAgentRoute: AiAgentRoute,
+  AisaRoute: AisaRoute,
   ContactRoute: ContactRoute,
+  FrameworksRoute: FrameworksRoute,
+  FrameworksSkaidoRoute: FrameworksSkaidoRoute,
+  FrameworksThreeStructuralLawsRoute: FrameworksThreeStructuralLawsRoute,
   InsightsRoute: InsightsRoute,
   PortfolioRoute: PortfolioRoute,
   PublicationsRoute: PublicationsRoute,

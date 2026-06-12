@@ -40,20 +40,18 @@ import { Signature } from "@/components/brand/Signature";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About — Dr. Ephraim Mpofu · AI Solutions Architect" },
+      {
+        title:
+          "About Dr. Ephraim Mpofu | AI Solutions Architect",
+      },
       {
         name: "description",
         content:
-          "Dr. Ephraim Mpofu — PhD NatTech, BOKU Vienna. Researcher, systems thinker, and enterprise AI builder designing production-grade intelligent systems.",
-      },
-      { property: "og:title", content: "About — Dr. Ephraim Mpofu" },
-      {
-        property: "og:description",
-        content:
-          "Scientific rigour applied to production-grade intelligent systems.",
+          "Learn about Dr. Ephraim Mpofu, AI Solutions Architect, researcher, framework creator and enterprise AI systems specialist.",
       },
     ],
   }),
+
   component: AboutPage,
 });
 
@@ -238,7 +236,7 @@ function Hero() {
       {/* Right column cards */}
       <div className="flex flex-col gap-5">
         <FoundationCard />
-        <WhatDrivesMe />
+  
       </div>
     </section>
   );
@@ -287,22 +285,6 @@ function FoundationCard() {
   );
 }
 
-function WhatDrivesMe() {
-  return (
-    <div className="glass-card p-5">
-      <div className="text-[15px] font-bold text-white">What Drives Me</div>
-      <ul className="mt-4 space-y-2.5">
-        {drives.map((d) => (
-          <li key={d} className="flex items-start gap-2.5 text-[12.5px]" style={{ color: "#C7C7D1" }}>
-            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" style={{ color: "#A855F7" }} />
-            {d}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
 function StatsAndValues() {
   return (
     <section className="mt-8 grid grid-cols-1 gap-5 lg:grid-cols-[1fr_1fr_1fr]">
@@ -322,7 +304,7 @@ function StatsAndValues() {
         </div>
       </div>
 
-      <BeyondWork />
+  
     </section>
   );
 }
@@ -354,37 +336,7 @@ function ArchitecturalPrinciples() {
   );
 }
 
-function BeyondWork() {
-  return (
-    <div className="glass-card p-5">
-      <div className="text-[15px] font-bold text-white">Beyond Work</div>
-      <p className="mt-3 text-[12.5px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-        I'm passionate about education, technology, and using innovation to solve real-world
-        problems that make a difference.
-      </p>
-      <div className="mt-5 grid grid-cols-4 gap-3">
-        {beyond.map((b) => (
-          <div key={b.title} className="text-center">
-            <div
-              className="mx-auto flex h-11 w-11 items-center justify-center rounded-lg"
-              style={{
-                background: "rgba(139,92,246,0.08)",
-                border: "1px solid rgba(139,92,246,0.22)",
-              }}
-            >
-              <b.icon className="h-5 w-5" style={{ color: "#A855F7" }} />
-            </div>
-            <div className="mt-2 text-[11px] font-bold leading-tight text-white">
-              {b.title}
-              <br />
-              {b.sub}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+
 
 function SectionHeader({ eyebrow, title, sub }: { eyebrow: string; title: string; sub: string }) {
   return (

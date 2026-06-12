@@ -32,20 +32,18 @@ import { BrandBackground } from "@/components/brand/Background";
 export const Route = createFileRoute("/portfolio")({
   head: () => ({
     meta: [
-      { title: "Portfolio — Dr. Ephraim Mpofu · Dr.Nat.Tech" },
+      {
+        title:
+          "AI Portfolio & Case Studies | Dr. Ephraim Mpofu",
+      },
       {
         name: "description",
         content:
-          "Real enterprise AI systems built for production: multi-agent claims platforms, automation workflows, and analytics dashboards delivering measurable impact.",
-      },
-      { property: "og:title", content: "Portfolio — Dr.Nat.Tech" },
-      {
-        property: "og:description",
-        content:
-          "Proof that I deliver results. Production-grade AI systems, automations and analytics.",
+          "Real-world AI architecture, automation, RAG and enterprise implementation case studies delivered by Dr. Ephraim Mpofu.",
       },
     ],
   }),
+
   component: PortfolioPage,
 });
 
@@ -157,11 +155,14 @@ function PortfolioPage() {
         <MetricsStrip />
         <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_340px]">
           <div className="flex flex-col gap-6">
-            {projects.map((p) => (
-              <ProjectCard key={p.title} project={p} />
-            ))}
-            <GithubCTA />
-          </div>
+  {projects.map((p) => (
+    <ProjectCard key={p.title} project={p} />
+  ))}
+
+  <ClientFitSection />
+
+  <GithubCTA />
+</div>
           <aside className="flex flex-col gap-5">
             <GuaranteesCard />
             <TechCard />
@@ -649,5 +650,74 @@ function AIAgentCard() {
         <MessageSquare className="h-4 w-4" /> Ask Me Anything
       </a>
     </div>
+  );
+}
+
+function ClientFitSection() {
+  const clients = [
+    {
+      title: "Startups",
+      text: "Rapid AI prototyping, MVP development and automation systems.",
+    },
+    {
+      title: "SMEs",
+      text: "Process automation, workflow optimisation and AI integration.",
+    },
+    {
+      title: "Enterprise",
+      text: "Multi-agent systems, knowledge platforms and AI governance.",
+    },
+    {
+      title: "Research & Academia",
+      text: "AI research, publications, RAG systems and knowledge management.",
+    },
+  ];
+
+  return (
+    <section className="glass-card p-6">
+      <div
+        className="text-[10px] font-bold uppercase tracking-[0.22em]"
+        style={{ color: "#8B8B9A" }}
+      >
+        WHO I WORK WITH
+      </div>
+
+      <h3 className="mt-3 text-[28px] font-bold text-white">
+        AI Solutions Across Industries
+      </h3>
+
+      <p
+        className="mt-2 max-w-3xl text-[13px] leading-relaxed"
+        style={{ color: "#9CA3AF" }}
+      >
+        I design and implement AI systems for startups, SMEs, enterprises,
+        research institutions and public sector organisations seeking measurable
+        business outcomes from AI.
+      </p>
+
+      <div className="mt-6 grid gap-4 md:grid-cols-2">
+        {clients.map((c) => (
+          <div
+            key={c.title}
+            className="rounded-xl p-4"
+            style={{
+              background: "rgba(255,255,255,0.03)",
+              border: "1px solid rgba(139,92,246,0.18)",
+            }}
+          >
+            <div className="text-[15px] font-bold text-white">
+              {c.title}
+            </div>
+
+            <div
+              className="mt-2 text-[12px] leading-relaxed"
+              style={{ color: "#9CA3AF" }}
+            >
+              {c.text}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }

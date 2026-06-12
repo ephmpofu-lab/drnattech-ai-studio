@@ -5,10 +5,11 @@ import { Signature } from "./Signature";
 const navItems = [
   { label: "Home", to: "/" },
   { label: "About", to: "/about" },
-  { label: "Services", to: "/services" },
   { label: "Portfolio", to: "/portfolio" },
+  { label: "Frameworks", to: "/frameworks" },
   { label: "AI Agent", to: "/ai-agent" },
   { label: "Insights", to: "/insights" },
+  { label: "Publications", to: "/publications" },
   { label: "Contact", to: "/contact" },
 ] as const;
 
@@ -37,27 +38,45 @@ export function SiteNav({ active = "Home" }: Props) {
         <nav className="hidden items-center gap-7 lg:flex">
           {navItems.map((item) => {
             const isActive = item.label === active;
-            const isLive = item.to === "/" || item.to === "/about" || item.to === "/portfolio" || item.to === "/ai-agent" || item.to === "/insights" || item.to === "/contact";
-            const cls = "relative text-[14px] font-medium transition-colors";
+
+            // ALL PAGES ARE LIVE
+            const isLive = true;
+
+            const cls =
+              "relative text-[14px] font-medium transition-colors";
+
             const inner = (
               <>
                 <span style={{ color: isActive ? "#fff" : "#A3A3B2" }}>
                   {item.label}
                 </span>
+
                 {isActive && (
                   <span
                     className="absolute -bottom-[22px] left-0 right-0 h-[2px] rounded-full"
-                    style={{ background: "linear-gradient(90deg, #8B5CF6, #A855F7)" }}
+                    style={{
+                      background:
+                        "linear-gradient(90deg, #8B5CF6, #A855F7)",
+                    }}
                   />
                 )}
               </>
             );
+
             return isLive ? (
-              <Link key={item.label} to={item.to} className={cls}>
+              <Link
+                key={item.label}
+                to={item.to}
+                className={cls}
+              >
                 {inner}
               </Link>
             ) : (
-              <a key={item.label} href="#" className={cls}>
+              <a
+                key={item.label}
+                href="#"
+                className={cls}
+              >
                 {inner}
               </a>
             );
@@ -68,11 +87,19 @@ export function SiteNav({ active = "Home" }: Props) {
           <a
             href="/ai-agent"
             className="hidden items-center gap-2 rounded-[10px] px-5 py-2.5 text-[13px] font-semibold text-white shadow-lg transition-all hover:scale-[1.03] hover:brand-glow md:inline-flex"
-            style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
+            style={{
+              background:
+                "linear-gradient(135deg, #8B5CF6, #A855F7)",
+            }}
           >
-            <MessageSquare className="h-4 w-4" /> Ask Me Anything
+            <MessageSquare className="h-4 w-4" />
+            Ask Me Anything
           </a>
-          <button className="rounded-lg p-2 text-white lg:hidden" aria-label="Menu">
+
+          <button
+            className="rounded-lg p-2 text-white lg:hidden"
+            aria-label="Menu"
+          >
             <Menu className="h-5 w-5" />
           </button>
         </div>

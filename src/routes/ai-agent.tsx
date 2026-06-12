@@ -29,20 +29,18 @@ import aiAssistant from "@/assets/ai-assistant.jpg";
 export const Route = createFileRoute("/ai-agent")({
   head: () => ({
     meta: [
-      { title: "AI Agent — Dr.Nat.Tech | Chat with Dr. Ephraim Mpofu's Digital Twin" },
+      {
+        title:
+          "AI Agent | Ask Dr. Ephraim Mpofu's Digital Twin",
+      },
       {
         name: "description",
         content:
-          "Chat with an AI trained on Dr. Ephraim Mpofu's projects, services, architecture approach and experience. Ask anything — get detailed answers in seconds.",
-      },
-      { property: "og:title", content: "AI Agent — Dr.Nat.Tech" },
-      {
-        property: "og:description",
-        content:
-          "A digital twin of AI Solutions Architect Dr. Ephraim Mpofu. Ask about projects, RAG systems, n8n automation, services and more.",
+          "Chat with an AI trained on Dr. Ephraim Mpofu's projects, frameworks, architecture methodologies and enterprise AI expertise.",
       },
     ],
   }),
+
   component: AIAgentPage,
 });
 

@@ -30,20 +30,18 @@ import art4 from "@/assets/insight-article-4.jpg";
 export const Route = createFileRoute("/insights")({
   head: () => ({
     meta: [
-      { title: "Insights & Research — Dr. Ephraim Mpofu · Dr.Nat.Tech" },
+      {
+        title:
+          "AI Insights & Thought Leadership | Dr. Ephraim Mpofu",
+      },
       {
         name: "description",
         content:
-          "Research & insights by Dr. Ephraim Mpofu — peer-reviewed publications and architecture essays on sustainability, governance, AI systems and intelligent automation.",
-      },
-      { property: "og:title", content: "Research & Insights — Dr. Ephraim Mpofu" },
-      {
-        property: "og:description",
-        content:
-          "Research. Ideas. Impact. Publications and articles from Dr. Ephraim Mpofu.",
+          "Frameworks, AI architecture principles, governance insights, RAG systems and enterprise AI implementation knowledge.",
       },
     ],
   }),
+
   component: InsightsPage,
 });
 
@@ -70,30 +68,73 @@ const articles: Article[] = [
   {
     image: art1,
     category: "AI & Systems",
-    title: "Designing AI Systems That Deliver Real Value",
-    date: "Mar 2026",
-    read: "8 min read",
+    title:
+      "The Law Nobody Teaches About AI Workflow Design — And Why Breaking It Crashes Production Systems",
+    date: "Coming Soon",
+    read: "Architecture",
   },
+
   {
     image: art2,
-    category: "Research Insights",
-    title: "From Theory to Practice: Lessons from Transfrontier Conservation Areas",
-    date: "Feb 2026",
-    read: "12 min read",
+    category: "AI & Systems",
+    title:
+      "The System-First Principle That Separates AI Architects From Tutorial Followers",
+    date: "Coming Soon",
+    read: "Framework",
   },
+
   {
     image: art3,
     category: "AI & Systems",
-    title: "Building Reliable Workflows with n8n and AI Agents",
-    date: "Jan 2026",
-    read: "10 min read",
+    title:
+      "Your RAG Pipeline's Problem Isn't Your Embedding Model. It's Your Documents.",
+    date: "Coming Soon",
+    read: "RAG Systems",
   },
+
   {
     image: art4,
-    category: "Sustainability",
-    title: "Sustainability Requires Systems Thinking, Not Silos",
-    date: "Dec 2025",
-    read: "9 min read",
+    category: "Governance",
+    title:
+      "The Three Structural Laws of Production AI Systems",
+    date: "Coming Soon",
+    read: "Governance",
+  },
+
+  {
+    image: art1,
+    category: "AI & Systems",
+    title:
+      "How I Process Enterprise Insurance Claims Automatically Using 5 AI Agents and 4 Design Laws",
+    date: "Coming Soon",
+    read: "Case Study",
+  },
+
+  {
+    image: art2,
+    category: "Research Insights",
+    title:
+      "The Knowledge Architecture Operating System: A Four-Workflow Blueprint for Enterprise RAG",
+    date: "Coming Soon",
+    read: "Knowledge Systems",
+  },
+
+  {
+    image: art3,
+    category: "AI & Systems",
+    title:
+      "Why Most AI Projects Fail Before the First Prompt Is Written",
+    date: "Coming Soon",
+    read: "Strategy",
+  },
+
+  {
+    image: art4,
+    category: "Governance",
+    title:
+      "The Governance Layer Missing From Most Multi-Agent Systems",
+    date: "Coming Soon",
+    read: "Governance",
   },
 ];
 

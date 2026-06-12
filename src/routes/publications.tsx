@@ -22,20 +22,18 @@ import heroImg from "@/assets/insights-hero-v2.jpg";
 export const Route = createFileRoute("/publications")({
   head: () => ({
     meta: [
-      { title: "Academic Publications — Dr. Ephraim Mpofu · Dr.Nat.Tech" },
+      {
+        title:
+          "Academic Publications | Dr. Ephraim Mpofu",
+      },
       {
         name: "description",
         content:
-          "Complete archive of peer-reviewed publications by Dr. Ephraim Mpofu — sustainability science, landscape governance, knowledge systems and conservation research.",
-      },
-      { property: "og:title", content: "Academic Publications — Dr. Ephraim Mpofu" },
-      {
-        property: "og:description",
-        content:
-          "Peer-reviewed research across sustainability, governance, and interdisciplinary knowledge systems.",
+          "Peer-reviewed publications covering sustainability, governance, systems thinking and interdisciplinary knowledge systems.",
       },
     ],
   }),
+
   component: PublicationsPage,
 });
 
@@ -190,7 +188,7 @@ function PublicationsPage() {
   return (
     <div className="relative min-h-screen" style={{ background: "#050816", color: "#fff" }}>
       <BrandBackground />
-      <SiteNav active="Insights" />
+      <SiteNav active="Publications" />
 
       <main className="mx-auto max-w-[1280px] px-6 lg:px-10">
         {/* HEADER */}
