@@ -1,31 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
 import {
   Rocket,
   Clock,
   BarChart3,
   ShieldCheck,
-  CheckCircle2,
-  Github,
-  ExternalLink,
-  Workflow,
-  FileText,
-  Database,
-  Sparkles,
-  Boxes,
-  Network,
-  Code2,
-  Zap,
   ArrowRight,
   Bot,
-  Brain,
-  Link as LinkIcon,
-  Globe,
-  Search,
+  Database,
+  Workflow,
+  Boxes,
   Building2,
-  MessageSquare,
+  Shield,
+  Target,
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+
 import { SiteNav } from "@/components/brand/SiteNav";
 import { BrandBackground } from "@/components/brand/Background";
 
@@ -39,197 +27,217 @@ export const Route = createFileRoute("/portfolio")({
       {
         name: "description",
         content:
-          "Real-world AI architecture, automation, RAG and enterprise implementation case studies delivered by Dr. Ephraim Mpofu.",
+          "Enterprise AI architecture, AI agents, automation systems and governance case studies.",
       },
     ],
   }),
-
   component: PortfolioPage,
 });
 
-const categories = [
-  "All Projects",
-  "AI Systems",
-  "Automation",
-  "Data & Analytics",
-  "RAG / Knowledge",
-  "Agents",
-] as const;
-
-const metrics = [
-  { icon: Rocket, v: "12+", l: "Projects Delivered" },
-  { icon: Clock, v: "3,500+", l: "Hours of Manual Work Automated" },
-  { icon: BarChart3, v: "70%", l: "Average Process Time Reduction" },
-  { icon: ShieldCheck, v: "100%", l: "Built for Production" },
-];
-
 type Project = {
-  badge?: string;
+  badge: string;
   title: string;
   description: string;
-  metrics: { v: string; l: string }[];
-  stack: string[];
-  actions: string[];
-  cover: "claims" | "autoapply" | "dashboard";
+  metrics: {
+    value: string;
+    label: string;
+  }[];
+  technologies: string[];
+  cover: "claims" | "career" | "knowledge";
 };
+
+const metrics = [
+  {
+    icon: Rocket,
+    value: "12+",
+    label: "Projects Delivered",
+  },
+  {
+    icon: Clock,
+    value: "3,500+",
+    label: "Hours Automated",
+  },
+  {
+    icon: BarChart3,
+    value: "70%",
+    label: "Process Reduction",
+  },
+  {
+    icon: ShieldCheck,
+    value: "100%",
+    label: "Production Ready",
+  },
+];
 
 const projects: Project[] = [
   {
-    badge: "Featured",
-    title: "Insurance Claims AI Platform",
+    badge: "01",
+    title: "Insurance Claims Intelligence Platform",
     description:
-      "Multi-agent system that automates the entire claims processing lifecycle with fraud detection and full auditability.",
+      "Enterprise multi-agent platform automating claims intake, fraud detection, triage and decision support.",
     metrics: [
-      { v: "70%", l: "Reduction in Processing Time" },
-      { v: "35%", l: "Decrease in Fraud Detection Time" },
-      { v: "100%", l: "Audit Trail Coverage" },
+      { value: "70%", label: "Processing Time Reduction" },
+      { value: "35%", label: "Fraud Detection Improvement" },
+      { value: "100%", label: "Audit Trail Coverage" },
     ],
-    stack: ["n8n", "OpenAI API", "Claude AI", "Supabase", "AI Agents", "RAG", "Webhooks", "PostgreSQL"],
-    actions: ["Live Demo", "Architecture Walkthrough", "GitHub Repository", "Case Study (PDF)"],
+    technologies: [
+      "n8n",
+      "OpenAI",
+      "Claude",
+      "Supabase",
+      "PostgreSQL",
+      "RAG",
+    ],
     cover: "claims",
   },
-  {
-    title: "AutoApply: AI-Powered Job Application Automation",
-    description:
-      "AI system that finds, tailors, and submits job applications automatically. Saves hours of repetitive work and increases response rates.",
-    metrics: [
-      { v: "85%", l: "Time Saved on Applications" },
-      { v: "3x", l: "More Applications Submitted" },
-      { v: "Smart", l: "Tailored Resumes & Cover Letters" },
-    ],
-    stack: ["n8n", "OpenAI API", "Claude AI", "Supabase", "AI Orchestration", "Prompt Engineering"],
-    actions: ["Live Demo", "Architecture Walkthrough", "GitHub Repository"],
-    cover: "autoapply",
-  },
-  {
-    title: "Claims Analytics Dashboard",
-    description:
-      "Real-time analytics and reporting dashboard for claims performance, fraud detection insights, and operational KPIs.",
-    metrics: [
-      { v: "Real-time", l: "Data Updates" },
-      { v: "360°", l: "Operational Visibility" },
-      { v: "Data-Driven", l: "Decision Making" },
-    ],
-    stack: ["Power BI", "PostgreSQL", "Supabase", "n8n", "REST APIs", "Webhooks"],
-    actions: ["Live Demo", "Architecture Walkthrough", "GitHub Repository"],
-    cover: "dashboard",
-  },
-];
 
-const guarantees = [
-  "Production-ready systems",
-  "Scalable architecture",
-  "Full documentation",
-  "Clean, maintainable code & workflows",
-  "Training & knowledge transfer",
-  "Post-delivery support",
-];
+  {
+    badge: "02",
+    title: "Career Intelligence Operating System",
+    description:
+      "AI-powered career intelligence platform combining CV intelligence, job intelligence and application automation.",
+    metrics: [
+      { value: "85%", label: "Time Saved" },
+      { value: "3x", label: "Applications Submitted" },
+      { value: "Smart", label: "Personalisation" },
+    ],
+    technologies: [
+      "OpenAI",
+      "Supabase",
+      "Pinecone",
+      "n8n",
+      "Vector Search",
+      "Python",
+    ],
+    cover: "career",
+  },
 
-const techGrid: { name: string; icon: LucideIcon; color: string }[] = [
-  { name: "n8n", icon: Workflow, color: "#EA4B71" },
-  { name: "OpenAI API", icon: Sparkles, color: "#10A37F" },
-  { name: "Claude AI", icon: Brain, color: "#D97757" },
-  { name: "Supabase", icon: Database, color: "#3ECF8E" },
-  { name: "AI Agents", icon: Bot, color: "#8B5CF6" },
-  { name: "Prompt Engineering", icon: Code2, color: "#38BDF8" },
-  { name: "Workflow Automation", icon: Zap, color: "#F59E0B" },
-  { name: "AI Orchestration", icon: Network, color: "#10B981" },
-  { name: "REST APIs", icon: Globe, color: "#60A5FA" },
-  { name: "Webhooks", icon: LinkIcon, color: "#F97316" },
-  { name: "PostgreSQL", icon: Database, color: "#336791" },
-  { name: "Power BI", icon: BarChart3, color: "#F2C811" },
-  { name: "GitHub", icon: Github, color: "#FFFFFF" },
-  { name: "RAG Systems", icon: Search, color: "#A855F7" },
-  { name: "Vector Search", icon: Boxes, color: "#EC4899" },
-  { name: "Enterprise Automation", icon: Building2, color: "#6366F1" },
+  {
+    badge: "03",
+    title: "Knowledge Architecture Operating System",
+    description:
+      "Enterprise knowledge acquisition, intelligence, indexing and governance platform.",
+    metrics: [
+      { value: "Centralised", label: "Knowledge" },
+      { value: "Faster", label: "Retrieval" },
+      { value: "Governed", label: "Access" },
+    ],
+    technologies: [
+      "OpenAI",
+      "Pinecone",
+      "Supabase",
+      "PostgreSQL",
+      "RAG",
+      "Python",
+    ],
+    cover: "knowledge",
+  },
 ];
 
 function PortfolioPage() {
-  const [active, setActive] = useState<(typeof categories)[number]>("All Projects");
   return (
-    <div className="relative min-h-screen overflow-hidden" style={{ backgroundColor: "#050816" }}>
+    <div
+      className="relative min-h-screen overflow-hidden"
+      style={{ backgroundColor: "#050816" }}
+    >
       <BrandBackground />
+
       <SiteNav active="Portfolio" />
-      <main className="mx-auto max-w-[1400px] px-6 lg:px-10 pb-20">
-        <Hero active={active} setActive={setActive} />
+
+      <main className="mx-auto max-w-[1400px] px-6 lg:px-10 pb-24">
+        <Hero />
         <MetricsStrip />
-        <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_340px]">
-          <div className="flex flex-col gap-6">
-  {projects.map((p) => (
-    <ProjectCard key={p.title} project={p} />
-  ))}
-
-  <ClientFitSection />
-
-  <GithubCTA />
-</div>
-          <aside className="flex flex-col gap-5">
-            <GuaranteesCard />
-            <TechCard />
-            <AIAgentCard />
-          </aside>
-        </div>
+        <FeaturedProjects />
       </main>
     </div>
   );
 }
 
-function Hero({
-  active,
-  setActive,
-}: {
-  active: (typeof categories)[number];
-  setActive: (c: (typeof categories)[number]) => void;
-}) {
+function Hero() {
   return (
-    <section className="grid grid-cols-1 gap-8 pt-10 lg:grid-cols-2">
+    <section className="grid grid-cols-1 items-center gap-16 pt-14 lg:grid-cols-2">
       <div>
         <span
-          className="inline-flex w-fit items-center rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.22em]"
+          className="inline-flex rounded-full px-4 py-2 text-[11px] font-bold uppercase tracking-[0.25em]"
           style={{
             background: "rgba(139,92,246,0.12)",
-            border: "1px solid rgba(139,92,246,0.32)",
+            border: "1px solid rgba(139,92,246,0.25)",
             color: "#C4B5FD",
           }}
         >
           Portfolio
         </span>
-        <h1 className="mt-5 text-[44px] font-bold leading-[1.05] tracking-tight text-white lg:text-[52px]">
+
+        <h1 className="mt-8 text-[72px] font-bold leading-[0.95] tracking-tight text-white">
           Proof That
           <br />
-          I Deliver <span className="text-gradient-brand">Results</span>
+          I Deliver
+          <span className="text-gradient-brand">
+            {" "}Results
+          </span>
         </h1>
-        <p className="mt-6 max-w-md text-[14px] leading-relaxed" style={{ color: "#A3A3B2" }}>
+
+        <p
+          className="mt-8 max-w-[560px] text-[20px] leading-relaxed"
+          style={{ color: "#A3A3B2" }}
+        >
           Real projects. Real impact.
           <br />
-          Built for production. Designed for business outcomes.
+          Built for production.
+          Designed for business outcomes.
         </p>
       </div>
-      <div className="flex flex-col justify-end">
-        <div className="flex flex-wrap gap-2">
-          {categories.map((c) => {
-            const on = active === c;
-            return (
-              <button
-                key={c}
-                onClick={() => setActive(c)}
-                className="rounded-full px-4 py-2 text-[12.5px] font-semibold transition-all"
-                style={{
-                  background: on
-                    ? "linear-gradient(135deg, #8B5CF6, #A855F7)"
-                    : "rgba(255,255,255,0.04)",
-                  border: on
-                    ? "1px solid rgba(168,85,247,0.7)"
-                    : "1px solid rgba(255,255,255,0.08)",
-                  color: on ? "#fff" : "#A3A3B2",
-                  boxShadow: on ? "0 6px 24px rgba(139,92,246,0.35)" : "none",
-                }}
-              >
-                {c}
-              </button>
-            );
-          })}
-        </div>
+
+      <div className="relative h-[520px]">
+        <div
+          className="absolute inset-0 rounded-[32px]"
+          style={{
+            background:
+              "radial-gradient(circle at center, rgba(168,85,247,0.18), transparent)",
+          }}
+        />
+
+        <div
+          className="absolute left-[130px] top-[130px] h-[240px] w-[260px] rounded-[28px]"
+          style={{
+            background: "rgba(255,255,255,0.03)",
+            border: "1px solid rgba(139,92,246,0.18)",
+          }}
+        />
+
+        <div
+          className="absolute left-[220px] top-[90px] h-[90px] w-[180px] rounded-[18px]"
+          style={{
+            background: "rgba(255,255,255,0.05)",
+            border: "1px solid rgba(255,255,255,0.08)",
+          }}
+        />
+
+        <div
+          className="absolute right-[40px] top-[120px] h-[120px] w-[180px] rounded-[18px]"
+          style={{
+            background: "rgba(255,255,255,0.05)",
+            border: "1px solid rgba(255,255,255,0.08)",
+          }}
+        />
+
+        <div
+          className="absolute left-[40px] bottom-[90px] h-[120px] w-[180px] rounded-[18px]"
+          style={{
+            background: "rgba(255,255,255,0.05)",
+            border: "1px solid rgba(255,255,255,0.08)",
+          }}
+        />
+
+        <div
+          className="absolute left-[210px] top-[205px] h-[100px] w-[130px] rounded-[18px]"
+          style={{
+            background:
+              "linear-gradient(135deg,#8B5CF6,#A855F7)",
+            boxShadow:
+              "0 0 120px rgba(168,85,247,0.55)",
+          }}
+        />
       </div>
     </section>
   );
@@ -237,486 +245,597 @@ function Hero({
 
 function MetricsStrip() {
   return (
-    <section className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
-      {metrics.map((m) => (
-        <div key={m.l} className="glass-card p-5">
-          <m.icon className="h-6 w-6" style={{ color: "#A855F7" }} />
-          <div className="text-gradient-brand mt-3 text-[28px] font-bold leading-none">{m.v}</div>
-          <div className="mt-2 text-[11.5px] leading-tight" style={{ color: "#A3A3B2" }}>
-            {m.l}
+    <section className="mt-10">
+      <div
+        className="grid grid-cols-2 overflow-hidden rounded-[24px] lg:grid-cols-4"
+        style={{
+          background: "rgba(255,255,255,0.02)",
+          border: "1px solid rgba(139,92,246,0.15)",
+        }}
+      >
+        {metrics.map((item) => (
+          <div key={item.label} className="p-8">
+            <item.icon
+              className="h-8 w-8"
+              style={{ color: "#A855F7" }}
+            />
+
+            <div className="mt-4 text-[46px] font-bold text-gradient-brand">
+              {item.value}
+            </div>
+
+            <div
+              className="mt-2 text-sm"
+              style={{ color: "#A3A3B2" }}
+            >
+              {item.label}
+            </div>
           </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+function FeaturedProjects() {
+  return (
+    <section className="mt-20">
+      <div className="flex items-end justify-between">
+        <div>
+          <h2 className="text-5xl font-bold text-white">
+            Featured Case Studies
+          </h2>
+
+          <p
+            className="mt-3 text-lg"
+            style={{ color: "#A3A3B2" }}
+          >
+            Enterprise AI systems designed, architected and delivered.
+          </p>
         </div>
-      ))}
+
+        <button
+          className="hidden items-center gap-2 text-sm font-semibold lg:flex"
+          style={{ color: "#A855F7" }}
+        >
+          View All Projects
+          <ArrowRight className="h-4 w-4" />
+        </button>
+      </div>
+
+      <div className="mt-12 grid gap-8 lg:grid-cols-3">
+        {projects.map((project) => (
+          <ProjectCard
+            key={project.title}
+            project={project}
+          />
+        ))}
+      </div>
+
+      <ServicesSection />
+      <TechnologySection />
+      <PortfolioCTA />
     </section>
   );
 }
 
-function ProjectCard({ project }: { project: Project }) {
+function ProjectCard({
+  project,
+}: {
+  project: Project;
+}) {
   return (
     <article
-      className="group relative overflow-hidden rounded-[16px] transition-all hover:-translate-y-0.5"
+      className="overflow-hidden rounded-[28px] transition-all duration-300 hover:-translate-y-2"
       style={{
         background: "#0B1020",
         border: "1px solid rgba(139,92,246,0.15)",
-        boxShadow: "0 8px 30px rgba(0,0,0,0.35)",
+        boxShadow:
+          "0 0 50px rgba(139,92,246,0.05)",
       }}
     >
-      <div className="grid grid-cols-1 gap-0 lg:grid-cols-[260px_1fr_220px]">
-        {/* Cover */}
-        <div className="relative p-4">
-          <Cover kind={project.cover} />
-          {project.badge && (
-            <span
-              className="absolute left-6 top-6 inline-flex items-center rounded-md px-2 py-0.5 text-[9.5px] font-bold uppercase tracking-[0.2em]"
+      <ProjectGraphic type={project.cover} />
+
+      <div className="p-7">
+        <div
+          className="inline-flex rounded-full px-3 py-1 text-[11px] font-bold"
+          style={{
+            background:
+              "rgba(168,85,247,0.18)",
+            color: "#E9D5FF",
+          }}
+        >
+          {project.badge}
+        </div>
+
+        <h3 className="mt-5 text-[28px] font-bold leading-tight text-white">
+          {project.title}
+        </h3>
+
+        <p
+          className="mt-4 min-h-[90px] text-[15px] leading-relaxed"
+          style={{ color: "#A3A3B2" }}
+        >
+          {project.description}
+        </p>
+
+        <div
+          className="mt-8 text-[11px] font-bold uppercase tracking-[0.25em]"
+          style={{ color: "#6B7280" }}
+        >
+          Impact
+        </div>
+
+        <div className="mt-3 grid grid-cols-3 gap-3">
+          {project.metrics.map((metric) => (
+            <div
+              key={metric.label}
+              className="rounded-xl p-4"
               style={{
-                background: "linear-gradient(135deg, #8B5CF6, #A855F7)",
-                color: "#fff",
+                background:
+                  "rgba(168,85,247,0.05)",
+                border:
+                  "1px solid rgba(168,85,247,0.15)",
               }}
             >
-              {project.badge}
-            </span>
-          )}
-        </div>
+              <div className="text-xl font-bold text-[#A855F7]">
+                {metric.value}
+              </div>
 
-        {/* Content */}
-        <div className="flex flex-col p-5 pl-2 lg:pl-0">
-          <h2 className="text-[20px] font-bold leading-tight text-white">{project.title}</h2>
-          <p className="mt-2 text-[13px] leading-relaxed" style={{ color: "#A3A3B2" }}>
-            {project.description}
-          </p>
-
-          <div className="mt-4 grid grid-cols-3 gap-3">
-            {project.metrics.map((m) => (
               <div
-                key={m.l}
-                className="rounded-[10px] px-3 py-2.5"
+                className="mt-2 text-xs leading-tight"
                 style={{
-                  background: "rgba(139,92,246,0.06)",
-                  border: "1px solid rgba(139,92,246,0.18)",
+                  color: "#A3A3B2",
                 }}
               >
-                <div className="text-gradient-brand text-[18px] font-bold leading-tight">{m.v}</div>
-                <div className="mt-0.5 text-[10.5px] leading-tight" style={{ color: "#9CA3AF" }}>
-                  {m.l}
-                </div>
+                {metric.label}
               </div>
-            ))}
-          </div>
-
-          <div className="mt-4">
-            <div
-              className="mb-2 text-[10px] font-bold uppercase tracking-[0.22em]"
-              style={{ color: "#6B7280" }}
-            >
-              Tech Stack
             </div>
-            <div className="flex flex-wrap gap-1.5">
-              {project.stack.map((s) => (
-                <span
-                  key={s}
-                  className="rounded-md px-2.5 py-1 text-[11px] font-medium transition-all hover:brightness-125"
-                  style={{
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(139,92,246,0.22)",
-                    color: "#C7C7D1",
-                  }}
-                >
-                  {s}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Actions */}
-        <div
-          className="flex flex-col gap-2 p-5 lg:border-l"
-          style={{ borderColor: "rgba(255,255,255,0.05)" }}
-        >
-          {project.actions.map((a, i) => (
-            <ActionButton key={a} label={a} primary={i === 0} />
           ))}
         </div>
+
+        <div className="mt-8">
+          <div
+            className="mb-3 text-[11px] font-bold uppercase tracking-[0.25em]"
+            style={{ color: "#6B7280" }}
+          >
+            Technologies
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            {project.technologies.map((tech) => (
+              <span
+                key={tech}
+                className="rounded-full px-3 py-1 text-xs"
+                style={{
+                  background:
+                    "rgba(255,255,255,0.04)",
+                  border:
+                    "1px solid rgba(139,92,246,0.15)",
+                  color: "#E5E7EB",
+                }}
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <button
+          className="mt-8 inline-flex items-center gap-2 font-semibold"
+          style={{
+            color: "#A855F7",
+          }}
+        >
+          View Case Study
+          <ArrowRight className="h-4 w-4" />
+        </button>
       </div>
     </article>
   );
 }
 
-function ActionButton({ label, primary }: { label: string; primary?: boolean }) {
-  const Icon = label.includes("Demo")
-    ? ExternalLink
-    : label.includes("GitHub")
-      ? Github
-      : label.includes("Case")
-        ? FileText
-        : Workflow;
-  return (
-    <button
-      className="inline-flex items-center justify-between gap-2 rounded-[10px] px-3.5 py-2.5 text-[12px] font-semibold transition-all hover:translate-x-0.5"
-      style={{
-        background: primary
-          ? "linear-gradient(135deg, rgba(139,92,246,0.18), rgba(168,85,247,0.10))"
-          : "rgba(255,255,255,0.02)",
-        border: "1px solid rgba(139,92,246,0.28)",
-        color: "#fff",
-      }}
-    >
-      <span className="flex items-center gap-2">
-        <Icon className="h-3.5 w-3.5" style={{ color: "#A855F7" }} /> {label}
-      </span>
-      <ArrowRight className="h-3.5 w-3.5 opacity-60" />
-    </button>
-  );
-}
-
-function Cover({ kind }: { kind: Project["cover"] }) {
-  const common = "h-[180px] w-full rounded-[12px] overflow-hidden relative";
-  if (kind === "claims") {
-    return (
-      <div
-        className={common}
-        style={{
-          background:
-            "radial-gradient(120% 80% at 20% 10%, rgba(139,92,246,0.35), transparent), linear-gradient(135deg, #0A0E22, #161B36)",
-          border: "1px solid rgba(139,92,246,0.25)",
-        }}
-      >
-        <ArchitectureGraphic />
-      </div>
-    );
-  }
-  if (kind === "autoapply") {
-    return (
-      <div
-        className={common}
-        style={{
-          background:
-            "radial-gradient(120% 80% at 80% 0%, rgba(168,85,247,0.30), transparent), linear-gradient(135deg, #0A0E22, #1A1430)",
-          border: "1px solid rgba(139,92,246,0.25)",
-        }}
-      >
-        <AutoApplyGraphic />
-      </div>
-    );
-  }
+function ProjectGraphic({
+  type,
+}: {
+  type: Project["cover"];
+}) {
   return (
     <div
-      className={common}
+      className="relative h-[220px] overflow-hidden"
       style={{
         background:
-          "radial-gradient(120% 80% at 50% 100%, rgba(139,92,246,0.25), transparent), linear-gradient(135deg, #0A0E22, #121736)",
-        border: "1px solid rgba(139,92,246,0.25)",
+          "linear-gradient(180deg,#24184A,#0B1020)",
+        borderBottom:
+          "1px solid rgba(139,92,246,0.15)",
       }}
     >
-      <DashboardGraphic />
-    </div>
-  );
-}
-
-function ArchitectureGraphic() {
-  return (
-    <svg viewBox="0 0 260 180" className="h-full w-full">
-      {[
-        { x: 30, y: 70, l: "Intake" },
-        { x: 110, y: 30, l: "Triage" },
-        { x: 110, y: 110, l: "Fraud" },
-        { x: 190, y: 70, l: "Decision" },
-      ].map((n) => (
-        <g key={n.l}>
-          <rect
-            x={n.x}
-            y={n.y}
-            width="50"
-            height="36"
-            rx="6"
-            fill="rgba(139,92,246,0.18)"
-            stroke="rgba(168,85,247,0.6)"
-          />
-          <text
-            x={n.x + 25}
-            y={n.y + 22}
-            textAnchor="middle"
-            fontSize="9"
-            fill="#fff"
-            fontWeight="600"
-          >
-            {n.l}
-          </text>
-        </g>
-      ))}
-      <g stroke="rgba(168,85,247,0.5)" strokeWidth="1.2" fill="none">
-        <path d="M80 88 L110 48" />
-        <path d="M80 88 L110 128" />
-        <path d="M160 48 L190 88" />
-        <path d="M160 128 L190 88" />
-      </g>
-      <circle cx="130" cy="88" r="14" fill="rgba(168,85,247,0.25)" stroke="rgba(168,85,247,0.7)" />
-    </svg>
-  );
-}
-
-function AutoApplyGraphic() {
-  return (
-    <div className="absolute inset-0 flex flex-col gap-2 p-4">
-      {[80, 65, 92, 50].map((w, i) => (
-        <div
-          key={i}
-          className="flex items-center gap-2 rounded-md px-2.5 py-2"
-          style={{
-            background: "rgba(255,255,255,0.04)",
-            border: "1px solid rgba(168,85,247,0.25)",
-          }}
-        >
-          <div
-            className="h-2 w-2 rounded-full"
-            style={{ background: i === 0 ? "#A855F7" : "#4B5563" }}
-          />
-          <div
-            className="h-1.5 flex-1 rounded-full"
-            style={{
-              background: `linear-gradient(90deg, rgba(168,85,247,0.7) ${w}%, rgba(255,255,255,0.05) ${w}%)`,
-            }}
-          />
-          <div className="text-[9px] font-mono" style={{ color: "#9CA3AF" }}>
-            {w}%
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function DashboardGraphic() {
-  return (
-    <svg viewBox="0 0 260 180" className="h-full w-full">
-      <defs>
-        <linearGradient id="bar" x1="0" y1="1" x2="0" y2="0">
-          <stop offset="0" stopColor="#8B5CF6" stopOpacity="0.2" />
-          <stop offset="1" stopColor="#A855F7" stopOpacity="0.9" />
-        </linearGradient>
-      </defs>
-      {[40, 70, 55, 95, 80, 110, 90].map((h, i) => (
-        <rect
-          key={i}
-          x={20 + i * 28}
-          y={150 - h}
-          width="18"
-          height={h}
-          rx="3"
-          fill="url(#bar)"
-        />
-      ))}
-      <path
-        d="M20 60 Q60 30 100 50 T180 30 T240 20"
-        stroke="#C4B5FD"
-        strokeWidth="1.5"
-        fill="none"
-      />
-    </svg>
-  );
-}
-
-function GithubCTA() {
-  return (
-    <div
-      className="flex flex-col items-start justify-between gap-4 rounded-[14px] px-6 py-5 lg:flex-row lg:items-center"
-      style={{
-        background: "linear-gradient(90deg, rgba(139,92,246,0.18), rgba(168,85,247,0.10))",
-        border: "1px solid rgba(139,92,246,0.32)",
-      }}
-    >
-      <div className="flex items-center gap-3">
-        <div
-          className="flex h-10 w-10 items-center justify-center rounded-lg"
-          style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
-        >
-          <Rocket className="h-5 w-5 text-white" />
-        </div>
-        <div>
-          <div className="text-[14px] font-bold text-white">More projects coming soon...</div>
-          <div className="text-[12px]" style={{ color: "#A3A3B2" }}>
-            Explore my AI systems, workflows, architecture blueprints, automation projects, and ongoing experiments on GitHub.
-          </div>
-        </div>
-      </div>
-      <button
-        className="inline-flex items-center gap-2 rounded-[10px] px-5 py-3 text-[13px] font-semibold text-white shadow-lg transition-all hover:scale-[1.03] hover:brand-glow"
-        style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
+      <svg
+        viewBox="0 0 420 220"
+        className="absolute inset-0 h-full w-full"
       >
-        <Github className="h-4 w-4" /> View All on GitHub
-      </button>
-    </div>
-  );
-}
+        {type === "claims" && (
+          <>
+            <line x1="90" y1="110" x2="170" y2="60" stroke="#8B5CF6" />
+            <line x1="90" y1="110" x2="170" y2="160" stroke="#8B5CF6" />
+            <line x1="250" y1="60" x2="330" y2="110" stroke="#8B5CF6" />
+            <line x1="250" y1="160" x2="330" y2="110" stroke="#8B5CF6" />
 
-function GuaranteesCard() {
-  return (
-    <div className="glass-card p-5">
-      <div className="text-[14px] font-bold text-white">What You Get With Every Project</div>
-      <ul className="mt-4 space-y-2.5">
-        {guarantees.map((g) => (
-          <li
-            key={g}
-            className="flex items-start gap-2.5 text-[12.5px]"
-            style={{ color: "#C7C7D1" }}
-          >
-            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" style={{ color: "#A855F7" }} />
-            {g}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
+            {[
+              ["Intake", 40, 92],
+              ["Triage", 170, 42],
+              ["Fraud", 170, 142],
+              ["Decision", 310, 92],
+            ].map(([label, x, y]) => (
+              <g key={label}>
+                <rect
+                  x={Number(x)}
+                  y={Number(y)}
+                  width="80"
+                  height="36"
+                  rx="8"
+                  fill="rgba(139,92,246,0.18)"
+                  stroke="rgba(168,85,247,0.7)"
+                />
+                <text
+                  x={Number(x) + 40}
+                  y={Number(y) + 22}
+                  fill="white"
+                  textAnchor="middle"
+                  fontSize="11"
+                >
+                  {label}
+                </text>
+              </g>
+            ))}
 
-function TechCard() {
-  return (
-    <div className="glass-card p-5">
-      <div className="text-[14px] font-bold text-white">Technology I Work With</div>
-      <div className="mt-4 grid grid-cols-4 gap-2.5">
-        {techGrid.map((t) => (
-          <div
-            key={t.name}
-            className="flex min-w-0 flex-col items-center justify-start gap-1.5 overflow-hidden rounded-[10px] px-1 py-2.5 transition-all hover:-translate-y-0.5"
-            style={{
-              background: "rgba(255,255,255,0.03)",
-              border: "1px solid rgba(255,255,255,0.06)",
-            }}
-            title={t.name}
-          >
-            <div
-              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md"
-              style={{ background: `${t.color}22`, border: `1px solid ${t.color}55` }}
+            <circle
+              cx="210"
+              cy="110"
+              r="18"
+              fill="rgba(168,85,247,0.25)"
+              stroke="#A855F7"
+            />
+          </>
+        )}
+
+        {type === "career" && (
+          <>
+            <line x1="80" y1="110" x2="170" y2="110" stroke="#8B5CF6" />
+            <line x1="250" y1="110" x2="340" y2="110" stroke="#8B5CF6" />
+
+            {[
+              ["CV", 40],
+              ["Matching", 150],
+              ["AI Agent", 260],
+            ].map(([label, x]) => (
+              <g key={label}>
+                <rect
+                  x={Number(x)}
+                  y="90"
+                  width="80"
+                  height="40"
+                  rx="8"
+                  fill="rgba(139,92,246,0.18)"
+                  stroke="rgba(168,85,247,0.7)"
+                />
+                <text
+                  x={Number(x) + 40}
+                  y="114"
+                  fill="white"
+                  textAnchor="middle"
+                  fontSize="11"
+                >
+                  {label}
+                </text>
+              </g>
+            ))}
+
+            <rect
+              x="150"
+              y="35"
+              width="120"
+              height="30"
+              rx="8"
+              fill="rgba(255,255,255,0.05)"
+              stroke="rgba(255,255,255,0.1)"
+            />
+
+            <text
+              x="210"
+              y="54"
+              fill="#C4B5FD"
+              textAnchor="middle"
+              fontSize="10"
             >
-              <t.icon className="h-3.5 w-3.5" style={{ color: t.color }} />
-            </div>
-            <span
-              className="block w-full break-words text-center text-[9px] font-semibold leading-[1.15]"
-              style={{ color: "#C7C7D1" }}
-            >
-              {t.name}
-            </span>
-          </div>
-        ))}
-      </div>
+              Career Insights
+            </text>
+          </>
+        )}
+
+        {type === "knowledge" && (
+          <>
+            {[
+              ["Acquire", 25],
+              ["Intelligence", 120],
+              ["Index", 220],
+              ["Governance", 315],
+            ].map(([label, x]) => (
+              <g key={label}>
+                <rect
+                  x={Number(x)}
+                  y="92"
+                  width="80"
+                  height="38"
+                  rx="8"
+                  fill="rgba(139,92,246,0.18)"
+                  stroke="rgba(168,85,247,0.7)"
+                />
+
+                <text
+                  x={Number(x) + 40}
+                  y="115"
+                  fill="white"
+                  textAnchor="middle"
+                  fontSize="10"
+                >
+                  {label}
+                </text>
+              </g>
+            ))}
+
+            <line x1="105" y1="110" x2="120" y2="110" stroke="#8B5CF6" />
+            <line x1="200" y1="110" x2="220" y2="110" stroke="#8B5CF6" />
+            <line x1="300" y1="110" x2="315" y2="110" stroke="#8B5CF6" />
+          </>
+        )}
+      </svg>
     </div>
   );
 }
+function ServicesSection() {
+  const services = [
+    {
+      icon: Target,
+      title: "AI Strategy",
+      description:
+        "Translate business goals into practical AI roadmaps, investment plans and implementation strategies.",
+    },
 
-function AIAgentCard() {
-  return (
-    <div className="glass-card relative p-5">
-      <div className="flex items-center gap-2.5">
-        <div
-          className="flex h-8 w-8 items-center justify-center rounded-lg"
-          style={{ background: "rgba(139,92,246,0.18)", border: "1px solid rgba(168,85,247,0.4)" }}
-        >
-          <Bot className="h-4 w-4" style={{ color: "#A855F7" }} />
-        </div>
-        <div className="text-[14px] font-bold text-white">Ask Me About Anything</div>
-      </div>
-      <p className="mt-3 text-[12.5px] leading-relaxed" style={{ color: "#C7C7D1" }}>
-        I've trained an AI on my projects, skills, architecture decisions, services, certifications, and experience.
-      </p>
-      <div className="mt-3">
-        <div className="text-[10.5px] font-semibold uppercase tracking-wider" style={{ color: "#9CA3AF" }}>
-          You can ask questions about:
-        </div>
-        <ul className="mt-1.5 space-y-1">
-          {[
-            "My projects",
-            "AI systems architecture",
-            "RAG pipelines",
-            "Workflow automation",
-            "Azure AI",
-            "Supabase",
-            "n8n",
-            "Power BI",
-            "Enterprise AI solutions",
-            "My background and experience",
-          ].map((item) => (
-            <li key={item} className="flex items-center gap-2 text-[11.5px]" style={{ color: "#C7C7D1" }}>
-              <span className="h-1 w-1 rounded-full shrink-0" style={{ background: "#A855F7" }} />
-              {item}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <a
-        href="/ai-agent"
-        className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-[10px] px-4 py-2.5 text-[12.5px] font-semibold text-white shadow-lg transition-all hover:scale-[1.03]"
-        style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
-      >
-        <MessageSquare className="h-4 w-4" /> Ask Me Anything
-      </a>
-    </div>
-  );
-}
+    {
+      icon: Bot,
+      title: "AI Agent Systems",
+      description:
+        "Design autonomous agents and multi-agent architectures that perform real business work.",
+    },
 
-function ClientFitSection() {
-  const clients = [
     {
-      title: "Startups",
-      text: "Rapid AI prototyping, MVP development and automation systems.",
+      icon: Workflow,
+      title: "Workflow Automation",
+      description:
+        "Eliminate manual processes through intelligent orchestration and automation.",
     },
+
     {
-      title: "SMEs",
-      text: "Process automation, workflow optimisation and AI integration.",
+      icon: Database,
+      title: "RAG Platforms",
+      description:
+        "Enterprise retrieval systems built for accuracy, governance and scalability.",
     },
+
     {
-      title: "Enterprise",
-      text: "Multi-agent systems, knowledge platforms and AI governance.",
+      icon: Building2,
+      title: "Enterprise Architecture",
+      description:
+        "Production-grade architectures designed for reliability, security and growth.",
     },
+
     {
-      title: "Research & Academia",
-      text: "AI research, publications, RAG systems and knowledge management.",
+      icon: Shield,
+      title: "AI Governance",
+      description:
+        "Risk management, auditability, compliance and responsible AI controls.",
     },
   ];
 
   return (
-    <section className="glass-card p-6">
-      <div
-        className="text-[10px] font-bold uppercase tracking-[0.22em]"
-        style={{ color: "#8B8B9A" }}
-      >
-        WHO I WORK WITH
+    <section className="mt-28">
+      <div className="text-center">
+        <h2 className="text-5xl font-bold text-white">
+          How I Can Help Your Organization
+        </h2>
+
+        <p
+          className="mx-auto mt-5 max-w-[800px] text-lg"
+          style={{ color: "#A3A3B2" }}
+        >
+          End-to-end support across AI strategy, architecture,
+          implementation and governance.
+        </p>
       </div>
 
-      <h3 className="mt-3 text-[28px] font-bold text-white">
-        AI Solutions Across Industries
-      </h3>
-
-      <p
-        className="mt-2 max-w-3xl text-[13px] leading-relaxed"
-        style={{ color: "#9CA3AF" }}
-      >
-        I design and implement AI systems for startups, SMEs, enterprises,
-        research institutions and public sector organisations seeking measurable
-        business outcomes from AI.
-      </p>
-
-      <div className="mt-6 grid gap-4 md:grid-cols-2">
-        {clients.map((c) => (
+      <div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {services.map((service) => (
           <div
-            key={c.title}
-            className="rounded-xl p-4"
+            key={service.title}
+            className="rounded-[24px] p-8 transition-all duration-300 hover:-translate-y-2"
             style={{
-              background: "rgba(255,255,255,0.03)",
-              border: "1px solid rgba(139,92,246,0.18)",
+              background: "#0B1020",
+              border: "1px solid rgba(139,92,246,0.15)",
+              boxShadow:
+                "0 0 40px rgba(139,92,246,0.05)",
             }}
           >
-            <div className="text-[15px] font-bold text-white">
-              {c.title}
-            </div>
+            <service.icon
+              className="h-10 w-10"
+              style={{
+                color: "#A855F7",
+              }}
+            />
 
-            <div
-              className="mt-2 text-[12px] leading-relaxed"
-              style={{ color: "#9CA3AF" }}
+            <h3 className="mt-6 text-2xl font-bold text-white">
+              {service.title}
+            </h3>
+
+            <p
+              className="mt-4 text-[15px] leading-relaxed"
+              style={{
+                color: "#A3A3B2",
+              }}
             >
-              {c.text}
-            </div>
+              {service.description}
+            </p>
           </div>
         ))}
+      </div>
+    </section>
+  );
+}
+
+function TechnologySection() {
+  const technologies = [
+    "OpenAI",
+    "Claude",
+    "n8n",
+    "Python",
+    "Supabase",
+    "PostgreSQL",
+    "Pinecone",
+    "Docker",
+    "AWS",
+    "Azure",
+    "Power BI",
+    "LangChain",
+  ];
+
+  return (
+    <section className="mt-28">
+      <div className="text-center">
+        <h2 className="text-5xl font-bold text-white">
+          Technology Ecosystem
+        </h2>
+
+        <p
+          className="mx-auto mt-5 max-w-[800px] text-lg"
+          style={{ color: "#A3A3B2" }}
+        >
+          Modern tools and platforms used to build enterprise AI systems.
+        </p>
+      </div>
+
+      <div className="mt-14 grid gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+        {technologies.map((tech) => (
+          <div
+            key={tech}
+            className="flex h-[90px] items-center justify-center rounded-[20px] text-sm font-semibold transition-all duration-300 hover:-translate-y-1"
+            style={{
+              background: "#0B1020",
+              border: "1px solid rgba(139,92,246,0.15)",
+              color: "#FFFFFF",
+            }}
+          >
+            {tech}
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function PortfolioCTA() {
+  return (
+    <section
+      className="mt-28 overflow-hidden rounded-[32px] p-10 lg:p-14"
+      style={{
+        background:
+          "linear-gradient(135deg, rgba(139,92,246,0.20), rgba(20,20,40,0.85))",
+        border: "1px solid rgba(139,92,246,0.20)",
+      }}
+    >
+      <div className="grid gap-14 lg:grid-cols-2">
+        <div>
+          <h2 className="text-5xl font-bold text-white">
+            Ready To Build Your AI Advantage?
+          </h2>
+
+          <p
+            className="mt-6 text-lg leading-relaxed"
+            style={{
+              color: "#D1D5DB",
+            }}
+          >
+            From AI strategy and architecture to deployment and
+            governance, I help organisations move from experimentation
+            to production-ready AI systems.
+          </p>
+
+          <div className="mt-8 flex flex-wrap gap-4">
+            <button
+              className="rounded-xl px-8 py-4 font-semibold text-white"
+              style={{
+                background:
+                  "linear-gradient(135deg,#8B5CF6,#A855F7)",
+              }}
+            >
+              Book a Discovery Call
+            </button>
+
+            <button
+              className="rounded-xl px-8 py-4 font-semibold text-white"
+              style={{
+                border:
+                  "1px solid rgba(139,92,246,0.30)",
+              }}
+            >
+              Contact Me
+            </button>
+          </div>
+        </div>
+
+        <div className="flex items-center">
+          <div className="relative w-full">
+            <div
+              className="absolute left-0 right-0 top-6 h-[2px]"
+              style={{
+                background:
+                  "rgba(168,85,247,0.30)",
+              }}
+            />
+
+            <div className="relative flex justify-between">
+              {[
+                "Discovery",
+                "Architecture",
+                "Build",
+                "Governance",
+                "Scale",
+              ].map((step, index) => (
+                <div
+                  key={step}
+                  className="flex flex-col items-center"
+                >
+                  <div
+                    className="flex h-12 w-12 items-center justify-center rounded-full font-bold text-white"
+                    style={{
+                      background:
+                        "linear-gradient(135deg,#8B5CF6,#A855F7)",
+                    }}
+                  >
+                    {index + 1}
+                  </div>
+
+                  <div
+                    className="mt-4 text-center text-xs font-semibold uppercase tracking-wider"
+                    style={{
+                      color: "#D1D5DB",
+                    }}
+                  >
+                    {step}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

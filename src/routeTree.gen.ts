@@ -16,6 +16,7 @@ import { Route as FrameworksThreeStructuralLawsRouteImport } from './routes/fram
 import { Route as FrameworksSkaidoRouteImport } from './routes/frameworks-skaido'
 import { Route as FrameworksRouteImport } from './routes/frameworks'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AisaV2RouteImport } from './routes/aisa-v2'
 import { Route as AisaRouteImport } from './routes/aisa'
 import { Route as AiAgentRouteImport } from './routes/ai-agent'
 import { Route as AboutRouteImport } from './routes/about'
@@ -58,6 +59,11 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AisaV2Route = AisaV2RouteImport.update({
+  id: '/aisa-v2',
+  path: '/aisa-v2',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AisaRoute = AisaRouteImport.update({
   id: '/aisa',
   path: '/aisa',
@@ -89,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/ai-agent': typeof AiAgentRoute
   '/aisa': typeof AisaRoute
+  '/aisa-v2': typeof AisaV2Route
   '/contact': typeof ContactRoute
   '/frameworks': typeof FrameworksRoute
   '/frameworks-skaido': typeof FrameworksSkaidoRoute
@@ -103,6 +110,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/ai-agent': typeof AiAgentRoute
   '/aisa': typeof AisaRoute
+  '/aisa-v2': typeof AisaV2Route
   '/contact': typeof ContactRoute
   '/frameworks': typeof FrameworksRoute
   '/frameworks-skaido': typeof FrameworksSkaidoRoute
@@ -118,6 +126,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/ai-agent': typeof AiAgentRoute
   '/aisa': typeof AisaRoute
+  '/aisa-v2': typeof AisaV2Route
   '/contact': typeof ContactRoute
   '/frameworks': typeof FrameworksRoute
   '/frameworks-skaido': typeof FrameworksSkaidoRoute
@@ -134,6 +143,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/ai-agent'
     | '/aisa'
+    | '/aisa-v2'
     | '/contact'
     | '/frameworks'
     | '/frameworks-skaido'
@@ -148,6 +158,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/ai-agent'
     | '/aisa'
+    | '/aisa-v2'
     | '/contact'
     | '/frameworks'
     | '/frameworks-skaido'
@@ -162,6 +173,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/ai-agent'
     | '/aisa'
+    | '/aisa-v2'
     | '/contact'
     | '/frameworks'
     | '/frameworks-skaido'
@@ -177,6 +189,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AiAgentRoute: typeof AiAgentRoute
   AisaRoute: typeof AisaRoute
+  AisaV2Route: typeof AisaV2Route
   ContactRoute: typeof ContactRoute
   FrameworksRoute: typeof FrameworksRoute
   FrameworksSkaidoRoute: typeof FrameworksSkaidoRoute
@@ -238,6 +251,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/aisa-v2': {
+      id: '/aisa-v2'
+      path: '/aisa-v2'
+      fullPath: '/aisa-v2'
+      preLoaderRoute: typeof AisaV2RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/aisa': {
       id: '/aisa'
       path: '/aisa'
@@ -281,6 +301,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AiAgentRoute: AiAgentRoute,
   AisaRoute: AisaRoute,
+  AisaV2Route: AisaV2Route,
   ContactRoute: ContactRoute,
   FrameworksRoute: FrameworksRoute,
   FrameworksSkaidoRoute: FrameworksSkaidoRoute,
