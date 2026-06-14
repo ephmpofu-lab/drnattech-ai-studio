@@ -171,7 +171,7 @@ function formatCitation(p: Pub): string {
   return `${p.authors} (${p.year}). ${p.title}. ${p.journal}. https://doi.org/${p.doi}`;
 }
 
-function PublicationsPage() {
+export function PublicationsPage() {
   const [openIdx, setOpenIdx] = useState<number | null>(null);
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
 

@@ -15,13 +15,28 @@ import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as FrameworksThreeStructuralLawsRouteImport } from './routes/frameworks-three-structural-laws'
 import { Route as FrameworksSkaidoRouteImport } from './routes/frameworks-skaido'
 import { Route as FrameworksRouteImport } from './routes/frameworks'
+import { Route as DeRouteImport } from './routes/de'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AisaV2RouteImport } from './routes/aisa-v2'
 import { Route as AisaRouteImport } from './routes/aisa'
 import { Route as AiAgentRouteImport } from './routes/ai-agent'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PortfolioIndexRouteImport } from './routes/portfolio/index'
+import { Route as DeIndexRouteImport } from './routes/de/index'
+import { Route as PortfolioInsuranceClaimsIntelligencePlatformRouteImport } from './routes/portfolio/insurance-claims-intelligence-platform'
+import { Route as PortfolioCareerIntelligenceOperatingSystemRouteImport } from './routes/portfolio/career-intelligence-operating-system'
+import { Route as DePublicationsRouteImport } from './routes/de/publications'
+import { Route as DePortfolioRouteImport } from './routes/de/portfolio'
+import { Route as DeInsightsRouteImport } from './routes/de/insights'
+import { Route as DeFrameworksRouteImport } from './routes/de/frameworks'
+import { Route as DeContactRouteImport } from './routes/de/contact'
+import { Route as DeAiAgentRouteImport } from './routes/de/ai-agent'
+import { Route as DeAboutRouteImport } from './routes/de/about'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as DePortfolioIndexRouteImport } from './routes/de/portfolio/index'
+import { Route as DePortfolioInsuranceClaimsIntelligencePlatformRouteImport } from './routes/de/portfolio/insurance-claims-intelligence-platform'
+import { Route as DePortfolioCareerIntelligenceOperatingSystemRouteImport } from './routes/de/portfolio/career-intelligence-operating-system'
 
 const PublicationsRoute = PublicationsRouteImport.update({
   id: '/publications',
@@ -54,6 +69,11 @@ const FrameworksRoute = FrameworksRouteImport.update({
   path: '/frameworks',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DeRoute = DeRouteImport.update({
+  id: '/de',
+  path: '/de',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -84,11 +104,85 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PortfolioIndexRoute = PortfolioIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PortfolioRoute,
+} as any)
+const DeIndexRoute = DeIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DeRoute,
+} as any)
+const PortfolioInsuranceClaimsIntelligencePlatformRoute =
+  PortfolioInsuranceClaimsIntelligencePlatformRouteImport.update({
+    id: '/insurance-claims-intelligence-platform',
+    path: '/insurance-claims-intelligence-platform',
+    getParentRoute: () => PortfolioRoute,
+  } as any)
+const PortfolioCareerIntelligenceOperatingSystemRoute =
+  PortfolioCareerIntelligenceOperatingSystemRouteImport.update({
+    id: '/career-intelligence-operating-system',
+    path: '/career-intelligence-operating-system',
+    getParentRoute: () => PortfolioRoute,
+  } as any)
+const DePublicationsRoute = DePublicationsRouteImport.update({
+  id: '/publications',
+  path: '/publications',
+  getParentRoute: () => DeRoute,
+} as any)
+const DePortfolioRoute = DePortfolioRouteImport.update({
+  id: '/portfolio',
+  path: '/portfolio',
+  getParentRoute: () => DeRoute,
+} as any)
+const DeInsightsRoute = DeInsightsRouteImport.update({
+  id: '/insights',
+  path: '/insights',
+  getParentRoute: () => DeRoute,
+} as any)
+const DeFrameworksRoute = DeFrameworksRouteImport.update({
+  id: '/frameworks',
+  path: '/frameworks',
+  getParentRoute: () => DeRoute,
+} as any)
+const DeContactRoute = DeContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => DeRoute,
+} as any)
+const DeAiAgentRoute = DeAiAgentRouteImport.update({
+  id: '/ai-agent',
+  path: '/ai-agent',
+  getParentRoute: () => DeRoute,
+} as any)
+const DeAboutRoute = DeAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => DeRoute,
+} as any)
 const ApiChatRoute = ApiChatRouteImport.update({
   id: '/api/chat',
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DePortfolioIndexRoute = DePortfolioIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DePortfolioRoute,
+} as any)
+const DePortfolioInsuranceClaimsIntelligencePlatformRoute =
+  DePortfolioInsuranceClaimsIntelligencePlatformRouteImport.update({
+    id: '/insurance-claims-intelligence-platform',
+    path: '/insurance-claims-intelligence-platform',
+    getParentRoute: () => DePortfolioRoute,
+  } as any)
+const DePortfolioCareerIntelligenceOperatingSystemRoute =
+  DePortfolioCareerIntelligenceOperatingSystemRouteImport.update({
+    id: '/career-intelligence-operating-system',
+    path: '/career-intelligence-operating-system',
+    getParentRoute: () => DePortfolioRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -97,13 +191,28 @@ export interface FileRoutesByFullPath {
   '/aisa': typeof AisaRoute
   '/aisa-v2': typeof AisaV2Route
   '/contact': typeof ContactRoute
+  '/de': typeof DeRouteWithChildren
   '/frameworks': typeof FrameworksRoute
   '/frameworks-skaido': typeof FrameworksSkaidoRoute
   '/frameworks-three-structural-laws': typeof FrameworksThreeStructuralLawsRoute
   '/insights': typeof InsightsRoute
-  '/portfolio': typeof PortfolioRoute
+  '/portfolio': typeof PortfolioRouteWithChildren
   '/publications': typeof PublicationsRoute
   '/api/chat': typeof ApiChatRoute
+  '/de/about': typeof DeAboutRoute
+  '/de/ai-agent': typeof DeAiAgentRoute
+  '/de/contact': typeof DeContactRoute
+  '/de/frameworks': typeof DeFrameworksRoute
+  '/de/insights': typeof DeInsightsRoute
+  '/de/portfolio': typeof DePortfolioRouteWithChildren
+  '/de/publications': typeof DePublicationsRoute
+  '/portfolio/career-intelligence-operating-system': typeof PortfolioCareerIntelligenceOperatingSystemRoute
+  '/portfolio/insurance-claims-intelligence-platform': typeof PortfolioInsuranceClaimsIntelligencePlatformRoute
+  '/de/': typeof DeIndexRoute
+  '/portfolio/': typeof PortfolioIndexRoute
+  '/de/portfolio/career-intelligence-operating-system': typeof DePortfolioCareerIntelligenceOperatingSystemRoute
+  '/de/portfolio/insurance-claims-intelligence-platform': typeof DePortfolioInsuranceClaimsIntelligencePlatformRoute
+  '/de/portfolio/': typeof DePortfolioIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -116,9 +225,21 @@ export interface FileRoutesByTo {
   '/frameworks-skaido': typeof FrameworksSkaidoRoute
   '/frameworks-three-structural-laws': typeof FrameworksThreeStructuralLawsRoute
   '/insights': typeof InsightsRoute
-  '/portfolio': typeof PortfolioRoute
   '/publications': typeof PublicationsRoute
   '/api/chat': typeof ApiChatRoute
+  '/de/about': typeof DeAboutRoute
+  '/de/ai-agent': typeof DeAiAgentRoute
+  '/de/contact': typeof DeContactRoute
+  '/de/frameworks': typeof DeFrameworksRoute
+  '/de/insights': typeof DeInsightsRoute
+  '/de/publications': typeof DePublicationsRoute
+  '/portfolio/career-intelligence-operating-system': typeof PortfolioCareerIntelligenceOperatingSystemRoute
+  '/portfolio/insurance-claims-intelligence-platform': typeof PortfolioInsuranceClaimsIntelligencePlatformRoute
+  '/de': typeof DeIndexRoute
+  '/portfolio': typeof PortfolioIndexRoute
+  '/de/portfolio/career-intelligence-operating-system': typeof DePortfolioCareerIntelligenceOperatingSystemRoute
+  '/de/portfolio/insurance-claims-intelligence-platform': typeof DePortfolioInsuranceClaimsIntelligencePlatformRoute
+  '/de/portfolio': typeof DePortfolioIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -128,13 +249,28 @@ export interface FileRoutesById {
   '/aisa': typeof AisaRoute
   '/aisa-v2': typeof AisaV2Route
   '/contact': typeof ContactRoute
+  '/de': typeof DeRouteWithChildren
   '/frameworks': typeof FrameworksRoute
   '/frameworks-skaido': typeof FrameworksSkaidoRoute
   '/frameworks-three-structural-laws': typeof FrameworksThreeStructuralLawsRoute
   '/insights': typeof InsightsRoute
-  '/portfolio': typeof PortfolioRoute
+  '/portfolio': typeof PortfolioRouteWithChildren
   '/publications': typeof PublicationsRoute
   '/api/chat': typeof ApiChatRoute
+  '/de/about': typeof DeAboutRoute
+  '/de/ai-agent': typeof DeAiAgentRoute
+  '/de/contact': typeof DeContactRoute
+  '/de/frameworks': typeof DeFrameworksRoute
+  '/de/insights': typeof DeInsightsRoute
+  '/de/portfolio': typeof DePortfolioRouteWithChildren
+  '/de/publications': typeof DePublicationsRoute
+  '/portfolio/career-intelligence-operating-system': typeof PortfolioCareerIntelligenceOperatingSystemRoute
+  '/portfolio/insurance-claims-intelligence-platform': typeof PortfolioInsuranceClaimsIntelligencePlatformRoute
+  '/de/': typeof DeIndexRoute
+  '/portfolio/': typeof PortfolioIndexRoute
+  '/de/portfolio/career-intelligence-operating-system': typeof DePortfolioCareerIntelligenceOperatingSystemRoute
+  '/de/portfolio/insurance-claims-intelligence-platform': typeof DePortfolioInsuranceClaimsIntelligencePlatformRoute
+  '/de/portfolio/': typeof DePortfolioIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -145,6 +281,7 @@ export interface FileRouteTypes {
     | '/aisa'
     | '/aisa-v2'
     | '/contact'
+    | '/de'
     | '/frameworks'
     | '/frameworks-skaido'
     | '/frameworks-three-structural-laws'
@@ -152,6 +289,20 @@ export interface FileRouteTypes {
     | '/portfolio'
     | '/publications'
     | '/api/chat'
+    | '/de/about'
+    | '/de/ai-agent'
+    | '/de/contact'
+    | '/de/frameworks'
+    | '/de/insights'
+    | '/de/portfolio'
+    | '/de/publications'
+    | '/portfolio/career-intelligence-operating-system'
+    | '/portfolio/insurance-claims-intelligence-platform'
+    | '/de/'
+    | '/portfolio/'
+    | '/de/portfolio/career-intelligence-operating-system'
+    | '/de/portfolio/insurance-claims-intelligence-platform'
+    | '/de/portfolio/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -164,9 +315,21 @@ export interface FileRouteTypes {
     | '/frameworks-skaido'
     | '/frameworks-three-structural-laws'
     | '/insights'
-    | '/portfolio'
     | '/publications'
     | '/api/chat'
+    | '/de/about'
+    | '/de/ai-agent'
+    | '/de/contact'
+    | '/de/frameworks'
+    | '/de/insights'
+    | '/de/publications'
+    | '/portfolio/career-intelligence-operating-system'
+    | '/portfolio/insurance-claims-intelligence-platform'
+    | '/de'
+    | '/portfolio'
+    | '/de/portfolio/career-intelligence-operating-system'
+    | '/de/portfolio/insurance-claims-intelligence-platform'
+    | '/de/portfolio'
   id:
     | '__root__'
     | '/'
@@ -175,6 +338,7 @@ export interface FileRouteTypes {
     | '/aisa'
     | '/aisa-v2'
     | '/contact'
+    | '/de'
     | '/frameworks'
     | '/frameworks-skaido'
     | '/frameworks-three-structural-laws'
@@ -182,6 +346,20 @@ export interface FileRouteTypes {
     | '/portfolio'
     | '/publications'
     | '/api/chat'
+    | '/de/about'
+    | '/de/ai-agent'
+    | '/de/contact'
+    | '/de/frameworks'
+    | '/de/insights'
+    | '/de/portfolio'
+    | '/de/publications'
+    | '/portfolio/career-intelligence-operating-system'
+    | '/portfolio/insurance-claims-intelligence-platform'
+    | '/de/'
+    | '/portfolio/'
+    | '/de/portfolio/career-intelligence-operating-system'
+    | '/de/portfolio/insurance-claims-intelligence-platform'
+    | '/de/portfolio/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -191,11 +369,12 @@ export interface RootRouteChildren {
   AisaRoute: typeof AisaRoute
   AisaV2Route: typeof AisaV2Route
   ContactRoute: typeof ContactRoute
+  DeRoute: typeof DeRouteWithChildren
   FrameworksRoute: typeof FrameworksRoute
   FrameworksSkaidoRoute: typeof FrameworksSkaidoRoute
   FrameworksThreeStructuralLawsRoute: typeof FrameworksThreeStructuralLawsRoute
   InsightsRoute: typeof InsightsRoute
-  PortfolioRoute: typeof PortfolioRoute
+  PortfolioRoute: typeof PortfolioRouteWithChildren
   PublicationsRoute: typeof PublicationsRoute
   ApiChatRoute: typeof ApiChatRoute
 }
@@ -244,6 +423,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FrameworksRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/de': {
+      id: '/de'
+      path: '/de'
+      fullPath: '/de'
+      preLoaderRoute: typeof DeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -286,6 +472,83 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/portfolio/': {
+      id: '/portfolio/'
+      path: '/'
+      fullPath: '/portfolio/'
+      preLoaderRoute: typeof PortfolioIndexRouteImport
+      parentRoute: typeof PortfolioRoute
+    }
+    '/de/': {
+      id: '/de/'
+      path: '/'
+      fullPath: '/de/'
+      preLoaderRoute: typeof DeIndexRouteImport
+      parentRoute: typeof DeRoute
+    }
+    '/portfolio/insurance-claims-intelligence-platform': {
+      id: '/portfolio/insurance-claims-intelligence-platform'
+      path: '/insurance-claims-intelligence-platform'
+      fullPath: '/portfolio/insurance-claims-intelligence-platform'
+      preLoaderRoute: typeof PortfolioInsuranceClaimsIntelligencePlatformRouteImport
+      parentRoute: typeof PortfolioRoute
+    }
+    '/portfolio/career-intelligence-operating-system': {
+      id: '/portfolio/career-intelligence-operating-system'
+      path: '/career-intelligence-operating-system'
+      fullPath: '/portfolio/career-intelligence-operating-system'
+      preLoaderRoute: typeof PortfolioCareerIntelligenceOperatingSystemRouteImport
+      parentRoute: typeof PortfolioRoute
+    }
+    '/de/publications': {
+      id: '/de/publications'
+      path: '/publications'
+      fullPath: '/de/publications'
+      preLoaderRoute: typeof DePublicationsRouteImport
+      parentRoute: typeof DeRoute
+    }
+    '/de/portfolio': {
+      id: '/de/portfolio'
+      path: '/portfolio'
+      fullPath: '/de/portfolio'
+      preLoaderRoute: typeof DePortfolioRouteImport
+      parentRoute: typeof DeRoute
+    }
+    '/de/insights': {
+      id: '/de/insights'
+      path: '/insights'
+      fullPath: '/de/insights'
+      preLoaderRoute: typeof DeInsightsRouteImport
+      parentRoute: typeof DeRoute
+    }
+    '/de/frameworks': {
+      id: '/de/frameworks'
+      path: '/frameworks'
+      fullPath: '/de/frameworks'
+      preLoaderRoute: typeof DeFrameworksRouteImport
+      parentRoute: typeof DeRoute
+    }
+    '/de/contact': {
+      id: '/de/contact'
+      path: '/contact'
+      fullPath: '/de/contact'
+      preLoaderRoute: typeof DeContactRouteImport
+      parentRoute: typeof DeRoute
+    }
+    '/de/ai-agent': {
+      id: '/de/ai-agent'
+      path: '/ai-agent'
+      fullPath: '/de/ai-agent'
+      preLoaderRoute: typeof DeAiAgentRouteImport
+      parentRoute: typeof DeRoute
+    }
+    '/de/about': {
+      id: '/de/about'
+      path: '/about'
+      fullPath: '/de/about'
+      preLoaderRoute: typeof DeAboutRouteImport
+      parentRoute: typeof DeRoute
+    }
     '/api/chat': {
       id: '/api/chat'
       path: '/api/chat'
@@ -293,8 +556,89 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/de/portfolio/': {
+      id: '/de/portfolio/'
+      path: '/'
+      fullPath: '/de/portfolio/'
+      preLoaderRoute: typeof DePortfolioIndexRouteImport
+      parentRoute: typeof DePortfolioRoute
+    }
+    '/de/portfolio/insurance-claims-intelligence-platform': {
+      id: '/de/portfolio/insurance-claims-intelligence-platform'
+      path: '/insurance-claims-intelligence-platform'
+      fullPath: '/de/portfolio/insurance-claims-intelligence-platform'
+      preLoaderRoute: typeof DePortfolioInsuranceClaimsIntelligencePlatformRouteImport
+      parentRoute: typeof DePortfolioRoute
+    }
+    '/de/portfolio/career-intelligence-operating-system': {
+      id: '/de/portfolio/career-intelligence-operating-system'
+      path: '/career-intelligence-operating-system'
+      fullPath: '/de/portfolio/career-intelligence-operating-system'
+      preLoaderRoute: typeof DePortfolioCareerIntelligenceOperatingSystemRouteImport
+      parentRoute: typeof DePortfolioRoute
+    }
   }
 }
+
+interface DePortfolioRouteChildren {
+  DePortfolioCareerIntelligenceOperatingSystemRoute: typeof DePortfolioCareerIntelligenceOperatingSystemRoute
+  DePortfolioInsuranceClaimsIntelligencePlatformRoute: typeof DePortfolioInsuranceClaimsIntelligencePlatformRoute
+  DePortfolioIndexRoute: typeof DePortfolioIndexRoute
+}
+
+const DePortfolioRouteChildren: DePortfolioRouteChildren = {
+  DePortfolioCareerIntelligenceOperatingSystemRoute:
+    DePortfolioCareerIntelligenceOperatingSystemRoute,
+  DePortfolioInsuranceClaimsIntelligencePlatformRoute:
+    DePortfolioInsuranceClaimsIntelligencePlatformRoute,
+  DePortfolioIndexRoute: DePortfolioIndexRoute,
+}
+
+const DePortfolioRouteWithChildren = DePortfolioRoute._addFileChildren(
+  DePortfolioRouteChildren,
+)
+
+interface DeRouteChildren {
+  DeAboutRoute: typeof DeAboutRoute
+  DeAiAgentRoute: typeof DeAiAgentRoute
+  DeContactRoute: typeof DeContactRoute
+  DeFrameworksRoute: typeof DeFrameworksRoute
+  DeInsightsRoute: typeof DeInsightsRoute
+  DePortfolioRoute: typeof DePortfolioRouteWithChildren
+  DePublicationsRoute: typeof DePublicationsRoute
+  DeIndexRoute: typeof DeIndexRoute
+}
+
+const DeRouteChildren: DeRouteChildren = {
+  DeAboutRoute: DeAboutRoute,
+  DeAiAgentRoute: DeAiAgentRoute,
+  DeContactRoute: DeContactRoute,
+  DeFrameworksRoute: DeFrameworksRoute,
+  DeInsightsRoute: DeInsightsRoute,
+  DePortfolioRoute: DePortfolioRouteWithChildren,
+  DePublicationsRoute: DePublicationsRoute,
+  DeIndexRoute: DeIndexRoute,
+}
+
+const DeRouteWithChildren = DeRoute._addFileChildren(DeRouteChildren)
+
+interface PortfolioRouteChildren {
+  PortfolioCareerIntelligenceOperatingSystemRoute: typeof PortfolioCareerIntelligenceOperatingSystemRoute
+  PortfolioInsuranceClaimsIntelligencePlatformRoute: typeof PortfolioInsuranceClaimsIntelligencePlatformRoute
+  PortfolioIndexRoute: typeof PortfolioIndexRoute
+}
+
+const PortfolioRouteChildren: PortfolioRouteChildren = {
+  PortfolioCareerIntelligenceOperatingSystemRoute:
+    PortfolioCareerIntelligenceOperatingSystemRoute,
+  PortfolioInsuranceClaimsIntelligencePlatformRoute:
+    PortfolioInsuranceClaimsIntelligencePlatformRoute,
+  PortfolioIndexRoute: PortfolioIndexRoute,
+}
+
+const PortfolioRouteWithChildren = PortfolioRoute._addFileChildren(
+  PortfolioRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -303,11 +647,12 @@ const rootRouteChildren: RootRouteChildren = {
   AisaRoute: AisaRoute,
   AisaV2Route: AisaV2Route,
   ContactRoute: ContactRoute,
+  DeRoute: DeRouteWithChildren,
   FrameworksRoute: FrameworksRoute,
   FrameworksSkaidoRoute: FrameworksSkaidoRoute,
   FrameworksThreeStructuralLawsRoute: FrameworksThreeStructuralLawsRoute,
   InsightsRoute: InsightsRoute,
-  PortfolioRoute: PortfolioRoute,
+  PortfolioRoute: PortfolioRouteWithChildren,
   PublicationsRoute: PublicationsRoute,
   ApiChatRoute: ApiChatRoute,
 }

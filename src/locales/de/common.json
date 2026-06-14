@@ -1,0 +1,60 @@
+{
+  "nav": {
+    "home": "Startseite",
+    "about": "Über mich",
+    "portfolio": "Portfolio",
+    "frameworks": "Frameworks",
+    "aiAgent": "KI-Agent",
+    "insights": "Einblicke",
+    "publications": "Publikationen",
+    "contact": "Kontakt",
+    "askAnything": "Stellen Sie mir eine Frage"
+  },
+  "langSwitcher": {
+    "en": "EN",
+    "de": "DE"
+  },
+  "footer": {
+    "tagline": "Mit Zweck gebaut. Für Wirkung gestaltet.",
+    "location": "Wien, Österreich",
+    "role": "KI-Lösungsarchitekt",
+    "credentials": "Dr.Nat.Tech — BOKU Wien",
+    "description": "Forscher | Systemdenker | Enterprise-KI-Architekt",
+    "sections": {
+      "navigation": "Navigation",
+      "frameworks": "Frameworks",
+      "authority": "Kompetenz",
+      "connect": "Kontakt"
+    },
+    "links": {
+      "publications": "Publikationen",
+      "insights": "Einblicke",
+      "aiAgent": "KI-Agent",
+      "portfolio": "Portfolio",
+      "researchPapers": "Forschungsarbeiten"
+    },
+    "social": {
+      "linkedin": "LinkedIn",
+      "github": "GitHub",
+      "youtube": "YouTube",
+      "email": "E-Mail"
+    }
+  },
+  "cta": {
+    "bookCall": "Erstgespräch buchen",
+    "exploreFrameworks": "Frameworks erkunden",
+    "discussProject": "Ähnliches Projekt besprechen",
+    "backToPortfolio": "Zurück zum Portfolio",
+    "viewAll": "Alle anzeigen",
+    "learnMore": "Mehr erfahren",
+    "getInTouch": "Kontakt aufnehmen",
+    "viewPortfolio": "Portfolio ansehen"
+  },
+  "common": {
+    "caseStudy": "Fallstudie",
+    "portfolio": "Portfolio",
+    "viewWorkflow": "In n8n ansehen",
+    "enlarge": "Vergrößern",
+    "loading": "Lädt..."
+  }
+}

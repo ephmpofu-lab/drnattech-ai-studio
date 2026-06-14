@@ -82,7 +82,7 @@ const contactCards = [
   },
 ] as const;
 
-function ContactPage() {
+export function ContactPage() {
   const [form, setForm] = useState({
     name: "",
     email: "",

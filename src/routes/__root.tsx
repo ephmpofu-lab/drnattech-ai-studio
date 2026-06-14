@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useLocation,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -11,6 +12,10 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import i18n, { localeFromPathname } from "../lib/i18n";
+
+/* ── Ensure i18n is initialized before any render ── */
+void i18n;
 
 function NotFoundComponent() {
   return (
@@ -141,6 +146,22 @@ export const Route =
           rel: "stylesheet",
           href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Great+Vibes&family=Dancing+Script:wght@600;700&family=Allura&display=swap",
         },
+        /* hreflang — root-level fallback; individual routes add page-specific ones */
+        {
+          rel: "alternate",
+          hrefLang: "en",
+          href: "https://drnattech.com",
+        },
+        {
+          rel: "alternate",
+          hrefLang: "de",
+          href: "https://drnattech.com/de",
+        },
+        {
+          rel: "alternate",
+          hrefLang: "x-default",
+          href: "https://drnattech.com",
+        },
       ],
     }),
 
@@ -187,7 +208,6 @@ function RootShell({ children }: { children: ReactNode }) {
                     "AI Governance",
                   ],
                 },
-
                 {
                   "@type": "Organization",
                   "@id": "https://drnattech.com/#organization",
@@ -197,7 +217,6 @@ function RootShell({ children }: { children: ReactNode }) {
                     "@id": "https://drnattech.com/#person",
                   },
                 },
-
                 {
                   "@type": "WebSite",
                   "@id": "https://drnattech.com/#website",
@@ -223,6 +242,17 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const { pathname } = useLocation();
+
+  /* Sync i18n language to the current URL locale on every navigation */
+  const locale = localeFromPathname(pathname);
+  useEffect(() => {
+    if (i18n.language !== locale) {
+      i18n.changeLanguage(locale);
+    }
+    /* Update <html lang> for accessibility + crawler clarity */
+    document.documentElement.setAttribute("lang", locale);
+  }, [locale]);
 
   return (
     <QueryClientProvider client={queryClient}>

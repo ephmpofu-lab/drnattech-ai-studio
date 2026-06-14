@@ -193,7 +193,7 @@ const interests = [
   "Automation",
 ];
 
-function InsightsPage() {
+export function InsightsPage() {
   const [activeCat, setActiveCat] = useState<CatLabel>("All Content");
 
   const visible =

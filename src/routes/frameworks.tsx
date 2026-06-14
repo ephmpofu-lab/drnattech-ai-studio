@@ -21,7 +21,7 @@ export const Route = createFileRoute("/frameworks")({
   component: FrameworksPage,
 });
 
-function FrameworksPage() {
+export function FrameworksPage() {
 const frameworks = [
   {
     title: "AISA Framework",

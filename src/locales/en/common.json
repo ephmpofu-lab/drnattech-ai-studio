@@ -1,0 +1,60 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "portfolio": "Portfolio",
+    "frameworks": "Frameworks",
+    "aiAgent": "AI Agent",
+    "insights": "Insights",
+    "publications": "Publications",
+    "contact": "Contact",
+    "askAnything": "Ask Me Anything"
+  },
+  "langSwitcher": {
+    "en": "EN",
+    "de": "DE"
+  },
+  "footer": {
+    "tagline": "Built with purpose. Designed for impact.",
+    "location": "Vienna, Austria",
+    "role": "AI Solutions Architect",
+    "credentials": "PhD NatTech — BOKU Vienna",
+    "description": "Researcher | Systems Thinker | Enterprise AI Builder",
+    "sections": {
+      "navigation": "Navigation",
+      "frameworks": "Frameworks",
+      "authority": "Authority",
+      "connect": "Connect"
+    },
+    "links": {
+      "publications": "Publications",
+      "insights": "Insights",
+      "aiAgent": "AI Agent",
+      "portfolio": "Portfolio",
+      "researchPapers": "Research Papers"
+    },
+    "social": {
+      "linkedin": "LinkedIn",
+      "github": "GitHub",
+      "youtube": "YouTube",
+      "email": "Email"
+    }
+  },
+  "cta": {
+    "bookCall": "Book Discovery Call",
+    "exploreFrameworks": "Explore Frameworks",
+    "discussProject": "Discuss a Similar Project",
+    "backToPortfolio": "Back to Portfolio",
+    "viewAll": "View All",
+    "learnMore": "Learn More",
+    "getInTouch": "Get in Touch",
+    "viewPortfolio": "View Portfolio"
+  },
+  "common": {
+    "caseStudy": "Case Study",
+    "portfolio": "Portfolio",
+    "viewWorkflow": "View in n8n",
+    "enlarge": "Enlarge",
+    "loading": "Loading..."
+  }
+}

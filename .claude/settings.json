@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sed -i 's/^function Home\\(\\) {/export function Home\\(\\) {/' src/routes/index.tsx)",
+      "Bash(sed -i 's/^function AboutPage\\(\\) {/export function AboutPage\\(\\) {/' src/routes/about.tsx)",
+      "Bash(sed -i 's/^function ContactPage\\(\\) {/export function ContactPage\\(\\) {/' src/routes/contact.tsx)",
+      "Bash(sed -i 's/^function FrameworksPage\\(\\) {/export function FrameworksPage\\(\\) {/' src/routes/frameworks.tsx)",
+      "Bash(sed -i 's/^function InsightsPage\\(\\) {/export function InsightsPage\\(\\) {/' src/routes/insights.tsx)"
+    ]
+  }
+}
