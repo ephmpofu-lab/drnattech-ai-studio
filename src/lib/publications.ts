@@ -2,6 +2,8 @@ import art1 from "@/assets/insight-article-1.jpg";
 import art2 from "@/assets/insight-article-2.jpg";
 import art3 from "@/assets/insight-article-3.jpg";
 import art4 from "@/assets/insight-article-4.jpg";
+import insightsHero from "@/assets/insights-hero-v2.jpg";
+import aiAssistant from "@/assets/ai-assistant.jpg";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -74,7 +76,7 @@ export const publications: Publication[] = [
     date: "16 Jun 2026",
     dateISO: "2026-06-16",
     readTime: 12,
-    heroImage: art1,
+    heroImage: insightsHero,
     heroCaption:
       "Figure 1. Governance Debt Layers in Enterprise AI Systems — Source: Author's own work",
     abstract:
@@ -265,7 +267,7 @@ export const publications: Publication[] = [
     date: "9 Jun 2026",
     dateISO: "2026-06-09",
     readTime: 10,
-    heroImage: art2,
+    heroImage: art3,
     heroCaption:
       "Figure 1. EU AI Act Risk Classification Pyramid — Source: Author's own work",
     abstract:
@@ -394,7 +396,7 @@ export const publications: Publication[] = [
     date: "2 Jun 2026",
     dateISO: "2026-06-02",
     readTime: 14,
-    heroImage: art3,
+    heroImage: art4,
     heroCaption:
       "Figure 1. Knowledge Architecture Stack — Source: Author's own work",
     abstract:
@@ -538,7 +540,7 @@ export const publications: Publication[] = [
     date: "26 May 2026",
     dateISO: "2026-05-26",
     readTime: 11,
-    heroImage: art4,
+    heroImage: aiAssistant,
     heroCaption:
       "Figure 1. Agentic AI System Topology — Source: Author's own work",
     abstract:
@@ -686,7 +688,7 @@ export const publications: Publication[] = [
     date: "19 May 2026",
     dateISO: "2026-05-19",
     readTime: 13,
-    heroImage: art1,
+    heroImage: art2,
     heroCaption:
       "Figure 1. Career Intelligence OS Architecture — Source: Author's own work",
     abstract:
@@ -804,7 +806,7 @@ export const publications: Publication[] = [
     date: "12 May 2026",
     dateISO: "2026-05-12",
     readTime: 9,
-    heroImage: art2,
+    heroImage: art1,
     heroCaption:
       "Figure 1. Production RAG Architecture Stack — Source: Author's own work",
     abstract:
