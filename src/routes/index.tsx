@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
 import {
   ArrowRight,
   ExternalLink,
@@ -17,54 +18,131 @@ import { SiteNav } from "@/components/brand/SiteNav";
 import { SiteFooter } from "@/components/brand/SiteFooter";
 import { BrandBackground } from "@/components/brand/Background";
 
+/* ============================================================
+   ROUTE — meta, hreflang, canonical
+   ============================================================ */
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       {
-        title: "Dr. Ephraim Mpofu | AI Solutions Architect Vienna Austria",
+        title:
+          "AI Solutions Architect Vienna · Dr. Ephraim Mpofu, PhD | EU AI Act · Enterprise AI · KI Systems",
       },
       {
         name: "description",
         content:
-          "AI Solutions Architect specialising in enterprise AI systems, intelligent automation, AI agents, RAG platforms and knowledge architectures.",
+          "Dr. Ephraim Mpofu (PhD, BOKU Vienna) — AI Solutions Architect and KI-Architekt based in Vienna, Austria. Designing enterprise AI systems, RAG knowledge platforms and EU AI Act-compliant architectures for DACH and EU organisations.",
       },
       {
         property: "og:title",
-        content: "Dr. Ephraim Mpofu | AI Solutions Architect Vienna Austria",
+        content:
+          "Dr. Ephraim Mpofu | AI Solutions Architect Vienna | Enterprise AI & EU AI Act",
       },
       {
         property: "og:description",
         content:
-          "Enterprise AI architecture, AI agents, workflow automation and knowledge systems.",
+          "Enterprise AI systems, RAG knowledge platforms, multi-agent workflows and EU AI Act compliance architecture — designed and delivered from Vienna, Austria.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://drnattech.com/" },
+      {
+        property: "og:image",
+        content: "https://drnattech.com/images/Dr%20Mpofu_purple2.png",
+      },
+      { name: "twitter:card", content: "summary_large_image" },
+      {
+        name: "twitter:title",
+        content:
+          "Dr. Ephraim Mpofu | AI Solutions Architect Vienna | EU AI Act",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Enterprise AI systems, RAG platforms and EU AI Act compliance architecture designed and delivered from Vienna, Austria.",
+      },
+      {
+        name: "keywords",
+        content:
+          "AI Solutions Architect Vienna, KI-Architekt Wien, enterprise AI systems, EU AI Act compliance, KI-Verordnung Beratung, RAG knowledge platform, multi-agent AI, workflow automation, SKAIDO Framework, Dr Ephraim Mpofu, DACH AI consultant, KI Lösungen Österreich",
+      },
+      { name: "robots", content: "index, follow" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://drnattech.com/" },
+      { rel: "alternate", hreflang: "en", href: "https://drnattech.com/" },
+      { rel: "alternate", hreflang: "de", href: "https://drnattech.com/de" },
+      {
+        rel: "alternate",
+        hreflang: "x-default",
+        href: "https://drnattech.com/",
       },
     ],
   }),
   component: Home,
 });
 
+/* ============================================================
+   FAQ DATA — used in both structured data and visible section
+   ============================================================ */
+
 const homeFaq = [
   {
     q: "What does an AI Solutions Architect do?",
-    a: "An AI Solutions Architect translates business problems into production-ready AI systems — designing architecture, multi-agent workflows, RAG and knowledge platforms, governance and intelligent automation that deliver measurable outcomes.",
+    a: "An AI Solutions Architect translates business problems into production-ready AI systems — designing architecture, multi-agent workflows, RAG and knowledge platforms, governance and intelligent automation that deliver measurable outcomes. Unlike a data scientist or ML engineer, an AI Solutions Architect owns the full system design: from business requirement through integration, governance, deployment and ongoing reliability.",
   },
   {
     q: "Who is Dr. Ephraim Mpofu?",
-    a: "Dr. Ephraim Mpofu is an AI Solutions Architect based in Vienna, Austria. He holds a PhD (NatTech) from BOKU Vienna, created the AISA, SKAIDO and Three Structural Laws frameworks, and builds enterprise AI systems that work in production.",
+    a: "Dr. Ephraim Mpofu is an AI Solutions Architect and KI-Architekt (Künstliche Intelligenz Architekt) based in Vienna, Austria. He holds a PhD (Dr.nat.techn.) from BOKU University Vienna, created the AISA, SKAIDO and Three Structural Laws frameworks, and builds enterprise AI systems that work in production. He serves organisations across Austria, Germany, Switzerland and the broader EU.",
   },
   {
-    q: "Does Dr. Mpofu help companies in Austria and the EU with AI governance?",
-    a: "Yes. He designs AI systems for enterprises in Austria, the DACH region and the EU with auditability, human-in-the-loop oversight and EU AI Act readiness built in from the start.",
+    q: "What is the EU AI Act and how does it affect enterprise AI systems?",
+    a: "The EU AI Act classifies AI systems by risk level. High-risk systems — such as those used in insurance claims processing, HR screening and credit scoring — require documented risk assessments, full audit trails, human-in-the-loop oversight mechanisms and transparency documentation. The Act's high-risk obligations apply from August 2026. Dr. Mpofu designs enterprise AI architectures that embed these requirements from day one, avoiding the significant cost and risk of compliance retrofitting.",
   },
   {
-    q: "Which AI frameworks has Dr. Ephraim Mpofu created?",
-    a: "He developed a proprietary framework suite including the AISA Framework, SKAIDO Framework, Three Structural Laws, Four Workflow Layers and Knowledge Architecture.",
+    q: "Do you work with German-speaking clients across the DACH region?",
+    a: "Yes. Dr. Mpofu works with enterprises across Austria (Österreich), Germany (Deutschland) and Switzerland — the DACH region — as well as broader EU markets. He designs AI systems (KI-Systeme) that meet both local business requirements and EU regulatory obligations including the EU AI Act (EU KI-Verordnung) and GDPR. German-language engagement is available.",
+  },
+  {
+    q: "Which proprietary AI frameworks has Dr. Ephraim Mpofu developed?",
+    a: "Dr. Mpofu developed a suite of five proprietary frameworks: the AISA Framework (Strategic AI Engagement Model), the SKAIDO Framework (six-phase end-to-end AI implementation methodology), the Three Structural Laws (architectural principles preventing fraud and silent failure), the Four Workflow Layers (scalable automation architecture), and Knowledge Architecture (enterprise RAG and knowledge system design). All are designed for production enterprise environments.",
+  },
+  {
+    q: "What is RAG and why does it matter for enterprise knowledge systems?",
+    a: "Retrieval-Augmented Generation (RAG) is an AI architecture pattern that connects large language models to an organisation's own knowledge base — enabling accurate, source-cited responses grounded in internal data, without hallucination. Dr. Mpofu implements enterprise RAG systems using vector databases, semantic retrieval layers and governance frameworks to deliver reliable, auditable AI knowledge platforms at scale.",
+  },
+  {
+    q: "What industries do you build AI systems for?",
+    a: "Dr. Mpofu has delivered AI systems across insurance, financial services, human resources, knowledge management, sustainability and regulatory compliance. Industry-specific systems include an Insurance Claims Intelligence Platform (80% processing time reduction), an AI Career Intelligence Operating System and enterprise Knowledge Architecture platforms — all designed for production deployment with full auditability.",
+  },
+  {
+    q: "How quickly can an enterprise AI system be designed and deployed?",
+    a: "Using the SKAIDO Framework, a production-ready enterprise AI system typically takes 6–16 weeks from discovery call to live deployment. Simple intelligent automation workflows can be delivered in 2–4 weeks; complex multi-agent platforms with RAG knowledge architecture, governance layers and full audit trail design take 12–20 weeks. Every engagement begins with a structured discovery and architecture phase before any code is written.",
   },
 ];
+
+/* ============================================================
+   STRUCTURED DATA — Person, Service, CreativeWork, FAQ, WebSite
+   ============================================================ */
 
 function HomeStructuredData() {
   const json = {
     "@context": "https://schema.org",
     "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://drnattech.com/#website",
+        url: "https://drnattech.com/",
+        name: "Dr. Ephraim Mpofu — AI Solutions Architect Vienna",
+        description:
+          "Enterprise AI systems, RAG knowledge platforms, multi-agent workflows and EU AI Act compliance — designed and delivered from Vienna, Austria.",
+        inLanguage: "en",
+        potentialAction: {
+          "@type": "SearchAction",
+          target: "https://drnattech.com/ai-agent?q={search_term_string}",
+          "query-input": "required name=search_term_string",
+        },
+      },
       {
         "@type": "ProfilePage",
         "@id": "https://drnattech.com/#webpage",
@@ -72,6 +150,131 @@ function HomeStructuredData() {
         name: "Dr. Ephraim Mpofu — AI Solutions Architect, Vienna Austria",
         about: { "@id": "https://drnattech.com/#person" },
         inLanguage: "en",
+        isPartOf: { "@id": "https://drnattech.com/#website" },
+      },
+      {
+        "@type": "Person",
+        "@id": "https://drnattech.com/#person",
+        name: "Dr. Ephraim Mpofu",
+        honorificPrefix: "Dr.",
+        alternateName: ["Ephraim Mpofu", "Dr. E. Mpofu"],
+        jobTitle: [
+          "AI Solutions Architect",
+          "KI-Architekt",
+          "Enterprise AI Consultant",
+        ],
+        description:
+          "PhD-credentialed AI Solutions Architect and KI-Architekt based in Vienna, Austria. Specialises in enterprise AI systems, RAG knowledge platforms, multi-agent workflows and EU AI Act compliance architecture. Serves organisations across the DACH region and EU.",
+        url: "https://drnattech.com",
+        image: "https://drnattech.com/images/Dr%20Mpofu_purple2.png",
+        alumniOf: {
+          "@type": "CollegeOrUniversity",
+          name: "BOKU University Vienna",
+          url: "https://www.boku.ac.at",
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Vienna",
+            addressCountry: "AT",
+          },
+        },
+        hasCredential: {
+          "@type": "EducationalOccupationalCredential",
+          name: "PhD in Natural Technology (Dr.nat.techn.)",
+          educationalLevel: "Doctoral Degree",
+          recognizedBy: {
+            "@type": "CollegeOrUniversity",
+            name: "BOKU University Vienna",
+          },
+        },
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Vienna",
+          addressCountry: "AT",
+          addressRegion: "Vienna",
+        },
+        areaServed: [
+          { "@type": "Country", name: "Austria" },
+          { "@type": "Country", name: "Germany" },
+          { "@type": "Country", name: "Switzerland" },
+          { "@type": "AdministrativeArea", name: "European Union" },
+        ],
+        knowsLanguage: ["en", "de"],
+        knowsAbout: [
+          "Enterprise AI Systems Architecture",
+          "Retrieval-Augmented Generation (RAG)",
+          "Multi-Agent AI Systems",
+          "EU AI Act Compliance",
+          "KI-Verordnung",
+          "AI Governance",
+          "Knowledge Architecture",
+          "Workflow Automation",
+          "AI Solutions Architecture",
+          "GDPR-Aligned AI",
+          "High-Risk AI System Classification",
+        ],
+        sameAs: ["https://www.linkedin.com/in/ephraimmpofu"],
+      },
+      {
+        "@type": "Service",
+        "@id": "https://drnattech.com/#service",
+        name: "Enterprise AI System Architecture & Implementation",
+        serviceType: "AI Solutions Architecture",
+        description:
+          "End-to-end enterprise AI system design, implementation and governance — including multi-agent systems, RAG knowledge platforms, EU AI Act compliance architecture and workflow automation.",
+        provider: { "@id": "https://drnattech.com/#person" },
+        areaServed: [
+          { "@type": "Country", name: "Austria" },
+          { "@type": "Country", name: "Germany" },
+          { "@type": "Country", name: "Switzerland" },
+        ],
+        hasOfferCatalog: {
+          "@type": "OfferCatalog",
+          name: "AI Architecture Services",
+          itemListElement: [
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: "Enterprise AI System Architecture",
+              },
+            },
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: "RAG Knowledge Platform Implementation",
+              },
+            },
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: "EU AI Act Compliance Architecture",
+              },
+            },
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: "Multi-Agent AI Workflow Design",
+              },
+            },
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: "AI Governance Framework Implementation",
+              },
+            },
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: "Knowledge Architecture Design",
+              },
+            },
+          ],
+        },
       },
       {
         "@type": "FAQPage",
@@ -82,6 +285,25 @@ function HomeStructuredData() {
           acceptedAnswer: { "@type": "Answer", text: f.a },
         })),
       },
+      {
+        "@type": "CreativeWork",
+        name: "SKAIDO Framework",
+        alternateName: "SKAIDO AI Implementation Methodology",
+        description:
+          "The SKAIDO Framework is a six-phase AI implementation methodology developed by Dr. Ephraim Mpofu to systematically take enterprises from business problem definition to deployed, production-ready AI solution.",
+        author: { "@id": "https://drnattech.com/#person" },
+        url: "https://drnattech.com/frameworks",
+        about: { "@type": "Thing", name: "Enterprise AI Implementation Methodology" },
+      },
+      {
+        "@type": "CreativeWork",
+        name: "AISA Framework",
+        alternateName: "AI Systems Architecture Strategic Engagement Framework",
+        description:
+          "The AISA Framework is Dr. Ephraim Mpofu's proprietary strategic engagement model for enterprise AI — structuring how organisations move from AI ambiguity to deployed, governed AI systems with measurable business outcomes.",
+        author: { "@id": "https://drnattech.com/#person" },
+        url: "https://drnattech.com/frameworks",
+      },
     ],
   };
   return (
@@ -91,6 +313,10 @@ function HomeStructuredData() {
     />
   );
 }
+
+/* ============================================================
+   PAGE
+   ============================================================ */
 
 export function Home() {
   return (
@@ -104,11 +330,12 @@ export function Home() {
       <main className="mx-auto max-w-[1280px] px-6 pb-20 lg:px-10">
         <Hero />
         <TrustBar />
-        <WhatIBuild />
         <FeaturedCaseStudy />
+        <WhatIBuild />
+        <EuAiActStrip />
         <FrameworksSection />
-        <AuthoritySection />
         <AgentCard />
+        <HomeFaqSection />
         <FinalCta />
         <SiteFooter />
       </main>
@@ -120,28 +347,68 @@ export function Home() {
    1. HERO
    ============================================================ */
 
+const TYPED_PHRASES = ["AI Solutions Architect", "KI-Architekt Wien", "EU AI Act Expert", "Enterprise RAG Architect"];
+
+function TypedText() {
+  const [phraseIdx, setPhraseIdx] = useState(0);
+  const [charIdx, setCharIdx] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const current = TYPED_PHRASES[phraseIdx];
+    const speed = deleting ? 35 : 65;
+
+    if (!deleting && charIdx === current.length) {
+      const t = setTimeout(() => setDeleting(true), 2200);
+      return () => clearTimeout(t);
+    }
+    if (deleting && charIdx === 0) {
+      setDeleting(false);
+      setPhraseIdx((i) => (i + 1) % TYPED_PHRASES.length);
+      return;
+    }
+
+    const t = setTimeout(() => {
+      setCharIdx((c) => (deleting ? c - 1 : c + 1));
+    }, speed);
+    return () => clearTimeout(t);
+  }, [charIdx, deleting, phraseIdx]);
+
+  return (
+    <span className="inline-flex items-center">
+      <span style={{ color: "#C4B5FD" }}>{TYPED_PHRASES[phraseIdx].slice(0, charIdx)}</span>
+      <span
+        className="ml-[1px] inline-block w-[2px] h-[1em] rounded-full align-middle"
+        style={{ background: "#A855F7", animation: "blink-caret 1s step-end infinite" }}
+      />
+    </span>
+  );
+}
+
 const capabilities = [
   {
     Icon: Box,
     title: "Build AI Systems",
-    desc: "Production-ready systems with scalability, reliability and security built in.",
+    desc: "Production-ready enterprise AI — multi-agent architectures with scalability, reliability and security built in.",
   },
   {
     Icon: Database,
     title: "Knowledge Platforms",
-    desc: "RAG systems, enterprise search and knowledge management at scale.",
+    desc: "RAG systems, vector databases, enterprise semantic search and knowledge governance at scale.",
   },
   {
     Icon: ShieldCheck,
     title: "AI Governance",
-    desc: "EU AI Act readiness, risk management and responsible AI architecture.",
+    desc: "EU AI Act compliance, high-risk system classification, audit trail and responsible AI architecture from day one.",
   },
 ];
 
 function Hero() {
   return (
-    <section className="grid grid-cols-1 gap-5 pt-10 lg:grid-cols-[2fr_1.8fr_1.5fr] lg:gap-6 lg:pt-14">
-
+    <section
+      className="grid grid-cols-1 gap-5 pt-10 lg:grid-cols-[2fr_1.8fr_1.5fr] lg:gap-6 lg:pt-14"
+      aria-label="Dr. Ephraim Mpofu — AI Solutions Architect Vienna"
+    >
       {/* LEFT — value proposition */}
       <div className="flex flex-col justify-center">
         <span
@@ -156,7 +423,7 @@ function Hero() {
             className="h-1.5 w-1.5 rounded-full"
             style={{ background: "#A855F7", boxShadow: "0 0 8px #A855F7" }}
           />
-          AI SOLUTIONS ARCHITECT
+          AI SOLUTIONS ARCHITECT · WIEN
         </span>
 
         <h1 className="mt-6 text-[42px] font-bold leading-[1.04] tracking-tight text-white sm:text-[48px] lg:text-[54px]">
@@ -164,9 +431,14 @@ function Hero() {
           <span className="text-gradient-brand">Work in Production</span>
         </h1>
 
+        <div className="mt-3 text-[16px] font-medium" style={{ color: "#9CA3AF" }}>
+          <TypedText />
+        </div>
+
         <p className="mt-5 max-w-md text-[15px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-          I design and build intelligent AI systems for organisations that need
-          measurable outcomes, governance, and production reliability.
+          I design enterprise AI systems — multi-agent architectures, RAG
+          knowledge platforms and EU AI Act-compliant governance — for
+          organisations that need production reliability and measurable outcomes.
         </p>
 
         <div className="mt-8 flex flex-wrap gap-3">
@@ -186,12 +458,24 @@ function Hero() {
           </Link>
         </div>
 
-        <div
-          className="mt-6 inline-flex w-fit items-center gap-2 text-[12.5px] font-medium"
-          style={{ color: "#9CA3AF" }}
-        >
-          <MapPin className="h-4 w-4" style={{ color: "#A855F7" }} />
-          Vienna, Austria · DACH & EU
+        <div className="mt-6 flex flex-wrap items-center gap-3">
+          <div
+            className="inline-flex w-fit items-center gap-2 text-[12.5px] font-medium"
+            style={{ color: "#9CA3AF" }}
+          >
+            <MapPin className="h-4 w-4" style={{ color: "#A855F7" }} />
+            Vienna, Austria · DACH &amp; EU
+          </div>
+          <span
+            className="rounded-md px-2 py-0.5 text-[9.5px] font-bold uppercase tracking-[0.14em]"
+            style={{
+              background: "rgba(139,92,246,0.12)",
+              border: "1px solid rgba(139,92,246,0.28)",
+              color: "#A855F7",
+            }}
+          >
+            KI-Architekt
+          </span>
         </div>
       </div>
 
@@ -199,17 +483,16 @@ function Hero() {
       <div className="relative hidden min-h-[500px] overflow-hidden lg:block">
         <img
           src="/images/Dr Mpofu_purple2.png"
-          alt="Dr. Ephraim Mpofu — AI Solutions Architect"
+          alt="Dr. Ephraim Mpofu — AI Solutions Architect and KI-Architekt based in Vienna, Austria"
           className="absolute inset-0 h-full w-full object-cover object-top"
         />
-        {/* Fade to page background at bottom */}
         <div
           className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-28"
           style={{ background: "linear-gradient(to bottom, transparent, #050816)" }}
         />
       </div>
 
-      {/* RIGHT — 3 separate compact capability cards */}
+      {/* RIGHT — 3 capability cards */}
       <div className="flex flex-col justify-center gap-3">
         {capabilities.map(({ Icon, title, desc }) => (
           <div
@@ -262,7 +545,7 @@ const trustMetrics = [
 
 function TrustBar() {
   return (
-    <section className="mt-5">
+    <section className="mt-5" aria-label="Authority metrics">
       <div className="glass-card flex flex-wrap items-stretch">
         {trustMetrics.map(({ Icon, value, label }, i) => (
           <div
@@ -293,6 +576,55 @@ function TrustBar() {
 }
 
 /* ============================================================
+   2b. EU AI ACT COMPLIANCE STRIP
+   ============================================================ */
+
+const euAiActSignals = [
+  "High-Risk System Classification",
+  "Full Audit Trail Architecture",
+  "Human-in-the-Loop Oversight",
+  "GDPR-Aligned by Design",
+  "Transparency Documentation",
+  "Risk Management Framework",
+  "Responsible AI from Day One",
+];
+
+function EuAiActStrip() {
+  return (
+    <section className="mt-3" aria-label="EU AI Act compliance signals">
+      <div
+        className="rounded-xl px-5 py-3"
+        style={{
+          background: "rgba(139,92,246,0.05)",
+          border: "1px solid rgba(139,92,246,0.20)",
+        }}
+      >
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <div
+            className="shrink-0 text-[9px] font-bold uppercase tracking-[0.22em]"
+            style={{ color: "#A855F7" }}
+          >
+            EU AI Act Ready
+          </div>
+          <div
+            className="hidden h-3.5 w-px lg:block"
+            style={{ background: "rgba(139,92,246,0.30)" }}
+          />
+          {euAiActSignals.map((signal) => (
+            <div key={signal} className="flex items-center gap-1.5">
+              <ShieldCheck className="h-3 w-3 shrink-0" style={{ color: "#A855F7" }} />
+              <span className="text-[11px] font-medium" style={{ color: "#9CA3AF" }}>
+                {signal}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
    3. WHAT I BUILD
    ============================================================ */
 
@@ -300,21 +632,21 @@ const buildItems = [
   {
     Icon: Box,
     title: "AI Systems",
-    desc: "End-to-end AI systems designed for enterprise scale. Multi-agent architectures, intelligent automation and production deployment with full auditability.",
+    desc: "End-to-end enterprise AI systems designed for scale. Multi-agent architectures, intelligent automation and production deployment with full auditability and governance embedded from the start.",
     link: "/portfolio" as const,
     linkLabel: "View case studies",
   },
   {
     Icon: Database,
     title: "Knowledge Platforms",
-    desc: "RAG-powered knowledge architectures that surface the right information at the right time. Semantic search, vector databases and knowledge governance.",
+    desc: "RAG-powered knowledge architectures that surface the right information at the right time. Semantic search, vector databases, enterprise knowledge governance and hallucination-prevention by design.",
     link: "/frameworks" as const,
     linkLabel: "See the architecture",
   },
   {
     Icon: ShieldCheck,
     title: "AI Governance",
-    desc: "AI governance frameworks built for the EU AI Act. Risk classification, auditability, human-in-the-loop oversight and responsible AI from day one.",
+    desc: "EU AI Act-compliant governance architectures. Risk classification of high-risk AI systems, audit trail design, human-in-the-loop oversight mechanisms and GDPR-aligned responsible AI built in from day one.",
     link: "/frameworks" as const,
     linkLabel: "Explore frameworks",
   },
@@ -322,7 +654,7 @@ const buildItems = [
 
 function WhatIBuild() {
   return (
-    <section className="mt-14 lg:mt-16">
+    <section className="mt-14 lg:mt-16" aria-label="Services">
       <div className="mb-8">
         <div
           className="text-[10px] font-bold uppercase tracking-[0.22em]"
@@ -366,93 +698,154 @@ function WhatIBuild() {
 }
 
 /* ============================================================
-   4. FEATURED CASE STUDY
+   4. FEATURED CASE STUDY — RAG Knowledge Hub
    ============================================================ */
 
-const caseMetrics = [
-  { value: "80%", label: "Claims Processing Reduction" },
-  { value: "95%", label: "Document Classification Accuracy" },
-  { value: "100%", label: "Audit Trail Coverage" },
+const ragSources = [
+  { name: "Confluence", pct: 29 },
+  { name: "SharePoint", pct: 24 },
+  { name: "Documents", pct: 19 },
+  { name: "Notion", pct: 15 },
+  { name: "Others", pct: 14 },
 ];
+
+const RAG_LINE_POINTS =
+  "0,65 23.6,59 47.3,53 70.9,50.6 94.5,43.4 118.2,38.6 141.8,35 165.5,29 189.1,23 212.7,19.4 236.4,14.6 260,12.2";
+
+function RagDashboard() {
+  const r = 28;
+  const circ = 2 * Math.PI * r;
+  const filled = circ * 0.94;
+
+  return (
+    <div
+      className="rounded-[14px] p-5"
+      style={{ background: "rgba(7,11,28,0.88)", border: "1px solid rgba(255,255,255,0.07)" }}
+    >
+      <div className="mb-3 text-[11px] font-bold text-white">RAG Performance Overview</div>
+
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+        {[
+          { label: "Total Queries", value: "12,842" },
+          { label: "Avg. Answer Relevance", value: "92.7%" },
+          { label: "Sources Retrieved (Avg.)", value: "6.3" },
+          { label: "User Satisfaction", value: "4.8 / 5" },
+        ].map((m) => (
+          <div
+            key={m.label}
+            className="rounded-[8px] p-2.5"
+            style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}
+          >
+            <div className="mb-1 text-[9.5px]" style={{ color: "#6B7280" }}>{m.label}</div>
+            <div className="text-[15px] font-bold text-white">{m.value}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-4 grid grid-cols-1 items-start gap-4 sm:grid-cols-[1fr_auto_auto]">
+        <div>
+          <div className="mb-1.5 text-[9.5px]" style={{ color: "#6B7280" }}>Answer Relevance Over Time</div>
+          <svg viewBox="0 0 260 75" style={{ width: "100%", height: 75 }}>
+            <defs>
+              <linearGradient id="rag-fill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#A855F7" stopOpacity="0.28" />
+                <stop offset="100%" stopColor="#A855F7" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+            {[25, 45, 65].map((y) => (
+              <line key={y} x1="0" y1={y} x2="260" y2={y} stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
+            ))}
+            <polygon points={`0,70 ${RAG_LINE_POINTS} 260,70`} fill="url(#rag-fill)" />
+            <polyline points={RAG_LINE_POINTS} fill="none" stroke="#A855F7" strokeWidth="1.5" strokeLinejoin="round" />
+            {["Jan", "Apr", "Jul", "Oct", "Dec"].map((m, i) => (
+              <text key={m} x={i * 65} y="74" style={{ fontSize: 7, fill: "#6B7280" }}>{m}</text>
+            ))}
+          </svg>
+        </div>
+
+        <div className="flex flex-col items-center">
+          <div className="mb-1.5 text-[9.5px]" style={{ color: "#6B7280" }}>Query Success Rate</div>
+          <svg width="70" height="70" viewBox="0 0 70 70">
+            <circle cx="35" cy="35" r={r} fill="none" stroke="rgba(139,92,246,0.15)" strokeWidth="8" />
+            <circle
+              cx="35" cy="35" r={r}
+              fill="none" stroke="#A855F7" strokeWidth="8"
+              strokeDasharray={`${filled} ${circ}`}
+              strokeLinecap="round"
+              transform="rotate(-90 35 35)"
+            />
+            <text x="35" y="40" textAnchor="middle" style={{ fontSize: 13, fontWeight: 700, fill: "#fff" }}>94%</text>
+          </svg>
+        </div>
+
+        <div>
+          <div className="mb-2 text-[9.5px]" style={{ color: "#6B7280" }}>Top Knowledge Sources</div>
+          <div className="space-y-1.5">
+            {ragSources.map((s) => (
+              <div key={s.name} className="flex items-center gap-2">
+                <div className="w-[62px] shrink-0 text-right text-[9.5px]" style={{ color: "#9CA3AF" }}>{s.name}</div>
+                <div className="h-1.5 w-[80px] overflow-hidden rounded-full" style={{ background: "rgba(255,255,255,0.08)" }}>
+                  <div className="h-full rounded-full" style={{ width: `${Math.round(s.pct / 0.29)}%`, background: "#8B5CF6" }} />
+                </div>
+                <div className="w-[24px] text-[9.5px]" style={{ color: "#6B7280" }}>{s.pct}%</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function FeaturedCaseStudy() {
   return (
-    <section className="mt-5">
+    <section className="mt-5" aria-label="Featured case study">
       <div className="glass-card p-7 lg:p-9">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.15fr]">
+        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[1fr_1.65fr]">
 
-          {/* Left — text + metrics */}
           <div className="flex flex-col justify-center">
             <span
               className="inline-flex w-fit items-center rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em]"
-              style={{
-                background: "rgba(139,92,246,0.14)",
-                border: "1px solid rgba(139,92,246,0.32)",
-                color: "#C4B5FD",
-              }}
+              style={{ background: "rgba(139,92,246,0.14)", border: "1px solid rgba(139,92,246,0.32)", color: "#C4B5FD" }}
             >
-              Featured Project
+              RAG System
             </span>
 
-            <h2 className="mt-5 text-[26px] font-bold leading-tight text-white lg:text-[30px]">
-              Insurance Claims Intelligence Platform
+            <h2 className="mt-4 text-[28px] font-bold leading-[1.12] text-white lg:text-[32px]">
+              Enterprise RAG<br />Knowledge Hub
             </h2>
 
             <p className="mt-3 text-[13.5px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-              A multi-agent AI orchestration platform that automates claims intake,
-              document intelligence, image analysis and fraud detection — with
-              human-in-the-loop review and full auditability built in.
+              A retrieval-augmented generation system that connects disparate enterprise knowledge sources to deliver accurate, traceable and context-aware answers.
             </p>
 
-            <div className="mt-7 grid grid-cols-3 gap-4">
-              {caseMetrics.map((m) => (
-                <div key={m.label}>
-                  <div className="text-gradient-brand text-[26px] font-bold leading-none">
-                    {m.value}
-                  </div>
-                  <div className="mt-1.5 text-[11px] leading-tight" style={{ color: "#9CA3AF" }}>
-                    {m.label}
-                  </div>
-                </div>
-              ))}
+            <div
+              className="mt-5 h-[160px] overflow-hidden rounded-[10px]"
+              style={{ border: "1px solid rgba(255,255,255,0.07)" }}
+            >
+              <img
+                src="/images/WF02_RAG_Knowledge_Intelligence.png"
+                alt="RAG Knowledge Intelligence workflow"
+                className="h-full w-full object-cover"
+                style={{ objectPosition: "50% 68%" }}
+              />
             </div>
 
-            <div className="mt-8 flex flex-wrap gap-3">
+          </div>
+
+          <div className="self-start space-y-3">
+            <RagDashboard />
+            <div className="flex justify-end">
               <Link
-                to="/portfolio/insurance-claims-intelligence-platform"
+                to="/portfolio"
                 className="inline-flex items-center gap-2 rounded-[10px] px-5 py-2.5 text-[13px] font-semibold text-white transition-all hover:scale-[1.02]"
-                style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
+                style={{ border: "1px solid rgba(139,92,246,0.4)", background: "rgba(139,92,246,0.12)" }}
               >
                 View Case Study <ArrowRight className="h-3.5 w-3.5" />
               </Link>
-              <Link
-                to="/portfolio"
-                className="inline-flex items-center gap-2 rounded-[10px] px-5 py-2.5 text-[13px] font-semibold text-white transition-all hover:bg-white/5"
-                style={{ border: "1px solid rgba(255,255,255,0.14)" }}
-              >
-                View Portfolio <ExternalLink className="h-3.5 w-3.5" />
-              </Link>
             </div>
           </div>
 
-          {/* Right — career intelligence dashboard image */}
-          <div
-            className="relative min-h-[280px] overflow-hidden rounded-[14px] lg:min-h-[320px]"
-            style={{ border: "1px solid rgba(255,255,255,0.06)" }}
-          >
-            <img
-              src="/images/WF_Insurance_MAIN_Insurance_Claims_Orchestrator.png"
-              alt="Insurance Claims Intelligence Platform — Workflow Orchestration"
-              className="absolute inset-0 h-full w-full object-cover object-center"
-            />
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  "linear-gradient(135deg, rgba(5,8,22,0.18) 0%, transparent 45%)",
-              }}
-            />
-          </div>
         </div>
       </div>
     </section>
@@ -490,7 +883,6 @@ function FrameworkLayersVisual() {
     },
   ];
 
-  // Draw from gold (bottom) to purple (top) so top layers render in front
   const drawOrder = [...layerDefs].reverse();
 
   return (
@@ -498,6 +890,7 @@ function FrameworkLayersVisual() {
       viewBox={`0 0 ${viewW} ${viewH}`}
       className="h-auto w-full"
       style={{ maxWidth: 280 }}
+      aria-label="AISA Framework layers: AI Governance, Knowledge Architecture, Workflow Layers, AISA Foundation"
     >
       <defs>
         <radialGradient id="fwbg" cx="50%" cy="55%" r="65%">
@@ -533,7 +926,7 @@ function FrameworkLayersVisual() {
 
 function FrameworksSection() {
   return (
-    <section className="mt-5">
+    <section className="mt-5" aria-label="Proprietary AI frameworks">
       <div
         className="glass-card grid grid-cols-1 gap-10 p-8 lg:grid-cols-[1fr_1fr] lg:items-center lg:p-12"
         style={{
@@ -553,8 +946,9 @@ function FrameworksSection() {
           </h2>
           <p className="mt-4 max-w-lg text-[14px] leading-relaxed" style={{ color: "#9CA3AF" }}>
             Every system I build is grounded in five proprietary frameworks —
-            AISA, SKAIDO, Three Structural Laws, Four Workflow Layers and Knowledge
-            Architecture — developed through years of research and enterprise practice.
+            AISA, SKAIDO, Three Structural Laws, Four Workflow Layers and
+            Knowledge Architecture — developed through years of scientific
+            research and enterprise AI practice across the DACH region and EU.
           </p>
           <Link
             to="/frameworks"
@@ -579,24 +973,19 @@ function FrameworksSection() {
 
 function PublicationIllustration() {
   return (
-    <svg viewBox="0 0 90 100" className="h-[90px] w-auto shrink-0 opacity-80">
-      {/* Back paper */}
+    <svg viewBox="0 0 90 100" className="h-[90px] w-auto shrink-0 opacity-80" aria-hidden="true">
       <g transform="rotate(-6 45 52)">
         <rect x="10" y="15" width="56" height="70" rx="5"
           fill="rgba(139,92,246,0.10)" stroke="rgba(139,92,246,0.28)" strokeWidth="1.2" />
       </g>
-      {/* Middle paper */}
       <g transform="rotate(-2.5 45 52)">
         <rect x="10" y="12" width="56" height="70" rx="5"
           fill="rgba(139,92,246,0.16)" stroke="rgba(139,92,246,0.36)" strokeWidth="1.2" />
       </g>
-      {/* Front paper */}
       <rect x="10" y="8" width="56" height="72" rx="5"
         fill="rgba(7,11,28,0.94)" stroke="rgba(139,92,246,0.58)" strokeWidth="1.3" />
-      {/* Header accent */}
       <rect x="17" y="16" width="42" height="7" rx="3"
         fill="rgba(168,85,247,0.28)" />
-      {/* Text lines */}
       <line x1="17" y1="31" x2="60" y2="31" stroke="rgba(255,255,255,0.16)" strokeWidth="1.1" strokeLinecap="round" />
       <line x1="17" y1="39" x2="56" y2="39" stroke="rgba(255,255,255,0.10)" strokeWidth="1" strokeLinecap="round" />
       <line x1="17" y1="47" x2="58" y2="47" stroke="rgba(255,255,255,0.10)" strokeWidth="1" strokeLinecap="round" />
@@ -608,21 +997,16 @@ function PublicationIllustration() {
 
 function GovernanceIllustration() {
   return (
-    <svg viewBox="0 0 90 100" className="h-[90px] w-auto shrink-0 opacity-80">
-      {/* Book cover */}
+    <svg viewBox="0 0 90 100" className="h-[90px] w-auto shrink-0 opacity-80" aria-hidden="true">
       <rect x="8" y="18" width="36" height="62" rx="3"
         fill="rgba(139,92,246,0.18)" stroke="rgba(139,92,246,0.48)" strokeWidth="1.3" />
-      {/* Book spine */}
       <rect x="5" y="18" width="6" height="62" rx="2.5"
         fill="rgba(168,85,247,0.42)" stroke="rgba(139,92,246,0.48)" strokeWidth="0.8" />
-      {/* Page lines */}
       <line x1="14" y1="34" x2="38" y2="34" stroke="rgba(255,255,255,0.13)" strokeWidth="0.9" />
       <line x1="14" y1="42" x2="36" y2="42" stroke="rgba(255,255,255,0.09)" strokeWidth="0.9" />
       <line x1="14" y1="50" x2="38" y2="50" stroke="rgba(255,255,255,0.09)" strokeWidth="0.9" />
-      {/* Floating shield */}
       <path d="M56 12 L78 18 L78 40 Q78 56 56 64 Q34 56 34 40 L34 18 Z"
         fill="rgba(139,92,246,0.14)" stroke="rgba(168,85,247,0.52)" strokeWidth="1.4" />
-      {/* Checkmark in shield */}
       <polyline points="46,38 53,46 68,30"
         stroke="#A855F7" strokeWidth="2.2"
         strokeLinecap="round" strokeLinejoin="round" fill="none" />
@@ -632,7 +1016,7 @@ function GovernanceIllustration() {
 
 function AuthoritySection() {
   return (
-    <section className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-2">
+    <section className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-2" aria-label="Research and thought leadership">
 
       {/* Publications */}
       <div className="glass-card p-7 lg:p-8">
@@ -642,15 +1026,16 @@ function AuthoritySection() {
               className="text-[10px] font-bold uppercase tracking-[0.22em]"
               style={{ color: "#8B8B9A" }}
             >
-              Research & Publications
+              Research &amp; Publications
             </div>
             <div className="mt-4 text-[48px] font-bold leading-none text-gradient-brand">9+</div>
             <div className="mt-2 text-[15px] font-semibold text-white">
               Peer-Reviewed Publications
             </div>
             <p className="mt-2.5 text-[13px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-              Research spanning AI systems, knowledge management, sustainability science
-              and intelligent automation.
+              Research spanning AI systems, knowledge management, RAG
+              architectures, sustainability science and enterprise intelligent
+              automation — published in peer-reviewed academic journals.
             </p>
             <Link
               to="/publications"
@@ -684,14 +1069,15 @@ function AuthoritySection() {
                 color: "#C4B5FD",
               }}
             >
-              AI Governance
+              EU AI Act · KI-Verordnung
             </div>
             <h3 className="mt-3 text-[20px] font-bold leading-tight text-white">
-              Enterprise AI Governance
+              EU AI Act Compliance for Enterprises in 2025–2026
             </h3>
             <p className="mt-2.5 flex-1 text-[13px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-              Practical steps for EU AI Act compliance and building responsible AI systems
-              that organisations can trust.
+              What the EU AI Act means for your AI systems, how to classify
+              risk and what governance architecture you need before the
+              August 2026 obligation deadline.
             </p>
             <Link
               to="/insights"
@@ -711,58 +1097,186 @@ function AuthoritySection() {
 }
 
 /* ============================================================
-   7. AI AGENT — prominent product section
+   7. AI AGENT
    ============================================================ */
 
+const AGENT_TOPICS = [
+  "AI Governance", "EU AI Act", "Knowledge Architecture",
+  "Multi-Agent Systems", "My Research", "My Frameworks",
+];
+
 function AgentCard() {
+  const [query, setQuery] = useState("");
+
+  function handleSend(e: { preventDefault(): void }) {
+    e.preventDefault();
+    const q = query.trim();
+    if (!q) return;
+    window.location.href = `/ai-agent?q=${encodeURIComponent(q)}`;
+  }
+
   return (
-    <section className="mt-5">
+    <section className="mt-5" aria-label="Ask the AI Agent">
       <div
-        className="glass-card grid grid-cols-1 items-center gap-5 p-7 lg:grid-cols-[auto_1fr_auto]"
+        className="glass-card overflow-hidden"
         style={{
-          background:
-            "linear-gradient(135deg, rgba(139,92,246,0.12) 0%, rgba(7,11,28,0.82) 100%)",
+          background: "linear-gradient(135deg, rgba(139,92,246,0.09), rgba(7,11,28,0.92))",
           border: "1px solid rgba(139,92,246,0.22)",
         }}
       >
-        <div
-          className="flex h-14 w-14 items-center justify-center rounded-2xl"
-          style={{
-            background:
-              "linear-gradient(135deg, rgba(139,92,246,0.30), rgba(168,85,247,0.16))",
-            border: "1px solid rgba(139,92,246,0.45)",
-            boxShadow: "0 0 24px -4px rgba(139,92,246,0.6)",
-          }}
-        >
-          <Bot className="h-7 w-7" style={{ color: "#C4B5FD" }} />
-        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr]">
 
-        <div>
-          <div className="text-[19px] font-bold text-white">Ask My AI Agent</div>
-          <div className="mt-1 text-[13.5px]" style={{ color: "#9CA3AF" }}>
-            Get instant answers about my research, frameworks, case studies, architecture and enterprise AI systems.
+          {/* LEFT */}
+          <div className="p-8 lg:p-10">
+            {/* Hexagon icon */}
+            <div
+              className="mb-5 flex h-14 w-14 items-center justify-center"
+              style={{
+                clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
+                background: "linear-gradient(135deg, #7C3AED, #A855F7)",
+              }}
+            >
+              <Bot className="h-6 w-6 text-white" />
+            </div>
+
+            <h2 className="text-[22px] font-bold text-white">Ask My AI Agent</h2>
+            <p className="mt-2 max-w-[400px] text-[13.5px] leading-relaxed" style={{ color: "#9CA3AF" }}>
+              Get instant answers about AI governance, frameworks, enterprise AI systems, publications and more.
+            </p>
+
+            <div className="mt-5 flex flex-wrap gap-2">
+              {AGENT_TOPICS.map((t) => (
+                <button
+                  key={t}
+                  onClick={() => { window.location.href = `/ai-agent?q=${encodeURIComponent(t)}`; }}
+                  className="rounded-full px-3 py-1 text-[11.5px] font-medium transition-colors hover:bg-white/10"
+                  style={{
+                    background: "rgba(255,255,255,0.06)",
+                    border: "1px solid rgba(255,255,255,0.11)",
+                    color: "#D1D5DB",
+                  }}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
 
-        <Link
-          to="/ai-agent"
-          className="inline-flex items-center gap-2 rounded-[10px] px-6 py-3 text-[13.5px] font-semibold text-white transition-all hover:scale-[1.02]"
-          style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
-        >
-          Launch AI Agent <ArrowRight className="h-4 w-4" />
-        </Link>
+          {/* RIGHT — mini chat panel */}
+          <div
+            className="flex flex-col justify-between p-6"
+            style={{ background: "rgba(5,8,22,0.6)", borderLeft: "1px solid rgba(139,92,246,0.14)" }}
+          >
+            <div>
+              <div
+                className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em]"
+                style={{ color: "#6B7280" }}
+              >
+                AI Assistant
+              </div>
+
+              {/* Greeting bubble */}
+              <div
+                className="inline-block rounded-[12px] rounded-tl-none px-4 py-2.5 text-[13px] font-medium text-white"
+                style={{ background: "linear-gradient(135deg, #7C3AED, #A855F7)", maxWidth: "90%" }}
+              >
+                How can I help you today?
+              </div>
+            </div>
+
+            {/* Input */}
+            <form onSubmit={handleSend} className="mt-8 flex items-center gap-2">
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Ask anything about AI, frameworks, or my work..."
+                className="flex-1 rounded-[8px] px-3 py-2.5 text-[12.5px] text-white outline-none"
+                style={{
+                  background: "rgba(255,255,255,0.05)",
+                  border: "1px solid rgba(255,255,255,0.09)",
+                  caretColor: "#A855F7",
+                }}
+              />
+              <button
+                type="submit"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] transition-opacity hover:opacity-90"
+                style={{ background: "linear-gradient(135deg, #7C3AED, #A855F7)" }}
+                aria-label="Send"
+              >
+                <ArrowRight className="h-4 w-4 text-white" />
+              </button>
+            </form>
+          </div>
+
+        </div>
       </div>
     </section>
   );
 }
 
 /* ============================================================
-   8. FINAL CTA — compact horizontal layout
+   8. FAQ SECTION — visible + schema-backed
+   ============================================================ */
+
+function HomeFaqSection() {
+  return (
+    <section className="mt-14 lg:mt-16" aria-label="Frequently asked questions">
+      <div className="mb-8">
+        <div
+          className="text-[10px] font-bold uppercase tracking-[0.22em]"
+          style={{ color: "#8B8B9A" }}
+        >
+          Common Questions
+        </div>
+        <h2 className="mt-2.5 text-[28px] font-bold leading-tight text-white lg:text-[34px]">
+          Frequently Asked Questions
+        </h2>
+        <p className="mt-2 text-[14px]" style={{ color: "#9CA3AF" }}>
+          Questions about enterprise AI implementation, EU AI Act compliance and working
+          with a KI-Architekt in Vienna.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+        {homeFaq.map((item) => (
+          <details
+            key={item.q}
+            className="group rounded-[14px] p-5"
+            style={{
+              background: "rgba(7,11,28,0.75)",
+              border: "1px solid rgba(255,255,255,0.08)",
+            }}
+          >
+            <summary
+              className="flex cursor-pointer list-none items-start justify-between gap-4 text-[13.5px] font-semibold text-white"
+              style={{ userSelect: "none" }}
+            >
+              <span>{item.q}</span>
+              <ArrowRight
+                className="mt-0.5 h-4 w-4 shrink-0 rotate-90 transition-transform group-open:rotate-[270deg]"
+                style={{ color: "#A855F7" }}
+              />
+            </summary>
+            <p
+              className="mt-3.5 text-[13px] leading-relaxed"
+              style={{ color: "#9CA3AF" }}
+            >
+              {item.a}
+            </p>
+          </details>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   9. FINAL CTA
    ============================================================ */
 
 function FinalCta() {
   return (
-    <section className="mt-5 mb-5">
+    <section className="mt-5 mb-5" aria-label="Contact call to action">
       <div
         className="glass-card grid grid-cols-1 items-center gap-6 p-7 lg:grid-cols-[1fr_auto] lg:gap-10 lg:p-9"
         style={{
@@ -770,7 +1284,6 @@ function FinalCta() {
             "linear-gradient(135deg, rgba(139,92,246,0.16), rgba(20,20,40,0.6))",
         }}
       >
-        {/* Left: icon + headline + description */}
         <div className="flex items-center gap-5">
           <div
             className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl"
@@ -788,12 +1301,13 @@ function FinalCta() {
               Ready to Build AI Systems That Work in Production?
             </h2>
             <p className="mt-1.5 text-[13.5px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-              AI strategy, architecture, multi-agent systems, knowledge platforms and intelligent automation.
+              AI strategy, enterprise architecture, multi-agent systems, RAG knowledge
+              platforms, EU AI Act compliance and intelligent automation — from Vienna,
+              Austria, for the DACH region and EU.
             </p>
           </div>
         </div>
 
-        {/* Right: 2 CTAs */}
         <div className="flex flex-col gap-3 lg:items-end">
           <Link
             to="/contact"

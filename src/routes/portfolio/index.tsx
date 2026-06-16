@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import {
   ArrowRight,
   Rocket,
@@ -12,9 +13,7 @@ import {
   Building2,
   Shield,
   Bot,
-  BarChart3,
   Layers,
-  Cpu,
   Search,
   FileText,
   Brain,
@@ -39,22 +38,188 @@ export const Route = createFileRoute("/portfolio/")({
     meta: [
       {
         title:
-          "Portfolio | Enterprise AI Systems Designed & Delivered — Dr. Ephraim Mpofu",
+          "AI Systems Portfolio | Insurance AI, RAG, Workflow Automation | Dr. Ephraim Mpofu · KI-Architekt Vienna",
       },
       {
         name: "description",
         content:
-          "Real-world AI systems architected, implemented and governed to automate workflows, augment decision-making and create measurable business outcomes. Enterprise AI architecture case studies.",
+          "Portfolio of enterprise AI systems designed and delivered by Dr. Ephraim Mpofu — PhD (Dr.nat.techn.), AI Solutions Architect and KI-Architekt in Vienna. Insurance claims AI, RAG knowledge platforms, AI career intelligence and EU AI Act-compliant workflow automation for DACH and EU enterprises.",
       },
       {
         property: "og:title",
         content:
-          "Portfolio | Enterprise AI Systems — Dr. Ephraim Mpofu, AI Solutions Architect Vienna",
+          "AI Systems Portfolio | Dr. Ephraim Mpofu · KI-Architekt Vienna | Enterprise AI & EU AI Act",
+      },
+      {
+        property: "og:description",
+        content:
+          "12+ production enterprise AI systems — insurance claims intelligence, RAG knowledge platforms, multi-agent workflow automation. EU AI Act-compliant. By Dr. Ephraim Mpofu, KI-Architekt in Vienna.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://drnattech.com/portfolio" },
+      {
+        property: "og:image",
+        content: "https://drnattech.com/images/Dr%20Mpofu_purple2.png",
+      },
+      { name: "twitter:card", content: "summary_large_image" },
+      {
+        name: "twitter:title",
+        content:
+          "AI Systems Portfolio | Dr. Ephraim Mpofu · KI-Architekt Vienna",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "12+ enterprise AI systems delivered — insurance AI, RAG knowledge platforms, workflow automation. EU AI Act-compliant, production-ready, DACH and EU.",
+      },
+      {
+        name: "keywords",
+        content:
+          "AI systems portfolio Vienna, enterprise AI architecture, KI-Architekt Wien, insurance claims AI, RAG knowledge platform, workflow automation AI, EU AI Act compliance architecture, DACH enterprise AI, multi-agent AI systems, KI-Systeme Österreich, KI-Lösungen, Dr Ephraim Mpofu portfolio",
+      },
+      { name: "robots", content: "index, follow" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://drnattech.com/portfolio" },
+      {
+        rel: "alternate",
+        hreflang: "en",
+        href: "https://drnattech.com/portfolio",
+      },
+      {
+        rel: "alternate",
+        hreflang: "de",
+        href: "https://drnattech.com/de/portfolio",
+      },
+      {
+        rel: "alternate",
+        hreflang: "x-default",
+        href: "https://drnattech.com/portfolio",
       },
     ],
   }),
   component: PortfolioPage,
 });
+
+/* ============================================================
+   FAQ DATA — visible + schema-backed
+   ============================================================ */
+
+const portfolioFaq = [
+  {
+    q: "What types of enterprise AI systems does Dr. Ephraim Mpofu design and build?",
+    a: "Dr. Mpofu designs and builds multi-agent AI systems, RAG (Retrieval-Augmented Generation) knowledge platforms, intelligent workflow automation, AI-powered decision-support platforms and EU AI Act-compliant governance systems. Delivered systems span insurance claims intelligence, HR and recruitment AI, enterprise knowledge management and automated business process orchestration — all in production, not prototypes.",
+  },
+  {
+    q: "How does enterprise AI integrate with EU AI Act compliance requirements?",
+    a: "High-risk AI systems — such as those used in insurance claims assessment, CV screening and financial decision-making — must comply with the EU AI Act by August 2026. Dr. Mpofu embeds compliance architecturally: every system includes complete audit trails, human-in-the-loop oversight mechanisms, explainability layers, risk classification documentation and ongoing monitoring. Compliance is built in from day one, not retrofitted.",
+  },
+  {
+    q: "What is the difference between a multi-agent AI system and a standard AI chatbot?",
+    a: "A standard AI chatbot responds to single-turn user inputs. A multi-agent AI system consists of multiple specialised AI agents that collaborate autonomously — each responsible for specific subtasks (data retrieval, analysis, decision-making, writing, routing) — to complete complex, multi-step business workflows without constant human intervention. Dr. Mpofu's insurance claims platform uses 5+ coordinated agents to automate the full claims lifecycle.",
+  },
+  {
+    q: "How long does it take to design and deploy a production enterprise AI system?",
+    a: "Using the SKAIDO Framework — Dr. Mpofu's six-phase AI implementation methodology — a focused enterprise AI system (single use-case, defined scope) typically reaches production within 6–12 weeks. Timeline depends on integration complexity, data availability and governance requirements. The SKAIDO process covers Scope, Knowledge, Architecture, Implementation, Deployment and Optimisation — ensuring every delivery is production-ready rather than experimental.",
+  },
+  {
+    q: "Does Dr. Mpofu work with enterprises in Germany, Austria and Switzerland (DACH)?",
+    a: "Yes — Dr. Mpofu is based in Vienna, Austria and primarily serves enterprises across the DACH region (Deutschland, Österreich, Schweiz) and the wider EU. All AI systems are designed to meet GDPR, Austrian data protection law and EU AI Act requirements. German-language consultation and documentation are available. KI-Systeme (Künstliche Intelligenz Systeme) designed for DACH enterprises are a core focus.",
+  },
+];
+
+/* ============================================================
+   STRUCTURED DATA
+   ============================================================ */
+
+function PortfolioStructuredData() {
+  const json = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": "https://drnattech.com/portfolio#webpage",
+        url: "https://drnattech.com/portfolio",
+        name: "AI Systems Portfolio — Dr. Ephraim Mpofu, KI-Architekt Vienna",
+        description:
+          "Portfolio of 12+ enterprise AI systems designed and delivered by Dr. Ephraim Mpofu — insurance claims AI, RAG knowledge platforms, multi-agent workflow automation, EU AI Act-compliant.",
+        about: { "@id": "https://drnattech.com/#person" },
+        inLanguage: "en",
+        breadcrumb: {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: "https://drnattech.com" },
+            { "@type": "ListItem", position: 2, name: "Portfolio", item: "https://drnattech.com/portfolio" },
+          ],
+        },
+      },
+      {
+        "@type": "ItemList",
+        "@id": "https://drnattech.com/portfolio#systems",
+        name: "Enterprise AI Systems Portfolio",
+        numberOfItems: 3,
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            item: {
+              "@type": "SoftwareApplication",
+              name: "Insurance Claims Intelligence Platform",
+              description:
+                "Multi-agent AI system that automates the entire insurance claims lifecycle — fraud detection, triage, AI analysis, decision support and full audit trail. EU AI Act-compliant high-risk AI system with 70% reduction in processing time and 100% audit trail coverage.",
+              applicationCategory: "BusinessApplication",
+              url: "https://drnattech.com/portfolio/insurance-claims-intelligence-platform",
+              author: { "@id": "https://drnattech.com/#person" },
+              featureList: ["Multi-agent orchestration", "Fraud detection", "EU AI Act audit trail", "Human-in-the-loop oversight"],
+            },
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            item: {
+              "@type": "SoftwareApplication",
+              name: "AI Career Intelligence Operating System",
+              description:
+                "End-to-end AI platform for CV analysis, job opportunity matching, personalised application generation and outcome tracking. Reduces application time by 85% and triples submission volume.",
+              applicationCategory: "BusinessApplication",
+              url: "https://drnattech.com/portfolio/career-intelligence-operating-system",
+              author: { "@id": "https://drnattech.com/#person" },
+              featureList: ["CV intelligence analysis", "Opportunity matching engine", "Personalised CV generation", "Application tracking"],
+            },
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            item: {
+              "@type": "SoftwareApplication",
+              name: "Knowledge Architecture Operating System",
+              description:
+                "Enterprise RAG (Retrieval-Augmented Generation) system for knowledge acquisition, semantic indexing, intelligence and GDPR-aligned governance across organisational data.",
+              applicationCategory: "BusinessApplication",
+              author: { "@id": "https://drnattech.com/#person" },
+              featureList: ["RAG knowledge retrieval", "Semantic vector indexing", "Knowledge governance", "GDPR-aligned data access"],
+            },
+          },
+        ],
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://drnattech.com/portfolio#faq",
+        mainEntity: portfolioFaq.map((f) => ({
+          "@type": "Question",
+          name: f.q,
+          acceptedAnswer: { "@type": "Answer", text: f.a },
+        })),
+      },
+    ],
+  };
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(json) }}
+    />
+  );
+}
 
 /* ============================================================
    PAGE
@@ -66,6 +231,7 @@ export function PortfolioPage() {
       className="relative min-h-screen overflow-hidden"
       style={{ backgroundColor: "#050816" }}
     >
+      <PortfolioStructuredData />
       <BrandBackground />
       <SiteNav active="Portfolio" />
       <main className="mx-auto max-w-[1280px] px-6 pb-16 lg:px-10">
@@ -73,9 +239,9 @@ export function PortfolioPage() {
         <KpiStrip />
         <GovernanceStrip />
         <FeaturedSystems />
-        <ArchitecturalFoundations />
         <SystemCapabilities />
         <TechnologyEcosystem />
+        <PortfolioFaqSection />
         <CtaSection />
       </main>
       <SiteFooter />
@@ -112,19 +278,30 @@ const heroCapabilities = [
 
 function HeroSection() {
   return (
-    <section className="grid grid-cols-1 items-start gap-8 pt-10 lg:grid-cols-[1fr_480px] lg:gap-12">
-      {/* Left */}
-      <div>
-        <span
-          className="inline-flex items-center rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.22em]"
-          style={{
-            background: "rgba(139,92,246,0.12)",
-            border: "1px solid rgba(139,92,246,0.32)",
-            color: "#C4B5FD",
-          }}
-        >
-          PORTFOLIO
-        </span>
+    <section className="pt-10" aria-label="Portfolio of enterprise AI systems">
+      <div className="max-w-[680px]">
+        <div className="flex flex-wrap items-center gap-2">
+          <span
+            className="inline-flex items-center rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.22em]"
+            style={{
+              background: "rgba(139,92,246,0.12)",
+              border: "1px solid rgba(139,92,246,0.32)",
+              color: "#C4B5FD",
+            }}
+          >
+            PORTFOLIO
+          </span>
+          <span
+            className="inline-flex items-center rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em]"
+            style={{
+              background: "rgba(139,92,246,0.08)",
+              border: "1px solid rgba(139,92,246,0.22)",
+              color: "#A855F7",
+            }}
+          >
+            KI-Architekt · Wien
+          </span>
+        </div>
 
         <h1 className="mt-5 text-[40px] font-bold leading-[1.05] tracking-tight text-white sm:text-[50px] lg:text-[58px]">
           Enterprise AI Systems
@@ -144,9 +321,9 @@ function HeroSection() {
           className="mt-5 max-w-[500px] text-[15px] leading-relaxed"
           style={{ color: "#9CA3AF" }}
         >
-          Real-world AI systems architected, implemented and governed to
-          automate workflows, augment decision-making and create measurable
-          business outcomes.
+          Production AI systems — multi-agent architectures, RAG knowledge
+          platforms and EU AI Act-compliant workflow automation — built for
+          enterprises in Austria, Germany, Switzerland and the EU.
         </p>
 
         {/* Capability strip */}
@@ -172,171 +349,7 @@ function HeroSection() {
           ))}
         </div>
       </div>
-
-      {/* Right — enterprise architecture diagram */}
-      <HeroGraphic />
     </section>
-  );
-}
-
-/* ─── ENTERPRISE ARCHITECTURE DIAGRAM ─── */
-function HeroGraphic() {
-  const layers = [
-    {
-      name: "AI ORCHESTRATION",
-      color: "#A855F7",
-      bg: "rgba(168,85,247,0.06)",
-      border: "rgba(168,85,247,0.22)",
-      components: ["LLM Gateway", "Agent Router", "Tool Registry"],
-    },
-    {
-      name: "WORKFLOW ENGINE",
-      color: "#60A5FA",
-      bg: "rgba(96,165,250,0.06)",
-      border: "rgba(96,165,250,0.2)",
-      components: ["Pipeline Mgr", "Task Scheduler", "State Machine"],
-    },
-    {
-      name: "KNOWLEDGE LAYER",
-      color: "#22D3EE",
-      bg: "rgba(34,211,238,0.06)",
-      border: "rgba(34,211,238,0.18)",
-      components: ["Vector Store", "RAG Engine", "Index Manager"],
-    },
-    {
-      name: "DATA LAYER",
-      color: "#10B981",
-      bg: "rgba(16,185,129,0.06)",
-      border: "rgba(16,185,129,0.18)",
-      components: ["Connectors", "ETL Pipeline", "Cache Layer"],
-    },
-    {
-      name: "GOVERNANCE",
-      color: "#34D399",
-      bg: "rgba(52,211,153,0.05)",
-      border: "rgba(52,211,153,0.16)",
-      components: ["Audit Trail", "Compliance", "Monitoring"],
-    },
-  ];
-
-  return (
-    <div
-      className="relative overflow-hidden rounded-2xl p-5"
-      style={{
-        background: "linear-gradient(155deg, #070B1C 0%, #09102A 100%)",
-        border: "1px solid rgba(139,92,246,0.22)",
-        minHeight: "370px",
-        boxShadow: "inset 0 0 80px rgba(139,92,246,0.05)",
-      }}
-    >
-      {/* Background glow */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background: "radial-gradient(ellipse at 25% 30%, rgba(139,92,246,0.1) 0%, transparent 55%)",
-        }}
-      />
-
-      {/* Header */}
-      <div className="relative mb-3.5 flex items-center justify-between">
-        <div
-          className="text-[8px] font-bold uppercase tracking-[0.24em]"
-          style={{ color: "#A855F7" }}
-        >
-          ENTERPRISE AI SYSTEM ARCHITECTURE
-        </div>
-        <div className="flex items-center gap-1.5">
-          <div
-            className="h-1.5 w-1.5 rounded-full"
-            style={{ background: "#10B981", boxShadow: "0 0 5px #10B981" }}
-          />
-          <span className="text-[8px] font-semibold" style={{ color: "#10B981" }}>
-            LIVE
-          </span>
-        </div>
-      </div>
-
-      {/* Layer rows */}
-      <div className="relative space-y-1.5">
-        {layers.map((layer, i) => (
-          <div key={layer.name}>
-            <div
-              className="rounded-lg"
-              style={{
-                background: layer.bg,
-                border: `1px solid ${layer.border}`,
-                display: "grid",
-                gridTemplateColumns: "100px 1fr",
-              }}
-            >
-              {/* Label */}
-              <div
-                className="flex items-center px-2.5 py-2"
-                style={{ borderRight: `1px solid ${layer.border}` }}
-              >
-                <span
-                  className="text-[7px] font-bold uppercase leading-tight tracking-[0.14em]"
-                  style={{ color: layer.color }}
-                >
-                  {layer.name}
-                </span>
-              </div>
-              {/* Components */}
-              <div className="flex items-center gap-1.5 px-2.5 py-2">
-                {layer.components.map((comp, j) => (
-                  <div key={comp} className="flex items-center gap-1">
-                    <span
-                      className="rounded px-1.5 py-0.5 text-[8px] font-medium text-white"
-                      style={{ background: "rgba(255,255,255,0.05)", whiteSpace: "nowrap" }}
-                    >
-                      {comp}
-                    </span>
-                    {j < layer.components.length - 1 && (
-                      <span className="text-[9px]" style={{ color: "#2D3748" }}>→</span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Vertical connector */}
-            {i < layers.length - 1 && (
-              <div className="ml-[107px] h-1.5 w-px" style={{ background: "rgba(139,92,246,0.18)" }} />
-            )}
-          </div>
-        ))}
-      </div>
-
-      {/* Bottom monitoring bar */}
-      <div
-        className="relative mt-4 grid grid-cols-3 gap-0 overflow-hidden rounded-lg"
-        style={{
-          background: "rgba(0,0,0,0.3)",
-          border: "1px solid rgba(255,255,255,0.05)",
-        }}
-      >
-        {[
-          { label: "Avg Latency", value: "< 2s", color: "#A855F7" },
-          { label: "Uptime", value: "99.9%", color: "#10B981" },
-          { label: "Req / hr", value: "12.4k", color: "#60A5FA" },
-        ].map((m, i) => (
-          <div
-            key={m.label}
-            className="py-2.5 text-center"
-            style={{
-              borderLeft: i > 0 ? "1px solid rgba(255,255,255,0.05)" : "none",
-            }}
-          >
-            <div className="text-[12px] font-bold" style={{ color: m.color }}>
-              {m.value}
-            </div>
-            <div className="mt-0.5 text-[7.5px]" style={{ color: "#4B5563" }}>
-              {m.label}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
   );
 }
 
@@ -453,7 +466,7 @@ function GovernanceStrip() {
             className="shrink-0 text-[9px] font-bold uppercase tracking-[0.22em]"
             style={{ color: "#34D399" }}
           >
-            Built With Governance By Design
+            EU AI Act · Governance By Design
           </div>
           <div
             className="hidden h-3.5 w-px lg:block"
@@ -477,17 +490,91 @@ function GovernanceStrip() {
    3. FEATURED SYSTEMS
    ============================================================ */
 
+const PORTFOLIO_FILTERS = ["All", "Insurance AI", "Career AI", "Knowledge Management"] as const;
+type PortfolioFilter = (typeof PORTFOLIO_FILTERS)[number];
+
+const featuredSystemsData = [
+  {
+    category: "Insurance AI" as PortfolioFilter,
+    badge: "01",
+    title: "Insurance Claims Intelligence Platform",
+    description: "Multi-agent system that automates the entire claims lifecycle — fraud detection, AI-powered triage, decision support and EU AI Act-compliant audit trail for high-risk AI classification.",
+    workflow: [
+      { icon: FileText, label: "Intake" },
+      { icon: Search, label: "Triage" },
+      { icon: Brain, label: "AI Analysis" },
+      { icon: ShieldCheck, label: "Decision" },
+      { icon: Database, label: "Audit" },
+    ],
+    workflowImage: "/images/WF_Insurance_MAIN_Insurance_Claims_Orchestrator.png",
+    imagePosition: "50% 60%",
+    impacts: [
+      { value: "70%", label: "Reduction in Processing Time", highlight: true },
+      { value: "35%", label: "Decrease in Fraud Detection Time", highlight: true },
+      { value: "100%", label: "Audit Trail Coverage", highlight: true },
+    ],
+    technologies: ["n8n", "OpenAI", "Claude AI", "PostgreSQL", "Supabase", "RAG"],
+    href: "/portfolio/insurance-claims-intelligence-platform",
+  },
+  {
+    category: "Career AI" as PortfolioFilter,
+    badge: "02",
+    title: "AI Career Intelligence Operating System",
+    description: "End-to-end platform that analyses CVs, matches opportunities, personalises applications and tracks outcomes.",
+    workflow: [
+      { icon: Search, label: "Job Discovery" },
+      { icon: Brain, label: "Candidate Intelligence" },
+      { icon: Target, label: "Matching Engine" },
+      { icon: FileText, label: "CV Personalisation" },
+      { icon: TrendingUp, label: "Application Tracking" },
+    ],
+    workflowImage: "/images/WF_02_acp_CV_Upload_Candidate_Intelligence.png",
+    imagePosition: "50% 68%",
+    impacts: [
+      { value: "85%", label: "Time Saved on Applications", highlight: true },
+      { value: "3x", label: "More Applications Submitted", highlight: true },
+      { value: "Smart", label: "Tailored Resumes & Cover Letters", highlight: false },
+    ],
+    technologies: ["Python", "OpenAI", "Pinecone", "Supabase", "n8n", "Vector DB"],
+    href: "/portfolio/career-intelligence-operating-system",
+  },
+  {
+    category: "Knowledge Management" as PortfolioFilter,
+    badge: "03",
+    title: "Knowledge Architecture Operating System",
+    description: "Enterprise RAG (Retrieval-Augmented Generation) system for knowledge acquisition, semantic vector indexing with Pinecone and Supabase, and governance — designed to prevent AI hallucination through structured retrieval architecture.",
+    workflow: [
+      { icon: Database, label: "Acquire" },
+      { icon: Brain, label: "Intelligence" },
+      { icon: Layers, label: "Index" },
+      { icon: ShieldCheck, label: "Governance" },
+    ],
+    workflowImage: "/images/WF02_RAG_Knowledge_Intelligence.png",
+    imagePosition: "50% 68%",
+    impacts: [
+      { value: "Centralized", label: "Knowledge Repositories", highlight: false },
+      { value: "Faster", label: "Information Retrieval", highlight: false },
+      { value: "Secure", label: "Governed Access", highlight: false },
+    ],
+    technologies: ["Python", "OpenAI", "Pinecone", "Supabase", "RAG", "PostgreSQL"],
+    href: "/portfolio/knowledge-architecture-operating-system",
+  },
+];
+
 function FeaturedSystems() {
+  const [filter, setFilter] = useState<PortfolioFilter>("All");
+  const visible = featuredSystemsData.filter((s) => filter === "All" || s.category === filter);
+
   return (
     <section className="mt-14">
       {/* Header */}
-      <div className="flex items-end justify-between">
+      <div className="flex items-end justify-between flex-wrap gap-4">
         <div>
           <h2 className="text-[28px] font-bold text-white">
             Featured Enterprise Systems
           </h2>
           <p className="mt-1 text-[13.5px]" style={{ color: "#9CA3AF" }}>
-            Complex AI systems. Real business impact.
+            Complex AI systems. Real business impact. EU AI Act-compliant from day one.
           </p>
         </div>
         <a
@@ -499,66 +586,40 @@ function FeaturedSystems() {
         </a>
       </div>
 
+      {/* Filter tabs */}
+      <div className="mt-5 flex flex-wrap gap-2">
+        {PORTFOLIO_FILTERS.map((f) => (
+          <button
+            key={f}
+            onClick={() => setFilter(f)}
+            className="rounded-[8px] px-3.5 py-1.5 text-[12px] font-semibold transition-all"
+            style={
+              filter === f
+                ? { background: "rgba(139,92,246,0.25)", border: "1px solid rgba(139,92,246,0.55)", color: "#fff" }
+                : { background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", color: "#9CA3AF" }
+            }
+          >
+            {f}
+          </button>
+        ))}
+      </div>
+
       {/* Cards grid */}
       <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-        <CaseStudyCard
-          badge="01"
-          title="Insurance Claims Intelligence Platform"
-          description="Multi-agent system that automates the entire claims lifecycle using AI for fraud detection, decision support and full auditability."
-          workflow={[
-            { icon: FileText, label: "Intake" },
-            { icon: Search, label: "Triage" },
-            { icon: Brain, label: "AI Analysis" },
-            { icon: ShieldCheck, label: "Decision" },
-            { icon: Database, label: "Audit" },
-          ]}
-          impacts={[
-            { value: "70%", label: "Reduction in Processing Time", highlight: true },
-            { value: "35%", label: "Decrease in Fraud Detection Time", highlight: true },
-            { value: "100%", label: "Audit Trail Coverage", highlight: true },
-          ]}
-          technologies={["n8n", "OpenAI", "Claude AI", "PostgreSQL", "Supabase", "RAG"]}
-          href="/portfolio/insurance-claims-intelligence-platform"
-        />
-
-        <CaseStudyCard
-          badge="02"
-          title="AI Career Intelligence Operating System"
-          description="End-to-end platform that analyses CVs, matches opportunities, personalises applications and tracks outcomes."
-          workflow={[
-            { icon: Search, label: "Job Discovery" },
-            { icon: Brain, label: "Candidate Intelligence" },
-            { icon: Target, label: "Matching Engine" },
-            { icon: FileText, label: "CV Personalisation" },
-            { icon: TrendingUp, label: "Application Tracking" },
-          ]}
-          impacts={[
-            { value: "85%", label: "Time Saved on Applications", highlight: true },
-            { value: "3x", label: "More Applications Submitted", highlight: true },
-            { value: "Smart", label: "Tailored Resumes & Cover Letters", highlight: false },
-          ]}
-          technologies={["Python", "OpenAI", "Pinecone", "Supabase", "n8n", "Vector DB"]}
-          href="/portfolio/career-intelligence-operating-system"
-        />
-
-        <CaseStudyCard
-          badge="03"
-          title="Knowledge Architecture Operating System"
-          description="Enterprise system for knowledge acquisition, intelligence, indexing and governance across organisational data."
-          workflow={[
-            { icon: Database, label: "Acquire" },
-            { icon: Brain, label: "Intelligence" },
-            { icon: Layers, label: "Index" },
-            { icon: ShieldCheck, label: "Governance" },
-          ]}
-          impacts={[
-            { value: "Centralized", label: "Knowledge Repositories", highlight: false },
-            { value: "Faster", label: "Information Retrieval", highlight: false },
-            { value: "Secure", label: "Governed Access", highlight: false },
-          ]}
-          technologies={["Python", "OpenAI", "Pinecone", "Supabase", "RAG", "PostgreSQL"]}
-          href="#"
-        />
+        {visible.map((s) => (
+          <CaseStudyCard
+            key={s.badge}
+            badge={s.badge}
+            title={s.title}
+            description={s.description}
+            workflow={s.workflow}
+            workflowImage={s.workflowImage}
+            imagePosition={s.imagePosition}
+            impacts={s.impacts}
+            technologies={s.technologies}
+            href={s.href}
+          />
+        ))}
       </div>
     </section>
   );
@@ -580,6 +641,8 @@ function CaseStudyCard({
   title,
   description,
   workflow,
+  workflowImage,
+  imagePosition = "left top",
   impacts,
   technologies,
   href,
@@ -588,6 +651,8 @@ function CaseStudyCard({
   title: string;
   description: string;
   workflow: WorkflowStep[];
+  workflowImage?: string;
+  imagePosition?: string;
   impacts: Impact[];
   technologies: string[];
   href: string;
@@ -618,24 +683,38 @@ function CaseStudyCard({
       </p>
 
       {/* Workflow preview */}
-      <div
-        className="mx-5 mt-4 overflow-hidden rounded-lg px-3 py-3"
-        style={{ background: "rgba(0,0,0,0.25)", border: "1px solid rgba(255,255,255,0.05)" }}
-      >
-        <div className="flex flex-wrap items-center gap-1">
-          {workflow.map((step, i) => (
-            <div key={step.label} className="flex items-center gap-1">
-              <div className="flex items-center gap-1">
-                <step.icon className="h-3 w-3 shrink-0" style={{ color: "#C4B5FD" }} />
-                <span className="text-[10px] font-medium text-white">{step.label}</span>
-              </div>
-              {i < workflow.length - 1 && (
-                <span className="text-[10px]" style={{ color: "#4B5563" }}>→</span>
-              )}
-            </div>
-          ))}
+      {workflowImage ? (
+        <div
+          className="mx-5 mt-4 overflow-hidden rounded-lg"
+          style={{ border: "1px solid rgba(255,255,255,0.07)" }}
+        >
+          <img
+            src={workflowImage}
+            alt={`${title} workflow diagram`}
+            className="h-[130px] w-full object-cover"
+            style={{ objectPosition: imagePosition }}
+          />
         </div>
-      </div>
+      ) : (
+        <div
+          className="mx-5 mt-4 overflow-hidden rounded-lg px-3 py-3"
+          style={{ background: "rgba(0,0,0,0.25)", border: "1px solid rgba(255,255,255,0.05)" }}
+        >
+          <div className="flex flex-wrap items-center gap-1">
+            {workflow.map((step, i) => (
+              <div key={step.label} className="flex items-center gap-1">
+                <div className="flex items-center gap-1">
+                  <step.icon className="h-3 w-3 shrink-0" style={{ color: "#C4B5FD" }} />
+                  <span className="text-[10px] font-medium text-white">{step.label}</span>
+                </div>
+                {i < workflow.length - 1 && (
+                  <span className="text-[10px]" style={{ color: "#4B5563" }}>→</span>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Business impact */}
       <div className="mt-4 px-5">
@@ -707,129 +786,6 @@ function CaseStudyCard({
 }
 
 /* ============================================================
-   3b. ARCHITECTURAL FOUNDATIONS
-   ============================================================ */
-
-const foundations = [
-  {
-    badge: "AISA",
-    color: "#A855F7",
-    bgColor: "rgba(168,85,247,0.08)",
-    borderColor: "rgba(168,85,247,0.2)",
-    title: "AISA Framework",
-    sub: "Strategic AI Engagement Framework",
-    points: [
-      "Problem identification to production AI",
-      "Structured enterprise engagement model",
-      "Stakeholder alignment protocol",
-      "From ambiguity to deployed systems",
-    ],
-  },
-  {
-    badge: "SKAIDO",
-    color: "#60A5FA",
-    bgColor: "rgba(96,165,250,0.08)",
-    borderColor: "rgba(96,165,250,0.18)",
-    title: "SKAIDO Framework",
-    sub: "End-to-End AI Implementation Methodology",
-    points: [
-      "Business Problem → Architecture",
-      "Build → Validate → Deploy → Scale",
-      "Six-phase structured delivery",
-      "Governance embedded at every stage",
-    ],
-  },
-  {
-    badge: "KA",
-    color: "#22D3EE",
-    bgColor: "rgba(34,211,238,0.07)",
-    borderColor: "rgba(34,211,238,0.18)",
-    title: "Knowledge Architecture",
-    sub: "Enterprise Knowledge System Design",
-    points: [
-      "Structured knowledge acquisition",
-      "RAG and retrieval governance",
-      "Enterprise indexing methodology",
-      "Compliant knowledge engineering",
-    ],
-  },
-  {
-    badge: "4WL",
-    color: "#10B981",
-    bgColor: "rgba(16,185,129,0.07)",
-    borderColor: "rgba(16,185,129,0.16)",
-    title: "Four Workflow Layers",
-    sub: "Scalable Automation Architecture",
-    points: [
-      "Input Layer — data acquisition",
-      "Processing Layer — intelligence",
-      "Output Layer — delivery",
-      "Governance Layer — oversight",
-    ],
-  },
-];
-
-function ArchitecturalFoundations() {
-  return (
-    <section className="mt-14">
-      <div className="flex items-end justify-between">
-        <div>
-          <h2 className="text-[28px] font-bold text-white">Architectural Foundations</h2>
-          <p className="mt-1 text-[13.5px]" style={{ color: "#9CA3AF" }}>
-            Proprietary frameworks that underpin every system I design.
-          </p>
-        </div>
-        <Link
-          to="/frameworks"
-          className="hidden items-center gap-1.5 text-[13px] font-semibold transition-colors hover:text-white sm:flex"
-          style={{ color: "#A855F7" }}
-        >
-          Explore All Frameworks <ArrowRight className="h-4 w-4" />
-        </Link>
-      </div>
-
-      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {foundations.map((fw) => (
-          <Link key={fw.badge} to="/frameworks" className="group block h-full">
-            <div
-              className="glass-card h-full p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(139,92,246,0.22)]"
-              style={{ borderColor: "rgba(139,92,246,0.12)" }}
-            >
-              <div
-                className="inline-flex items-center rounded-md px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.2em]"
-                style={{
-                  background: fw.bgColor,
-                  border: `1px solid ${fw.borderColor}`,
-                  color: fw.color,
-                }}
-              >
-                {fw.badge}
-              </div>
-              <h3 className="mt-3 text-[14px] font-bold leading-snug text-white">{fw.title}</h3>
-              <p className="mt-1 text-[11.5px]" style={{ color: "#6B7280" }}>{fw.sub}</p>
-              <ul className="mt-3.5 space-y-2">
-                {fw.points.map((p) => (
-                  <li key={p} className="flex items-start gap-1.5">
-                    <div className="mt-[4px] h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: fw.color }} />
-                    <span className="text-[11px] leading-snug" style={{ color: "#9CA3AF" }}>{p}</span>
-                  </li>
-                ))}
-              </ul>
-              <div
-                className="mt-4 flex items-center gap-1 text-[11.5px] font-semibold transition-colors group-hover:text-white"
-                style={{ color: fw.color }}
-              >
-                Explore Framework <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
-              </div>
-            </div>
-          </Link>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-/* ============================================================
    4. SYSTEM CAPABILITIES
    ============================================================ */
 
@@ -839,7 +795,7 @@ const capabilities = [
   { icon: Workflow, title: "Workflow Automation", desc: "Automate complex processes and integrate intelligent workflows." },
   { icon: Database, title: "RAG & Knowledge Platforms", desc: "Build retrieval systems with high accuracy and enterprise governance." },
   { icon: Building2, title: "Enterprise Architecture", desc: "Scalable, secure and maintainable architectures for production." },
-  { icon: Shield, title: "Governance & Compliance", desc: "Responsible AI practices, auditability and compliance frameworks." },
+  { icon: Shield, title: "Governance & EU AI Act Compliance", desc: "Audit trails, human-in-the-loop oversight, risk classification and EU AI Act-compliant responsible AI — built in, not bolted on." },
 ];
 
 function SystemCapabilities() {
@@ -1029,7 +985,7 @@ function TechnologyEcosystem() {
     <section className="mt-14">
       <h2 className="text-[28px] font-bold text-white">Technology Ecosystem</h2>
       <p className="mt-1 text-[13.5px]" style={{ color: "#9CA3AF" }}>
-        Modern tools and platforms used to build, deploy and scale enterprise AI systems.
+        Modern tools and platforms selected for production reliability, GDPR compliance and EU AI Act auditability.
       </p>
 
       <div className="mt-6 flex flex-wrap gap-2.5">
@@ -1054,7 +1010,63 @@ function TechnologyEcosystem() {
 }
 
 /* ============================================================
-   6. CTA SECTION
+   6. PORTFOLIO FAQ SECTION
+   ============================================================ */
+
+function PortfolioFaqSection() {
+  return (
+    <section className="mt-14" aria-label="Frequently asked questions about AI systems">
+      <div className="mb-8">
+        <div
+          className="text-[10px] font-bold uppercase tracking-[0.22em]"
+          style={{ color: "#8B8B9A" }}
+        >
+          Common Questions
+        </div>
+        <h2 className="mt-2.5 text-[28px] font-bold leading-tight text-white lg:text-[34px]">
+          Questions About Enterprise AI Systems & EU AI Act
+        </h2>
+        <p className="mt-2 text-[14px]" style={{ color: "#9CA3AF" }}>
+          Questions about AI system design, EU AI Act compliance, deployment timelines and
+          working with a KI-Architekt based in Vienna.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+        {portfolioFaq.map((item) => (
+          <details
+            key={item.q}
+            className="group rounded-[14px] p-5"
+            style={{
+              background: "rgba(7,11,28,0.75)",
+              border: "1px solid rgba(255,255,255,0.08)",
+            }}
+          >
+            <summary
+              className="flex cursor-pointer list-none items-start justify-between gap-4 text-[13.5px] font-semibold text-white"
+              style={{ userSelect: "none" }}
+            >
+              <span>{item.q}</span>
+              <ArrowRight
+                className="mt-0.5 h-4 w-4 shrink-0 rotate-90 transition-transform group-open:rotate-[270deg]"
+                style={{ color: "#A855F7" }}
+              />
+            </summary>
+            <p
+              className="mt-3.5 text-[13px] leading-relaxed"
+              style={{ color: "#9CA3AF" }}
+            >
+              {item.a}
+            </p>
+          </details>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   7. CTA SECTION
    ============================================================ */
 
 const processSteps = [
@@ -1089,10 +1101,10 @@ function CtaSection() {
             </div>
 
             <h2 className="mt-5 text-[26px] font-bold leading-tight text-white lg:text-[30px]">
-              Let's Build Your Next Enterprise AI System
+              Let's Build Your Next Enterprise AI System — EU AI Act Ready
             </h2>
             <p className="mt-3 max-w-[500px] text-[14px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-              From strategy to production, I partner with organisations to design, build and govern AI systems that deliver measurable business outcomes.
+              From strategy to production, I partner with DACH and EU enterprises to design, build and govern AI systems — multi-agent, RAG, workflow automation — that deliver measurable business outcomes and meet EU AI Act compliance requirements.
             </p>
 
             <div className="mt-6 flex flex-wrap gap-3">

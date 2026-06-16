@@ -8,28 +8,58 @@ export const Route = createFileRoute(
     meta: [
       {
         title:
-          "KI-Karriere-Intelligence-Betriebssystem | KI-Fallstudie — Dr. Ephraim Mpofu",
+          "KI-Karriere System | Lebenslauf KI-Analyse, DSGVO-konform | Wien",
       },
       {
         name: "description",
         content:
-          "Enterprise-KI-System für intelligente Karriereoptimierung: automatisierte Jobsuche, KI-gestützte Bewerbungsoptimierung, semantisches Matching und mehrstufige n8n-Agenten-Workflows.",
+          "Mehrstufiges KI-System für Karriereoptimierung von Dr. Ephraim Mpofu, KI-Architekt Wien: KI-gestützte Lebenslauf KI-Analyse und CV-Intelligence-Extraktion, DSGVO-konforme Verarbeitung persönlicher CV-Daten, 85% schnellere Bewerbungsoptimierung, 3× höhere Interviewrate. Multi-Agenten-Workflow-Automatisierung für den DACH-Arbeitsmarkt.",
       },
+      {
+        name: "keywords",
+        content:
+          "Lebenslauf KI Analyse, DSGVO-konforme KI, Karriere KI System, CV-Analyse Wien, KI Bewerbungsoptimierung, Multi-Agenten KI DACH, KI Jobsuche Österreich, Lebenslauf KI DACH, KI Karriere Automatisierung",
+      },
+      {
+        property: "og:title",
+        content:
+          "KI-Karriere System | Lebenslauf KI-Analyse, DSGVO-konform | Wien",
+      },
+      {
+        property: "og:description",
+        content:
+          "KI-gestützte Lebenslauf KI-Analyse, DSGVO-konform, 85% schnellere Bewerbungsoptimierung. Multi-Agenten KI-System von Dr. Ephraim Mpofu, KI-Architekt Wien.",
+      },
+      { property: "og:type", content: "article" },
+      {
+        property: "og:url",
+        content:
+          "https://drnattech.com/de/portfolio/career-intelligence-operating-system",
+      },
+      {
+        property: "og:image",
+        content: "https://drnattech.com/images/Dr%20Mpofu_purple2.png",
+      },
+      { name: "robots", content: "index, follow" },
     ],
     links: [
       {
-        rel: "alternate",
-        hrefLang: "en",
-        href: "https://drnattech.com/portfolio/career-intelligence-operating-system",
-      },
-      {
-        rel: "alternate",
-        hrefLang: "de",
+        rel: "canonical",
         href: "https://drnattech.com/de/portfolio/career-intelligence-operating-system",
       },
       {
         rel: "alternate",
-        hrefLang: "x-default",
+        hreflang: "en",
+        href: "https://drnattech.com/portfolio/career-intelligence-operating-system",
+      },
+      {
+        rel: "alternate",
+        hreflang: "de",
+        href: "https://drnattech.com/de/portfolio/career-intelligence-operating-system",
+      },
+      {
+        rel: "alternate",
+        hreflang: "x-default",
         href: "https://drnattech.com/portfolio/career-intelligence-operating-system",
       },
     ],

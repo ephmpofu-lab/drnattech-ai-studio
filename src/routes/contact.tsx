@@ -11,7 +11,10 @@ import {
   ExternalLink,
   MessageSquare,
   Sparkles,
+  Copy,
+  Check,
 } from "lucide-react";
+import { CalendlyModal } from "@/components/brand/CalendlyModal";
 import { SiteNav } from "@/components/brand/SiteNav";
 import { SiteFooter } from "@/components/brand/SiteFooter";
 import { BrandBackground } from "@/components/brand/Background";
@@ -82,6 +85,32 @@ const contactCards = [
   },
 ] as const;
 
+function CopyEmailButton({ email }: { email: string }) {
+  const [copied, setCopied] = useState(false);
+
+  async function copy() {
+    await navigator.clipboard.writeText(email);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
+  return (
+    <button
+      onClick={copy}
+      className="ml-2 inline-flex items-center gap-1 rounded-[6px] px-2 py-0.5 text-[11px] font-semibold transition-all"
+      style={
+        copied
+          ? { background: "rgba(16,185,129,0.15)", border: "1px solid rgba(16,185,129,0.35)", color: "#34D399" }
+          : { background: "rgba(139,92,246,0.12)", border: "1px solid rgba(139,92,246,0.28)", color: "#A855F7" }
+      }
+      aria-label={`Copy ${email}`}
+    >
+      {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+      {copied ? "Copied!" : "Copy"}
+    </button>
+  );
+}
+
 export function ContactPage() {
   const [form, setForm] = useState({
     name: "",
@@ -90,6 +119,7 @@ export function ContactPage() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [calendlyOpen, setCalendlyOpen] = useState(false);
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -206,6 +236,14 @@ export function ContactPage() {
               Real conversations. Real collaboration. Real impact.
             </p>
 
+            <button
+              onClick={() => setCalendlyOpen(true)}
+              className="mt-6 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-[13.5px] font-semibold text-white transition-all hover:scale-[1.02]"
+              style={{ background: "linear-gradient(135deg, #8B5CF6 0%, #A855F7 100%)", boxShadow: "0 12px 30px -10px rgba(139,92,246,0.6)" }}
+            >
+              Book Strategy Call
+            </button>
+
             <div className="mt-8 space-y-4">
               {contactCards.map((card) => {
                 const Icon = card.icon;
@@ -247,16 +285,19 @@ export function ContactPage() {
                             );
                           }
                           const isExt = "external" in line && line.external;
+                          const isEmail = card.title === "Email";
                           return (
-                            <a
-                              key={i}
-                              href={line.href}
-                              target={isExt ? "_blank" : undefined}
-                              rel={isExt ? "noopener noreferrer" : undefined}
-                              className="block break-all text-[15px] leading-[1.5] text-white transition-colors hover:text-[#C4B5FD]"
-                            >
-                              {line.text}
-                            </a>
+                            <div key={i} className="flex flex-wrap items-center gap-1">
+                              <a
+                                href={line.href}
+                                target={isExt ? "_blank" : undefined}
+                                rel={isExt ? "noopener noreferrer" : undefined}
+                                className="break-all text-[15px] leading-[1.5] text-white transition-colors hover:text-[#C4B5FD]"
+                              >
+                                {line.text}
+                              </a>
+                              {isEmail && <CopyEmailButton email={line.text} />}
+                            </div>
                           );
                         })}
                       </div>
@@ -505,6 +546,7 @@ export function ContactPage() {
 
         <SiteFooter />
       </main>
+      <CalendlyModal open={calendlyOpen} onClose={() => setCalendlyOpen(false)} />
     </div>
   );
 }

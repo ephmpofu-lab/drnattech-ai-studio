@@ -3,16 +3,20 @@ type Props = {
   className?: string;
 };
 
-// Rendered as live text (handwritten executive signature) rather than an image
-// asset, so there is never a broken-image placeholder. The "Great Vibes" /
-// "Allura" cursive fonts are preloaded in the root document head.
+/*
+  Wordmark rendered as live text in Cinzel SemiBold (Roman inscription uppercase).
+  Font is preloaded in the root document head via Google Fonts.
+  Sizing is calibrated so that at "md" (nav size) the rendered width of
+  "DR EPHRAIM MPOFU" at 0.2em tracking approximately matches the width of the
+  "AI Solutions Architect" subtitle at 9px / 0.28em tracking below it.
+*/
 const fontSizes = {
-  sm: 24,
-  md: 32,
-  lg: 44,
-  xl: 60,
-  "2xl": 92,
-  "3xl": 150,
+  sm:  9,
+  md:  12,
+  lg:  17,
+  xl:  23,
+  "2xl": 34,
+  "3xl": 56,
 } as const;
 
 export function Signature({ size = "md", className = "" }: Props) {
@@ -22,16 +26,17 @@ export function Signature({ size = "md", className = "" }: Props) {
       aria-label="Dr. Ephraim Mpofu"
       className={`inline-block select-none ${className}`}
       style={{
-        fontFamily: "'Great Vibes', 'Allura', cursive",
+        fontFamily: "'Cinzel', 'Trajan Pro', 'Times New Roman', serif",
+        fontWeight: 600,
         fontSize,
-        lineHeight: 1,
+        lineHeight: 1.1,
+        letterSpacing: "0.2em",
         color: "#ffffff",
         whiteSpace: "nowrap",
-        textShadow:
-          "0 0 8px rgba(168,85,247,0.7), 0 0 18px rgba(139,92,246,0.5)",
+        textTransform: "uppercase",
       }}
     >
-      Dr. Ephraim Mpofu
+      Dr Ephraim Mpofu
     </span>
   );
 }

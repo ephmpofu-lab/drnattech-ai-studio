@@ -1,3 +1,7 @@
+import type React from "react";
+import { useState, useEffect, useRef } from "react";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight,
@@ -7,6 +11,7 @@ import {
   Clock,
   Code,
   Database,
+  ExternalLink,
   Eye,
   GitMerge,
   Globe,
@@ -30,27 +35,72 @@ import { SiteNav } from "@/components/brand/SiteNav";
 import { SiteFooter } from "@/components/brand/SiteFooter";
 import { BrandBackground } from "@/components/brand/Background";
 
+/* ============================================================
+   ROUTE — meta, hreflang, canonical
+   ============================================================ */
+
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
       {
         title:
-          "About Dr. Ephraim Mpofu | AI Solutions Architect & Framework Creator, Vienna",
+          "About Dr. Ephraim Mpofu | AI Solutions Architect & KI-Architekt Vienna | EU AI Act Expert",
       },
       {
         name: "description",
         content:
-          "Dr. Ephraim Mpofu is an AI Solutions Architect based in Vienna, Austria — combining scientific rigour with engineering mindset to design enterprise AI systems that work in production.",
+          "Dr. Ephraim Mpofu (PhD, Dr.nat.techn., BOKU Vienna) — AI Solutions Architect and KI-Architekt based in Vienna, Austria. Creator of the SKAIDO, AISA and Three Structural Laws frameworks. Designing EU AI Act-compliant enterprise AI systems for DACH and EU organisations since January 2026.",
       },
       {
         property: "og:title",
         content:
-          "About Dr. Ephraim Mpofu | AI Solutions Architect & Framework Creator",
+          "About Dr. Ephraim Mpofu | AI Solutions Architect & KI-Architekt Vienna | EU AI Act",
       },
       {
         property: "og:description",
         content:
-          "PhD (NatTech), BOKU Vienna. Creator of the AISA, SKAIDO and Three Structural Laws frameworks.",
+          "PhD (Dr.nat.techn.), BOKU Vienna. Creator of SKAIDO, AISA and Three Structural Laws. Building EU AI Act-compliant enterprise AI systems and RAG knowledge platforms from Vienna, Austria.",
+      },
+      { property: "og:type", content: "profile" },
+      { property: "og:url", content: "https://drnattech.com/about" },
+      {
+        property: "og:image",
+        content: "https://drnattech.com/images/Dr%20Mpofu_purple2.png",
+      },
+      { name: "twitter:card", content: "summary_large_image" },
+      {
+        name: "twitter:title",
+        content:
+          "Dr. Ephraim Mpofu | AI Solutions Architect & KI-Architekt Vienna",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "PhD-credentialed AI Solutions Architect in Vienna — SKAIDO Framework creator, EU AI Act compliance architect, enterprise RAG and multi-agent systems.",
+      },
+      {
+        name: "keywords",
+        content:
+          "Dr Ephraim Mpofu, AI Solutions Architect Vienna, KI-Architekt Wien, SKAIDO Framework, AISA Framework, EU AI Act compliance, KI-Verordnung Berater, enterprise AI systems, RAG knowledge platform, BOKU Vienna PhD, KI Lösungen Österreich, DACH AI consultant, multi-agent AI architect",
+      },
+      { name: "robots", content: "index, follow" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://drnattech.com/about" },
+      {
+        rel: "alternate",
+        hreflang: "en",
+        href: "https://drnattech.com/about",
+      },
+      {
+        rel: "alternate",
+        hreflang: "de",
+        href: "https://drnattech.com/de/about",
+      },
+      {
+        rel: "alternate",
+        hreflang: "x-default",
+        href: "https://drnattech.com/about",
       },
     ],
   }),
@@ -58,7 +108,34 @@ export const Route = createFileRoute("/about")({
 });
 
 /* ============================================================
-   STRUCTURED DATA
+   FAQ DATA — about-specific, used in schema + visible section
+   ============================================================ */
+
+const aboutFaq = [
+  {
+    q: "When did Dr. Ephraim Mpofu start building AI systems?",
+    a: "Dr. Mpofu transitioned into enterprise AI systems architecture in January 2026, building on four years of doctoral research at BOKU University Vienna, prior data analysis and research roles from 2016 onwards (University of Johannesburg, World Bank IBRD), and a sustained practice of systems thinking across environmental governance and sustainability. Since January 2026, he has designed and delivered production AI systems across insurance, HR technology, knowledge management and enterprise automation — serving clients in the DACH region and EU.",
+  },
+  {
+    q: "How does a scientific PhD background improve enterprise AI system design?",
+    a: "Scientific training provides the exact disciplines enterprise AI demands: hypothesis-driven problem framing, rigorous system design, reproducible validation methods and systematic documentation. Dr. Mpofu applies the same methodology that drives peer-reviewed research to every AI architecture — resulting in AI systems that are reliable, auditable and production-ready rather than experimental. His PhD (Dr.nat.techn.) from BOKU University Vienna is the foundation of his engineering rigour.",
+  },
+  {
+    q: "What is the SKAIDO Framework?",
+    a: "The SKAIDO Framework is Dr. Ephraim Mpofu's proprietary six-phase AI implementation methodology: Scope, Knowledge, Architecture, Implementation, Deployment and Optimisation. It provides a structured, repeatable approach for taking enterprises from business problem definition to deployed, production-ready AI solution — with EU AI Act compliance, auditability and governance embedded at every phase. It is one of five proprietary frameworks Dr. Mpofu has developed for enterprise AI.",
+  },
+  {
+    q: "What does EU AI Act compliance mean in practice for AI architecture?",
+    a: "EU AI Act compliance means designing AI systems that classify their own risk level, generate comprehensive audit trails, implement human-in-the-loop oversight mechanisms, document transparency measures and support ongoing monitoring. High-risk AI systems — such as those used in insurance claims processing, HR screening and financial decisions — must comply by August 2026. Dr. Mpofu embeds all required architectural measures from day one rather than retrofitting compliance after deployment.",
+  },
+  {
+    q: "Does Dr. Mpofu work with German-speaking clients (auf Deutsch) in the DACH region?",
+    a: "Yes. Dr. Mpofu works with enterprises across Austria (Österreich), Germany (Deutschland) and Switzerland — the DACH region — as well as broader EU markets. He designs KI-Systeme (AI systems in German: Künstliche Intelligenz Systeme) that meet EU regulatory requirements including the EU AI Act (EU KI-Verordnung) and GDPR. German-language consultation and documentation are available.",
+  },
+];
+
+/* ============================================================
+   STRUCTURED DATA — Person, Service, ProfilePage, FAQ, CreativeWork
    ============================================================ */
 
 function AboutStructuredData() {
@@ -69,18 +146,162 @@ function AboutStructuredData() {
         "@type": "ProfilePage",
         "@id": "https://drnattech.com/about#webpage",
         url: "https://drnattech.com/about",
-        name: "About Dr. Ephraim Mpofu — AI Solutions Architect",
+        name: "About Dr. Ephraim Mpofu — AI Solutions Architect & KI-Architekt Vienna",
+        description:
+          "PhD (Dr.nat.techn.), BOKU Vienna. Creator of SKAIDO, AISA and Three Structural Laws frameworks. Building EU AI Act-compliant enterprise AI systems for the DACH region and EU since January 2026.",
         about: { "@id": "https://drnattech.com/#person" },
         inLanguage: "en",
+        isPartOf: { "@id": "https://drnattech.com/#website" },
       },
       {
         "@type": "Person",
         "@id": "https://drnattech.com/#person",
         name: "Dr. Ephraim Mpofu",
-        jobTitle: "AI Solutions Architect",
+        honorificPrefix: "Dr.",
+        alternateName: ["Ephraim Mpofu", "Dr. E. Mpofu"],
+        jobTitle: [
+          "AI Solutions Architect",
+          "KI-Architekt",
+          "Enterprise AI Consultant",
+          "Framework Creator",
+        ],
+        description:
+          "PhD-credentialed AI Solutions Architect and KI-Architekt based in Vienna, Austria. Creator of the SKAIDO, AISA and Three Structural Laws frameworks. Specialises in enterprise AI systems, RAG knowledge platforms, multi-agent architectures and EU AI Act compliance. Has been designing and delivering production AI systems since January 2026. Serves the DACH region and EU.",
         url: "https://drnattech.com",
-        alumniOf: { "@type": "CollegeOrUniversity", name: "BOKU University, Vienna" },
-        address: { "@type": "PostalAddress", addressLocality: "Vienna", addressCountry: "AT" },
+        image: "https://drnattech.com/images/Dr%20Mpofu_purple2.png",
+        alumniOf: {
+          "@type": "CollegeOrUniversity",
+          name: "BOKU University Vienna",
+          url: "https://www.boku.ac.at",
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Vienna",
+            addressCountry: "AT",
+          },
+        },
+        hasCredential: [
+          {
+            "@type": "EducationalOccupationalCredential",
+            name: "PhD in Natural Technology (Dr.nat.techn.)",
+            educationalLevel: "Doctoral Degree",
+            recognizedBy: {
+              "@type": "CollegeOrUniversity",
+              name: "BOKU University Vienna",
+            },
+          },
+          {
+            "@type": "EducationalOccupationalCredential",
+            name: "MSc Sustainable Urban Planning & Development",
+            educationalLevel: "Master's Degree",
+            recognizedBy: {
+              "@type": "CollegeOrUniversity",
+              name: "University of Johannesburg",
+            },
+          },
+          {
+            "@type": "EducationalOccupationalCredential",
+            name: "Google Data Analytics Professional Certificate",
+            recognizedBy: {
+              "@type": "Organization",
+              name: "Google",
+            },
+          },
+          {
+            "@type": "EducationalOccupationalCredential",
+            name: "Azure AI Certified",
+            recognizedBy: {
+              "@type": "Organization",
+              name: "Microsoft",
+            },
+          },
+          {
+            "@type": "EducationalOccupationalCredential",
+            name: "NEBOSH Environmental Health and Safety Certificate",
+            recognizedBy: {
+              "@type": "Organization",
+              name: "NEBOSH",
+            },
+          },
+        ],
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Vienna",
+          addressCountry: "AT",
+          addressRegion: "Vienna",
+        },
+        areaServed: [
+          { "@type": "Country", name: "Austria" },
+          { "@type": "Country", name: "Germany" },
+          { "@type": "Country", name: "Switzerland" },
+          { "@type": "AdministrativeArea", name: "European Union" },
+        ],
+        knowsLanguage: ["en", "de"],
+        knowsAbout: [
+          "Enterprise AI Systems Architecture",
+          "Retrieval-Augmented Generation (RAG)",
+          "Multi-Agent AI Systems",
+          "EU AI Act Compliance",
+          "KI-Verordnung",
+          "AI Governance",
+          "Knowledge Architecture",
+          "Workflow Automation",
+          "SKAIDO Framework",
+          "AISA Framework",
+          "Three Structural Laws",
+          "GDPR-Aligned AI",
+          "High-Risk AI System Classification",
+          "Natural Technology",
+          "Environmental Systems",
+        ],
+        sameAs: [
+          "https://www.linkedin.com/in/ephraim-mpofu-a340608b/",
+          "https://www.researchgate.net/profile/Ephraim-Mpofu",
+          "https://www.youtube.com/@ephraimmpofu_",
+          "https://www.cost.eu/actions/CA23118/#tabs+Name:Working%20Groups%20and%20Membership",
+        ],
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://drnattech.com/about#faq",
+        mainEntity: aboutFaq.map((f) => ({
+          "@type": "Question",
+          name: f.q,
+          acceptedAnswer: { "@type": "Answer", text: f.a },
+        })),
+      },
+      {
+        "@type": "CreativeWork",
+        name: "SKAIDO Framework",
+        alternateName: "SKAIDO AI Implementation Methodology",
+        description:
+          "The SKAIDO Framework is Dr. Ephraim Mpofu's proprietary six-phase AI implementation methodology — Scope, Knowledge, Architecture, Implementation, Deployment, Optimisation — for taking enterprises from business problem to deployed, EU AI Act-compliant AI solution.",
+        author: { "@id": "https://drnattech.com/#person" },
+        url: "https://drnattech.com/frameworks",
+      },
+      {
+        "@type": "CreativeWork",
+        name: "AISA Framework",
+        alternateName: "AI Systems Architecture Strategic Engagement Framework",
+        description:
+          "The AISA Framework is Dr. Ephraim Mpofu's strategic enterprise AI engagement model — structuring how organisations move from AI ambiguity to deployed, governed AI systems with measurable business outcomes.",
+        author: { "@id": "https://drnattech.com/#person" },
+        url: "https://drnattech.com/frameworks",
+      },
+      {
+        "@type": "CreativeWork",
+        name: "Three Structural Laws",
+        description:
+          "The Three Structural Laws are Dr. Ephraim Mpofu's foundational architectural principles preventing fraud, unmaintainable systems and silent failure in enterprise AI — covering No-Fraud Architecture, Structural Integrity and Continuous Observability.",
+        author: { "@id": "https://drnattech.com/#person" },
+        url: "https://drnattech.com/frameworks",
+      },
+      {
+        "@type": "CreativeWork",
+        name: "Knowledge Architecture Framework",
+        description:
+          "Dr. Ephraim Mpofu's proprietary approach to enterprise knowledge design, semantic retrieval governance and RAG system architecture — enabling accurate, hallucination-free AI knowledge platforms at enterprise scale.",
+        author: { "@id": "https://drnattech.com/#person" },
+        url: "https://drnattech.com/frameworks",
       },
     ],
   };
@@ -108,10 +329,12 @@ export function AboutPage() {
       <main className="mx-auto max-w-[1280px] px-6 pb-20 lg:px-10">
         <Hero />
         <AuthorityMetrics />
+        <BackgroundSection />
+        <MyJourney />
         <MyMethodology />
         <TechnologiesSection />
-        <MyJourney />
         <PrinciplesAndExpertise />
+        <AboutFaqSection />
         <CTA />
         <SiteFooter />
       </main>
@@ -126,18 +349,18 @@ export function AboutPage() {
 const credentials = [
   {
     glyph: "boku",
-    title: "PhD in Natural Technology",
-    sub: "BOKU University, Vienna",
+    title: "PhD (Dr.nat.techn.) — BOKU University Vienna",
+    sub: "Scientific rigour applied to enterprise AI system design",
   },
   {
-    glyph: "exp",
-    title: "10+ Years Research & Industry Experience",
-    sub: "Environment, Governance & Sustainability",
+    glyph: "ai",
+    title: "Enterprise AI Systems Architect",
+    sub: "Building since January 2026 · DACH & EU",
   },
   {
     glyph: "google",
-    title: "Google Data Analytics Professional",
-    sub: "Certified",
+    title: "Google Analytics · Azure AI · NEBOSH Certified",
+    sub: "Data & quantitative research practice since 2016",
   },
 ];
 
@@ -145,7 +368,10 @@ function CredentialGlyph({ g }: { g: string }) {
   const box = "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg";
   if (g === "boku") {
     return (
-      <div className={box} style={{ background: "rgba(42,173,78,0.14)", border: "1px solid rgba(42,173,78,0.3)" }}>
+      <div
+        className={box}
+        style={{ background: "rgba(42,173,78,0.14)", border: "1px solid rgba(42,173,78,0.3)" }}
+      >
         <svg width="18" height="22" viewBox="0 0 28 34" fill="none">
           <rect x="1" y="1" width="7" height="32" rx="2.5" fill="#2AAD4E" />
           <rect x="1" y="1" width="19" height="8" rx="2.5" fill="#2AAD4E" />
@@ -157,7 +383,10 @@ function CredentialGlyph({ g }: { g: string }) {
   }
   if (g === "google") {
     return (
-      <div className={box} style={{ background: "rgba(255,255,255,0.92)", border: "1px solid rgba(255,255,255,0.2)" }}>
+      <div
+        className={box}
+        style={{ background: "rgba(255,255,255,0.92)", border: "1px solid rgba(255,255,255,0.2)" }}
+      >
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
           <path fill="#4285F4" d="M23.745 12.27c0-.79-.07-1.54-.19-2.27h-11.3v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.58v3h3.86c2.26-2.09 3.56-5.17 3.56-8.82z" />
           <path fill="#34A853" d="M12.255 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96H1.625v3.09C3.515 21.3 7.615 24 12.255 24z" />
@@ -167,8 +396,12 @@ function CredentialGlyph({ g }: { g: string }) {
       </div>
     );
   }
+  /* ai — purple AI glyph */
   return (
-    <div className={box} style={{ background: "rgba(139,92,246,0.12)", border: "1px solid rgba(139,92,246,0.3)" }}>
+    <div
+      className={box}
+      style={{ background: "rgba(139,92,246,0.14)", border: "1px solid rgba(139,92,246,0.38)" }}
+    >
       <Boxes className="h-4 w-4" style={{ color: "#C4B5FD" }} />
     </div>
   );
@@ -176,19 +409,34 @@ function CredentialGlyph({ g }: { g: string }) {
 
 function Hero() {
   return (
-    <section className="grid grid-cols-1 gap-6 pt-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10 lg:pt-12">
+    <section
+      className="grid grid-cols-1 gap-6 pt-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10 lg:pt-12"
+      aria-label="About Dr. Ephraim Mpofu — AI Solutions Architect Vienna"
+    >
       {/* LEFT */}
       <div className="flex flex-col justify-center">
-        <span
-          className="inline-flex w-fit items-center rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.22em]"
-          style={{
-            background: "rgba(139,92,246,0.12)",
-            border: "1px solid rgba(139,92,246,0.32)",
-            color: "#C4B5FD",
-          }}
-        >
-          About Me
-        </span>
+        <div className="flex flex-wrap items-center gap-2">
+          <span
+            className="inline-flex w-fit items-center rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.22em]"
+            style={{
+              background: "rgba(139,92,246,0.12)",
+              border: "1px solid rgba(139,92,246,0.32)",
+              color: "#C4B5FD",
+            }}
+          >
+            About Me
+          </span>
+          <span
+            className="inline-flex w-fit items-center rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em]"
+            style={{
+              background: "rgba(139,92,246,0.08)",
+              border: "1px solid rgba(139,92,246,0.22)",
+              color: "#A855F7",
+            }}
+          >
+            KI-Architekt · Wien
+          </span>
+        </div>
 
         <h1 className="mt-5 text-[38px] font-bold leading-[1.06] tracking-tight text-white lg:text-[48px]">
           The Mind Behind Production{" "}
@@ -197,15 +445,19 @@ function Hero() {
 
         <p className="mt-5 text-[15px] leading-relaxed" style={{ color: "#9CA3AF" }}>
           I combine scientific rigour with engineering mindset to design
-          intelligent systems that solve real business problems and scale in
-          production.
+          enterprise AI systems — multi-agent architectures, RAG knowledge
+          platforms and EU AI Act-compliant governance — that solve real
+          business problems and scale reliably in production.
         </p>
         <p className="mt-4 text-[14.5px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-          After completing my PhD in Natural Technology at BOKU Vienna, I
-          discovered that the same systematic thinking, hypothesis validation,
-          and attention to detail that drive scientific research are exactly
-          what enterprises need to build reliable AI systems that work every
-          day.
+          After four years of doctoral research at BOKU University Vienna's Transitions
+          to Sustainability doctoral school — including a multi-country landscape
+          governance initiative across Southern Africa delivered for the World Bank IBRD,
+          peer-reviewed publications and university teaching — I transitioned into
+          enterprise AI systems architecture in January 2026. The governance, systems
+          and data rigour built through that research now underpin how I design AI
+          systems: auditable, regulation-ready and built to last in production.
+          I consult and deliver in <strong style={{ color: "#fff" }}>English</strong> and <strong style={{ color: "#fff" }}>Deutsch</strong>.
         </p>
 
         <div className="mt-8 flex flex-wrap gap-3">
@@ -245,7 +497,7 @@ function Hero() {
       >
         <img
           src="/images/Dr Mpofu_purple2.png"
-          alt="Dr. Ephraim Mpofu — AI Solutions Architect"
+          alt="Dr. Ephraim Mpofu — AI Solutions Architect and KI-Architekt based in Vienna, Austria"
           className="absolute inset-0 h-full w-full object-cover object-top"
         />
         <div
@@ -262,16 +514,17 @@ function Hero() {
    ============================================================ */
 
 const metrics = [
-  { icon: Puzzle,      value: "12+",    a: "Systems",      b: "Built"         },
-  { icon: Clock,       value: "3,500+", a: "Hours",        b: "Automated"     },
-  { icon: TrendingUp,  value: "70%+",   a: "Process",      b: "Improvement"   },
-  { icon: ShieldCheck, value: "100%",   a: "Production",   b: "Focus"         },
-  { icon: Layers,      value: "7+",     a: "Proprietary",  b: "Frameworks"    },
+  { icon: Puzzle,      value: "12+",    a: "AI Systems",    b: "Delivered"     },
+  { icon: Clock,       value: "3,500+", a: "Hours",         b: "Automated"     },
+  { icon: TrendingUp,  value: "70%+",   a: "Process Time",  b: "Reduction"     },
+  { icon: ShieldCheck, value: "100%",   a: "Production",    b: "Focus"         },
+  { icon: Layers,      value: "5",      a: "Proprietary",   b: "Frameworks"    },
 ];
 
 function AuthorityMetrics() {
+  const ref = useScrollReveal<HTMLElement>(0);
   return (
-    <section className="mt-5">
+    <section ref={ref} className="mt-5" aria-label="Impact metrics">
       <div className="glass-card flex flex-wrap items-stretch">
         {metrics.map((m, i) => (
           <div
@@ -299,8 +552,6 @@ function AuthorityMetrics() {
 /* ============================================================
    3. MY METHODOLOGY — 4 framework cards
    ============================================================ */
-
-/* — Visuals — */
 
 function SkaidoVisual() {
   const nodes = [
@@ -361,7 +612,7 @@ function ThreeLawsVisual() {
 
 function WorkflowLayersVisual() {
   return (
-    <svg viewBox="0 0 160 88" className="mx-auto w-full max-w-[180px]">
+    <svg viewBox="0 0 160 88" className="mx-auto w-full max-w-[180px]" aria-hidden="true">
       <ellipse cx="80" cy="82" rx="60" ry="5" fill="rgba(245,158,11,0.18)" />
       <path d="M10 72 L150 72 L138 58 L22 58 Z" fill="#F59E0B" opacity="0.88" />
       <path d="M22 54 L138 54 L126 40 L34 40 Z" fill="#14B8A6" opacity="0.88" />
@@ -372,7 +623,7 @@ function WorkflowLayersVisual() {
 
 function KnowledgeArchVisual() {
   return (
-    <svg viewBox="0 0 160 90" className="mx-auto w-full max-w-[180px]">
+    <svg viewBox="0 0 160 90" className="mx-auto w-full max-w-[180px]" aria-hidden="true">
       <line x1="28" y1="22" x2="62" y2="38" stroke="rgba(99,102,241,0.5)" strokeWidth="1.2" />
       <line x1="28" y1="68" x2="62" y2="54" stroke="rgba(99,102,241,0.5)" strokeWidth="1.2" />
       <line x1="132" y1="22" x2="98" y2="38" stroke="rgba(99,102,241,0.5)" strokeWidth="1.2" />
@@ -385,7 +636,6 @@ function KnowledgeArchVisual() {
       <circle cx="28" cy="68" r="3.5" fill="#6366F1" />
       <circle cx="132" cy="22" r="3.5" fill="#6366F1" />
       <circle cx="132" cy="68" r="3.5" fill="#6366F1" />
-      {/* Cylinder */}
       <ellipse cx="80" cy="36" rx="24" ry="7" fill="rgba(168,85,247,0.55)" stroke="rgba(168,85,247,0.8)" strokeWidth="1" />
       <rect x="56" y="36" width="48" height="20" fill="rgba(139,92,246,0.32)" />
       <ellipse cx="80" cy="56" rx="24" ry="7" fill="rgba(139,92,246,0.55)" stroke="rgba(139,92,246,0.8)" strokeWidth="1" />
@@ -393,81 +643,115 @@ function KnowledgeArchVisual() {
   );
 }
 
-/* — Methodology cards — */
-
 const methodologyCards = [
   {
     title: "SKAIDO FRAMEWORK",
     Visual: SkaidoVisual,
-    desc: "My end-to-end framework for moving from business problem to deployed AI solution.",
+    desc: "A six-phase AI implementation methodology — Scope, Knowledge, Architecture, Implementation, Deployment, Optimisation — for taking enterprises from business problem to production AI with EU AI Act compliance embedded at every stage.",
+    hoverDetail: "Six-phase implementation: Scope → Knowledge → Architecture → Implementation → Deployment → Optimisation",
     cta: "Explore Framework",
     link: "/frameworks" as const,
   },
   {
     title: "THREE STRUCTURAL LAWS",
     Visual: ThreeLawsVisual,
-    desc: "The architectural laws that prevent fraud, unmaintainable systems and silent failure.",
+    desc: "Three foundational architectural laws that prevent fraud, unmaintainable systems and silent failure in enterprise AI: No-Fraud Architecture, Structural Integrity and Continuous Observability.",
+    hoverDetail: "No-Fraud Architecture · Structural Integrity · Continuous Observability",
     cta: "View Principles",
     link: "/frameworks" as const,
   },
   {
     title: "FOUR WORKFLOW LAYERS",
     Visual: WorkflowLayersVisual,
-    desc: "A layered workflow design approach for scalable automation systems.",
+    desc: "A layered automation architecture — Input, Processing, Output and Governance layers — providing a scalable, auditable structure for enterprise AI workflows and intelligent process automation.",
+    hoverDetail: "Strategic engagement model: moving organisations from AI ambiguity to governed, deployed AI systems",
     cta: "See Layers",
     link: "/frameworks" as const,
   },
   {
     title: "KNOWLEDGE ARCHITECTURE",
     Visual: KnowledgeArchVisual,
-    desc: "Proprietary approach to knowledge design, retrieval and enterprise RAG systems.",
+    desc: "A proprietary approach to enterprise knowledge design, semantic retrieval governance and RAG system architecture — enabling accurate, hallucination-free AI knowledge platforms at scale.",
+    hoverDetail: "Semantic retrieval governance for enterprise RAG — preventing hallucination through structure",
     cta: "Learn More",
     link: "/frameworks" as const,
   },
 ];
 
-function MyMethodology() {
+function MethodologyCard({
+  title,
+  Visual,
+  desc,
+  hoverDetail,
+  cta,
+  link,
+}: {
+  title: string;
+  Visual: () => React.ReactElement;
+  desc: string;
+  hoverDetail: string;
+  cta: string;
+  link: "/frameworks";
+}) {
+  const [hovered, setHovered] = useState(false);
   return (
-    <section className="mt-14 lg:mt-16">
+    <div
+      className="flex flex-col rounded-[18px] p-6"
+      style={{
+        background: "rgba(7,11,28,0.8)",
+        border: "1px solid rgba(255,255,255,0.08)",
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <div className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-white">
+        {title}
+      </div>
+      <div className="my-6 flex flex-1 items-center justify-center">
+        <Visual />
+      </div>
+      <p className="mb-2 text-[12.5px] leading-relaxed" style={{ color: "#9CA3AF" }}>
+        {desc}
+      </p>
+      <p
+        className="mb-3 text-[11.5px] leading-relaxed overflow-hidden"
+        style={{
+          color: "#A855F7",
+          maxHeight: hovered ? "60px" : "0",
+          opacity: hovered ? 1 : 0,
+          transition: "opacity 0.3s ease, max-height 0.3s ease",
+        }}
+      >
+        {hoverDetail}
+      </p>
+      <Link
+        to={link}
+        className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg px-4 py-2.5 text-[12.5px] font-semibold transition-all hover:bg-purple-500/10"
+        style={{ border: "1px solid rgba(139,92,246,0.45)", color: "#A855F7" }}
+      >
+        {cta} <ArrowRight className="h-3.5 w-3.5" />
+      </Link>
+    </div>
+  );
+}
+
+function MyMethodology() {
+  const ref = useScrollReveal<HTMLElement>(150);
+  return (
+    <section ref={ref} className="mt-14 lg:mt-16" aria-label="Methodology and proprietary frameworks">
       <div className="mb-8 text-center">
         <h2 className="text-[28px] font-bold text-white lg:text-[34px]">
           My Methodology
         </h2>
         <p className="mx-auto mt-2 max-w-xl text-[14px]" style={{ color: "#9CA3AF" }}>
-          The frameworks and principles I use to design production-ready AI systems.
+          Five proprietary frameworks developed through scientific research and enterprise AI
+          practice — the structured foundation of every system I design.
         </p>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {methodologyCards.map(({ title, Visual, desc, cta, link }) => (
-          <div
-            key={title}
-            className="flex flex-col rounded-[18px] p-6"
-            style={{
-              background: "rgba(7,11,28,0.8)",
-              border: "1px solid rgba(255,255,255,0.08)",
-            }}
-          >
-            <div className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-white">
-              {title}
-            </div>
-
-            <div className="my-6 flex flex-1 items-center justify-center">
-              <Visual />
-            </div>
-
-            <p className="mb-5 text-[12.5px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-              {desc}
-            </p>
-
-            <Link
-              to={link}
-              className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg px-4 py-2.5 text-[12.5px] font-semibold transition-all hover:bg-purple-500/10"
-              style={{ border: "1px solid rgba(139,92,246,0.45)", color: "#A855F7" }}
-            >
-              {cta} <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
+        {methodologyCards.map((card) => (
+          <MethodologyCard key={card.title} {...card} />
         ))}
       </div>
     </section>
@@ -478,12 +762,11 @@ function MyMethodology() {
    4. TECHNOLOGIES I WORK WITH
    ============================================================ */
 
-/* Inline SVG logos */
 function PythonSvg() {
   return (
     <svg viewBox="0 0 24 24" className="h-5 w-5">
-      <path d="M11.914 0C5.82 0 6.2 2.656 6.2 2.656l.007 2.752h5.814v.826H3.9S0 5.789 0 11.969c0 6.18 3.403 5.959 3.403 5.959h2.034v-2.867s-.109-3.402 3.35-3.402h5.766s3.24.052 3.24-3.131V3.129S18.28 0 11.914 0zm-3.21 1.81a1.044 1.044 0 1 1 0 2.088 1.044 1.044 0 0 1 0-2.088z" fill="#3776AB"/>
-      <path d="M12.086 24c6.094 0 5.714-2.656 5.714-2.656l-.007-2.752h-5.814v-.826h8.121S24 18.211 24 12.031c0-6.18-3.403-5.959-3.403-5.959H18.563v2.867s.109 3.402-3.35 3.402H9.447s-3.24-.052-3.24 3.131v5.4S5.72 24 12.086 24zm3.21-1.81a1.044 1.044 0 1 1 0-2.088 1.044 1.044 0 0 1 0 2.088z" fill="#FFD43B"/>
+      <path d="M11.914 0C5.82 0 6.2 2.656 6.2 2.656l.007 2.752h5.814v.826H3.9S0 5.789 0 11.969c0 6.18 3.403 5.959 3.403 5.959h2.034v-2.867s-.109-3.402 3.35-3.402h5.766s3.24.052 3.24-3.131V3.129S18.28 0 11.914 0zm-3.21 1.81a1.044 1.044 0 1 1 0 2.088 1.044 1.044 0 0 1 0-2.088z" fill="#3776AB" />
+      <path d="M12.086 24c6.094 0 5.714-2.656 5.714-2.656l-.007-2.752h-5.814v-.826h8.121S24 18.211 24 12.031c0-6.18-3.403-5.959-3.403-5.959H18.563v2.867s.109 3.402-3.35 3.402H9.447s-3.24-.052-3.24 3.131v5.4S5.72 24 12.086 24zm3.21-1.81a1.044 1.044 0 1 1 0-2.088 1.044 1.044 0 0 1 0 2.088z" fill="#FFD43B" />
     </svg>
   );
 }
@@ -579,44 +862,35 @@ function PowerBISvg() {
   );
 }
 
-const techItems = [
-  { Logo: OpenAiSvg,    label: "OpenAI"               },
-  { Logo: ClaudeSvg,    label: "Claude"               },
-  { Logo: AzureSvg,     label: "Azure AI"             },
-  { Logo: N8nSvg,       label: "n8n"                  },
-  { Logo: SupabaseSvg,  label: "Supabase"             },
-  { Logo: PostgresSvg,  label: "PostgreSQL"           },
-  { Logo: LangChainSvg, label: "LangChain"            },
-  { Logo: PineconeSvg,  label: "Pinecone"             },
-  { Logo: GitHubSvg,    label: "GitHub"               },
-  { Logo: PythonSvg,    label: "Python"               },
-  { Logo: PowerBISvg,   label: "Power BI"             },
-  { logo: Code,         label: "REST APIs"            },
-  { logo: Zap,          label: "Webhooks"             },
-  { logo: Bot,          label: "AI Agents"            },
-  { logo: GitMerge,     label: "Workflow Automation"  },
-  { logo: MessageSquare,label: "Prompt Engineering"   },
-] as (
-  | { Logo: () => JSX.Element; logo?: never; label: string }
-  | { logo: React.ComponentType<{ className?: string; style?: React.CSSProperties }>; Logo?: never; label: string }
-)[];
+const lc = (cls: string, style?: React.CSSProperties) => ({ className: cls, style });
 
-function TechPill({
-  item,
-}: {
-  item: (typeof techItems)[number];
-}) {
+const techItems: Array<{ icon: React.ReactNode; label: string }> = [
+  { icon: <OpenAiSvg />,    label: "OpenAI"              },
+  { icon: <ClaudeSvg />,    label: "Claude"              },
+  { icon: <AzureSvg />,     label: "Azure AI"            },
+  { icon: <N8nSvg />,       label: "n8n"                 },
+  { icon: <SupabaseSvg />,  label: "Supabase"            },
+  { icon: <PostgresSvg />,  label: "PostgreSQL"          },
+  { icon: <LangChainSvg />, label: "LangChain"           },
+  { icon: <PineconeSvg />,  label: "Pinecone"            },
+  { icon: <GitHubSvg />,    label: "GitHub"              },
+  { icon: <PythonSvg />,    label: "Python"              },
+  { icon: <PowerBISvg />,   label: "Power BI"            },
+  { icon: <Code {...lc("h-4 w-4", { color: "#C4B5FD" })} />,          label: "REST APIs"           },
+  { icon: <Zap {...lc("h-4 w-4", { color: "#C4B5FD" })} />,           label: "Webhooks"            },
+  { icon: <Bot {...lc("h-4 w-4", { color: "#C4B5FD" })} />,           label: "AI Agents"           },
+  { icon: <GitMerge {...lc("h-4 w-4", { color: "#C4B5FD" })} />,      label: "Workflow Automation" },
+  { icon: <MessageSquare {...lc("h-4 w-4", { color: "#C4B5FD" })} />, label: "Prompt Engineering"  },
+];
+
+function TechPill({ item }: { item: (typeof techItems)[number] }) {
   return (
     <div
       className="inline-flex items-center gap-2.5 rounded-xl px-4 py-2 text-[13px] font-medium text-white"
       style={{ background: "rgba(7,11,28,0.85)", border: "1px solid rgba(255,255,255,0.10)" }}
     >
       <div className="flex h-5 w-5 shrink-0 items-center justify-center">
-        {"Logo" in item && item.Logo ? (
-          <item.Logo />
-        ) : (
-          item.logo && <item.logo className="h-4 w-4" style={{ color: "#C4B5FD" }} />
-        )}
+        {item.icon}
       </div>
       {item.label}
     </div>
@@ -625,15 +899,16 @@ function TechPill({
 
 function TechnologiesSection() {
   return (
-    <section className="mt-5">
+    <section className="mt-5" aria-label="Technologies and platforms">
       <div className="glass-card px-6 py-7">
         <div className="mb-6 text-center">
           <h2 className="text-[22px] font-bold text-white lg:text-[26px]">
             Technologies I Work With
           </h2>
           <p className="mx-auto mt-1.5 max-w-xl text-[13.5px]" style={{ color: "#9CA3AF" }}>
-            A curated set of technologies and platforms I use to design, build and deliver
-            intelligent solutions.
+            The enterprise AI and KI stack I use to design, build and deliver intelligent
+            systems — all selected for production reliability, GDPR alignment and EU AI
+            Act auditability.
           </p>
         </div>
         <div className="flex flex-wrap justify-center gap-2.5">
@@ -653,44 +928,58 @@ function TechnologiesSection() {
 const journeySteps = [
   {
     Icon: BookOpen,
-    title: "Research & Academia",
-    desc: "PhD in Natural Technology at BOKU Vienna. Years of scientific research and systems thinking.",
+    title: "Research & Doctoral Study",
+    desc: "PhD (Dr.nat.techn.) at BOKU University Vienna (2021–2025) within the Transitions to Sustainability doctoral school. Prior: MSc Sustainable Urban Planning (UJ), BSc Environmental Science (NUST Zimbabwe), exchange at Beijing Normal University, China.",
+  },
+  {
+    Icon: Globe,
+    title: "Multi-Continent Experience",
+    desc: "Worked across Africa (Zimbabwe, South Africa), Asia (China) and Europe (Austria). Partners and clients include the World Bank IBRD, Huawei Technologies, BOKU University and the University of Johannesburg.",
   },
   {
     Icon: Brain,
-    title: "Systems Thinking",
-    desc: "Applying research mindset to complex real-world problems across governance & environment.",
+    title: "Governance & Data",
+    desc: "Four years leading a multi-country landscape governance initiative across Southern Africa. EU research network member (FOGOS COST Action). Data analysis practice in research settings since 2016. Active Sustainable AI orientation: governance, auditability and regulation are not afterthoughts.",
   },
   {
     Icon: Zap,
     title: "AI & Automation",
-    desc: "Transitioned into AI systems, automation, data engineering and intelligent workflow architecture.",
+    desc: "January 2026 — formal transition into enterprise AI systems architecture, multi-agent workflows, RAG platforms and intelligent process automation. Google Analytics certified · Azure AI certified.",
   },
   {
     Icon: Boxes,
-    title: "Building Solutions",
-    desc: "Architecting intelligent systems that solve business problems and deliver measurable outcomes.",
-  },
-  {
-    Icon: Globe,
-    title: "Global Impact",
-    desc: "Working with organisations across industries and countries to drive meaningful transformations.",
+    title: "Building & Delivering",
+    desc: "Since January 2026 — designed and delivered 12+ production AI systems across insurance, HR technology, knowledge management and enterprise automation for DACH and EU organisations.",
   },
 ];
 
 function MyJourney() {
+  const [inView, setInView] = useState(false);
+  const ref = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setInView(true); obs.disconnect(); } },
+      { threshold: 0.2 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
   return (
-    <section className="mt-14 lg:mt-16">
+    <section ref={ref} className="mt-14 lg:mt-16" aria-label="Professional journey">
       <div className="mb-10 text-center">
         <h2 className="text-[28px] font-bold text-white lg:text-[34px]">My Journey</h2>
         <p className="mx-auto mt-2 max-w-xl text-[14px]" style={{ color: "#9CA3AF" }}>
-          A continuous path of learning, building and creating impact.
+          From scientific research to enterprise AI systems architecture — a path built
+          on rigour, systems thinking and measurable impact.
         </p>
       </div>
 
       {/* Desktop timeline */}
       <div className="relative hidden lg:block">
-        {/* Connecting line through icon centers */}
         <div
           className="absolute left-[10%] right-[10%] top-[36px] h-px"
           style={{
@@ -699,23 +988,22 @@ function MyJourney() {
           }}
         />
         <div className="grid grid-cols-5 gap-4">
-          {journeySteps.map(({ Icon, title, desc }) => (
+          {journeySteps.map(({ Icon, title, desc }, index) => (
             <div key={title} className="flex flex-col items-center text-center">
               <div
                 className="relative z-10 flex h-[72px] w-[72px] items-center justify-center rounded-full"
                 style={{
                   background: "rgba(5,8,22,0.95)",
                   border: "1.5px solid rgba(139,92,246,0.65)",
-                  boxShadow: "0 0 24px rgba(139,92,246,0.32)",
+                  boxShadow: inView ? "0 0 28px rgba(139,92,246,0.55)" : "0 0 24px rgba(139,92,246,0.32)",
+                  opacity: inView ? 1 : 0,
+                  transition: `opacity 0.5s ease ${index * 0.15}s, box-shadow 0.5s ease ${index * 0.15}s`,
                 }}
               >
                 <Icon className="h-8 w-8" style={{ color: "#C4B5FD" }} />
               </div>
               <div className="mt-4 text-[13.5px] font-bold text-white">{title}</div>
-              <div
-                className="mt-2 text-[12px] leading-relaxed"
-                style={{ color: "#9CA3AF" }}
-              >
+              <div className="mt-2 text-[12px] leading-relaxed" style={{ color: "#9CA3AF" }}>
                 {desc}
               </div>
             </div>
@@ -729,14 +1017,16 @@ function MyJourney() {
           className="absolute left-[19px] top-0 bottom-0 w-px"
           style={{ background: "linear-gradient(to bottom, #8B5CF6, #A855F7, #8B5CF6)" }}
         />
-        {journeySteps.map(({ Icon, title, desc }) => (
+        {journeySteps.map(({ Icon, title, desc }, index) => (
           <div key={title} className="flex items-start gap-4">
             <div
               className="relative -left-[29px] flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
               style={{
                 background: "rgba(5,8,22,0.95)",
                 border: "1.5px solid rgba(139,92,246,0.65)",
-                boxShadow: "0 0 14px rgba(139,92,246,0.3)",
+                boxShadow: inView ? "0 0 18px rgba(139,92,246,0.5)" : "0 0 14px rgba(139,92,246,0.3)",
+                opacity: inView ? 1 : 0,
+                transition: `opacity 0.5s ease ${index * 0.15}s, box-shadow 0.5s ease ${index * 0.15}s`,
               }}
             >
               <Icon className="h-5 w-5" style={{ color: "#C4B5FD" }} />
@@ -753,6 +1043,315 @@ function MyJourney() {
 }
 
 /* ============================================================
+   5b. PROFESSIONAL BACKGROUND & VERIFIED CREDENTIALS
+   ============================================================ */
+
+const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
+
+const mapLocations = [
+  {
+    name: "Zimbabwe",
+    coordinates: [30.0, -20.0] as [number, number],
+    role: "BSc Environmental Science & Health",
+    org: "NUST Zimbabwe",
+    period: "2013–2017",
+  },
+  {
+    name: "South Africa",
+    coordinates: [28.0, -26.2] as [number, number],
+    role: "Analyst · Researcher · Planner",
+    org: "World Bank IBRD · Huawei Technologies · University of Johannesburg",
+    period: "2016–2021",
+  },
+  {
+    name: "China",
+    coordinates: [116.4, 39.9] as [number, number],
+    role: "Exchange Programme",
+    org: "Beijing Normal University",
+    period: "2019–2020",
+  },
+  {
+    name: "Austria",
+    coordinates: [16.4, 48.2] as [number, number],
+    role: "Researcher & Lecturer → AI Systems Architect",
+    org: "BOKU University Vienna · Dr.NatTech",
+    period: "2021–present",
+  },
+];
+
+function WorldMap() {
+  const [active, setActive] = useState<(typeof mapLocations)[number] | null>(null);
+
+  return (
+    <div className="glass-card overflow-hidden">
+      <div className="px-6 pt-5 pb-2">
+        <div className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: "#8B8B9A" }}>
+          Where I've Worked &amp; Studied
+        </div>
+        <p className="mt-0.5 text-[12px]" style={{ color: "#6B7280" }}>
+          Select a pin to learn more
+        </p>
+      </div>
+
+      <ComposableMap
+        projection="geoMercator"
+        projectionConfig={{ center: [42, 4], scale: 190 }}
+        style={{ width: "100%", height: 300 }}
+      >
+        <Geographies geography={GEO_URL}>
+          {({ geographies }) =>
+            geographies.map((geo) => (
+              <Geography
+                key={geo.rsmKey}
+                geography={geo}
+                style={{
+                  default: { fill: "rgba(139,92,246,0.07)", stroke: "rgba(139,92,246,0.18)", strokeWidth: 0.5, outline: "none" },
+                  hover:   { fill: "rgba(139,92,246,0.07)", stroke: "rgba(139,92,246,0.18)", strokeWidth: 0.5, outline: "none" },
+                  pressed: { fill: "rgba(139,92,246,0.07)", stroke: "rgba(139,92,246,0.18)", strokeWidth: 0.5, outline: "none" },
+                }}
+              />
+            ))
+          }
+        </Geographies>
+
+        {mapLocations.map((loc) => {
+          const isActive = active?.name === loc.name;
+          return (
+            <Marker
+              key={loc.name}
+              coordinates={loc.coordinates}
+              onClick={() => setActive(isActive ? null : loc)}
+            >
+              <circle
+                r={isActive ? 8 : 5}
+                style={{
+                  fill: isActive ? "#A855F7" : "rgba(168,85,247,0.45)",
+                  stroke: "#A855F7",
+                  strokeWidth: 1.5,
+                  cursor: "pointer",
+                  filter: isActive ? "drop-shadow(0 0 6px #A855F7)" : undefined,
+                  transition: "all 0.18s ease",
+                }}
+              />
+              {isActive && (
+                <text
+                  textAnchor="middle"
+                  y={-14}
+                  style={{ fontSize: 9, fontFamily: "Inter, sans-serif", fill: "#fff", pointerEvents: "none" }}
+                >
+                  {loc.name}
+                </text>
+              )}
+            </Marker>
+          );
+        })}
+      </ComposableMap>
+
+      {/* Info panel — shown only when a pin is active */}
+      <div
+        style={{
+          maxHeight: active ? 120 : 0,
+          overflow: "hidden",
+          transition: "max-height 0.3s ease",
+          borderTop: active ? "1px solid rgba(255,255,255,0.07)" : "none",
+        }}
+      >
+        {active && (
+          <div className="flex items-start justify-between gap-4 px-6 py-4">
+            <div>
+              <div className="text-[15px] font-bold text-white">{active.name}</div>
+              <div className="mt-0.5 text-[12.5px] font-semibold" style={{ color: "#A855F7" }}>{active.role}</div>
+              <div className="text-[12px] mt-0.5" style={{ color: "#9CA3AF" }}>{active.org}</div>
+              <div className="text-[11px] mt-0.5" style={{ color: "#6B7280" }}>{active.period}</div>
+            </div>
+            <button
+              onClick={() => setActive(null)}
+              className="shrink-0 text-[18px] leading-none"
+              style={{ color: "#6B7280" }}
+              aria-label="Close"
+            >
+              ×
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+const educationTimeline = [
+  { year: "2021–2025", degree: "PhD (Dr.nat.techn.)", field: "Natural Technology", inst: "BOKU University Vienna", color: "#A855F7" },
+  { year: "2019–2020", degree: "Exchange", field: "Resources & Environmental Management", inst: "Beijing Normal University, China", color: "#3B82F6" },
+  { year: "2018–2020", degree: "MSc", field: "Sustainable Urban Planning & Development", inst: "University of Johannesburg", color: "#F59E0B" },
+  { year: "2013–2017", degree: "BSc", field: "Environmental Science & Health", inst: "NUST Zimbabwe", color: "#10B981" },
+];
+
+function EducationTimeline() {
+  return (
+    <div className="glass-card p-6 flex-1">
+      <div className="text-[10px] font-bold uppercase tracking-[0.22em] mb-5" style={{ color: "#8B8B9A" }}>
+        Academic Timeline
+      </div>
+      <div className="relative pl-5">
+        {/* Gradient spine */}
+        <div
+          className="absolute left-[6px] top-1 bottom-1 w-px"
+          style={{ background: "linear-gradient(to bottom, #A855F7, #3B82F6, #F59E0B, #10B981)" }}
+        />
+        <div className="space-y-5">
+          {educationTimeline.map((item) => (
+            <div key={item.degree + item.year} className="relative pl-5">
+              <div
+                className="absolute left-[-4px] top-[5px] h-[10px] w-[10px] rounded-full"
+                style={{ background: item.color, boxShadow: `0 0 8px ${item.color}88` }}
+              />
+              <div className="text-[10px] font-bold mb-0.5" style={{ color: item.color }}>{item.year}</div>
+              <div className="text-[13px] font-bold text-white">{item.degree} — {item.field}</div>
+              <div className="text-[11.5px] mt-0.5" style={{ color: "#9CA3AF" }}>{item.inst}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MicrosoftLogo() {
+  return (
+    <svg viewBox="0 0 22 22" width="36" height="36">
+      <rect x="0"  y="0"  width="10" height="10" fill="#F25022" />
+      <rect x="12" y="0"  width="10" height="10" fill="#7FBA00" />
+      <rect x="0"  y="12" width="10" height="10" fill="#00A4EF" />
+      <rect x="12" y="12" width="10" height="10" fill="#FFB900" />
+    </svg>
+  );
+}
+
+function GoogleGLogo() {
+  return (
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
+      <path fill="#4285F4" d="M23.745 12.27c0-.79-.07-1.54-.19-2.27h-11.3v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.58v3h3.86c2.26-2.09 3.56-5.17 3.56-8.82z" />
+      <path fill="#34A853" d="M12.255 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96H1.625v3.09C3.515 21.3 7.615 24 12.255 24z" />
+      <path fill="#FBBC05" d="M5.525 14.29c-.25-.72-.38-1.49-.38-2.29s.14-1.57.38-2.29V6.62H1.625a11.86 11.86 0 000 10.76l3.9-3.09z" />
+      <path fill="#EA4335" d="M12.255 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C18.205 1.19 15.495 0 12.255 0c-4.64 0-8.74 2.7-10.71 6.62l3.9 3.09c.95-2.85 3.6-4.96 6.81-4.96z" />
+    </svg>
+  );
+}
+
+function NeboshBadge() {
+  return (
+    <div
+      className="flex h-9 w-9 items-center justify-center rounded-[6px] text-[11px] font-black"
+      style={{ background: "#1A3260", color: "#fff", letterSpacing: "0.02em" }}
+    >
+      NEB
+    </div>
+  );
+}
+
+const certifications = [
+  {
+    Logo: MicrosoftLogo,
+    name: "Azure AI Apps & Agents Developer Associate",
+    detail: "Microsoft Certified (Beta)",
+    accent: "#0078D4",
+  },
+  {
+    Logo: GoogleGLogo,
+    name: "Data Analytics Professional Certificate",
+    detail: "Google / Coursera",
+    accent: "#4285F4",
+    link: "https://coursera.org/share/e9fa56e72678e136281c5ff51e1aba5",
+  },
+  {
+    Logo: NeboshBadge,
+    name: "Environmental Health & Safety Certificate",
+    detail: "NEBOSH ICG",
+    accent: "#1A3260",
+  },
+];
+
+const verifyLinks = [
+  { label: "ResearchGate", href: "https://www.researchgate.net/profile/Ephraim-Mpofu" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/ephraim-mpofu-a340608b/" },
+  { label: "T2S Doctoral School", href: "https://boku.ac.at/en/docservice/doctoral-studies/doktoratsschulen/transitions-to-sustainability-t2s/doctoral-candidates" },
+  { label: "FOGOS COST Action", href: "https://www.cost.eu/actions/CA23118/#tabs+Name:Working%20Groups%20and%20Membership" },
+  { label: "YouTube", href: "https://www.youtube.com/@ephraimmpofu_" },
+];
+
+function Certifications() {
+  return (
+    <div className="glass-card p-6">
+      <div className="text-[10px] font-bold uppercase tracking-[0.22em] mb-5" style={{ color: "#8B8B9A" }}>
+        Certifications
+      </div>
+      <div className="space-y-3">
+        {certifications.map(({ Logo, name, detail, accent, link }) => (
+          <div
+            key={name}
+            className="flex items-center gap-4 rounded-[10px] p-3"
+            style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}
+          >
+            <Logo />
+            <div className="flex-1 min-w-0">
+              <div className="text-[12.5px] font-bold text-white leading-tight">{name}</div>
+              <div className="text-[11px] mt-0.5" style={{ color: "#9CA3AF" }}>{detail}</div>
+            </div>
+            {link && (
+              <a href={link} target="_blank" rel="noopener noreferrer" aria-label="Verify certificate">
+                <ExternalLink className="h-3.5 w-3.5 shrink-0" style={{ color: accent }} />
+              </a>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Affiliations strip */}
+      <div className="mt-5 border-t pt-4" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+        <div className="text-[10px] font-bold uppercase tracking-[0.18em] mb-2.5" style={{ color: "#8B8B9A" }}>
+          Verify &amp; Connect
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {verifyLinks.map((v) => (
+            <a
+              key={v.label}
+              href={v.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 rounded-[6px] px-2.5 py-1.5 text-[11px] font-semibold transition-colors hover:bg-white/8"
+              style={{
+                background: "rgba(139,92,246,0.09)",
+                border: "1px solid rgba(139,92,246,0.22)",
+                color: "#C4B5FD",
+              }}
+            >
+              {v.label}
+              <ExternalLink className="h-2.5 w-2.5" />
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function BackgroundSection() {
+  const ref = useScrollReveal<HTMLElement>(100);
+  return (
+    <section ref={ref} className="mt-5 space-y-4" aria-label="Professional background and credentials">
+      {/* World map — full width */}
+      <WorldMap />
+
+      {/* 2-col row: education timeline + certifications */}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_1fr]">
+        <EducationTimeline />
+        <Certifications />
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
    6. ARCHITECTURAL PRINCIPLES + CORE EXPERTISE
    ============================================================ */
 
@@ -760,56 +1359,54 @@ const principles = [
   {
     Icon: Target,
     title: "Rigour",
-    desc: "Scientific methodology applied to engineering and system design.",
+    desc: "PhD-level scientific methodology applied to every system design and architectural decision.",
   },
   {
     Icon: Eye,
     title: "Auditability",
-    desc: "Every decision is traceable, measurable and explainable.",
+    desc: "Every decision is traceable, measurable and explainable — EU AI Act and GDPR compliant by design.",
   },
   {
     Icon: ShieldCheck,
     title: "Production-First",
-    desc: "Built for scale, security, reliability and deployment.",
+    desc: "Built for enterprise scale, security, reliability and real-world deployment from day one.",
   },
   {
     Icon: Layers,
     title: "Simplicity",
-    desc: "Simple systems are reliable systems.",
+    desc: "Simple, maintainable systems are reliable systems. Complexity is an engineering failure.",
   },
   {
     Icon: TrendingUp,
     title: "Business Impact",
-    desc: "Technology must deliver measurable outcomes.",
+    desc: "Every AI system must deliver measurable, verifiable business outcomes — not just technical results.",
   },
 ];
 
 const expertiseItems = [
-  { Icon: Layers2,    title: "AI Systems",          sub: "Architecture"             },
-  { Icon: BookOpen,   title: "Knowledge",           sub: "Architecture"             },
-  { Icon: LayoutGrid, title: "Data Architecture",   sub: "& Engineering"            },
-  { Icon: Network,    title: "Workflow Automation",  sub: "& Orchestration"         },
-  { Icon: Search,     title: "Retrieval & RAG",      sub: "Systems"                 },
-  { Icon: Settings2,  title: "AI Strategy &",        sub: "Advisory"               },
+  { Icon: Layers2,    title: "AI Systems",         sub: "Architecture"          },
+  { Icon: BookOpen,   title: "Knowledge",          sub: "Architecture & RAG"    },
+  { Icon: LayoutGrid, title: "Data Architecture",  sub: "& Engineering"         },
+  { Icon: Network,    title: "Workflow Automation", sub: "& Orchestration"      },
+  { Icon: Search,     title: "Retrieval & RAG",    sub: "Systems"               },
+  { Icon: Settings2,  title: "AI Strategy &",      sub: "EU AI Act Advisory"    },
 ];
 
 function PrinciplesAndExpertise() {
+  const ref = useScrollReveal<HTMLElement>(200);
   return (
-    <section className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-2">
+    <section ref={ref} className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-2" aria-label="Principles and expertise">
 
       {/* LEFT — Principles */}
       <div className="glass-card p-6 lg:p-8">
-        <div
-          className="text-[10px] font-bold uppercase tracking-[0.22em]"
-          style={{ color: "#8B8B9A" }}
-        >
+        <div className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: "#8B8B9A" }}>
           My Architectural Principles
         </div>
         <h3 className="mt-1.5 text-[18px] font-bold text-white">
-          These principles guide every system I design and build.
+          These principles guide every enterprise AI system I design.
         </h3>
 
-        {/* Horizontal row on lg, vertical list on mobile */}
+        {/* Horizontal row on lg */}
         <div className="mt-6 hidden items-start justify-between gap-1 lg:flex">
           {principles.map(({ Icon, title, desc }, i) => (
             <div key={title} className="flex items-start gap-0">
@@ -824,10 +1421,7 @@ function PrinciplesAndExpertise() {
                   <Icon className="h-5 w-5" style={{ color: "#C4B5FD" }} />
                 </div>
                 <div className="mt-2.5 text-[12.5px] font-bold text-white">{title}</div>
-                <div
-                  className="mt-1 text-[11px] leading-snug"
-                  style={{ color: "#9CA3AF" }}
-                >
+                <div className="mt-1 text-[11px] leading-snug" style={{ color: "#9CA3AF" }}>
                   {desc}
                 </div>
               </div>
@@ -864,14 +1458,11 @@ function PrinciplesAndExpertise() {
 
       {/* RIGHT — Core Expertise */}
       <div className="glass-card p-6 lg:p-8">
-        <div
-          className="text-[10px] font-bold uppercase tracking-[0.22em]"
-          style={{ color: "#8B8B9A" }}
-        >
+        <div className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: "#8B8B9A" }}>
           Core Expertise
         </div>
         <h3 className="mt-1.5 text-[18px] font-bold text-white">
-          End-to-end capabilities to design, build and operationalise intelligent systems.
+          End-to-end capabilities across the enterprise AI and KI stack.
         </h3>
 
         <div className="mt-6 grid grid-cols-3 gap-5">
@@ -897,12 +1488,62 @@ function PrinciplesAndExpertise() {
 }
 
 /* ============================================================
-   7. FINAL CTA
+   7. FAQ SECTION — visible accordion + schema-backed
+   ============================================================ */
+
+function AboutFaqSection() {
+  return (
+    <section className="mt-14 lg:mt-16" aria-label="Frequently asked questions">
+      <div className="mb-8">
+        <div className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: "#8B8B9A" }}>
+          Common Questions
+        </div>
+        <h2 className="mt-2.5 text-[28px] font-bold leading-tight text-white lg:text-[34px]">
+          Questions About My Background &amp; Approach
+        </h2>
+        <p className="mt-2 text-[14px]" style={{ color: "#9CA3AF" }}>
+          Questions about credentials, AI building experience, EU AI Act compliance and
+          working with a KI-Architekt in Vienna.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+        {aboutFaq.map((item) => (
+          <details
+            key={item.q}
+            className="group rounded-[14px] p-5"
+            style={{
+              background: "rgba(7,11,28,0.75)",
+              border: "1px solid rgba(255,255,255,0.08)",
+            }}
+          >
+            <summary
+              className="flex cursor-pointer list-none items-start justify-between gap-4 text-[13.5px] font-semibold text-white"
+              style={{ userSelect: "none" }}
+            >
+              <span>{item.q}</span>
+              <ArrowRight
+                className="mt-0.5 h-4 w-4 shrink-0 rotate-90 transition-transform group-open:rotate-[270deg]"
+                style={{ color: "#A855F7" }}
+              />
+            </summary>
+            <p className="mt-3.5 text-[13px] leading-relaxed" style={{ color: "#9CA3AF" }}>
+              {item.a}
+            </p>
+          </details>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   8. FINAL CTA
    ============================================================ */
 
 function CTA() {
   return (
-    <section className="mt-5 mb-5">
+    <section className="mt-5 mb-5" aria-label="Contact call to action">
       <div
         className="glass-card grid grid-cols-1 items-center gap-6 p-7 lg:grid-cols-[auto_1fr_auto] lg:gap-10 lg:p-9"
         style={{
@@ -922,12 +1563,12 @@ function CTA() {
 
         <div>
           <h2 className="text-[22px] font-bold leading-tight text-white lg:text-[26px]">
-            Let's Build Systems That Deliver Real Impact
+            Ready to Build Enterprise AI Systems That Deliver Real Impact?
           </h2>
           <p className="mt-1.5 text-[13.5px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-            Whether you're exploring AI opportunities, designing enterprise knowledge
-            systems or building intelligent platforms, let's create measurable business
-            value together.
+            Enterprise AI architecture, EU AI Act compliance, RAG knowledge platforms,
+            multi-agent systems and intelligent automation — from Vienna, Austria, for the
+            DACH region and EU. Ask my AI agent or book a strategy call.
           </p>
         </div>
 
@@ -952,11 +1593,3 @@ function CTA() {
   );
 }
 
-// Required for JSX type in tech pill discriminated union
-import type React from "react";
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace JSX {
-    interface Element {}
-  }
-}

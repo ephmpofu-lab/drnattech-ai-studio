@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Block non-public paths
+Disallow: /api/
+Disallow: /_build/
+Disallow: /__vite/
+
+# Crawl-delay for polite bots
+Crawl-delay: 1
+
+Sitemap: https://drnattech.com/sitemap.xml

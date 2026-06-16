@@ -24,6 +24,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PortfolioIndexRouteImport } from './routes/portfolio/index'
 import { Route as DeIndexRouteImport } from './routes/de/index'
+import { Route as PortfolioKnowledgeArchitectureOperatingSystemRouteImport } from './routes/portfolio/knowledge-architecture-operating-system'
 import { Route as PortfolioInsuranceClaimsIntelligencePlatformRouteImport } from './routes/portfolio/insurance-claims-intelligence-platform'
 import { Route as PortfolioCareerIntelligenceOperatingSystemRouteImport } from './routes/portfolio/career-intelligence-operating-system'
 import { Route as DePublicationsRouteImport } from './routes/de/publications'
@@ -114,6 +115,12 @@ const DeIndexRoute = DeIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DeRoute,
 } as any)
+const PortfolioKnowledgeArchitectureOperatingSystemRoute =
+  PortfolioKnowledgeArchitectureOperatingSystemRouteImport.update({
+    id: '/knowledge-architecture-operating-system',
+    path: '/knowledge-architecture-operating-system',
+    getParentRoute: () => PortfolioRoute,
+  } as any)
 const PortfolioInsuranceClaimsIntelligencePlatformRoute =
   PortfolioInsuranceClaimsIntelligencePlatformRouteImport.update({
     id: '/insurance-claims-intelligence-platform',
@@ -208,6 +215,7 @@ export interface FileRoutesByFullPath {
   '/de/publications': typeof DePublicationsRoute
   '/portfolio/career-intelligence-operating-system': typeof PortfolioCareerIntelligenceOperatingSystemRoute
   '/portfolio/insurance-claims-intelligence-platform': typeof PortfolioInsuranceClaimsIntelligencePlatformRoute
+  '/portfolio/knowledge-architecture-operating-system': typeof PortfolioKnowledgeArchitectureOperatingSystemRoute
   '/de/': typeof DeIndexRoute
   '/portfolio/': typeof PortfolioIndexRoute
   '/de/portfolio/career-intelligence-operating-system': typeof DePortfolioCareerIntelligenceOperatingSystemRoute
@@ -235,6 +243,7 @@ export interface FileRoutesByTo {
   '/de/publications': typeof DePublicationsRoute
   '/portfolio/career-intelligence-operating-system': typeof PortfolioCareerIntelligenceOperatingSystemRoute
   '/portfolio/insurance-claims-intelligence-platform': typeof PortfolioInsuranceClaimsIntelligencePlatformRoute
+  '/portfolio/knowledge-architecture-operating-system': typeof PortfolioKnowledgeArchitectureOperatingSystemRoute
   '/de': typeof DeIndexRoute
   '/portfolio': typeof PortfolioIndexRoute
   '/de/portfolio/career-intelligence-operating-system': typeof DePortfolioCareerIntelligenceOperatingSystemRoute
@@ -266,6 +275,7 @@ export interface FileRoutesById {
   '/de/publications': typeof DePublicationsRoute
   '/portfolio/career-intelligence-operating-system': typeof PortfolioCareerIntelligenceOperatingSystemRoute
   '/portfolio/insurance-claims-intelligence-platform': typeof PortfolioInsuranceClaimsIntelligencePlatformRoute
+  '/portfolio/knowledge-architecture-operating-system': typeof PortfolioKnowledgeArchitectureOperatingSystemRoute
   '/de/': typeof DeIndexRoute
   '/portfolio/': typeof PortfolioIndexRoute
   '/de/portfolio/career-intelligence-operating-system': typeof DePortfolioCareerIntelligenceOperatingSystemRoute
@@ -298,6 +308,7 @@ export interface FileRouteTypes {
     | '/de/publications'
     | '/portfolio/career-intelligence-operating-system'
     | '/portfolio/insurance-claims-intelligence-platform'
+    | '/portfolio/knowledge-architecture-operating-system'
     | '/de/'
     | '/portfolio/'
     | '/de/portfolio/career-intelligence-operating-system'
@@ -325,6 +336,7 @@ export interface FileRouteTypes {
     | '/de/publications'
     | '/portfolio/career-intelligence-operating-system'
     | '/portfolio/insurance-claims-intelligence-platform'
+    | '/portfolio/knowledge-architecture-operating-system'
     | '/de'
     | '/portfolio'
     | '/de/portfolio/career-intelligence-operating-system'
@@ -355,6 +367,7 @@ export interface FileRouteTypes {
     | '/de/publications'
     | '/portfolio/career-intelligence-operating-system'
     | '/portfolio/insurance-claims-intelligence-platform'
+    | '/portfolio/knowledge-architecture-operating-system'
     | '/de/'
     | '/portfolio/'
     | '/de/portfolio/career-intelligence-operating-system'
@@ -485,6 +498,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/de/'
       preLoaderRoute: typeof DeIndexRouteImport
       parentRoute: typeof DeRoute
+    }
+    '/portfolio/knowledge-architecture-operating-system': {
+      id: '/portfolio/knowledge-architecture-operating-system'
+      path: '/knowledge-architecture-operating-system'
+      fullPath: '/portfolio/knowledge-architecture-operating-system'
+      preLoaderRoute: typeof PortfolioKnowledgeArchitectureOperatingSystemRouteImport
+      parentRoute: typeof PortfolioRoute
     }
     '/portfolio/insurance-claims-intelligence-platform': {
       id: '/portfolio/insurance-claims-intelligence-platform'
@@ -625,6 +645,7 @@ const DeRouteWithChildren = DeRoute._addFileChildren(DeRouteChildren)
 interface PortfolioRouteChildren {
   PortfolioCareerIntelligenceOperatingSystemRoute: typeof PortfolioCareerIntelligenceOperatingSystemRoute
   PortfolioInsuranceClaimsIntelligencePlatformRoute: typeof PortfolioInsuranceClaimsIntelligencePlatformRoute
+  PortfolioKnowledgeArchitectureOperatingSystemRoute: typeof PortfolioKnowledgeArchitectureOperatingSystemRoute
   PortfolioIndexRoute: typeof PortfolioIndexRoute
 }
 
@@ -633,6 +654,8 @@ const PortfolioRouteChildren: PortfolioRouteChildren = {
     PortfolioCareerIntelligenceOperatingSystemRoute,
   PortfolioInsuranceClaimsIntelligencePlatformRoute:
     PortfolioInsuranceClaimsIntelligencePlatformRoute,
+  PortfolioKnowledgeArchitectureOperatingSystemRoute:
+    PortfolioKnowledgeArchitectureOperatingSystemRoute,
   PortfolioIndexRoute: PortfolioIndexRoute,
 }
 
@@ -659,13 +682,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

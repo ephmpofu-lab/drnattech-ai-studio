@@ -62,6 +62,7 @@ type Article = {
   title: string;
   date: string;
   read: string;
+  readTime: string;
 };
 
 const articles: Article[] = [
@@ -72,6 +73,7 @@ const articles: Article[] = [
       "The Law Nobody Teaches About AI Workflow Design — And Why Breaking It Crashes Production Systems",
     date: "Coming Soon",
     read: "Architecture",
+    readTime: "8 min read",
   },
 
   {
@@ -81,6 +83,7 @@ const articles: Article[] = [
       "The System-First Principle That Separates AI Architects From Tutorial Followers",
     date: "Coming Soon",
     read: "Framework",
+    readTime: "6 min read",
   },
 
   {
@@ -90,6 +93,7 @@ const articles: Article[] = [
       "Your RAG Pipeline's Problem Isn't Your Embedding Model. It's Your Documents.",
     date: "Coming Soon",
     read: "RAG Systems",
+    readTime: "7 min read",
   },
 
   {
@@ -99,6 +103,7 @@ const articles: Article[] = [
       "The Three Structural Laws of Production AI Systems",
     date: "Coming Soon",
     read: "Governance",
+    readTime: "5 min read",
   },
 
   {
@@ -108,6 +113,7 @@ const articles: Article[] = [
       "How I Process Enterprise Insurance Claims Automatically Using 5 AI Agents and 4 Design Laws",
     date: "Coming Soon",
     read: "Case Study",
+    readTime: "10 min read",
   },
 
   {
@@ -117,6 +123,7 @@ const articles: Article[] = [
       "The Knowledge Architecture Operating System: A Four-Workflow Blueprint for Enterprise RAG",
     date: "Coming Soon",
     read: "Knowledge Systems",
+    readTime: "9 min read",
   },
 
   {
@@ -126,6 +133,7 @@ const articles: Article[] = [
       "Why Most AI Projects Fail Before the First Prompt Is Written",
     date: "Coming Soon",
     read: "Strategy",
+    readTime: "6 min read",
   },
 
   {
@@ -135,6 +143,7 @@ const articles: Article[] = [
       "The Governance Layer Missing From Most Multi-Agent Systems",
     date: "Coming Soon",
     read: "Governance",
+    readTime: "7 min read",
   },
 ];
 
@@ -418,16 +427,29 @@ export function InsightsPage() {
                   />
                 </div>
                 <div className="flex flex-1 flex-col p-6">
-                  <span
-                    className="self-start rounded-full px-2.5 py-1 text-[10px] font-semibold tracking-[0.18em]"
-                    style={{
-                      background: "rgba(139,92,246,0.12)",
-                      color: "#C4B5FD",
-                      border: "1px solid rgba(139,92,246,0.25)",
-                    }}
-                  >
-                    {a.category.toUpperCase()}
-                  </span>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span
+                      className="self-start rounded-full px-2.5 py-1 text-[10px] font-semibold tracking-[0.18em]"
+                      style={{
+                        background: "rgba(139,92,246,0.12)",
+                        color: "#C4B5FD",
+                        border: "1px solid rgba(139,92,246,0.25)",
+                      }}
+                    >
+                      {a.category.toUpperCase()}
+                    </span>
+                    <span
+                      className="self-start rounded-full px-2.5 py-1 text-[10px] font-semibold flex items-center gap-1"
+                      style={{
+                        background: "rgba(255,255,255,0.04)",
+                        color: "#9CA3AF",
+                        border: "1px solid rgba(255,255,255,0.08)",
+                      }}
+                    >
+                      <Clock className="h-2.5 w-2.5" />
+                      {a.readTime}
+                    </span>
+                  </div>
                   <h3 className="mt-4 text-[16px] font-semibold leading-[1.4]">
                     {a.title}
                   </h3>

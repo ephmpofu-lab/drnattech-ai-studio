@@ -5,26 +5,40 @@ export const Route = createFileRoute("/de/")({
   head: () => ({
     meta: [
       {
-        title: "Dr.Nat.Tech — KI-Lösungsarchitekt | Dr. Ephraim Mpofu",
+        title: "KI-Architekt Wien | EU KI-Verordnung Beratung | Dr. Ephraim Mpofu",
       },
       {
         name: "description",
         content:
-          "Enterprise-KI-Systeme die in der Produktion funktionieren. Intelligente Automatisierung entwickelt von Dr. Ephraim Mpofu, KI-Lösungsarchitekt.",
+          "Dr. Ephraim Mpofu (PhD, Dr.nat.techn., BOKU Wien) — KI-Architekt in Wien. Enterprise KI-Systeme, EU KI-Verordnung-konforme Architektur und KI-Implementierung für Unternehmen im DACH-Raum und der EU. KI-Lösungen die in der Produktion funktionieren.",
+      },
+      {
+        name: "keywords",
+        content:
+          "KI-Architekt Wien, KI-Verordnung Beratung, KI Lösungen Unternehmen, KI Implementierung Österreich, Enterprise KI Systeme, KI-Beratung Wien, DACH KI Architekt, Dr. Ephraim Mpofu, EU KI-Verordnung, KI-Architekt DACH",
       },
       {
         property: "og:title",
-        content: "Dr.Nat.Tech — KI-Lösungsarchitekt",
+        content: "KI-Architekt Wien | EU KI-Verordnung Beratung | Dr. Ephraim Mpofu",
       },
       {
         property: "og:description",
-        content: "Enterprise-KI-Systeme die in der Produktion funktionieren.",
+        content:
+          "Dr. Ephraim Mpofu (PhD, BOKU Wien) — KI-Architekt in Wien. EU KI-Verordnung-konforme Enterprise KI-Systeme für den DACH-Raum.",
       },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://drnattech.com/de/" },
+      {
+        property: "og:image",
+        content: "https://drnattech.com/images/Dr%20Mpofu_purple2.png",
+      },
+      { name: "robots", content: "index, follow" },
     ],
     links: [
-      { rel: "alternate", hrefLang: "en", href: "https://drnattech.com/" },
-      { rel: "alternate", hrefLang: "de", href: "https://drnattech.com/de" },
-      { rel: "alternate", hrefLang: "x-default", href: "https://drnattech.com/" },
+      { rel: "canonical", href: "https://drnattech.com/de/" },
+      { rel: "alternate", hreflang: "en", href: "https://drnattech.com/" },
+      { rel: "alternate", hreflang: "de", href: "https://drnattech.com/de/" },
+      { rel: "alternate", hreflang: "x-default", href: "https://drnattech.com/" },
     ],
   }),
   component: Home,

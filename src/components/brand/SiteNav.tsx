@@ -61,8 +61,12 @@ export function SiteNav({ active = "Home" }: Props) {
         >
           <Signature size="md" />
           <span
-            className="mt-2 text-[9px] font-semibold tracking-[0.28em]"
-            style={{ color: "#A855F7" }}
+            className="mt-1.5 text-[8px] font-semibold"
+            style={{
+              color: "#A855F7",
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+            }}
           >
             {t("footer.role")}
           </span>

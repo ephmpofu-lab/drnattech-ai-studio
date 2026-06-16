@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cinzel:wght@600&family=Great+Vibes&family=Dancing+Script:wght@600;700&family=Allura&display=swap"
+      rel="stylesheet"
+    />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://dr-ephraim-mpofu.com/#person",
+          "name": "Dr. Ephraim Mpofu",
+          "honorificPrefix": "Dr.",
+          "alternateName": ["Ephraim Mpofu", "Dr. E. Mpofu"],
+          "jobTitle": ["AI Solutions Architect", "KI-Architekt", "Enterprise AI Consultant", "Framework Creator"],
+          "description": "PhD-credentialed AI Solutions Architect and KI-Architekt based in Vienna, Austria. Creator of the SKAIDO, AISA and Three Structural Laws frameworks. Specialises in enterprise AI systems, RAG knowledge platforms, multi-agent workflows and EU AI Act compliance architecture for DACH and EU organisations.",
+          "url": "https://dr-ephraim-mpofu.com",
+          "image": "https://dr-ephraim-mpofu.com/images/Dr%20Mpofu_purple2.png",
+          "worksFor": { "@id": "https://dr-ephraim-mpofu.com/#organization" },
+          "alumniOf": { "@type": "CollegeOrUniversity", "name": "BOKU University Vienna", "url": "https://www.boku.ac.at" },
+          "hasCredential": {
+            "@type": "EducationalOccupationalCredential",
+            "name": "PhD in Natural Technology (Dr.nat.techn.)",
+            "educationalLevel": "Doctoral Degree",
+            "recognizedBy": { "@type": "CollegeOrUniversity", "name": "BOKU University Vienna" }
+          },
+          "address": { "@type": "PostalAddress", "addressLocality": "Vienna", "addressRegion": "Vienna", "addressCountry": "AT" },
+          "areaServed": [
+            { "@type": "Country", "name": "Austria" },
+            { "@type": "Country", "name": "Germany" },
+            { "@type": "Country", "name": "Switzerland" },
+            { "@type": "AdministrativeArea", "name": "European Union" }
+          ],
+          "knowsLanguage": ["en", "de"],
+          "knowsAbout": ["Enterprise AI Systems Architecture", "Retrieval-Augmented Generation (RAG)", "Multi-Agent AI Systems", "EU AI Act Compliance", "KI-Verordnung", "AI Governance", "Knowledge Architecture", "Workflow Automation", "SKAIDO Framework", "AISA Framework", "Three Structural Laws", "GDPR-Aligned AI"],
+          "sameAs": ["https://www.linkedin.com/in/ephraimmpofu"]
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://dr-ephraim-mpofu.com/#organization",
+          "name": "Dr.NatTech",
+          "alternateName": "DRNATTECH",
+          "url": "https://dr-ephraim-mpofu.com",
+          "logo": "https://dr-ephraim-mpofu.com/images/Dr%20Mpofu_purple2.png",
+          "founder": { "@id": "https://dr-ephraim-mpofu.com/#person" },
+          "foundingDate": "2026-01",
+          "address": { "@type": "PostalAddress", "addressLocality": "Vienna", "addressRegion": "Vienna", "addressCountry": "AT" },
+          "areaServed": [
+            { "@type": "Country", "name": "Austria" },
+            { "@type": "Country", "name": "Germany" },
+            { "@type": "Country", "name": "Switzerland" },
+            { "@type": "AdministrativeArea", "name": "European Union" }
+          ],
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "consulting",
+            "url": "https://dr-ephraim-mpofu.com/contact",
+            "availableLanguage": ["English", "German"],
+            "areaServed": ["AT", "DE", "CH", "EU"]
+          },
+          "sameAs": ["https://www.linkedin.com/in/ephraimmpofu"]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://dr-ephraim-mpofu.com/#website",
+          "url": "https://dr-ephraim-mpofu.com",
+          "name": "Dr. Ephraim Mpofu — AI Solutions Architect Vienna",
+          "description": "Enterprise AI systems, RAG knowledge platforms, multi-agent workflows and EU AI Act compliance architecture — designed and delivered from Vienna, Austria by Dr. Ephraim Mpofu (PhD, Dr.nat.techn., BOKU University Vienna).",
+          "inLanguage": ["en", "de"],
+          "publisher": { "@id": "https://dr-ephraim-mpofu.com/#organization" },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://dr-ephraim-mpofu.com/ai-agent?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        }
+      ]
+    }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

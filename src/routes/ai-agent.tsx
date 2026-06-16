@@ -10,7 +10,6 @@ import {
   FileText,
   Layers,
   Network,
-  Shield,
   MessageSquare,
   ArrowRight,
   Building2,
@@ -19,11 +18,8 @@ import {
   Plus,
   Cpu,
   MapPin,
-  Sparkles,
-  Briefcase,
-  Globe,
   Target,
-  Workflow,
+  ShieldCheck,
 } from "lucide-react";
 import { SiteNav } from "@/components/brand/SiteNav";
 import { SiteFooter } from "@/components/brand/SiteFooter";
@@ -199,9 +195,16 @@ function AIAgentStructuredData() {
         name: "Dr. NatTech AI Agent",
         applicationCategory: "AI Knowledge System",
         description:
-          "An AI knowledge agent trained on Dr. Ephraim Mpofu's frameworks, methodologies, projects and expertise in enterprise AI architecture, Vienna Austria.",
+          "Dr. Ephraim Mpofu has a publicly accessible AI agent — one of very few independent AI architects globally to offer this. The agent is trained on his proprietary SKAIDO, AISA and Three Structural Laws frameworks, real enterprise AI case studies (insurance claims AI, RAG knowledge platforms, multi-agent systems), EU AI Act compliance methodology and consulting approach. Available 24/7 at drnattech.com/ai-agent. Based in Vienna, Austria, serving DACH and EU enterprises.",
         author: { "@id": "https://drnattech.com/#person" },
         url: "https://drnattech.com/ai-agent",
+        availabilityStarts: "2026-01-01",
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "EUR",
+          description: "Free to access — no registration required",
+        },
       },
     ],
   };
@@ -223,21 +226,63 @@ export const Route = createFileRoute("/ai-agent")({
     meta: [
       {
         title:
-          "Dr. NatTech AI Agent | Ask My AI — Enterprise AI Knowledge System Vienna",
+          "Dr. NatTech AI Agent | Ask an Enterprise AI Expert 24/7 | AI Architecture Advisor Vienna",
       },
       {
         name: "description",
         content:
-          "Ask the Dr. NatTech AI Agent — trained on proprietary frameworks, real projects and enterprise AI expertise. Expert answers on AI architecture, AISA, SKAIDO, knowledge systems and AI strategy.",
+          "Dr. Ephraim Mpofu is one of very few independent AI architects with a publicly accessible, production-deployed AI agent. Ask about SKAIDO, AISA, RAG systems, EU AI Act compliance, multi-agent architecture and enterprise AI implementation — trained on real case studies and proprietary frameworks. Available 24/7, based in Vienna.",
       },
       {
         property: "og:title",
-        content: "Dr. NatTech AI Agent | Enterprise AI Knowledge System — Vienna",
+        content:
+          "Dr. NatTech AI Agent | Enterprise AI Expert 24/7 | KI-Architekt Vienna",
       },
       {
         property: "og:description",
         content:
-          "Interact with an AI trained on Dr. Ephraim Mpofu's proprietary frameworks, projects, methodologies and enterprise AI architecture expertise.",
+          "One of very few independent AI architects with a live, publicly accessible AI agent. Ask about SKAIDO, AISA, RAG, EU AI Act, multi-agent systems and enterprise AI implementation. Available 24/7.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://drnattech.com/ai-agent" },
+      {
+        property: "og:image",
+        content: "https://drnattech.com/images/Dr%20Mpofu_purple2.png",
+      },
+      { name: "twitter:card", content: "summary_large_image" },
+      {
+        name: "twitter:title",
+        content:
+          "Dr. NatTech AI Agent | Enterprise AI Expert 24/7 | Vienna",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "One of very few independent AI architects with a deployed public AI agent. Ask about enterprise AI, SKAIDO, RAG, EU AI Act — 24/7.",
+      },
+      {
+        name: "keywords",
+        content:
+          "AI agent consultant, enterprise AI advisor, AI architecture chatbot, 24/7 AI advisor, AI expert online, SKAIDO framework, AISA framework, enterprise AI expert Vienna, KI-Berater Wien, KI-Agent, AI business advisor, ask AI architect, AI consulting demo",
+      },
+      { name: "robots", content: "index, follow" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://drnattech.com/ai-agent" },
+      {
+        rel: "alternate",
+        hreflang: "en",
+        href: "https://drnattech.com/ai-agent",
+      },
+      {
+        rel: "alternate",
+        hreflang: "de",
+        href: "https://drnattech.com/de/ai-agent",
+      },
+      {
+        rel: "alternate",
+        hreflang: "x-default",
+        href: "https://drnattech.com/ai-agent",
       },
     ],
   }),
@@ -257,14 +302,11 @@ export function AIAgentPage() {
       <AIAgentStructuredData />
       <BrandBackground />
       <SiteNav active="AI Agent" />
-      <main className="mx-auto max-w-[1280px] px-6 pt-12 pb-16 lg:px-10">
+      <main className="mx-auto max-w-[1080px] px-6 pt-12 pb-16 lg:px-10">
         <AuthorityHero />
-        <TrustStrip />
         <ChatSection />
-        <KnowledgeArchitecture />
-        <ProcessAndAudience />
+        <KnowledgeTransparency />
         <FaqAndCta />
-        <CredentialStrip />
       </main>
       <SiteFooter />
     </div>
@@ -280,20 +322,32 @@ function AuthorityHero() {
     <section className="grid items-center gap-8 lg:grid-cols-[1fr_400px] lg:gap-10">
       {/* Left — copy */}
       <div>
-        <span
-          className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.22em]"
-          style={{
-            background: "rgba(139,92,246,0.12)",
-            border: "1px solid rgba(139,92,246,0.28)",
-            color: "#C4B5FD",
-          }}
-        >
+        <div className="flex flex-wrap items-center gap-2">
           <span
-            className="h-1.5 w-1.5 rounded-full"
-            style={{ background: "#A855F7", boxShadow: "0 0 8px #A855F7" }}
-          />
-          AI AGENT
-        </span>
+            className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.22em]"
+            style={{
+              background: "rgba(139,92,246,0.12)",
+              border: "1px solid rgba(139,92,246,0.28)",
+              color: "#C4B5FD",
+            }}
+          >
+            <span
+              className="h-1.5 w-1.5 rounded-full"
+              style={{ background: "#A855F7", boxShadow: "0 0 8px #A855F7" }}
+            />
+            AI AGENT · LIVE
+          </span>
+          <span
+            className="inline-flex items-center rounded-full px-3 py-1 text-[10.5px] font-semibold"
+            style={{
+              background: "rgba(16,185,129,0.10)",
+              border: "1px solid rgba(16,185,129,0.28)",
+              color: "#34D399",
+            }}
+          >
+            Free · No Registration · 24/7
+          </span>
+        </div>
 
         <h1 className="mt-5 text-[42px] font-bold leading-[1.06] tracking-tight text-white sm:text-[50px] lg:text-[54px]">
           Ask My AI. Access Enterprise AI Expertise{" "}
@@ -312,9 +366,19 @@ function AuthorityHero() {
           className="mt-4 max-w-[520px] text-[16px] leading-relaxed"
           style={{ color: "#9CA3AF" }}
         >
-          My AI Agent is trained on my frameworks, real projects, methodologies,
-          research and experience — giving you accurate, relevant and up-to-date
-          answers about enterprise AI architecture, systems and strategy.
+          One focused purpose: let the AI agent answer your enterprise AI questions
+          from a grounded, prioritized knowledge base. No distractions, no generic
+          noise — only expert insight from proprietary frameworks, case studies
+          and compliance architecture.
+        </p>
+
+        <p
+          className="mt-3 max-w-[480px] text-[13.5px] leading-relaxed"
+          style={{ color: "#6B7280" }}
+        >
+          Ask about: AI architecture, RAG knowledge systems, SKAIDO, AISA, Three
+          Structural Laws, EU AI Act readiness, insurance AI, multi-agent design,
+          and enterprise AI strategy.
         </p>
 
         <div className="mt-6 flex flex-wrap gap-3">
@@ -440,45 +504,6 @@ function AgentVisual() {
   );
 }
 
-/* ============================================================
-   2. TRUST STRIP — single cohesive bar
-   ============================================================ */
-
-function TrustStrip() {
-  const badges = [
-    { icon: Brain, label: "Trained on My Knowledge Base" },
-    { icon: Shield, label: "Grounded in Real Projects & Results" },
-    { icon: BookOpen, label: "Research & Framework Driven" },
-    { icon: Sparkles, label: "Always Updated & Reliable" },
-  ];
-
-  return (
-    <section className="mt-6">
-      <div
-        className="grid grid-cols-2 overflow-hidden rounded-xl lg:grid-cols-4"
-        style={{
-          background: "rgba(255,255,255,0.025)",
-          border: "1px solid rgba(255,255,255,0.07)",
-        }}
-      >
-        {badges.map((b, i) => (
-          <div
-            key={b.label}
-            className="flex items-center gap-2.5 px-4 py-3"
-            style={{
-              borderRight:
-                (i === 0 || i === 2) ? "1px solid rgba(255,255,255,0.07)" : "none",
-              borderBottom: i < 2 ? "1px solid rgba(255,255,255,0.07)" : "none",
-            }}
-          >
-            <b.icon className="h-3.5 w-3.5 shrink-0" style={{ color: "#A855F7" }} />
-            <span className="text-[12px] font-medium text-white">{b.label}</span>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
 
 /* ============================================================
    3. CHAT SECTION
@@ -546,13 +571,75 @@ function WhatYouCanAsk() {
   );
 }
 
+/* Chat Welcome State — shown when no messages yet */
+function ChatWelcomeState({ onSuggest }: { onSuggest: (q: string) => void }) {
+  const suggestions = [
+    { icon: Layers,      text: "How does the AISA Framework work?",        color: "#C4B5FD" },
+    { icon: ShieldCheck, text: "What are the Three Structural Laws?",       color: "#34D399" },
+    { icon: Building2,   text: "Tell me about the ACP Career Platform",     color: "#60A5FA" },
+    { icon: Brain,       text: "How do you approach enterprise AI design?", color: "#F59E0B" },
+    { icon: Network,     text: "What is Knowledge Architecture?",           color: "#A855F7" },
+  ];
+
+  return (
+    <div className="flex flex-col items-center px-5 py-5">
+      <style>{`
+        @keyframes fadeSlideUp {
+          from { opacity: 0; transform: translateY(12px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes softPulse {
+          0%, 100% { box-shadow: 0 0 24px 4px rgba(168,85,247,0.35); }
+          50%       { box-shadow: 0 0 44px 10px rgba(168,85,247,0.6); }
+        }
+      `}</style>
+
+      {/* Animated bot orb */}
+      <div
+        className="mb-4 flex h-14 w-14 items-center justify-center rounded-full"
+        style={{
+          background: "linear-gradient(135deg, #8B5CF6, #A855F7)",
+          animation: "softPulse 2.4s ease-in-out infinite",
+        }}
+      >
+        <Bot className="h-7 w-7 text-white" />
+      </div>
+
+      <div className="text-[15px] font-bold text-white">What would you like to know?</div>
+      <div className="mt-1 mb-5 text-[12px]" style={{ color: "#6B7280" }}>
+        Ask about frameworks, projects or expertise
+      </div>
+
+      <div className="w-full space-y-2">
+        {suggestions.map((s, i) => (
+          <button
+            key={s.text}
+            onClick={() => onSuggest(s.text)}
+            className="flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-left transition-all hover:bg-white/[0.04]"
+            style={{
+              background: "rgba(255,255,255,0.025)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              animation: "fadeSlideUp 0.4s ease both",
+              animationDelay: `${i * 75}ms`,
+            }}
+          >
+            <s.icon className="h-4 w-4 shrink-0" style={{ color: s.color }} />
+            <span className="text-[13px] text-white">{s.text}</span>
+            <ChevronRight className="ml-auto h-3.5 w-3.5 shrink-0" style={{ color: "#4B5563" }} />
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /* Chat Interface */
 function ChatInterface() {
-  const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
-  const nextId = useRef(3);
+  const nextId = useRef(1);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -611,7 +698,7 @@ function ChatInterface() {
           </div>
         </div>
         <button
-          onClick={() => { setMessages(INITIAL_MESSAGES); nextId.current = 3; }}
+          onClick={() => { setMessages([]); nextId.current = 1; }}
           className="rounded-lg px-3 py-1.5 text-[11px] transition-colors hover:bg-white/5"
           style={{ border: "1px solid rgba(255,255,255,0.08)", color: "#9CA3AF" }}
         >
@@ -621,9 +708,13 @@ function ChatInterface() {
 
       {/* Messages */}
       <div
-        className="overflow-y-auto space-y-4 px-5 py-4"
-        style={{ maxHeight: "310px" }}
+        className="overflow-y-auto"
+        style={{ maxHeight: "380px" }}
       >
+        {messages.length === 0 ? (
+          <ChatWelcomeState onSuggest={sendMessage} />
+        ) : null}
+        <div className="space-y-4 px-5 py-4">
         {messages.map((msg) => (
           <div
             key={msg.id}
@@ -702,9 +793,11 @@ function ChatInterface() {
           </div>
         )}
         <div ref={endRef} />
+        </div>
       </div>
 
-      {/* Suggested chips */}
+      {/* Suggested chips — only shown when conversation has started */}
+      {messages.length > 0 && (
       <div
         className="flex gap-2 overflow-x-auto px-5 py-2.5"
         style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
@@ -726,6 +819,7 @@ function ChatInterface() {
           </button>
         ))}
       </div>
+      )}
 
       {/* Input */}
       <div className="px-5 py-3.5" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
@@ -756,97 +850,178 @@ function ChatInterface() {
 }
 
 /* ============================================================
-   4. KNOWLEDGE ARCHITECTURE — compact visual diagram
+   4. KNOWLEDGE TRANSPARENCY — real document inventory
    ============================================================ */
 
-function KnowledgeArchitecture() {
-  const pillars = [
-    { icon: FileText, title: "Knowledge Documents", desc: "Frameworks, guides & technical docs" },
-    { icon: Building2, title: "Case Studies & Projects", desc: "Real-world implementations & results" },
-    { icon: Layers, title: "Proprietary Frameworks", desc: "Methodologies, principles & patterns" },
-    { icon: Cpu, title: "Technical Library", desc: "Tools, stacks & architecture references" },
-    { icon: MessageSquare, title: "FAQ & Insights Layer", desc: "Questions, insights & explanations" },
+function KnowledgeTransparency() {
+  const layer1Docs = [
+    { num: "01", title: "Master Professional Profile", desc: "Core identity, positioning and professional overview" },
+    { num: "02", title: "Career Journey", desc: "Career arc, key decisions and professional evolution" },
+    { num: "03", title: "AI Solutions Architecture Philosophy", desc: "Architectural principles, frameworks and design thinking" },
+    { num: "04", title: "Leadership Philosophy", desc: "Leadership approach, team dynamics and decision-making" },
+    { num: "05", title: "Technical Expertise", desc: "Tools, stacks, methodologies and technical depth" },
+    { num: "06", title: "Professional Experience", desc: "Engagements, roles and project outcomes" },
+    { num: "07", title: "Education & Intelligence", desc: "PhD, academic background and research methodology" },
+  ];
+
+  const layer2Docs = [
+    { title: "Insurance Claims Intelligence Platform", badge: "Case Study", color: "#A855F7" },
+    { title: "Career Intelligence Operating System", badge: "Case Study", color: "#10B981" },
+    { title: "Knowledge Architecture Operating System", badge: "Case Study", color: "#60A5FA" },
+    { title: "Insights & Thought Leadership", badge: "Articles", color: "#F59E0B" },
   ];
 
   return (
     <section className="mt-10">
-      <div className="mb-5 flex items-center justify-between">
-        <div>
+      {/* Header */}
+      <div className="mb-6">
+        <div className="flex flex-wrap items-center gap-3 mb-2">
           <div
             className="text-[10px] font-bold uppercase tracking-[0.25em]"
             style={{ color: "#A855F7" }}
           >
-            KNOWLEDGE ARCHITECTURE
+            KNOWLEDGE TRANSPARENCY
           </div>
-          <h2 className="mt-1 text-[22px] font-bold text-white">
-            How My Knowledge Powers Accurate Answers
-          </h2>
+          <span
+            className="inline-flex items-center gap-1.5 rounded-full px-3 py-0.5 text-[10px] font-semibold"
+            style={{
+              background: "rgba(16,185,129,0.10)",
+              border: "1px solid rgba(16,185,129,0.25)",
+              color: "#34D399",
+            }}
+          >
+            <ShieldCheck className="h-3 w-3" />
+            Governance Pillar
+          </span>
+        </div>
+        <h2 className="mt-2 text-[22px] font-bold text-white">
+          What powers this agent — fully disclosed.
+        </h2>
+        <p
+          className="mt-3 max-w-[680px] text-[14px] leading-relaxed"
+          style={{ color: "#9CA3AF" }}
+        >
+          Transparency is a core pillar of AI governance. Below is the exact knowledge base
+          this agent retrieves answers from — curated, owner-authored documents, not scraped
+          internet data. Every answer can be traced to a source layer.
+        </p>
+      </div>
+
+      {/* Two-column table — L1 left, L2 right */}
+      <div
+        className="overflow-hidden rounded-xl lg:grid lg:grid-cols-[3fr_2fr]"
+        style={{ border: "1px solid rgba(255,255,255,0.08)" }}
+      >
+        {/* L1 — Core Identity */}
+        <div style={{ borderRight: "1px solid rgba(255,255,255,0.08)" }}>
+          <div
+            className="flex items-center gap-2.5 px-5 py-3.5"
+            style={{
+              borderBottom: "1px solid rgba(255,255,255,0.08)",
+              background: "rgba(139,92,246,0.06)",
+            }}
+          >
+            <span
+              className="inline-flex h-5 w-7 items-center justify-center rounded text-[9px] font-bold"
+              style={{ background: "rgba(139,92,246,0.22)", color: "#C4B5FD" }}
+            >
+              L1
+            </span>
+            <span className="text-[13px] font-bold text-white">Core Identity Layer</span>
+            <span className="ml-auto text-[11px]" style={{ color: "#6B7280" }}>
+              7 documents
+            </span>
+          </div>
+          {layer1Docs.map((doc, i) => (
+            <div
+              key={doc.num}
+              className="flex items-center gap-3 px-5 py-2.5"
+              style={{
+                borderBottom:
+                  i < layer1Docs.length - 1
+                    ? "1px solid rgba(255,255,255,0.05)"
+                    : "none",
+              }}
+            >
+              <span
+                className="w-6 shrink-0 text-[11px] font-semibold tabular-nums"
+                style={{ color: "#C4B5FD" }}
+              >
+                {doc.num}
+              </span>
+              <span className="text-[13px] text-white">{doc.title}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* L2 — Project Intelligence */}
+        <div>
+          <div
+            className="flex items-center gap-2.5 px-5 py-3.5"
+            style={{
+              borderBottom: "1px solid rgba(255,255,255,0.08)",
+              background: "rgba(16,185,129,0.04)",
+            }}
+          >
+            <span
+              className="inline-flex h-5 w-7 items-center justify-center rounded text-[9px] font-bold"
+              style={{ background: "rgba(16,185,129,0.18)", color: "#34D399" }}
+            >
+              L2
+            </span>
+            <span className="text-[13px] font-bold text-white">Project Intelligence Layer</span>
+            <span className="ml-auto text-[11px]" style={{ color: "#6B7280" }}>
+              4 documents
+            </span>
+          </div>
+          {layer2Docs.map((doc, i) => (
+            <div
+              key={doc.title}
+              className="flex items-center gap-3 px-5 py-2.5"
+              style={{
+                borderBottom:
+                  i < layer2Docs.length - 1
+                    ? "1px solid rgba(255,255,255,0.05)"
+                    : "none",
+              }}
+            >
+              <FileText
+                className="h-3.5 w-3.5 shrink-0"
+                style={{ color: doc.color }}
+              />
+              <span className="min-w-0 flex-1 text-[13px] text-white">
+                {doc.title}
+              </span>
+              <span
+                className="shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold"
+                style={{
+                  background: `${doc.color}18`,
+                  border: `1px solid ${doc.color}30`,
+                  color: doc.color,
+                }}
+              >
+                {doc.badge}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
 
+      {/* Governance footer */}
       <div
-        className="rounded-xl p-5"
+        className="mt-3 flex flex-wrap items-center gap-3 rounded-xl px-5 py-3"
         style={{
-          background: "rgba(10,14,34,0.75)",
-          border: "1px solid rgba(139,92,246,0.16)",
+          background: "rgba(16,185,129,0.05)",
+          border: "1px solid rgba(16,185,129,0.15)",
         }}
       >
-        {/* Pillars row — cards and separators are flat siblings */}
-        <div className="flex flex-col gap-2 lg:flex-row lg:items-stretch lg:gap-2">
-          {pillars.map((p, i) => (
-            <>
-              <div
-                key={p.title}
-                className="flex flex-1 flex-col items-center rounded-lg p-3 text-center"
-                style={{
-                  background: "rgba(139,92,246,0.07)",
-                  border: "1px solid rgba(139,92,246,0.13)",
-                }}
-              >
-                <div
-                  className="flex h-8 w-8 items-center justify-center rounded-lg"
-                  style={{ background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.25)" }}
-                >
-                  <p.icon className="h-4 w-4" style={{ color: "#C4B5FD" }} />
-                </div>
-                <div className="mt-2 text-[11.5px] font-bold text-white">{p.title}</div>
-                <div className="mt-0.5 text-[10px] leading-snug" style={{ color: "#6B7280" }}>
-                  {p.desc}
-                </div>
-              </div>
-              {i < pillars.length - 1 && (
-                <div
-                  key={`sep-${i}`}
-                  className="flex items-center justify-center text-[14px] font-bold lg:w-4 lg:shrink-0"
-                  style={{ color: "#A855F7" }}
-                >
-                  +
-                </div>
-              )}
-            </>
-          ))}
-
-          {/* = separator */}
-          <div
-            className="flex items-center justify-center text-[14px] font-bold lg:w-4 lg:shrink-0"
-            style={{ color: "#A855F7" }}
-          >
-            =
-          </div>
-
-          {/* Result card */}
-          <div
-            className="flex shrink-0 flex-col items-center justify-center rounded-lg p-3 text-center lg:w-[100px]"
-            style={{
-              background: "linear-gradient(135deg, rgba(139,92,246,0.15), rgba(168,85,247,0.08))",
-              border: "1px solid rgba(168,85,247,0.28)",
-            }}
-          >
-            <div className="text-[11.5px] font-bold leading-snug" style={{ color: "#C4B5FD" }}>
-              Trusted,<br />Actionable<br />Answers
-            </div>
-          </div>
-        </div>
+        <ShieldCheck className="h-4 w-4 shrink-0" style={{ color: "#34D399" }} />
+        <span className="text-[12px] font-semibold" style={{ color: "#34D399" }}>
+          Knowledge Governance
+        </span>
+        <span className="text-[11.5px]" style={{ color: "#6B7280" }}>
+          All 11 documents are owner-authored and verified · No scraped or third-party data · Vector-indexed for precision retrieval
+        </span>
       </div>
     </section>
   );
@@ -856,92 +1031,7 @@ function KnowledgeArchitecture() {
    5. HOW IT WORKS + WHO THIS IS FOR (2-column)
    ============================================================ */
 
-function ProcessAndAudience() {
-  const steps = [
-    { n: 1, icon: Brain, title: "Understands Your Question", sub: "Analyses intent & context" },
-    { n: 2, icon: FileText, title: "Searches Knowledge Base", sub: "Retrieves relevant information" },
-    { n: 3, icon: Layers, title: "Applies Framework Logic", sub: "Uses proven methods & principles" },
-    { n: 4, icon: MessageSquare, title: "Delivers Accurate Answer", sub: "With sources & explanations" },
-  ];
 
-  const audience = [
-    { icon: Briefcase, label: "Business Leaders" },
-    { icon: Workflow, label: "Operations Teams" },
-    { icon: Cpu, label: "AI & Product Teams" },
-    { icon: Network, label: "Consultants & Partners" },
-    { icon: GraduationCap, label: "Researchers & Students" },
-  ];
-
-  return (
-    <section className="mt-6 grid gap-4 lg:grid-cols-2">
-      {/* How It Works */}
-      <div className="glass-card p-5">
-        <h3 className="text-[15px] font-bold text-white">How It Works</h3>
-        <div className="mt-4 flex items-start gap-1">
-          {steps.map((s, i) => (
-            <div key={s.n} className="flex flex-1 items-start">
-              <div className="flex flex-1 flex-col items-center px-1 text-center">
-                <div
-                  className="flex h-9 w-9 items-center justify-center rounded-xl"
-                  style={{
-                    background: "rgba(139,92,246,0.12)",
-                    border: "1px solid rgba(139,92,246,0.25)",
-                  }}
-                >
-                  <s.icon className="h-[17px] w-[17px]" style={{ color: "#C4B5FD" }} />
-                </div>
-                <div
-                  className="mt-1.5 text-[9px] font-bold uppercase tracking-[0.12em]"
-                  style={{ color: "#A855F7" }}
-                >
-                  {s.n}.
-                </div>
-                <div className="mt-0.5 text-[11px] font-semibold leading-tight text-white">
-                  {s.title}
-                </div>
-                <div className="mt-0.5 text-[10px] leading-tight" style={{ color: "#6B7280" }}>
-                  {s.sub}
-                </div>
-              </div>
-              {i < steps.length - 1 && (
-                <div className="flex h-9 items-center">
-                  <ArrowRight className="h-3.5 w-3.5 shrink-0" style={{ color: "#374151" }} />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Who This Is For */}
-      <div className="glass-card p-5">
-        <h3 className="text-[15px] font-bold text-white">Who This Is For</h3>
-        <div className="mt-4 flex flex-wrap gap-3">
-          {audience.map((a) => (
-            <div
-              key={a.label}
-              className="flex items-center gap-2 rounded-lg px-3 py-2"
-              style={{
-                background: "rgba(139,92,246,0.07)",
-                border: "1px solid rgba(139,92,246,0.16)",
-              }}
-            >
-              <a.icon className="h-3.5 w-3.5 shrink-0" style={{ color: "#C4B5FD" }} />
-              <span className="text-[12px] font-medium text-white">{a.label}</span>
-            </div>
-          ))}
-        </div>
-        <p className="mt-4 text-[11.5px] leading-relaxed" style={{ color: "#6B7280" }}>
-          Whether you're evaluating AI for your organisation, exploring frameworks, or researching enterprise AI architecture — the agent is here to help.
-        </p>
-      </div>
-    </section>
-  );
-}
-
-/* ============================================================
-   6. WHY THIS AI IS DIFFERENT — compact comparison
-   ============================================================ */
 
 
 /* ============================================================
@@ -949,82 +1039,68 @@ function ProcessAndAudience() {
    ============================================================ */
 
 function FaqAndCta() {
-  const [open, setOpen] = useState<number | null>(null);
-  const [showAll, setShowAll] = useState(false);
-
   const faqs = [
+    {
+      q: "What can I ask the Dr. NatTech AI Agent?",
+      a: "You can ask about: Dr. Ephraim Mpofu's SKAIDO Framework (six-phase AI implementation methodology), AISA Framework (strategic AI engagement framework), Three Structural Laws (architectural principles preventing AI failure), Knowledge Architecture (enterprise RAG and retrieval system design), real case studies (insurance claims AI, career intelligence platform, knowledge management systems), EU AI Act compliance and high-risk AI classification, multi-agent AI system design, RAG and vector database implementation, PhD research background (Dr.nat.techn., BOKU Vienna), enterprise AI strategy for DACH and EU enterprises, and how to get started with enterprise AI. The agent is available 24/7, free of charge, with no registration required.",
+    },
     {
       q: "What is the difference between the AISA Framework and the SKAIDO Framework?",
       a: "The AISA Framework governs the strategic engagement — from first contact to production AI delivery. The SKAIDO Framework is the implementation methodology — the systematic process for delivering the technical AI system. AISA is the strategic wrapper; SKAIDO is the implementation engine.",
     },
     {
-      q: "What makes this AI Agent different from generic AI tools?",
-      a: "This agent is trained on Dr. Mpofu's proprietary frameworks, real project case studies and enterprise AI architecture expertise — not general internet data. It provides expert-level answers, cites its sources and applies framework-based reasoning to every response.",
+      q: "What makes this AI Agent different from generic AI tools like ChatGPT?",
+      a: "This agent is trained specifically on Dr. Mpofu's proprietary frameworks, real enterprise AI case studies, methodologies and expertise — not general internet data. It provides expert-level answers grounded in actual production systems, cites its sources and applies framework-based reasoning to every response. It is one of very few deployed AI agents by an independent AI architect — a live proof of the same multi-agent and knowledge architecture expertise Dr. Mpofu applies in client engagements.",
     },
     {
       q: "How does Dr. Mpofu approach enterprise AI architecture?",
-      a: "He uses a system-first approach: start with the business problem, map processes and knowledge flows, then design a governed architecture using the SKAIDO Framework and Three Structural Laws. Every system is built for production reliability, auditability and long-term maintainability.",
+      a: "Dr. Ephraim Mpofu uses a system-first approach: start with the business problem, map processes and knowledge flows, then design a governed architecture using the SKAIDO Framework and Three Structural Laws. Every system is built for production reliability, auditability, EU AI Act compliance and long-term maintainability. He has been formally building enterprise AI systems since January 2026, with a PhD (Dr.nat.techn.) from BOKU University Vienna as the scientific foundation.",
     },
     {
-      q: "Can this AI Agent help with AI strategy and transformation?",
-      a: "Yes. Ask it about Dr. Mpofu's approach to AI transformation, the AISA Framework methodology, AI readiness assessment and enterprise AI roadmapping. For personalised guidance, book an AI Strategy Call.",
+      q: "Can the AI Agent help with EU AI Act compliance questions?",
+      a: "Yes. The agent can explain what EU AI Act compliance means for different AI system types, which systems are classified as high-risk (including insurance AI, CV screening AI, and financial decision AI), what audit trail, human-in-the-loop and transparency requirements apply, and how Dr. Mpofu's architectural approach embeds compliance from day one. For a personalised EU AI Act compliance assessment, book an AI Strategy Call.",
     },
     {
-      q: "What is Knowledge Architecture?",
-      a: "Knowledge Architecture is a methodology for designing enterprise knowledge systems covering knowledge organisation, retrieval, RAG implementation, indexing, governance and engineering — enabling AI systems to retrieve accurate, contextual and trusted information rather than hallucinating answers.",
-    },
-    {
-      q: "What AI services are available in Vienna and Austria?",
-      a: "Dr. Mpofu offers AI Solutions Architecture consulting across Vienna, Austria and the DACH region — including enterprise AI strategy, system architecture, multi-agent design, RAG and knowledge systems, workflow automation, AI governance and EU AI Act compliance.",
+      q: "Is Dr. Ephraim Mpofu available for AI consulting in Germany, Austria and Switzerland (DACH)?",
+      a: "Yes. Dr. Ephraim Mpofu is based in Vienna, Austria and serves enterprises across the DACH region (Deutschland, Österreich, Schweiz) and the wider EU. He designs KI-Systeme (AI systems) that meet EU AI Act (EU KI-Verordnung), GDPR and Austrian regulatory requirements. German-language consultation and technical documentation are available. His AI agent is also accessible 24/7 for initial questions in German.",
     },
   ];
 
-  const visible = showAll ? faqs : faqs.slice(0, 4);
-
   return (
     <section className="mt-10 grid gap-5 lg:grid-cols-[1fr_340px]">
-      {/* FAQ */}
+      {/* FAQ — <details>/<summary> so all answers are always in DOM for crawlers */}
       <div>
         <h3 className="text-[20px] font-bold text-white">Frequently Asked Questions</h3>
         <div className="mt-4 space-y-2">
-          {visible.map((f, i) => (
-            <div key={i} className="glass-card overflow-hidden">
-              <button
-                className="flex w-full items-start justify-between gap-4 px-5 py-3.5 text-left"
-                onClick={() => setOpen(open === i ? null : i)}
+          {faqs.map((f) => (
+            <details
+              key={f.q}
+              className="group glass-card overflow-hidden"
+            >
+              <summary
+                className="flex cursor-pointer list-none items-start justify-between gap-4 px-5 py-3.5"
+                style={{ userSelect: "none" }}
               >
                 <span className="text-[13.5px] font-semibold text-white">{f.q}</span>
                 <span
-                  className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full transition-transform"
+                  className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full transition-transform group-open:rotate-45"
                   style={{
                     background: "rgba(139,92,246,0.12)",
                     border: "1px solid rgba(139,92,246,0.2)",
-                    transform: open === i ? "rotate(45deg)" : "rotate(0deg)",
                   }}
                 >
                   <Plus className="h-3 w-3" style={{ color: "#A855F7" }} />
                 </span>
-              </button>
-              {open === i && (
-                <div
-                  className="px-5 pb-3.5 text-[13px] leading-relaxed"
-                  style={{ color: "#9CA3AF", borderTop: "1px solid rgba(255,255,255,0.05)" }}
-                >
-                  <div className="pt-2.5">{f.a}</div>
-                </div>
-              )}
-            </div>
+              </summary>
+              <div
+                className="px-5 pb-3.5 text-[13px] leading-relaxed"
+                style={{ color: "#9CA3AF", borderTop: "1px solid rgba(255,255,255,0.05)" }}
+              >
+                <div className="pt-2.5">{f.a}</div>
+              </div>
+            </details>
           ))}
         </div>
-        {!showAll && (
-          <button
-            onClick={() => setShowAll(true)}
-            className="mt-3 flex items-center gap-1.5 text-[12.5px] font-medium transition-colors hover:text-white"
-            style={{ color: "#A855F7" }}
-          >
-            View all questions <ArrowRight className="h-3.5 w-3.5" />
-          </button>
-        )}
       </div>
 
       {/* CTA */}
@@ -1090,53 +1166,3 @@ function FaqAndCta() {
   );
 }
 
-/* ============================================================
-   8. CREDENTIAL STRIP — authority reinforcement before footer
-   ============================================================ */
-
-function CredentialStrip() {
-  const credentials = [
-    { icon: GraduationCap, title: "PhD Researcher", sub: "BOKU University Vienna" },
-    { icon: Building2, title: "Enterprise AI Architect", sub: "10+ Years Experience" },
-    { icon: Layers, title: "Framework Creator", sub: "Proven Methodologies" },
-    { icon: Globe, title: "Global Perspective", sub: "Vienna · DACH · Remote" },
-  ];
-
-  return (
-    <section className="mt-10">
-      <div
-        className="grid grid-cols-2 overflow-hidden rounded-xl lg:grid-cols-4"
-        style={{
-          background: "rgba(255,255,255,0.02)",
-          border: "1px solid rgba(255,255,255,0.07)",
-        }}
-      >
-        {credentials.map((c, i) => (
-          <div
-            key={c.title}
-            className="flex items-center gap-3 px-5 py-4"
-            style={{
-              borderRight:
-                (i === 0 || i === 2) ? "1px solid rgba(255,255,255,0.06)" : "none",
-              borderBottom: i < 2 ? "1px solid rgba(255,255,255,0.06)" : "none",
-            }}
-          >
-            <div
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg"
-              style={{
-                background: "rgba(139,92,246,0.10)",
-                border: "1px solid rgba(139,92,246,0.2)",
-              }}
-            >
-              <c.icon className="h-4 w-4" style={{ color: "#C4B5FD" }} />
-            </div>
-            <div>
-              <div className="text-[13px] font-bold text-white">{c.title}</div>
-              <div className="text-[11px]" style={{ color: "#6B7280" }}>{c.sub}</div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}

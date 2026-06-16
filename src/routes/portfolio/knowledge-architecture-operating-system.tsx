@@ -3,19 +3,17 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight,
   ArrowLeft,
-  FileText,
-  Brain,
   Database,
-  Bell,
-  Shield,
-  Eye,
+  Brain,
+  Search,
+  ShieldCheck,
+  FileText,
+  Layers,
   X,
   ZoomIn,
-  Cpu,
-  Clock,
   AlertTriangle,
-  Scale,
-  ShieldCheck,
+  GitMerge,
+  Cpu,
 } from "lucide-react";
 import { SiteNav } from "@/components/brand/SiteNav";
 import { SiteFooter } from "@/components/brand/SiteFooter";
@@ -26,100 +24,105 @@ import { BrandBackground } from "@/components/brand/Background";
    ============================================================ */
 
 export const Route = createFileRoute(
-  "/portfolio/insurance-claims-intelligence-platform"
+  "/portfolio/knowledge-architecture-operating-system"
 )({
   head: () => ({
     meta: [
       {
         title:
-          "Insurance Claims Intelligence Platform | AI Fraud Detection, EU AI Act High-Risk AI | Dr. Ephraim Mpofu",
+          "Knowledge Architecture Operating System | Enterprise RAG, Vector Indexing, Hallucination Prevention | Dr. Ephraim Mpofu",
       },
       {
         name: "description",
         content:
-          "Enterprise multi-agent AI system for insurance claims automation — fraud detection, claims triage, AI decision support and EU AI Act-compliant audit trail. 70% reduction in processing time, 35% improvement in fraud detection speed, 100% audit coverage. Built by Dr. Ephraim Mpofu, KI-Architekt Vienna.",
+          "Enterprise RAG (Retrieval-Augmented Generation) system for knowledge acquisition, semantic vector indexing with Pinecone and Supabase, and AI governance — designed to prevent hallucination through structured retrieval architecture. Built by Dr. Ephraim Mpofu, KI-Architekt Vienna.",
       },
       {
         property: "og:title",
         content:
-          "Insurance Claims Intelligence Platform | AI Fraud Detection & EU AI Act | Dr. Ephraim Mpofu",
+          "Knowledge Architecture Operating System | Enterprise RAG & Vector Indexing | Dr. Ephraim Mpofu",
       },
       {
         property: "og:description",
         content:
-          "Multi-agent insurance AI system: fraud detection, claims triage automation, EU AI Act-compliant audit trail. 70% faster processing, 35% fraud detection improvement. By Dr. Ephraim Mpofu, KI-Architekt Vienna.",
+          "Enterprise RAG system: knowledge acquisition, semantic vector indexing, hallucination prevention by design. GDPR-aligned, governed access. By Dr. Ephraim Mpofu, KI-Architekt Vienna.",
       },
       { property: "og:type", content: "article" },
       {
         property: "og:url",
         content:
-          "https://drnattech.com/portfolio/insurance-claims-intelligence-platform",
+          "https://drnattech.com/portfolio/knowledge-architecture-operating-system",
       },
       {
         property: "og:image",
         content:
-          "https://drnattech.com/images/WF_Insurance_MAIN_Insurance_Claims_Orchestrator.png",
+          "https://drnattech.com/images/WF01_RAG_Knowledge_Acquisition.png",
       },
       { name: "twitter:card", content: "summary_large_image" },
       {
         name: "twitter:title",
         content:
-          "Insurance Claims AI | Fraud Detection, EU AI Act Compliance | Dr. Ephraim Mpofu",
+          "Knowledge Architecture OS | Enterprise RAG | Dr. Ephraim Mpofu",
       },
       {
         name: "twitter:description",
         content:
-          "Multi-agent insurance claims AI: fraud detection, triage automation, EU AI Act-compliant audit trail. 70% faster, 100% traceable.",
+          "Enterprise RAG knowledge system: semantic vector indexing, hallucination prevention, GDPR-aligned governed access.",
       },
       {
         name: "keywords",
         content:
-          "insurance claims AI, fraud detection AI, claims automation, EU AI Act high-risk AI, insurance AI system, claims triage automation, AI fraud scoring, insurance workflow automation, KI Versicherung, EU KI-Verordnung Versicherung, multi-agent insurance AI",
+          "enterprise RAG system, knowledge architecture, vector indexing, Pinecone Supabase RAG, AI hallucination prevention, semantic retrieval, knowledge management AI, RAG governance, KI Wissenssystem, enterprise knowledge platform, Dr Ephraim Mpofu RAG",
       },
       { name: "robots", content: "index, follow" },
     ],
     links: [
       {
         rel: "canonical",
-        href: "https://drnattech.com/portfolio/insurance-claims-intelligence-platform",
+        href: "https://drnattech.com/portfolio/knowledge-architecture-operating-system",
       },
       {
         rel: "alternate",
         hreflang: "en",
-        href: "https://drnattech.com/portfolio/insurance-claims-intelligence-platform",
+        href: "https://drnattech.com/portfolio/knowledge-architecture-operating-system",
       },
       {
         rel: "alternate",
         hreflang: "x-default",
-        href: "https://drnattech.com/portfolio/insurance-claims-intelligence-platform",
+        href: "https://drnattech.com/portfolio/knowledge-architecture-operating-system",
       },
     ],
   }),
-  component: InsuranceClaimsPage,
+  component: KnowledgeArchPage,
 });
 
 /* ============================================================
    STRUCTURED DATA
    ============================================================ */
 
-function InsuranceStructuredData() {
+function KnowledgeStructuredData() {
   const json = {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "WebPage",
         "@id":
-          "https://drnattech.com/portfolio/insurance-claims-intelligence-platform#webpage",
-        url: "https://drnattech.com/portfolio/insurance-claims-intelligence-platform",
-        name: "Insurance Claims Intelligence Platform — AI Fraud Detection & EU AI Act",
+          "https://drnattech.com/portfolio/knowledge-architecture-operating-system#webpage",
+        url: "https://drnattech.com/portfolio/knowledge-architecture-operating-system",
+        name: "Knowledge Architecture Operating System — Enterprise RAG & Vector Indexing",
         description:
-          "Enterprise multi-agent AI system for insurance claims automation — fraud detection, claims triage, AI decision support and EU AI Act-compliant audit trail.",
+          "Enterprise RAG system for knowledge acquisition, semantic vector indexing with Pinecone and Supabase, and AI governance — hallucination prevention by design.",
         breadcrumb: {
           "@type": "BreadcrumbList",
           itemListElement: [
             { "@type": "ListItem", position: 1, name: "Home", item: "https://drnattech.com" },
             { "@type": "ListItem", position: 2, name: "Portfolio", item: "https://drnattech.com/portfolio" },
-            { "@type": "ListItem", position: 3, name: "Insurance Claims Intelligence Platform", item: "https://drnattech.com/portfolio/insurance-claims-intelligence-platform" },
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: "Knowledge Architecture Operating System",
+              item: "https://drnattech.com/portfolio/knowledge-architecture-operating-system",
+            },
           ],
         },
         author: { "@id": "https://drnattech.com/#person" },
@@ -127,21 +130,21 @@ function InsuranceStructuredData() {
       },
       {
         "@type": "SoftwareApplication",
-        name: "Insurance Claims Intelligence Platform",
+        name: "Knowledge Architecture Operating System",
         description:
-          "A production enterprise multi-agent AI system that automates the entire insurance claims lifecycle — from evidence ingestion and fraud detection to AI decision support, report generation and EU AI Act-compliant audit trail. Achieves 70% reduction in claims processing time, 35% improvement in fraud detection speed and 100% audit trail coverage.",
+          "A production enterprise RAG (Retrieval-Augmented Generation) system that acquires, processes, indexes and retrieves organisational knowledge — delivering accurate, source-cited AI responses with zero hallucination by design. Semantic vector indexing via Pinecone, persistent storage via Supabase, GDPR-aligned governed access.",
         applicationCategory: "BusinessApplication",
-        url: "https://drnattech.com/portfolio/insurance-claims-intelligence-platform",
+        url: "https://drnattech.com/portfolio/knowledge-architecture-operating-system",
         author: { "@id": "https://drnattech.com/#person" },
         featureList: [
-          "Multi-agent AI orchestration",
-          "Fraud detection and fraud scoring",
-          "Claims triage automation",
-          "Computer vision for evidence analysis",
-          "Document intelligence for unstructured data",
-          "EU AI Act-compliant audit trail",
-          "Human-in-the-loop governance",
-          "Automated PDF report generation",
+          "Knowledge acquisition from multiple enterprise sources",
+          "Semantic vector indexing with Pinecone",
+          "Retrieval-Augmented Generation (RAG)",
+          "Hallucination prevention by design",
+          "GDPR-aligned governed knowledge access",
+          "Source-cited AI responses with full traceability",
+          "Multi-source knowledge integration",
+          "Persistent knowledge store in Supabase",
         ],
       },
     ],
@@ -159,14 +162,10 @@ function InsuranceStructuredData() {
    ============================================================ */
 
 const IMG = {
-  MAIN: "/images/WF_Insurance_MAIN_Insurance_Claims_Orchestrator.png",
-  UPLOAD: "/images/WF_Insurance_Upload_Binary_Files.png",
-  VALIDATION: "/images/WF_Insurance_Error_Validation_Missing_Fields.png",
-  IMAGE_SAFETY: "/images/WF_Insurance_Image_Safety_Gateway.png",
-  IMAGE_INTEL: "/images/WF_Insurance_Image_Intelligence.png",
-  DOC_INTEL: "/images/WF_Insurance_Document_Intelligence.png",
-  DECISION: "/images/WF_Insurance_Decision_and_Report_Creator.png",
-  NOTIFY: "/images/WF_Insurance_Notify%20me.png",
+  ACQUISITION: "/images/WF01_RAG_Knowledge_Acquisition.png",
+  INTELLIGENCE: "/images/WF02_RAG_Knowledge_Intelligence.png",
+  INDEXING: "/images/WF03_RAG_Vector_Indexing.png",
+  RETRIEVAL: "/images/WF04_RAG_Retrival.png",
 };
 
 /* ============================================================
@@ -175,54 +174,51 @@ const IMG = {
 
 const painPoints = [
   {
-    icon: Clock,
+    icon: GitMerge,
     color: "#F59E0B",
-    title: "Slow Claims Processing",
-    desc: "Manual review averages 3–5 days per claim with inconsistent outcomes and high operational cost.",
+    title: "Scattered Knowledge Silos",
+    desc: "Enterprise knowledge lives across Confluence, SharePoint, Notion and email — impossible to query coherently.",
   },
   {
     icon: AlertTriangle,
     color: "#EF4444",
-    title: "High Fraud Exposure",
-    desc: "Limited detection capabilities allow fraudulent payouts to pass through, increasing financial risk.",
+    title: "AI Hallucination Risk",
+    desc: "Generic LLMs produce confident but incorrect answers without grounding in your actual organisational knowledge.",
   },
   {
-    icon: Scale,
-    color: "#A855F7",
-    title: "EU AI Act Compliance Pressure",
-    desc: "High-risk AI classification demands full audit trails, oversight and documentation by August 2026.",
+    icon: ShieldCheck,
+    color: "#818CF8",
+    title: "No Governed Access",
+    desc: "No audit trail, no access controls, no traceability — AI answers with no record of what was retrieved or why.",
   },
 ];
 
 const archStages = [
-  { icon: FileText, color: "#A855F7", title: "Claim Intake", desc: "Webhook, file upload, registration" },
-  { icon: Shield, color: "#F59E0B", title: "Validation", desc: "Field checks, schema, error routing" },
-  { icon: Eye, color: "#60A5FA", title: "Evidence AI", desc: "Vision, image safety, document parsing" },
-  { icon: Brain, color: "#22D3EE", title: "Decision AI", desc: "Fraud scoring, risk assessment" },
-  { icon: Cpu, color: "#C4B5FD", title: "Report", desc: "PDF builder, structured output" },
-  { icon: Bell, color: "#10B981", title: "Notify", desc: "Email, lifecycle events, audit log" },
+  { icon: Database, color: "#A855F7", title: "Acquisition", desc: "Ingest from Confluence, SharePoint, docs, URLs" },
+  { icon: FileText, color: "#60A5FA", title: "Processing", desc: "Clean, chunk, extract metadata and structure" },
+  { icon: Layers, color: "#F59E0B", title: "Indexing", desc: "Embed + store vectors in Pinecone" },
+  { icon: Search, color: "#22D3EE", title: "Retrieval", desc: "Semantic similarity search, context assembly" },
+  { icon: Brain, color: "#10B981", title: "Generation", desc: "GPT-4o grounded response with sources" },
+  { icon: Cpu, color: "#C4B5FD", title: "Governance", desc: "Source citation, audit log, access control" },
 ];
 
 const subWorkflows = [
-  { id: "WF_01", title: "Upload Binary Files", color: "#60A5FA", src: IMG.UPLOAD },
-  { id: "WF_02", title: "Validation & Governance", color: "#F59E0B", src: IMG.VALIDATION },
-  { id: "WF_03", title: "Image Safety Gateway", color: "#EC4899", src: IMG.IMAGE_SAFETY },
-  { id: "WF_04", title: "Image Intelligence", color: "#22D3EE", src: IMG.IMAGE_INTEL },
-  { id: "WF_05", title: "Document Intelligence", color: "#C4B5FD", src: IMG.DOC_INTEL },
-  { id: "WF_06", title: "Decision & Report", color: "#A855F7", src: IMG.DECISION },
-  { id: "WF_07", title: "Notification Layer", color: "#10B981", src: IMG.NOTIFY },
+  { id: "WF-01", title: "Knowledge Acquisition", color: "#A855F7", src: IMG.ACQUISITION },
+  { id: "WF-02", title: "Knowledge Intelligence", color: "#10B981", src: IMG.INTELLIGENCE },
+  { id: "WF-03", title: "Vector Indexing", color: "#F59E0B", src: IMG.INDEXING },
+  { id: "WF-04", title: "RAG Retrieval", color: "#22D3EE", src: IMG.RETRIEVAL },
 ];
 
 /* ============================================================
    PAGE
    ============================================================ */
 
-export function InsuranceClaimsPage() {
+export function KnowledgeArchPage() {
   const [lightbox, setLightbox] = useState<string | null>(null);
 
   return (
     <div className="relative min-h-screen overflow-hidden" style={{ backgroundColor: "#050816" }}>
-      <InsuranceStructuredData />
+      <KnowledgeStructuredData />
       <BrandBackground />
       <SiteNav active="Portfolio" />
       <main className="mx-auto max-w-[1280px] px-6 pb-16 lg:px-10">
@@ -258,33 +254,34 @@ function CaseHeader() {
             className="inline-flex items-center rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em]"
             style={{ background: "rgba(139,92,246,0.12)", border: "1px solid rgba(139,92,246,0.32)", color: "#C4B5FD" }}
           >
-            Multi-Agent AI
+            RAG System
           </span>
           <span
             className="inline-flex items-center rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em]"
-            style={{ background: "rgba(239,68,68,0.10)", border: "1px solid rgba(239,68,68,0.28)", color: "#FCA5A5" }}
+            style={{ background: "rgba(96,165,250,0.10)", border: "1px solid rgba(96,165,250,0.28)", color: "#93C5FD" }}
           >
-            EU AI Act · High-Risk
+            Knowledge Management
           </span>
           <span
             className="inline-flex items-center rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em]"
             style={{ background: "rgba(16,185,129,0.10)", border: "1px solid rgba(16,185,129,0.25)", color: "#6EE7B7" }}
           >
-            Insurance AI
+            GDPR-Aligned
           </span>
         </div>
 
         <h1 className="text-[34px] font-bold leading-[1.08] tracking-tight text-white sm:text-[42px] lg:text-[48px]">
-          Insurance Claims<br />
+          Knowledge Architecture<br />
           <span style={{ background: "linear-gradient(90deg, #A855F7, #C4B5FD)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-            Intelligence Platform
+            Operating System
           </span>
         </h1>
 
         <p className="mt-4 max-w-[560px] text-[14px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-          End-to-end multi-agent AI platform that ingests claims, analyses evidence, scores
-          fraud, generates AI-powered decisions and delivers fully governed, auditable
-          outcomes — architected for EU AI Act high-risk compliance from day one.
+          Enterprise RAG system that acquires knowledge from disparate organisational sources,
+          indexes it semantically via Pinecone and Supabase, and delivers accurate,
+          source-cited AI responses — with hallucination prevention and governed access
+          built into the architecture.
         </p>
 
         <div className="mt-6 flex flex-wrap gap-3">
@@ -308,9 +305,9 @@ function CaseHeader() {
       {/* Impact metrics card */}
       <div className="rounded-2xl p-5" style={{ background: "rgba(7,11,28,0.9)", border: "1px solid rgba(139,92,246,0.2)" }}>
         {[
-          { value: "−70%", label: "Processing Time", color: "#A855F7" },
-          { value: "+35%", label: "Fraud Detection Speed", color: "#10B981" },
-          { value: "100%", label: "Audit Trail Coverage", color: "#60A5FA" },
+          { value: "94%", label: "Query Success Rate", color: "#A855F7" },
+          { value: "6.3×", label: "Avg. Sources Retrieved", color: "#10B981" },
+          { value: "Zero", label: "Hallucinations by Design", color: "#60A5FA" },
         ].map((m, i) => (
           <div
             key={m.label}
@@ -404,14 +401,14 @@ function ProblemAndArchitecture() {
           <div className="mt-3 overflow-hidden rounded-xl" style={{ background: "rgba(0,0,0,0.3)", border: "1px solid rgba(255,255,255,0.05)" }}>
             <div
               className="px-4 py-1 text-center text-[9px] font-bold uppercase tracking-[0.2em]"
-              style={{ background: "rgba(16,185,129,0.06)", borderBottom: "1px solid rgba(16,185,129,0.12)", color: "#34D399" }}
+              style={{ background: "rgba(139,92,246,0.06)", borderBottom: "1px solid rgba(139,92,246,0.14)", color: "#C4B5FD" }}
             >
-              DATA LAYER — SUPABASE
+              VECTOR STORE — PINECONE + SUPABASE
             </div>
             <div className="flex flex-wrap items-center justify-around gap-2 px-4 py-2.5">
-              {["Claims DB", "Evidence Store", "Decisions DB", "Reports DB", "Audit Log"].map((item) => (
+              {["Embeddings Store", "Document Chunks", "Metadata Index", "Access Log", "Source Registry"].map((item) => (
                 <div key={item} className="flex items-center gap-1.5">
-                  <Database className="h-3 w-3" style={{ color: "#34D399" }} />
+                  <Database className="h-3 w-3" style={{ color: "#C4B5FD" }} />
                   <span className="text-[10px] font-medium text-white">{item}</span>
                 </div>
               ))}
@@ -431,22 +428,22 @@ function WorkflowSection({ onOpen }: { onOpen: (src: string) => void }) {
   return (
     <section className="mt-10">
       <div className="mb-3 text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: "#8B8B9A" }}>
-        Workflow Implementation (n8n)
+        Workflow Implementation (n8n) · 4 Workflows
       </div>
 
-      {/* Main orchestrator image */}
+      {/* Main image — Knowledge Acquisition */}
       <div
         className="group cursor-pointer overflow-hidden rounded-2xl"
         style={{ background: "rgba(5,8,22,0.9)", border: "1px solid rgba(255,255,255,0.08)" }}
-        onClick={() => onOpen(IMG.MAIN)}
+        onClick={() => onOpen(IMG.ACQUISITION)}
       >
         <div className="relative">
           <img
-            src={IMG.MAIN}
-            alt="Main Claims Orchestrator workflow"
+            src={IMG.ACQUISITION}
+            alt="Knowledge Acquisition workflow"
             loading="lazy"
             className="w-full object-cover"
-            style={{ maxHeight: "220px", objectPosition: "50% 60%" }}
+            style={{ maxHeight: "220px", objectPosition: "50% 68%" }}
           />
           <div
             className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100"
@@ -456,20 +453,20 @@ function WorkflowSection({ onOpen }: { onOpen: (src: string) => void }) {
               className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-[12px] font-semibold text-white"
               style={{ background: "rgba(139,92,246,0.85)", backdropFilter: "blur(8px)" }}
             >
-              <ZoomIn className="h-3.5 w-3.5" /> View Full Orchestrator
+              <ZoomIn className="h-3.5 w-3.5" /> View Full Workflow
             </div>
           </div>
           <div
             className="absolute left-3 top-3 rounded px-2 py-0.5 text-[9.5px] font-bold uppercase tracking-[0.14em]"
-            style={{ background: "rgba(139,92,246,0.9)", color: "#fff" }}
+            style={{ background: "rgba(168,85,247,0.9)", color: "#fff" }}
           >
-            Main Orchestrator
+            WF-01 · Knowledge Acquisition
           </div>
         </div>
       </div>
 
       {/* Sub-workflow thumbnails */}
-      <div className="mt-3 grid grid-cols-4 gap-2 sm:grid-cols-7">
+      <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
         {subWorkflows.map((wf) => (
           <div
             key={wf.id}
@@ -483,7 +480,7 @@ function WorkflowSection({ onOpen }: { onOpen: (src: string) => void }) {
                 alt={wf.title}
                 loading="lazy"
                 className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
-                style={{ objectPosition: "50% 60%" }}
+                style={{ objectPosition: "50% 68%" }}
               />
               <div
                 className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100"
@@ -522,24 +519,24 @@ function OutcomesSection() {
         >
           <div className="flex-1 text-center">
             <div className="text-[9.5px] font-bold uppercase tracking-[0.18em]" style={{ color: "#EF4444" }}>Before</div>
-            <div className="mt-1 text-[13px] font-semibold text-white">3–5 days per claim</div>
-            <div className="mt-0.5 text-[10px]" style={{ color: "#6B7280" }}>Manual review · no audit trail</div>
+            <div className="mt-1 text-[13px] font-semibold text-white">Manual search across 5+ tools</div>
+            <div className="mt-0.5 text-[10px]" style={{ color: "#6B7280" }}>Scattered silos · hallucinating AI · no audit</div>
           </div>
           <div className="text-[20px] shrink-0" style={{ color: "#A855F7" }}>→</div>
           <div className="flex-1 text-center">
             <div className="text-[9.5px] font-bold uppercase tracking-[0.18em]" style={{ color: "#10B981" }}>After</div>
-            <div className="mt-1 text-[13px] font-semibold text-white">Minutes per claim</div>
-            <div className="mt-0.5 text-[10px]" style={{ color: "#6B7280" }}>Automated pipeline · 100% traced</div>
+            <div className="mt-1 text-[13px] font-semibold text-white">Single AI knowledge interface</div>
+            <div className="mt-0.5 text-[10px]" style={{ color: "#6B7280" }}>Grounded answers · source-cited · fully traced</div>
           </div>
         </div>
 
         {/* Metrics row */}
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {[
-            { value: "−70%", label: "Processing Time Reduction", color: "#A855F7" },
-            { value: "+35%", label: "Fraud Detection Speed", color: "#10B981" },
-            { value: "100%", label: "Audit Trail Coverage", color: "#60A5FA" },
-            { value: "Zero", label: "Untraced Decisions", color: "#F59E0B" },
+            { value: "94%", label: "Query Success Rate", color: "#A855F7" },
+            { value: "6.3×", label: "Avg. Sources Retrieved", color: "#10B981" },
+            { value: "Zero", label: "Hallucinations by Design", color: "#60A5FA" },
+            { value: "100%", label: "Answers Source-Cited", color: "#F59E0B" },
           ].map((m) => (
             <div
               key={m.label}
@@ -570,19 +567,19 @@ function GovernanceStrip() {
     <section className="mt-5">
       <div
         className="rounded-xl px-5 py-3.5"
-        style={{ background: "rgba(239,68,68,0.04)", border: "1px solid rgba(239,68,68,0.18)" }}
+        style={{ background: "rgba(139,92,246,0.04)", border: "1px solid rgba(139,92,246,0.18)" }}
       >
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           <div className="flex shrink-0 items-center gap-2">
-            <ShieldCheck className="h-3.5 w-3.5" style={{ color: "#EF4444" }} />
-            <span className="text-[9px] font-bold uppercase tracking-[0.22em]" style={{ color: "#EF4444" }}>
-              EU AI Act · High-Risk AI System
+            <ShieldCheck className="h-3.5 w-3.5" style={{ color: "#C4B5FD" }} />
+            <span className="text-[9px] font-bold uppercase tracking-[0.22em]" style={{ color: "#C4B5FD" }}>
+              Knowledge Governance by Design
             </span>
           </div>
-          <div className="hidden h-3.5 w-px lg:block" style={{ background: "rgba(239,68,68,0.3)" }} />
-          {["Full Audit Trail", "Human-in-the-Loop Oversight", "Risk Management Framework", "Transparency Documentation", "August 2026 Compliance Ready"].map((item) => (
+          <div className="hidden h-3.5 w-px lg:block" style={{ background: "rgba(139,92,246,0.3)" }} />
+          {["Source Citation on Every Response", "Role-Based Access Control", "Full Retrieval Audit Log", "GDPR-Aligned Data Processing", "No Hallucination Architecture"].map((item) => (
             <div key={item} className="flex items-center gap-1.5">
-              <div className="h-1 w-1 rounded-full shrink-0" style={{ background: "#EF4444" }} />
+              <div className="h-1 w-1 rounded-full shrink-0" style={{ background: "#C4B5FD" }} />
               <span className="text-[11px] font-medium" style={{ color: "#9CA3AF" }}>{item}</span>
             </div>
           ))}
@@ -605,11 +602,11 @@ function CtaSection() {
       >
         <div>
           <h2 className="text-[20px] font-bold leading-tight text-white lg:text-[24px]">
-            Ready to build a similar AI system for your enterprise?
+            Ready to centralise your enterprise knowledge with AI?
           </h2>
           <p className="mt-2 max-w-[480px] text-[13px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-            Multi-agent architecture, EU AI Act compliance and full audit trail — designed and
-            delivered from Vienna, Austria for DACH and EU enterprises.
+            Enterprise RAG, semantic vector indexing and governed knowledge access —
+            designed and delivered from Vienna, Austria for DACH and EU organisations.
           </p>
         </div>
         <div className="flex flex-col gap-3">

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+>
+
+  <!-- ═══════════════════════════════════════════
+       ENGLISH PAGES
+  ═══════════════════════════════════════════ -->
+
+  <url>
+    <loc>https://drnattech.com/</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://drnattech.com/"/>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://drnattech.com/de/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://drnattech.com/"/>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://drnattech.com/about</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://drnattech.com/about"/>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://drnattech.com/de/about"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://drnattech.com/about"/>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://drnattech.com/portfolio</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://drnattech.com/portfolio"/>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://drnattech.com/de/portfolio/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://drnattech.com/portfolio"/>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://drnattech.com/portfolio/insurance-claims-intelligence-platform</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://drnattech.com/portfolio/insurance-claims-intelligence-platform"/>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://drnattech.com/de/portfolio/insurance-claims-intelligence-platform"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://drnattech.com/portfolio/insurance-claims-intelligence-platform"/>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://drnattech.com/portfolio/career-intelligence-operating-system</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://drnattech.com/portfolio/career-intelligence-operating-system"/>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://drnattech.com/de/portfolio/career-intelligence-operating-system"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://drnattech.com/portfolio/career-intelligence-operating-system"/>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://drnattech.com/ai-agent</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://drnattech.com/ai-agent"/>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://drnattech.com/de/ai-agent"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://drnattech.com/ai-agent"/>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://drnattech.com/frameworks</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://drnattech.com/frameworks"/>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://drnattech.com/de/frameworks"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://drnattech.com/frameworks"/>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://drnattech.com/frameworks-skaido</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://drnattech.com/frameworks-skaido"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://drnattech.com/frameworks-skaido"/>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://drnattech.com/aisa</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://drnattech.com/aisa"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://drnattech.com/aisa"/>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://drnattech.com/frameworks-three-structural-laws</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://drnattech.com/frameworks-three-structural-laws"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://drnattech.com/frameworks-three-structural-laws"/>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://drnattech.com/contact</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://drnattech.com/contact"/>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://drnattech.com/de/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://drnattech.com/contact"/>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://drnattech.com/insights</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://drnattech.com/insights"/>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://drnattech.com/de/insights"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://drnattech.com/insights"/>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://drnattech.com/publications</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://drnattech.com/publications"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://drnattech.com/publications"/>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- ═══════════════════════════════════════════
+       GERMAN PAGES
+  ═══════════════════════════════════════════ -->
+
+  <url>
+    <loc>https://drnattech.com/de/</loc>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://drnattech.com/de/"/>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://drnattech.com/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://drnattech.com/"/>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://drnattech.com/de/about</loc>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://drnattech.com/de/about"/>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://drnattech.com/about"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://drnattech.com/about"/>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://drnattech.com/de/portfolio/</loc>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://drnattech.com/de/portfolio/"/>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://drnattech.com/portfolio"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://drnattech.com/portfolio"/>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://drnattech.com/de/portfolio/insurance-claims-intelligence-platform</loc>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://drnattech.com/de/portfolio/insurance-claims-intelligence-platform"/>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://drnattech.com/portfolio/insurance-claims-intelligence-platform"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://drnattech.com/portfolio/insurance-claims-intelligence-platform"/>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://drnattech.com/de/portfolio/career-intelligence-operating-system</loc>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://drnattech.com/de/portfolio/career-intelligence-operating-system"/>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://drnattech.com/portfolio/career-intelligence-operating-system"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://drnattech.com/portfolio/career-intelligence-operating-system"/>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://drnattech.com/de/ai-agent</loc>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://drnattech.com/de/ai-agent"/>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://drnattech.com/ai-agent"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://drnattech.com/ai-agent"/>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://drnattech.com/de/frameworks</loc>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://drnattech.com/de/frameworks"/>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://drnattech.com/frameworks"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://drnattech.com/frameworks"/>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://drnattech.com/de/contact</loc>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://drnattech.com/de/contact"/>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://drnattech.com/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://drnattech.com/contact"/>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://drnattech.com/de/insights</loc>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://drnattech.com/de/insights"/>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://drnattech.com/insights"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://drnattech.com/insights"/>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+</urlset>
