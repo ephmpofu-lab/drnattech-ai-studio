@@ -1,0 +1,148 @@
+backend:
+  name: github
+  repo: ephmpofu-lab/drnattech-ai-studio
+  branch: main
+  base_url: https://dr-ephraim-mpofu.com
+  auth_endpoint: api/auth
+
+media_folder: public/uploads
+public_folder: /uploads
+
+locale: en
+display_url: https://dr-ephraim-mpofu.com
+site_url: https://dr-ephraim-mpofu.com
+
+collections:
+  - name: publications
+    label: Publications
+    label_singular: Publication
+    folder: content/publications
+    create: true
+    delete: true
+    identifier_field: title
+    format: json
+    extension: json
+    slug: "{{fields.slug}}"
+    preview_path: "/insights/{{fields.slug}}"
+    summary: "{{fields.title}} — {{fields.date}}"
+    sortable_fields: ["date", "title", "category"]
+    fields:
+      - label: "Title"
+        name: title
+        widget: string
+        hint: "The full publication title"
+
+      - label: "Subtitle"
+        name: subtitle
+        widget: string
+        hint: "A one-sentence expansion of the title"
+
+      - label: "URL Slug"
+        name: slug
+        widget: string
+        pattern: ['^[a-z0-9-]+$', 'Lowercase letters, numbers, and hyphens only']
+        hint: "e.g. my-article-title — used in the URL /insights/my-article-title"
+
+      - label: "Author"
+        name: author
+        widget: string
+        default: "Dr. Ephraim Mpofu"
+
+      - label: "Publication Date"
+        name: date
+        widget: datetime
+        format: "YYYY-MM-DD"
+        date_format: "DD MMM YYYY"
+        time_format: false
+
+      - label: "Category"
+        name: category
+        widget: select
+        options:
+          - AI Governance
+          - EU AI Act
+          - Knowledge Architecture
+          - RAG Systems
+          - Agentic AI
+          - Case Studies
+          - Enterprise AI
+          - AI Operations
+          - Research Notes
+
+      - label: "Category Badge Colour"
+        name: categoryColor
+        widget: string
+        default: "#A855F7"
+        hint: "Hex colour shown on the category badge (e.g. #F59E0B)"
+
+      - label: "Read Time (minutes)"
+        name: readTime
+        widget: number
+        default: 8
+        value_type: int
+
+      - label: "Featured Image"
+        name: heroImage
+        widget: image
+        required: false
+        hint: "Upload the hero image for this article (recommended 1400×600px)"
+
+      - label: "Featured Image Caption"
+        name: heroCaption
+        widget: string
+        required: false
+        hint: "Caption shown at the bottom of the hero image"
+
+      - label: "Abstract"
+        name: abstract
+        widget: text
+        hint: "2–4 sentence summary. Shown in cards and as SEO description."
+
+      - label: "Article Body"
+        name: body
+        widget: markdown
+        hint: "Use ## for section headings. Supports tables, bullet lists, blockquotes, and bold/italic."
+        buttons: [bold, italic, link, heading-two, heading-three, quote, bulleted-list, numbered-list]
+
+      - label: "Tags"
+        name: tags
+        widget: list
+        allow_add: true
+        hint: "Keyword tags (e.g. AI Governance, RAG, EU AI Act)"
+
+      - label: "References"
+        name: references
+        widget: list
+        required: false
+        summary: "{{fields.authors}} ({{fields.year}}) — {{fields.title}}"
+        fields:
+          - { label: "ID", name: id, widget: string, hint: "e.g. ref-1" }
+          - { label: "Authors", name: authors, widget: string }
+          - { label: "Year", name: year, widget: string }
+          - { label: "Title", name: title, widget: string }
+          - { label: "Source / Journal", name: source, widget: string }
+          - { label: "URL (optional)", name: url, widget: string, required: false }
+
+      - label: "Suggested Citation"
+        name: citation
+        widget: text
+        required: false
+        hint: "Full citation string shown in the Cite This Article box"
+
+      - label: "SEO Title"
+        name: seoTitle
+        widget: string
+        required: false
+        hint: "Overrides the page <title>. Defaults to article title."
+
+      - label: "SEO Description"
+        name: seoDescription
+        widget: text
+        required: false
+        hint: "Meta description. Defaults to abstract."
+
+      - label: "Related Article Slugs"
+        name: relatedSlugs
+        widget: list
+        required: false
+        hint: "Slugs of related articles shown in the sidebar (e.g. eu-ai-act-implementation-guide)"
