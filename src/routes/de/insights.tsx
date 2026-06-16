@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { InsightsPage } from "@/routes/insights";
+import { InsightsIndexPage } from "@/routes/insights/index";
 
 export const Route = createFileRoute("/de/insights")({
   head: () => ({
@@ -41,5 +41,5 @@ export const Route = createFileRoute("/de/insights")({
       { rel: "alternate", hreflang: "x-default", href: "https://drnattech.com/insights" },
     ],
   }),
-  component: InsightsPage,
+  component: InsightsIndexPage,
 });

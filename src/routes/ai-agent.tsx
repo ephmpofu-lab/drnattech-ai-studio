@@ -410,95 +410,159 @@ function AuthorityHero() {
 }
 
 function AgentVisual() {
+  const SIZE = 260;
+  const CX = SIZE / 2;
+  const CY = SIZE / 2;
+  const RADIUS = 96;
+
+  const nodes = [
+    { icon: Layers,      label: "Frameworks",   color: "#A855F7", angle: -90 },
+    { icon: Building2,   label: "Projects",     color: "#60A5FA", angle: -30 },
+    { icon: ShieldCheck, label: "Governance",   color: "#34D399", angle:  30 },
+    { icon: Brain,       label: "Research",     color: "#F59E0B", angle:  90 },
+    { icon: Network,     label: "Architecture", color: "#C4B5FD", angle: 150 },
+    { icon: Target,      label: "Strategy",     color: "#F472B6", angle: 210 },
+  ];
+
+  function nodePos(angle: number) {
+    const rad = (angle * Math.PI) / 180;
+    return { x: CX + RADIUS * Math.cos(rad), y: CY + RADIUS * Math.sin(rad) };
+  }
+
   return (
     <div
-      className="relative flex flex-col items-center justify-center overflow-hidden rounded-2xl py-10"
+      className="relative flex flex-col items-center justify-center overflow-hidden rounded-2xl py-8"
       style={{
-        background: "rgba(10,14,34,0.8)",
+        background: "rgba(10,14,34,0.85)",
         border: "1px solid rgba(139,92,246,0.18)",
       }}
     >
-      {/* Atmospheric background glow */}
+      <style>{`
+        @keyframes agentPulse {
+          0%, 100% { box-shadow: 0 0 40px 8px rgba(168,85,247,0.45); }
+          50%       { box-shadow: 0 0 70px 18px rgba(168,85,247,0.7); }
+        }
+        @keyframes nodePing {
+          0%, 100% { opacity: 0.55; transform: scale(1); }
+          50%       { opacity: 1;    transform: scale(1.12); }
+        }
+      `}</style>
+
+      {/* Atmospheric radial glow */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at 50% 42%, rgba(168,85,247,0.18) 0%, transparent 65%)",
+            "radial-gradient(ellipse at 50% 48%, rgba(168,85,247,0.16) 0%, transparent 68%)",
         }}
       />
 
-      {/* Orbital system */}
-      <div className="relative flex h-[200px] w-[200px] items-center justify-center">
-        {/* Outer ring */}
+      {/* Neural-network SVG */}
+      <div className="relative" style={{ width: SIZE, height: SIZE }}>
+        <svg
+          viewBox={`0 0 ${SIZE} ${SIZE}`}
+          width={SIZE}
+          height={SIZE}
+          className="absolute inset-0"
+          style={{ overflow: "visible" }}
+        >
+          <defs>
+            {nodes.map((n) => {
+              const p = nodePos(n.angle);
+              return (
+                <path
+                  key={`def-${n.label}`}
+                  id={`mp-${n.label}`}
+                  d={`M ${p.x} ${p.y} L ${CX} ${CY}`}
+                />
+              );
+            })}
+          </defs>
+
+          {/* Connection lines */}
+          {nodes.map((n, i) => {
+            const p = nodePos(n.angle);
+            return (
+              <line
+                key={`line-${i}`}
+                x1={p.x} y1={p.y}
+                x2={CX}  y2={CY}
+                stroke={n.color}
+                strokeWidth="1"
+                strokeOpacity="0.22"
+                strokeDasharray="4 4"
+              />
+            );
+          })}
+
+          {/* Animated data pulses — travel from node → centre */}
+          {nodes.map((n, i) => (
+            <circle key={`pulse-${i}`} r="2.5" fill={n.color} opacity="0.85">
+              <animateMotion
+                dur="2.2s"
+                repeatCount="indefinite"
+                begin={`${i * 0.37}s`}
+              >
+                <mpath href={`#mp-${n.label}`} />
+              </animateMotion>
+            </circle>
+          ))}
+        </svg>
+
+        {/* Knowledge nodes */}
+        {nodes.map((n) => {
+          const p = nodePos(n.angle);
+          const IconEl = n.icon;
+          return (
+            <div
+              key={n.label}
+              className="absolute flex flex-col items-center"
+              style={{ left: p.x - 20, top: p.y - 20 }}
+            >
+              <div
+                className="flex h-10 w-10 items-center justify-center rounded-full"
+                style={{
+                  background: `${n.color}16`,
+                  border: `1px solid ${n.color}45`,
+                  boxShadow: `0 0 14px ${n.color}28`,
+                  animation: `nodePing 3s ease-in-out infinite`,
+                  animationDelay: `${nodes.indexOf(n) * 0.5}s`,
+                }}
+              >
+                <IconEl style={{ width: 16, height: 16, color: n.color }} />
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Central bot orb */}
         <div
-          className="absolute inset-0 rounded-full"
+          className="absolute flex items-center justify-center rounded-full"
           style={{
-            border: "1px dashed rgba(168,85,247,0.18)",
-            boxShadow: "0 0 40px rgba(168,85,247,0.08)",
-          }}
-        />
-        {/* Mid ring */}
-        <div
-          className="absolute rounded-full"
-          style={{
-            inset: "28px",
-            border: "1px solid rgba(168,85,247,0.28)",
-            boxShadow: "0 0 20px rgba(168,85,247,0.12)",
-          }}
-        />
-        {/* Orbital dot */}
-        <div
-          className="absolute left-1/2 top-0 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full"
-          style={{ background: "#A855F7", boxShadow: "0 0 12px #A855F7" }}
-        />
-        {/* Core orb */}
-        <div
-          className="relative flex h-[100px] w-[100px] items-center justify-center rounded-full"
-          style={{
+            width: 88,
+            height: 88,
+            left: CX - 44,
+            top: CY - 44,
             background: "linear-gradient(135deg, #8B5CF6, #A855F7)",
-            boxShadow:
-              "0 0 60px 12px rgba(168,85,247,0.4), 0 0 120px 24px rgba(139,92,246,0.18)",
+            animation: "agentPulse 2.6s ease-in-out infinite",
           }}
         >
-          <Bot className="h-12 w-12 text-white" />
+          <Bot style={{ width: 40, height: 40, color: "white" }} />
         </div>
       </div>
 
       {/* Identity */}
-      <div className="relative mt-6 text-[17px] font-bold text-white">
+      <div className="relative mt-4 text-[16px] font-bold text-white">
         Dr. NatTech AI Agent
       </div>
-      <div className="relative mt-2 flex items-center gap-1.5">
+      <div className="relative mt-1.5 flex items-center gap-1.5">
         <span
           className="h-2 w-2 rounded-full"
           style={{ background: "#10B981", boxShadow: "0 0 8px #10B981" }}
         />
         <span className="text-[12px] font-semibold" style={{ color: "#10B981" }}>
-          Online
+          Online · Knowledge-Grounded
         </span>
-      </div>
-      <p
-        className="relative mt-2 max-w-[220px] text-center text-[12px] leading-relaxed"
-        style={{ color: "#6B7280" }}
-      >
-        Ask me about frameworks, projects, methodology and expertise.
-      </p>
-
-      {/* Capability pills */}
-      <div className="relative mt-5 flex flex-wrap justify-center gap-1.5 px-8">
-        {["AISA Framework", "SKAIDO", "RAG Systems", "AI Governance"].map((t) => (
-          <span
-            key={t}
-            className="rounded-full px-2.5 py-0.5 text-[10.5px] font-medium"
-            style={{
-              background: "rgba(139,92,246,0.12)",
-              border: "1px solid rgba(139,92,246,0.22)",
-              color: "#C4B5FD",
-            }}
-          >
-            {t}
-          </span>
-        ))}
       </div>
     </div>
   );

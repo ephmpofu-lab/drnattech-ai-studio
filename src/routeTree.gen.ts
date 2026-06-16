@@ -23,10 +23,12 @@ import { Route as AiAgentRouteImport } from './routes/ai-agent'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PortfolioIndexRouteImport } from './routes/portfolio/index'
+import { Route as InsightsIndexRouteImport } from './routes/insights/index'
 import { Route as DeIndexRouteImport } from './routes/de/index'
 import { Route as PortfolioKnowledgeArchitectureOperatingSystemRouteImport } from './routes/portfolio/knowledge-architecture-operating-system'
 import { Route as PortfolioInsuranceClaimsIntelligencePlatformRouteImport } from './routes/portfolio/insurance-claims-intelligence-platform'
 import { Route as PortfolioCareerIntelligenceOperatingSystemRouteImport } from './routes/portfolio/career-intelligence-operating-system'
+import { Route as InsightsSlugRouteImport } from './routes/insights/$slug'
 import { Route as DePublicationsRouteImport } from './routes/de/publications'
 import { Route as DePortfolioRouteImport } from './routes/de/portfolio'
 import { Route as DeInsightsRouteImport } from './routes/de/insights'
@@ -110,6 +112,11 @@ const PortfolioIndexRoute = PortfolioIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PortfolioRoute,
 } as any)
+const InsightsIndexRoute = InsightsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => InsightsRoute,
+} as any)
 const DeIndexRoute = DeIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -133,6 +140,11 @@ const PortfolioCareerIntelligenceOperatingSystemRoute =
     path: '/career-intelligence-operating-system',
     getParentRoute: () => PortfolioRoute,
   } as any)
+const InsightsSlugRoute = InsightsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => InsightsRoute,
+} as any)
 const DePublicationsRoute = DePublicationsRouteImport.update({
   id: '/publications',
   path: '/publications',
@@ -202,7 +214,7 @@ export interface FileRoutesByFullPath {
   '/frameworks': typeof FrameworksRoute
   '/frameworks-skaido': typeof FrameworksSkaidoRoute
   '/frameworks-three-structural-laws': typeof FrameworksThreeStructuralLawsRoute
-  '/insights': typeof InsightsRoute
+  '/insights': typeof InsightsRouteWithChildren
   '/portfolio': typeof PortfolioRouteWithChildren
   '/publications': typeof PublicationsRoute
   '/api/chat': typeof ApiChatRoute
@@ -213,10 +225,12 @@ export interface FileRoutesByFullPath {
   '/de/insights': typeof DeInsightsRoute
   '/de/portfolio': typeof DePortfolioRouteWithChildren
   '/de/publications': typeof DePublicationsRoute
+  '/insights/$slug': typeof InsightsSlugRoute
   '/portfolio/career-intelligence-operating-system': typeof PortfolioCareerIntelligenceOperatingSystemRoute
   '/portfolio/insurance-claims-intelligence-platform': typeof PortfolioInsuranceClaimsIntelligencePlatformRoute
   '/portfolio/knowledge-architecture-operating-system': typeof PortfolioKnowledgeArchitectureOperatingSystemRoute
   '/de/': typeof DeIndexRoute
+  '/insights/': typeof InsightsIndexRoute
   '/portfolio/': typeof PortfolioIndexRoute
   '/de/portfolio/career-intelligence-operating-system': typeof DePortfolioCareerIntelligenceOperatingSystemRoute
   '/de/portfolio/insurance-claims-intelligence-platform': typeof DePortfolioInsuranceClaimsIntelligencePlatformRoute
@@ -232,7 +246,6 @@ export interface FileRoutesByTo {
   '/frameworks': typeof FrameworksRoute
   '/frameworks-skaido': typeof FrameworksSkaidoRoute
   '/frameworks-three-structural-laws': typeof FrameworksThreeStructuralLawsRoute
-  '/insights': typeof InsightsRoute
   '/publications': typeof PublicationsRoute
   '/api/chat': typeof ApiChatRoute
   '/de/about': typeof DeAboutRoute
@@ -241,10 +254,12 @@ export interface FileRoutesByTo {
   '/de/frameworks': typeof DeFrameworksRoute
   '/de/insights': typeof DeInsightsRoute
   '/de/publications': typeof DePublicationsRoute
+  '/insights/$slug': typeof InsightsSlugRoute
   '/portfolio/career-intelligence-operating-system': typeof PortfolioCareerIntelligenceOperatingSystemRoute
   '/portfolio/insurance-claims-intelligence-platform': typeof PortfolioInsuranceClaimsIntelligencePlatformRoute
   '/portfolio/knowledge-architecture-operating-system': typeof PortfolioKnowledgeArchitectureOperatingSystemRoute
   '/de': typeof DeIndexRoute
+  '/insights': typeof InsightsIndexRoute
   '/portfolio': typeof PortfolioIndexRoute
   '/de/portfolio/career-intelligence-operating-system': typeof DePortfolioCareerIntelligenceOperatingSystemRoute
   '/de/portfolio/insurance-claims-intelligence-platform': typeof DePortfolioInsuranceClaimsIntelligencePlatformRoute
@@ -262,7 +277,7 @@ export interface FileRoutesById {
   '/frameworks': typeof FrameworksRoute
   '/frameworks-skaido': typeof FrameworksSkaidoRoute
   '/frameworks-three-structural-laws': typeof FrameworksThreeStructuralLawsRoute
-  '/insights': typeof InsightsRoute
+  '/insights': typeof InsightsRouteWithChildren
   '/portfolio': typeof PortfolioRouteWithChildren
   '/publications': typeof PublicationsRoute
   '/api/chat': typeof ApiChatRoute
@@ -273,10 +288,12 @@ export interface FileRoutesById {
   '/de/insights': typeof DeInsightsRoute
   '/de/portfolio': typeof DePortfolioRouteWithChildren
   '/de/publications': typeof DePublicationsRoute
+  '/insights/$slug': typeof InsightsSlugRoute
   '/portfolio/career-intelligence-operating-system': typeof PortfolioCareerIntelligenceOperatingSystemRoute
   '/portfolio/insurance-claims-intelligence-platform': typeof PortfolioInsuranceClaimsIntelligencePlatformRoute
   '/portfolio/knowledge-architecture-operating-system': typeof PortfolioKnowledgeArchitectureOperatingSystemRoute
   '/de/': typeof DeIndexRoute
+  '/insights/': typeof InsightsIndexRoute
   '/portfolio/': typeof PortfolioIndexRoute
   '/de/portfolio/career-intelligence-operating-system': typeof DePortfolioCareerIntelligenceOperatingSystemRoute
   '/de/portfolio/insurance-claims-intelligence-platform': typeof DePortfolioInsuranceClaimsIntelligencePlatformRoute
@@ -306,10 +323,12 @@ export interface FileRouteTypes {
     | '/de/insights'
     | '/de/portfolio'
     | '/de/publications'
+    | '/insights/$slug'
     | '/portfolio/career-intelligence-operating-system'
     | '/portfolio/insurance-claims-intelligence-platform'
     | '/portfolio/knowledge-architecture-operating-system'
     | '/de/'
+    | '/insights/'
     | '/portfolio/'
     | '/de/portfolio/career-intelligence-operating-system'
     | '/de/portfolio/insurance-claims-intelligence-platform'
@@ -325,7 +344,6 @@ export interface FileRouteTypes {
     | '/frameworks'
     | '/frameworks-skaido'
     | '/frameworks-three-structural-laws'
-    | '/insights'
     | '/publications'
     | '/api/chat'
     | '/de/about'
@@ -334,10 +352,12 @@ export interface FileRouteTypes {
     | '/de/frameworks'
     | '/de/insights'
     | '/de/publications'
+    | '/insights/$slug'
     | '/portfolio/career-intelligence-operating-system'
     | '/portfolio/insurance-claims-intelligence-platform'
     | '/portfolio/knowledge-architecture-operating-system'
     | '/de'
+    | '/insights'
     | '/portfolio'
     | '/de/portfolio/career-intelligence-operating-system'
     | '/de/portfolio/insurance-claims-intelligence-platform'
@@ -365,10 +385,12 @@ export interface FileRouteTypes {
     | '/de/insights'
     | '/de/portfolio'
     | '/de/publications'
+    | '/insights/$slug'
     | '/portfolio/career-intelligence-operating-system'
     | '/portfolio/insurance-claims-intelligence-platform'
     | '/portfolio/knowledge-architecture-operating-system'
     | '/de/'
+    | '/insights/'
     | '/portfolio/'
     | '/de/portfolio/career-intelligence-operating-system'
     | '/de/portfolio/insurance-claims-intelligence-platform'
@@ -386,7 +408,7 @@ export interface RootRouteChildren {
   FrameworksRoute: typeof FrameworksRoute
   FrameworksSkaidoRoute: typeof FrameworksSkaidoRoute
   FrameworksThreeStructuralLawsRoute: typeof FrameworksThreeStructuralLawsRoute
-  InsightsRoute: typeof InsightsRoute
+  InsightsRoute: typeof InsightsRouteWithChildren
   PortfolioRoute: typeof PortfolioRouteWithChildren
   PublicationsRoute: typeof PublicationsRoute
   ApiChatRoute: typeof ApiChatRoute
@@ -492,6 +514,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortfolioIndexRouteImport
       parentRoute: typeof PortfolioRoute
     }
+    '/insights/': {
+      id: '/insights/'
+      path: '/'
+      fullPath: '/insights/'
+      preLoaderRoute: typeof InsightsIndexRouteImport
+      parentRoute: typeof InsightsRoute
+    }
     '/de/': {
       id: '/de/'
       path: '/'
@@ -519,6 +548,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/portfolio/career-intelligence-operating-system'
       preLoaderRoute: typeof PortfolioCareerIntelligenceOperatingSystemRouteImport
       parentRoute: typeof PortfolioRoute
+    }
+    '/insights/$slug': {
+      id: '/insights/$slug'
+      path: '/$slug'
+      fullPath: '/insights/$slug'
+      preLoaderRoute: typeof InsightsSlugRouteImport
+      parentRoute: typeof InsightsRoute
     }
     '/de/publications': {
       id: '/de/publications'
@@ -642,6 +678,20 @@ const DeRouteChildren: DeRouteChildren = {
 
 const DeRouteWithChildren = DeRoute._addFileChildren(DeRouteChildren)
 
+interface InsightsRouteChildren {
+  InsightsSlugRoute: typeof InsightsSlugRoute
+  InsightsIndexRoute: typeof InsightsIndexRoute
+}
+
+const InsightsRouteChildren: InsightsRouteChildren = {
+  InsightsSlugRoute: InsightsSlugRoute,
+  InsightsIndexRoute: InsightsIndexRoute,
+}
+
+const InsightsRouteWithChildren = InsightsRoute._addFileChildren(
+  InsightsRouteChildren,
+)
+
 interface PortfolioRouteChildren {
   PortfolioCareerIntelligenceOperatingSystemRoute: typeof PortfolioCareerIntelligenceOperatingSystemRoute
   PortfolioInsuranceClaimsIntelligencePlatformRoute: typeof PortfolioInsuranceClaimsIntelligencePlatformRoute
@@ -674,7 +724,7 @@ const rootRouteChildren: RootRouteChildren = {
   FrameworksRoute: FrameworksRoute,
   FrameworksSkaidoRoute: FrameworksSkaidoRoute,
   FrameworksThreeStructuralLawsRoute: FrameworksThreeStructuralLawsRoute,
-  InsightsRoute: InsightsRoute,
+  InsightsRoute: InsightsRouteWithChildren,
   PortfolioRoute: PortfolioRouteWithChildren,
   PublicationsRoute: PublicationsRoute,
   ApiChatRoute: ApiChatRoute,
