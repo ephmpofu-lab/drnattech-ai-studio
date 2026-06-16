@@ -3,7 +3,7 @@ import {
   Link,
   notFound,
 } from "@tanstack/react-router";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import {
   Calendar,
   Clock,
@@ -17,6 +17,8 @@ import {
   ArrowLeft,
   ExternalLink,
 } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { SiteNav } from "@/components/brand/SiteNav";
 import { SiteFooter } from "@/components/brand/SiteFooter";
 import { BrandBackground } from "@/components/brand/Background";
@@ -24,8 +26,6 @@ import {
   getPublicationBySlug,
   getRelatedPublications,
   type Publication,
-  type ContentBlock,
-  type Section,
 } from "@/lib/publications";
 import portrait from "@/assets/hero-portrait.jpg";
 
@@ -42,12 +42,14 @@ export const Route = createFileRoute("/insights/$slug")({
     if (!loaderData) return {};
     const pub = loaderData as Publication;
     const url = `https://dr-ephraim-mpofu.com/insights/${pub.slug}`;
+    const title = pub.seoTitle || `${pub.title} | Dr. Ephraim Mpofu`;
+    const description = pub.seoDescription || pub.abstract;
     return {
       meta: [
-        { title: `${pub.title} | Dr. Ephraim Mpofu` },
-        { name: "description", content: pub.abstract },
+        { title },
+        { name: "description", content: description },
         { property: "og:title", content: pub.title },
-        { property: "og:description", content: pub.abstract },
+        { property: "og:description", content: description },
         { property: "og:type", content: "article" },
         { property: "og:url", content: url },
         { property: "article:published_time", content: pub.dateISO },
@@ -57,7 +59,7 @@ export const Route = createFileRoute("/insights/$slug")({
         },
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:title", content: pub.title },
-        { name: "twitter:description", content: pub.abstract },
+        { name: "twitter:description", content: description },
       ],
       links: [{ rel: "canonical", href: url }],
     };
@@ -97,181 +99,176 @@ function SchemaOrg({ pub }: { pub: Publication }) {
   );
 }
 
-// ─── Content Block Renderers ─────────────────────────────────────────────────
+// ─── Markdown Helpers ─────────────────────────────────────────────────────────
 
-function BlockRenderer({
-  block,
-  pub,
-}: {
-  block: ContentBlock;
-  pub: Publication;
-}) {
-  if (block.kind === "p") {
-    return (
-      <p
-        className="mb-5 text-[15.5px] leading-[1.8]"
-        style={{ color: "#CBD5E1" }}
-      >
-        {block.text}
-      </p>
-    );
-  }
-
-  if (block.kind === "ul") {
-    return (
-      <ul className="mb-5 space-y-2.5 pl-1">
-        {block.items.map((item, i) => (
-          <li
-            key={i}
-            className="flex gap-3 text-[15px] leading-[1.7]"
-            style={{ color: "#CBD5E1" }}
-          >
-            <span
-              className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full"
-              style={{ background: "#A855F7" }}
-            />
-            {item}
-          </li>
-        ))}
-      </ul>
-    );
-  }
-
-  if (block.kind === "quote") {
-    return (
-      <blockquote
-        className="my-7 rounded-r-[12px] py-5 pl-6 pr-5"
-        style={{
-          background: "rgba(139,92,246,0.06)",
-          borderLeft: "3px solid #A855F7",
-        }}
-      >
-        <p
-          className="text-[16px] font-medium italic leading-[1.75]"
-          style={{ color: "#E2E8F0" }}
-        >
-          "{block.text}"
-        </p>
-        {block.attr && (
-          <footer
-            className="mt-2.5 text-[12.5px]"
-            style={{ color: "#64748B" }}
-          >
-            — {block.attr}
-          </footer>
-        )}
-      </blockquote>
-    );
-  }
-
-  if (block.kind === "figure") {
-    const fig = pub.figures.find((f) => f.id === block.ref);
-    if (!fig) return null;
-    return (
-      <figure className="my-8">
-        <div
-          className="overflow-hidden rounded-[14px]"
-          style={{ border: "1px solid rgba(255,255,255,0.07)" }}
-        >
-          <img
-            src={pub.heroImage}
-            alt={fig.alt}
-            className="h-auto w-full object-cover"
-            style={{ maxHeight: "420px" }}
-          />
-        </div>
-        <figcaption
-          className="mt-3 text-center text-[12.5px]"
-          style={{ color: "#64748B" }}
-        >
-          {fig.caption}
-        </figcaption>
-      </figure>
-    );
-  }
-
-  if (block.kind === "table") {
-    const tbl = pub.tables.find((t) => t.id === block.ref);
-    if (!tbl) return null;
-    return (
-      <div className="my-8 overflow-x-auto">
-        <table className="w-full text-[14px]">
-          <caption
-            className="mb-3 text-left text-[13px] font-semibold"
-            style={{ color: "#94A3B8" }}
-          >
-            {tbl.caption}
-          </caption>
-          <thead>
-            <tr
-              style={{ borderBottom: "1px solid rgba(255,255,255,0.1)" }}
-            >
-              {tbl.headers.map((h) => (
-                <th
-                  key={h}
-                  className="pb-3 pr-6 text-left text-[12px] font-semibold tracking-[0.08em]"
-                  style={{ color: "#64748B" }}
-                >
-                  {h.toUpperCase()}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {tbl.rows.map((row, ri) => (
-              <tr
-                key={ri}
-                style={{
-                  borderBottom: "1px solid rgba(255,255,255,0.05)",
-                }}
-              >
-                {row.map((cell, ci) => (
-                  <td
-                    key={ci}
-                    className="py-3.5 pr-6 text-[14px] leading-[1.55]"
-                    style={{ color: ci === 0 ? "#E2E8F0" : "#94A3B8" }}
-                  >
-                    {cell}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
-  }
-
-  return null;
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim();
 }
 
-// ─── Section Component ────────────────────────────────────────────────────────
+function extractHeadings(markdown: string): Array<{ id: string; heading: string }> {
+  return markdown
+    .split('\n')
+    .filter((line) => line.startsWith('## '))
+    .map((line) => {
+      const heading = line.replace(/^## /, '');
+      return { id: slugify(heading), heading };
+    });
+}
 
-function SectionRenderer({
-  section,
-  pub,
-  isActive,
-}: {
-  section: Section;
-  pub: Publication;
-  isActive: boolean;
-}) {
+// ─── Markdown Body Component ──────────────────────────────────────────────────
+
+function MarkdownBody({ body }: { body: string }) {
   return (
-    <section id={section.id} className="mb-12 scroll-mt-[120px]">
-      <h2
-        className="mb-5 text-[24px] font-bold leading-[1.25] tracking-[-0.01em]"
-        style={{
-          color: isActive ? "#E2E8F0" : "#CBD5E1",
-          borderBottom: "1px solid rgba(255,255,255,0.06)",
-          paddingBottom: "0.75rem",
-        }}
-      >
-        {section.heading}
-      </h2>
-      {section.blocks.map((block, i) => (
-        <BlockRenderer key={i} block={block} pub={pub} />
-      ))}
-    </section>
+    <ReactMarkdown
+      remarkPlugins={[remarkGfm]}
+      components={{
+        h2: ({ children }) => {
+          const id = slugify(String(children));
+          return (
+            <h2
+              id={id}
+              className="mb-5 mt-10 scroll-mt-[120px] text-[24px] font-bold leading-[1.25] tracking-[-0.01em] first:mt-0"
+              style={{
+                color: '#CBD5E1',
+                borderBottom: '1px solid rgba(255,255,255,0.06)',
+                paddingBottom: '0.75rem',
+              }}
+            >
+              {children}
+            </h2>
+          );
+        },
+        h3: ({ children }) => (
+          <h3
+            className="mb-4 mt-7 text-[19px] font-semibold leading-[1.3]"
+            style={{ color: '#E2E8F0' }}
+          >
+            {children}
+          </h3>
+        ),
+        p: ({ children }) => (
+          <p className="mb-5 text-[15.5px] leading-[1.8]" style={{ color: '#CBD5E1' }}>
+            {children}
+          </p>
+        ),
+        ul: ({ children }) => (
+          <ul className="mb-5 space-y-2.5 pl-1">{children}</ul>
+        ),
+        ol: ({ children }) => (
+          <ol className="mb-5 list-decimal space-y-2 pl-5 text-[15px] leading-[1.7]" style={{ color: '#CBD5E1' }}>
+            {children}
+          </ol>
+        ),
+        li: ({ children }) => (
+          <li
+            className="flex gap-3 text-[15px] leading-[1.7]"
+            style={{ color: '#CBD5E1' }}
+          >
+            <span
+              className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full"
+              style={{ background: '#A855F7' }}
+            />
+            <span>{children}</span>
+          </li>
+        ),
+        blockquote: ({ children }) => (
+          <blockquote
+            className="my-7 rounded-r-[12px] py-5 pl-6 pr-5"
+            style={{
+              background: 'rgba(139,92,246,0.06)',
+              borderLeft: '3px solid #A855F7',
+            }}
+          >
+            <div
+              className="text-[16px] font-medium italic leading-[1.75]"
+              style={{ color: '#E2E8F0' }}
+            >
+              {children}
+            </div>
+          </blockquote>
+        ),
+        table: ({ children }) => (
+          <div className="my-8 overflow-x-auto">
+            <table className="w-full text-[14px]">{children}</table>
+          </div>
+        ),
+        thead: ({ children }) => (
+          <thead style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+            {children}
+          </thead>
+        ),
+        th: ({ children }) => (
+          <th
+            className="pb-3 pr-6 text-left text-[12px] font-semibold tracking-[0.08em]"
+            style={{ color: '#64748B' }}
+          >
+            {String(children).toUpperCase()}
+          </th>
+        ),
+        td: ({ children }) => (
+          <td
+            className="py-3.5 pr-6 text-[14px] leading-[1.55]"
+            style={{
+              color: '#94A3B8',
+              borderBottom: '1px solid rgba(255,255,255,0.05)',
+            }}
+          >
+            {children}
+          </td>
+        ),
+        strong: ({ children }) => (
+          <strong className="font-semibold" style={{ color: '#E2E8F0' }}>
+            {children}
+          </strong>
+        ),
+        a: ({ href, children }) => (
+          <a
+            href={href}
+            target="_blank"
+            rel="noreferrer"
+            style={{ color: '#A855F7' }}
+            className="underline underline-offset-2 transition-colors hover:text-white"
+          >
+            {children}
+          </a>
+        ),
+        code: ({ children, className }) => {
+          const isBlock = className?.includes('language-');
+          if (isBlock) {
+            return (
+              <pre
+                className="my-6 overflow-x-auto rounded-[12px] p-5 text-[13px] leading-[1.65]"
+                style={{
+                  background: 'rgba(255,255,255,0.04)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  color: '#94A3B8',
+                }}
+              >
+                <code>{children}</code>
+              </pre>
+            );
+          }
+          return (
+            <code
+              className="rounded px-1.5 py-0.5 text-[13px]"
+              style={{
+                background: 'rgba(255,255,255,0.07)',
+                color: '#C4B5FD',
+              }}
+            >
+              {children}
+            </code>
+          );
+        },
+      }}
+    >
+      {body}
+    </ReactMarkdown>
   );
 }
 
@@ -312,7 +309,7 @@ function useTOCActiveSection(sectionIds: string[]) {
 
 function CiteBox({ pub }: { pub: Publication }) {
   const [copied, setCopied] = useState(false);
-  const citation = `Mpofu, E. (${pub.dateISO.slice(0, 4)}). ${pub.title}. Dr. Ephraim Mpofu — Insights & Publications. https://dr-ephraim-mpofu.com/insights/${pub.slug}`;
+  const citation = pub.citation || `Mpofu, E. (${pub.dateISO.slice(0, 4)}). ${pub.title}. Dr. Ephraim Mpofu — Insights & Publications. https://dr-ephraim-mpofu.com/insights/${pub.slug}`;
 
   function handleCopy() {
     navigator.clipboard.writeText(citation).then(() => {
@@ -368,15 +365,14 @@ function CiteBox({ pub }: { pub: Publication }) {
 function ArticlePage() {
   const pub = Route.useLoaderData() as Publication;
   const related = getRelatedPublications(pub.relatedSlugs);
-  const sectionIds = pub.sections.map((s) => s.id);
-  const activeId = useTOCActiveSection(sectionIds);
+  const toc = extractHeadings(pub.body);
+  const activeId = useTOCActiveSection(toc.map((h) => h.id));
   const [bookmarked, setBookmarked] = useState(false);
   const articleUrl =
     typeof window !== "undefined"
       ? window.location.href
       : `https://dr-ephraim-mpofu.com/insights/${pub.slug}`;
   const [linkCopied, setLinkCopied] = useState(false);
-  const articleRef = useRef<HTMLDivElement>(null);
 
   function handleCopyLink() {
     navigator.clipboard.writeText(articleUrl).then(() => {
@@ -399,7 +395,7 @@ function ArticlePage() {
       <BrandBackground />
       <SiteNav active="Insights" />
 
-      <main ref={articleRef} className="mx-auto max-w-[1400px] px-6 lg:px-10">
+      <main className="mx-auto max-w-[1400px] px-6 lg:px-10">
         {/* ── Breadcrumb ── */}
         <nav
           className="flex items-center gap-1.5 py-6 text-[12.5px]"
@@ -478,7 +474,7 @@ function ArticlePage() {
               />
               <div>
                 <div className="text-[14px] font-semibold">
-                  Dr. Ephraim Mpofu
+                  {pub.author}
                 </div>
                 <div
                   className="text-[12px]"
@@ -538,28 +534,30 @@ function ArticlePage() {
         </header>
 
         {/* ── Hero Image ── */}
-        <div className="relative mb-10 overflow-hidden rounded-[20px]">
-          <img
-            src={pub.heroImage}
-            alt={pub.title}
-            className="h-[380px] w-full object-cover lg:h-[460px]"
-          />
-          <div
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(180deg, transparent 40%, rgba(5,8,22,0.7) 100%)",
-            }}
-          />
-          <div className="absolute bottom-5 left-6 right-6">
-            <p
-              className="text-[12.5px]"
-              style={{ color: "rgba(255,255,255,0.55)" }}
-            >
-              {pub.heroCaption}
-            </p>
+        {pub.heroImage && (
+          <div className="relative mb-10 overflow-hidden rounded-[20px]">
+            <img
+              src={pub.heroImage}
+              alt={pub.title}
+              className="h-[380px] w-full object-cover lg:h-[460px]"
+            />
+            <div
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(180deg, transparent 40%, rgba(5,8,22,0.7) 100%)",
+              }}
+            />
+            <div className="absolute bottom-5 left-6 right-6">
+              <p
+                className="text-[12.5px]"
+                style={{ color: "rgba(255,255,255,0.55)" }}
+              >
+                {pub.heroCaption}
+              </p>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* ── Two-column layout ── */}
         <div className="flex flex-col gap-10 pb-20 lg:flex-row lg:gap-12">
@@ -587,15 +585,8 @@ function ArticlePage() {
               </p>
             </div>
 
-            {/* Article Sections */}
-            {pub.sections.map((section) => (
-              <SectionRenderer
-                key={section.id}
-                section={section}
-                pub={pub}
-                isActive={activeId === section.id}
-              />
-            ))}
+            {/* Article Body — Markdown */}
+            <MarkdownBody body={pub.body} />
 
             {/* References */}
             {pub.references.length > 0 && (
@@ -712,42 +703,44 @@ function ArticlePage() {
           <aside className="hidden shrink-0 flex-[35] lg:block">
             <div className="sticky top-[110px] flex flex-col gap-6">
               {/* On This Page */}
-              <div
-                className="rounded-[14px] p-5"
-                style={{
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                }}
-              >
+              {toc.length > 0 && (
                 <div
-                  className="mb-4 text-[10px] font-bold tracking-[0.2em]"
-                  style={{ color: "#64748B" }}
+                  className="rounded-[14px] p-5"
+                  style={{
+                    background: "rgba(255,255,255,0.03)",
+                    border: "1px solid rgba(255,255,255,0.07)",
+                  }}
                 >
-                  ON THIS PAGE
+                  <div
+                    className="mb-4 text-[10px] font-bold tracking-[0.2em]"
+                    style={{ color: "#64748B" }}
+                  >
+                    ON THIS PAGE
+                  </div>
+                  <nav className="flex flex-col gap-1">
+                    {toc.map((s) => (
+                      <a
+                        key={s.id}
+                        href={`#${s.id}`}
+                        onClick={(e) => scrollToSection(e, s.id)}
+                        className="rounded-[7px] px-3 py-2 text-[13px] leading-[1.4] transition-all"
+                        style={
+                          activeId === s.id
+                            ? {
+                                background: "rgba(139,92,246,0.12)",
+                                color: "#C4B5FD",
+                                borderLeft: "2px solid #A855F7",
+                                paddingLeft: "10px",
+                              }
+                            : { color: "#64748B" }
+                        }
+                      >
+                        {s.heading}
+                      </a>
+                    ))}
+                  </nav>
                 </div>
-                <nav className="flex flex-col gap-1">
-                  {pub.sections.map((s) => (
-                    <a
-                      key={s.id}
-                      href={`#${s.id}`}
-                      onClick={(e) => scrollToSection(e, s.id)}
-                      className="rounded-[7px] px-3 py-2 text-[13px] leading-[1.4] transition-all"
-                      style={
-                        activeId === s.id
-                          ? {
-                              background: "rgba(139,92,246,0.12)",
-                              color: "#C4B5FD",
-                              borderLeft: "2px solid #A855F7",
-                              paddingLeft: "10px",
-                            }
-                          : { color: "#64748B" }
-                      }
-                    >
-                      {s.heading}
-                    </a>
-                  ))}
-                </nav>
-              </div>
+              )}
 
               {/* Categories */}
               <div
