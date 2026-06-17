@@ -11,6 +11,41 @@
     <!-- Prevent auto-init so we can pass config inline (no config.yml request) -->
     <script>window.CMS_MANUAL_INIT = true;</script>
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+    <!-- OAuth localStorage fallback: handles COOP-restricted browsers where window.opener is null -->
+    <script>
+    (function() {
+      function applyToken(rawValue) {
+        try {
+          var data = JSON.parse(rawValue);
+          if (!data || !data.token) return;
+          // Dispatch the exact message format Decap CMS's handleAuthCallback listens for
+          window.dispatchEvent(new MessageEvent('message', {
+            data: 'authorization:github:success:' + JSON.stringify({ token: data.token, provider: 'github' }),
+            origin: window.location.origin,
+            source: window,
+          }));
+        } catch(e) {}
+      }
+
+      // Same-tab redirect path: popup couldn't close, redirected to /admin instead
+      var pending = localStorage.getItem('decap-cms-oauth-token');
+      if (pending) {
+        localStorage.removeItem('decap-cms-oauth-token');
+        // Delay so CMS.init() runs first and registers its message listener
+        setTimeout(function() { applyToken(pending); }, 1500);
+      }
+
+      // Cross-window path: popup wrote token while this tab was open
+      window.addEventListener('storage', function(e) {
+        if (e.key === 'decap-cms-oauth-token' && e.newValue) {
+          localStorage.removeItem('decap-cms-oauth-token');
+          applyToken(e.newValue);
+        }
+      });
+    })();
+    </script>
+
     <script>
       CMS.init({
         config: {
