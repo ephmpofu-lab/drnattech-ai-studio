@@ -36,10 +36,9 @@ type Message = {
 };
 
 const SUGGESTED = [
-  "How does the AISA Framework work?",
-  "What are the Three Structural Laws?",
-  "How do you design enterprise AI systems?",
-  "Tell me about the ACP Platform",
+  "What AI systems have you built?",
+  "Tell me about your EU AI Act experience",
+  "What is your technical background?",
 ];
 
 /* ============================================================
@@ -545,11 +544,9 @@ function WhatYouCanAsk() {
 /* Chat Welcome State — shown when no messages yet */
 function ChatWelcomeState({ onSuggest }: { onSuggest: (q: string) => void }) {
   const suggestions = [
-    { icon: Layers,      text: "How does the AISA Framework work?",        color: "#C4B5FD" },
-    { icon: ShieldCheck, text: "What are the Three Structural Laws?",       color: "#34D399" },
-    { icon: Building2,   text: "Tell me about the ACP Career Platform",     color: "#60A5FA" },
-    { icon: Brain,       text: "How do you approach enterprise AI design?", color: "#F59E0B" },
-    { icon: Network,     text: "What is Knowledge Architecture?",           color: "#A855F7" },
+    { icon: Building2,   text: "What AI systems have you built?",              color: "#60A5FA" },
+    { icon: ShieldCheck, text: "Tell me about your EU AI Act experience",       color: "#34D399" },
+    { icon: GraduationCap, text: "What is your technical and academic background?", color: "#F59E0B" },
   ];
 
   return (
@@ -578,7 +575,7 @@ function ChatWelcomeState({ onSuggest }: { onSuggest: (q: string) => void }) {
 
       <div className="text-[15px] font-bold text-white">What would you like to know?</div>
       <div className="mt-1 mb-5 text-[12px]" style={{ color: "#6B7280" }}>
-        Ask about frameworks, projects or expertise
+        Ask about my work, background or experience
       </div>
 
       <div className="w-full space-y-2">
@@ -793,7 +790,7 @@ function ChatInterface() {
         >
           <input
             className="flex-1 bg-transparent text-[13.5px] text-white outline-none placeholder:text-gray-500"
-            placeholder="Ask anything about my work, frameworks, projects or experience..."
+            placeholder="Ask about my work, projects, background or experience..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKey}
