@@ -702,20 +702,46 @@ function WhatIBuild() {
    ============================================================ */
 
 const ragSources = [
-  { name: "Confluence", pct: 29 },
-  { name: "SharePoint", pct: 24 },
-  { name: "Documents", pct: 19 },
-  { name: "Notion", pct: 15 },
-  { name: "Others", pct: 14 },
+  { name: "Core Identity", pct: 45 },
+  { name: "Case Studies", pct: 25 },
+  { name: "Publications", pct: 20 },
+  { name: "Frameworks",   pct: 10 },
 ];
 
-const RAG_LINE_POINTS =
-  "0,65 23.6,59 47.3,53 70.9,50.6 94.5,43.4 118.2,38.6 141.8,35 165.5,29 189.1,23 212.7,19.4 236.4,14.6 260,12.2";
-
 function RagDashboard() {
+  const [stats, setStats] = useState({
+    totalQueries: 0, successRate: 100, totalChunks: 0, totalDocuments: 0, avgResponseMs: 0,
+  });
+
+  useEffect(() => {
+    fetch('/api/stats')
+      .then((r) => r.json())
+      .then((d) => setStats((s) => ({ ...s, ...d })))
+      .catch(() => {});
+  }, []);
+
   const r = 28;
   const circ = 2 * Math.PI * r;
-  const filled = circ * 0.94;
+  const filled = circ * (stats.successRate / 100);
+
+  const metrics = [
+    {
+      label: "Total Queries",
+      value: stats.totalQueries > 0 ? stats.totalQueries.toLocaleString() : "0",
+    },
+    {
+      label: "Chunks Indexed",
+      value: stats.totalChunks > 0 ? stats.totalChunks.toLocaleString() : "—",
+    },
+    {
+      label: "Avg Response",
+      value: stats.avgResponseMs > 0 ? `${(stats.avgResponseMs / 1000).toFixed(1)}s` : "—",
+    },
+    {
+      label: "Success Rate",
+      value: `${stats.successRate}%`,
+    },
+  ];
 
   return (
     <div
@@ -724,13 +750,9 @@ function RagDashboard() {
     >
       <div className="mb-3 text-[11px] font-bold text-white">RAG Performance Overview</div>
 
+      {/* 4 live metric cards */}
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-        {[
-          { label: "Total Queries", value: "12,842" },
-          { label: "Avg. Answer Relevance", value: "92.7%" },
-          { label: "Sources Retrieved (Avg.)", value: "6.3" },
-          { label: "User Satisfaction", value: "4.8 / 5" },
-        ].map((m) => (
+        {metrics.map((m) => (
           <div
             key={m.label}
             className="rounded-[8px] p-2.5"
@@ -743,26 +765,28 @@ function RagDashboard() {
       </div>
 
       <div className="mt-4 grid grid-cols-1 items-start gap-4 sm:grid-cols-[1fr_auto_auto]">
+        {/* Knowledge base real stats */}
         <div>
-          <div className="mb-1.5 text-[9.5px]" style={{ color: "#6B7280" }}>Answer Relevance Over Time</div>
-          <svg viewBox="0 0 260 75" style={{ width: "100%", height: 75 }}>
-            <defs>
-              <linearGradient id="rag-fill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#A855F7" stopOpacity="0.28" />
-                <stop offset="100%" stopColor="#A855F7" stopOpacity="0" />
-              </linearGradient>
-            </defs>
-            {[25, 45, 65].map((y) => (
-              <line key={y} x1="0" y1={y} x2="260" y2={y} stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
+          <div className="mb-1.5 text-[9.5px]" style={{ color: "#6B7280" }}>Knowledge Base</div>
+          <div
+            className="rounded-[8px] p-3 space-y-2"
+            style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)" }}
+          >
+            {[
+              { label: "Vector Chunks", value: stats.totalChunks > 0 ? stats.totalChunks.toLocaleString() : "loading…" },
+              { label: "Source Documents", value: stats.totalDocuments > 0 ? String(stats.totalDocuments) : "loading…" },
+              { label: "Embedding Model", value: "OpenAI" },
+              { label: "Vector Store", value: "Supabase pgvector" },
+            ].map((row) => (
+              <div key={row.label} className="flex items-center justify-between">
+                <span className="text-[10px]" style={{ color: "#9CA3AF" }}>{row.label}</span>
+                <span className="text-[11px] font-bold text-white">{row.value}</span>
+              </div>
             ))}
-            <polygon points={`0,70 ${RAG_LINE_POINTS} 260,70`} fill="url(#rag-fill)" />
-            <polyline points={RAG_LINE_POINTS} fill="none" stroke="#A855F7" strokeWidth="1.5" strokeLinejoin="round" />
-            {["Jan", "Apr", "Jul", "Oct", "Dec"].map((m, i) => (
-              <text key={m} x={i * 65} y="74" style={{ fontSize: 7, fill: "#6B7280" }}>{m}</text>
-            ))}
-          </svg>
+          </div>
         </div>
 
+        {/* Success rate donut — live */}
         <div className="flex flex-col items-center">
           <div className="mb-1.5 text-[9.5px]" style={{ color: "#6B7280" }}>Query Success Rate</div>
           <svg width="70" height="70" viewBox="0 0 70 70">
@@ -774,18 +798,21 @@ function RagDashboard() {
               strokeLinecap="round"
               transform="rotate(-90 35 35)"
             />
-            <text x="35" y="40" textAnchor="middle" style={{ fontSize: 13, fontWeight: 700, fill: "#fff" }}>94%</text>
+            <text x="35" y="40" textAnchor="middle" style={{ fontSize: 13, fontWeight: 700, fill: "#fff" }}>
+              {stats.successRate}%
+            </text>
           </svg>
         </div>
 
+        {/* Knowledge categories — real document breakdown */}
         <div>
-          <div className="mb-2 text-[9.5px]" style={{ color: "#6B7280" }}>Top Knowledge Sources</div>
+          <div className="mb-2 text-[9.5px]" style={{ color: "#6B7280" }}>Knowledge Categories</div>
           <div className="space-y-1.5">
             {ragSources.map((s) => (
               <div key={s.name} className="flex items-center gap-2">
-                <div className="w-[62px] shrink-0 text-right text-[9.5px]" style={{ color: "#9CA3AF" }}>{s.name}</div>
+                <div className="w-[72px] shrink-0 text-right text-[9.5px]" style={{ color: "#9CA3AF" }}>{s.name}</div>
                 <div className="h-1.5 w-[80px] overflow-hidden rounded-full" style={{ background: "rgba(255,255,255,0.08)" }}>
-                  <div className="h-full rounded-full" style={{ width: `${Math.round(s.pct / 0.29)}%`, background: "#8B5CF6" }} />
+                  <div className="h-full rounded-full" style={{ width: `${Math.round(s.pct / 0.45)}%`, background: "#8B5CF6" }} />
                 </div>
                 <div className="w-[24px] text-[9.5px]" style={{ color: "#6B7280" }}>{s.pct}%</div>
               </div>
