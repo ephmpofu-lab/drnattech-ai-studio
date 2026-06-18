@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
-import { Menu, X, MessageSquare } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
 import { Signature } from "./Signature";
@@ -147,16 +147,6 @@ export function SiteNav({ active = "Home" }: Props) {
             ))}
           </div>
 
-          {/* CTA */}
-          <a
-            href={navRoutes["AI Agent"]}
-            className="hidden items-center gap-2 rounded-[10px] px-5 py-2.5 text-[13px] font-semibold text-white shadow-lg transition-all hover:scale-[1.03] md:inline-flex"
-            style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
-          >
-            <MessageSquare className="h-4 w-4" />
-            {t("nav.askAnything")}
-          </a>
-
           <button
             onClick={() => setMobileOpen((o) => !o)}
             className="rounded-lg p-2 text-white lg:hidden"
@@ -240,16 +230,6 @@ export function SiteNav({ active = "Home" }: Props) {
                 ))}
               </div>
 
-              {/* CTA */}
-              <a
-                href={navRoutes["AI Agent"]}
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-center gap-2 rounded-[12px] py-3.5 text-[15px] font-semibold text-white transition-all active:scale-[0.98]"
-                style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
-              >
-                <MessageSquare className="h-4 w-4" />
-                {t("nav.askAnything")}
-              </a>
             </div>
           </nav>
         </div>

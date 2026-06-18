@@ -443,18 +443,18 @@ function Hero() {
 
         <div className="mt-8 flex flex-wrap gap-3">
           <Link
-            to="/contact"
+            to="/portfolio"
             className="inline-flex items-center gap-2 rounded-[10px] px-5 py-3 text-[13.5px] font-semibold text-white shadow-lg transition-all hover:scale-[1.03]"
             style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
           >
-            Book Strategy Call <ArrowRight className="h-4 w-4" />
+            View My Work <ArrowRight className="h-4 w-4" />
           </Link>
           <Link
-            to="/portfolio"
+            to="/ai-agent"
             className="inline-flex items-center gap-2 rounded-[10px] px-5 py-3 text-[13.5px] font-semibold text-white transition-all hover:bg-white/5"
             style={{ border: "1px solid rgba(255,255,255,0.14)" }}
           >
-            View Portfolio
+            <Bot className="h-4 w-4" /> Talk to My Agent
           </Link>
         </div>
 
@@ -1344,18 +1344,18 @@ function FinalCta() {
 
         <div className="flex flex-col gap-3 lg:items-end">
           <Link
-            to="/contact"
+            to="/portfolio"
             className="inline-flex items-center gap-2 rounded-[10px] px-6 py-3 text-[13.5px] font-semibold text-white transition-all hover:scale-[1.02] whitespace-nowrap"
             style={{ background: "linear-gradient(135deg,#A855F7,#7C3AED)" }}
           >
-            Book Strategy Call <ArrowRight className="h-4 w-4" />
+            View My Work <ArrowRight className="h-4 w-4" />
           </Link>
           <Link
-            to="/portfolio"
+            to="/ai-agent"
             className="inline-flex items-center gap-2 rounded-[10px] px-6 py-3 text-[13.5px] font-semibold text-white transition-all hover:bg-white/5 whitespace-nowrap"
             style={{ border: "1px solid rgba(255,255,255,0.15)" }}
           >
-            View Portfolio <ExternalLink className="h-4 w-4" />
+            <Bot className="h-4 w-4" /> Talk to My Agent
           </Link>
         </div>
       </div>
