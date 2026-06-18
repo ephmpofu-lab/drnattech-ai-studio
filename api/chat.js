@@ -1,5 +1,5 @@
 const N8N_WEBHOOK_URL =
-  'https://ephraimmofu.app.n8n.cloud/webhook/460d3a70-e380-4fa2-8816-0caefe7a9e6c/chat';
+  'https://ephraimmpofu.app.n8n.cloud/webhook/460d3a70-e380-4fa2-8816-0caefe7a9e6c/chat';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
