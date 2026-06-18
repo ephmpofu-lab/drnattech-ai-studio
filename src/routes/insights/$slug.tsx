@@ -27,7 +27,7 @@ import {
   getRelatedPublications,
   type Publication,
 } from "@/lib/publications";
-import portrait from "@/assets/hero-portrait.jpg";
+const portrait = "/images/Dr Mpofu_purple2.png";
 
 // ─── Route ────────────────────────────────────────────────────────────────────
 

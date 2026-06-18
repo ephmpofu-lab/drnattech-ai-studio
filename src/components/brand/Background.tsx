@@ -1,6 +1,6 @@
 export function BrandBackground() {
   return (
-    <div className="pointer-events-none absolute inset-0 -z-10">
+    <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
       <div
         className="absolute -top-40 left-1/2 h-[600px] w-[1100px] -translate-x-1/2 rounded-full opacity-40 blur-[120px]"
         style={{ background: "radial-gradient(closest-side, #8B5CF6, transparent)" }}
