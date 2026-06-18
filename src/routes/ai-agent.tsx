@@ -33,100 +33,7 @@ type Message = {
   id: number;
   role: "user" | "agent";
   content: string;
-  sources?: string[];
 };
-
-/* ============================================================
-   DEMO KNOWLEDGE BASE
-   ============================================================ */
-
-const DEMO_RESPONSES: Array<{
-  keywords: string[];
-  content: string;
-  sources: string[];
-}> = [
-  {
-    keywords: ["approach", "how do you", "design enterprise", "ai solution", "architect"],
-    content:
-      "I follow a system-first approach. I start by understanding the business problem, mapping processes and knowledge flows, then designing an architecture that is secure, scalable and measurable. I use my SKAIDO Framework and Three Structural Laws to ensure the solution is reliable, audit-friendly and built for long-term impact.",
-    sources: ["SKAIDO Framework", "Three Structural Laws", "ACP Platform Case Study", "+ 3 more"],
-  },
-  {
-    keywords: ["aisa", "strategic ai engagement", "aisa framework"],
-    content:
-      "The AISA Framework is my Strategic AI Engagement Framework — a six-phase methodology for moving organisations from business problem to production AI systems. The six phases are: Discovery, Architecture, Build, Validate, Deploy, and Scale. Every phase has defined inputs, outputs and quality gates to prevent the most common failure modes in AI projects.",
-    sources: ["AISA Framework", "AI Strategy Methodology", "+ 2 more"],
-  },
-  {
-    keywords: ["skaido", "implementation methodology", "lifecycle", "phases"],
-    content:
-      "SKAIDO is my end-to-end AI implementation methodology guiding the full project lifecycle: Business Problem → Architecture → Build → Validate → Deploy → Scale. Quality gates at each stage prevent the most common failure mode — building before the problem and architecture are fully understood.",
-    sources: ["SKAIDO Framework", "Framework Suite Overview", "+ 1 more"],
-  },
-  {
-    keywords: ["three structural laws", "structural laws", "prevent failure", "unmaintainable", "silent failure"],
-    content:
-      "The Three Structural Laws are architectural principles I created to prevent the three most common AI system failures: fraud, silent failure and unmaintainable systems. Every AI system I build is evaluated against these laws before deployment to ensure transparency, reliability and long-term governability in production.",
-    sources: ["Three Structural Laws", "AI Governance Framework", "+ 2 more"],
-  },
-  {
-    keywords: ["knowledge architecture", "rag", "retrieval", "knowledge system", "vector"],
-    content:
-      "Knowledge Architecture is one of my core specialisations — covering enterprise knowledge systems, retrieval systems, RAG, indexing, governance and knowledge engineering. I design knowledge architectures that enable AI systems to retrieve accurate, contextual and trusted information at scale, eliminating hallucination and building genuine enterprise trust.",
-    sources: ["Knowledge Architecture Framework", "RAG System Design Guide", "+ 3 more"],
-  },
-  {
-    keywords: ["project", "case study", "acp", "career", "portfolio", "built", "platform", "work"],
-    content:
-      "My flagship project is the ACP Career Intelligence Platform — a multi-agent RAG system delivering personalised career intelligence at scale. I've also built insurance claims triage agents, enterprise knowledge systems, intelligent automation platforms and multi-agent orchestration systems for enterprise clients in the DACH region.",
-    sources: ["ACP Platform Case Study", "Knowledge Architecture System", "Multi-Agent Framework", "+ 4 more"],
-  },
-  {
-    keywords: ["phd", "research", "boku", "academic", "university"],
-    content:
-      "I hold a PhD (NatTech) from BOKU University Vienna, Austria. My research background informs my systems thinking approach to AI architecture — bringing scientific rigour, evidence-based decision-making and research methodology to every enterprise AI engagement.",
-    sources: ["Academic Background", "Research Publications", "BOKU Vienna", "+ 2 more"],
-  },
-  {
-    keywords: ["multi-agent", "multi agent", "autonomous", "orchestration", "agent system"],
-    content:
-      "I design multi-agent systems where specialised AI agents coordinate, communicate and delegate tasks to achieve complex business objectives. My approach uses orchestration layers, tool management, memory systems and governance controls to ensure multi-agent systems behave reliably in production environments.",
-    sources: ["Multi-Agent Architecture Guide", "SKAIDO Framework", "ACP Platform Case Study", "+ 3 more"],
-  },
-  {
-    keywords: ["governance", "eu ai act", "compliance", "audit", "responsible ai"],
-    content:
-      "AI governance is a core architectural concern in everything I build. Using my Three Structural Laws framework, every AI system includes human-in-the-loop oversight, approval workflows, audit trails, escalation paths and EU AI Act readiness — built into the architecture from day one, not added as an afterthought.",
-    sources: ["AI Governance Framework", "Three Structural Laws", "EU AI Act Readiness Guide", "+ 2 more"],
-  },
-  {
-    keywords: ["transformation", "strategy", "start", "roadmap", "how should a company"],
-    content:
-      "The right starting point for AI transformation is not a technology choice — it is a business problem assessment. I use my AISA Framework to take organisations through structured discovery, identify the highest-value AI opportunities, and design a phased roadmap from first use case to scaled AI operations. Starting with architecture prevents the most expensive AI mistakes.",
-    sources: ["AISA Framework", "AI Strategy Methodology", "Enterprise AI Roadmap", "+ 2 more"],
-  },
-];
-
-const DEFAULT_RESPONSE = {
-  content:
-    "This is a demonstration of the Dr. NatTech AI Knowledge Agent. I can answer questions about the AISA Framework, SKAIDO Framework, Three Structural Laws, Knowledge Architecture, enterprise AI projects, research background and AI architecture strategy. Try asking about any of these topics — or book an AI Strategy Call for a personalised consultation.",
-  sources: ["Knowledge Base Overview", "Framework Documentation", "Project Case Studies", "+ 5 more"],
-};
-
-const INITIAL_MESSAGES: Message[] = [
-  {
-    id: 1,
-    role: "user",
-    content: "How do you approach designing an AI solution for an enterprise?",
-  },
-  {
-    id: 2,
-    role: "agent",
-    content:
-      "I follow a system-first approach. I start by understanding the business problem, mapping processes and knowledge flows, then designing an architecture that is secure, scalable and measurable. I use my SKAIDO Framework and Three Structural Laws to ensure the solution is reliable, audit-friendly and built for long-term impact.",
-    sources: ["SKAIDO Framework", "Three Structural Laws", "ACP Platform Case Study", "+ 3 more"],
-  },
-];
 
 const SUGGESTED = [
   "How does the AISA Framework work?",
@@ -704,33 +611,44 @@ function ChatInterface() {
   const [isTyping, setIsTyping] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
   const nextId = useRef(1);
+  const sessionId = useRef(`s_${Date.now()}_${Math.random().toString(36).slice(2)}`);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
 
-  function findResponse(text: string) {
-    const lower = text.toLowerCase();
-    for (const r of DEMO_RESPONSES) {
-      if (r.keywords.some((k) => lower.includes(k))) return r;
-    }
-    return DEFAULT_RESPONSE;
-  }
-
-  function sendMessage(text: string) {
+  async function sendMessage(text: string) {
     if (!text.trim() || isTyping) return;
     const userMsg: Message = { id: nextId.current++, role: "user", content: text.trim() };
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setIsTyping(true);
-    const resp = findResponse(text);
-    setTimeout(() => {
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text.trim(), sessionId: sessionId.current }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Agent error");
       setMessages((prev) => [
         ...prev,
-        { id: nextId.current++, role: "agent", content: resp.content, sources: resp.sources },
+        { id: nextId.current++, role: "agent", content: data.output },
       ]);
+    } catch {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: nextId.current++,
+          role: "agent",
+          content:
+            "I'm having trouble connecting right now. Please try again in a moment — or book an AI Strategy Call to speak directly.",
+        },
+      ]);
+    } finally {
       setIsTyping(false);
-    }, 900 + Math.random() * 700);
+    }
   }
 
   function handleKey(e: KeyboardEvent<HTMLInputElement>) {
@@ -810,24 +728,6 @@ function ChatInterface() {
               >
                 {msg.content}
               </div>
-              {msg.sources && (
-                <div className="mt-1.5 flex flex-wrap gap-1.5">
-                  <span className="text-[10.5px]" style={{ color: "#6B7280" }}>Sources:</span>
-                  {msg.sources.map((s) => (
-                    <span
-                      key={s}
-                      className="inline-flex rounded-full px-2 py-0.5 text-[10.5px] font-medium"
-                      style={{
-                        background: "rgba(139,92,246,0.12)",
-                        color: "#C4B5FD",
-                        border: "1px solid rgba(139,92,246,0.2)",
-                      }}
-                    >
-                      {s}
-                    </span>
-                  ))}
-                </div>
-              )}
             </div>
           </div>
         ))}
