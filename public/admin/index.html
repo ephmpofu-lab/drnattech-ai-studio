@@ -17,12 +17,23 @@
     (function() {
       var _open = window.open;
       window.open = function(url, name, features) {
+        console.log('[CMS Auth] window.open called. url:', url, '| name:', name);
         if (typeof url === 'string' && url.indexOf('/api/auth') !== -1) {
-          // Full-page redirect: no popup, no cross-window messaging needed
-          window.location.href = url;
+          // Convert to a relative path so we always stay on the current origin.
+          // If base_url in CMS config differs from the actual host (e.g. www vs non-www),
+          // an absolute cross-origin navigation may be silently blocked by Edge
+          // bounce-tracking mitigation. A relative path avoids that entirely.
+          var relativePath = '/api/auth';
+          try {
+            var parsed = new URL(url);
+            relativePath = parsed.pathname + parsed.search;
+          } catch(e) {}
+          console.log('[CMS Auth] Auth URL detected — full-page redirect to:', relativePath);
+          window.location.assign(relativePath);
           // Return a dummy so Decap CMS doesn't throw when it calls .focus()/.close()
           return { focus: function(){}, close: function(){}, closed: false };
         }
+        console.log('[CMS Auth] Not an auth URL — passing through to original window.open');
         return _open.apply(this, arguments);
       };
     })();
@@ -99,7 +110,7 @@
             name: 'github',
             repo: 'ephmpofu-lab/drnattech-ai-studio',
             branch: 'main',
-            base_url: 'https://dr-ephraim-mpofu.com',
+            base_url: window.location.origin,
             auth_endpoint: 'api/auth',
           },
           media_folder: 'public/uploads',
