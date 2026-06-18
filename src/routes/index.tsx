@@ -846,8 +846,77 @@ function FeaturedCaseStudy() {
               A retrieval-augmented generation system that connects disparate enterprise knowledge sources to deliver accurate, traceable and context-aware answers.
             </p>
 
+            {/* ── Governance architecture signal ── */}
             <div
-              className="mt-5 h-[160px] overflow-hidden rounded-[10px]"
+              className="mt-4 rounded-[10px] p-4 space-y-3"
+              style={{ background: "rgba(255,255,255,0.025)", border: "1px solid rgba(139,92,246,0.18)" }}
+            >
+              {/* Header row */}
+              <div className="flex items-center justify-between">
+                <span className="text-[9.5px] font-bold uppercase tracking-[0.2em]" style={{ color: "#A855F7" }}>
+                  Governance Architecture
+                </span>
+                <span
+                  className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-semibold"
+                  style={{ background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.25)", color: "#34D399" }}
+                >
+                  <span className="h-1.5 w-1.5 rounded-full" style={{ background: "#34D399" }} />
+                  EU AI Act Aligned
+                </span>
+              </div>
+
+              {/* Five Pillars of Governable AI */}
+              <div>
+                <div className="mb-1.5 text-[9px] font-semibold uppercase tracking-[0.15em]" style={{ color: "#6B7280" }}>
+                  Five Pillars of Governable AI
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {[
+                    { label: "Explainability", color: "#3B82F6" },
+                    { label: "Traceability",   color: "#14B8A6" },
+                    { label: "Oversight",      color: "#8B5CF6" },
+                    { label: "Monitoring",     color: "#F59E0B" },
+                    { label: "Accountability", color: "#EF4444" },
+                  ].map((p, i) => (
+                    <span
+                      key={p.label}
+                      className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9.5px] font-semibold"
+                      style={{
+                        background: `${p.color}12`,
+                        border: `1px solid ${p.color}35`,
+                        color: p.color,
+                      }}
+                    >
+                      <span className="text-[9px] font-bold" style={{ color: p.color }}>{i + 1}</span>
+                      {p.label}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Three Structural Laws */}
+              <div>
+                <div className="mb-1.5 text-[9px] font-semibold uppercase tracking-[0.15em]" style={{ color: "#6B7280" }}>
+                  Three Structural Laws
+                </div>
+                <div className="space-y-1">
+                  {[
+                    { law: "No Deception",          desc: "every decision is explainable" },
+                    { law: "No Silent Failure",      desc: "every failure is visible" },
+                    { law: "No Ungovernable System", desc: "every system is auditable" },
+                  ].map((l) => (
+                    <div key={l.law} className="flex items-center gap-2 text-[10.5px]">
+                      <span className="h-1 w-1 shrink-0 rounded-full" style={{ background: "#A855F7" }} />
+                      <span className="font-semibold text-white">{l.law}</span>
+                      <span style={{ color: "#6B7280" }}>— {l.desc}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div
+              className="mt-4 h-[140px] overflow-hidden rounded-[10px]"
               style={{ border: "1px solid rgba(255,255,255,0.07)" }}
             >
               <img
