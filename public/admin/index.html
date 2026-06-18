@@ -8,18 +8,37 @@
     <style>body { margin: 0; font-family: sans-serif; background: #050816; }</style>
   </head>
   <body>
+    <!-- MUST be first: intercept Decap CMS's window.open so the OAuth flow uses a
+         full-page redirect instead of a popup. This eliminates ALL popup-based
+         cross-window communication issues (COOP + Edge Tracking Prevention).
+         The original admin tab navigates through GitHub and returns here with the
+         token delivered via a server-set first-party cookie. -->
+    <script>
+    (function() {
+      var _open = window.open;
+      window.open = function(url, name, features) {
+        if (typeof url === 'string' && url.indexOf('/api/auth') !== -1) {
+          // Full-page redirect: no popup, no cross-window messaging needed
+          window.location.href = url;
+          // Return a dummy so Decap CMS doesn't throw when it calls .focus()/.close()
+          return { focus: function(){}, close: function(){}, closed: false };
+        }
+        return _open.apply(this, arguments);
+      };
+    })();
+    </script>
+
     <!-- Prevent auto-init so we can pass config inline (no config.yml request) -->
     <script>window.CMS_MANUAL_INIT = true;</script>
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
-    <!-- OAuth multi-path fallback: handles COOP + Edge Tracking Prevention -->
+    <!-- OAuth token receiver -->
     <script>
     (function() {
       function applyToken(rawValue) {
         try {
           var data = JSON.parse(rawValue);
           if (!data || !data.token) return;
-          // Dispatch the exact message format Decap CMS's handleAuthCallback listens for
           window.dispatchEvent(new MessageEvent('message', {
             data: 'authorization:github:success:' + JSON.stringify({ token: data.token, provider: 'github' }),
             origin: window.location.origin,
@@ -28,9 +47,20 @@
         } catch(e) {}
       }
 
-      // Path A: BroadcastChannel — primary method for Edge with Tracking Prevention.
-      // BroadcastChannel is event-based messaging, not classified as "storage",
-      // so Edge's tracking prevention does not block it.
+      // PRIMARY: server-set cookie from /api/callback after full-page OAuth redirect.
+      // First-party cookie, not blocked by Edge Tracking Prevention.
+      (function() {
+        var match = document.cookie.match(/(?:^|;\s*)decap-oauth=([^;]+)/);
+        if (match) {
+          document.cookie = 'decap-oauth=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; SameSite=Lax';
+          var rawValue;
+          try { rawValue = decodeURIComponent(match[1]); } catch(e) { return; }
+          // Delay so CMS.init() registers its message listener first
+          setTimeout(function() { applyToken(rawValue); }, 1500);
+        }
+      })();
+
+      // FALLBACK A: BroadcastChannel (if popup was used on a non-Edge browser)
       try {
         var bc = new BroadcastChannel('decap-cms-oauth');
         bc.addEventListener('message', function(e) {
@@ -41,20 +71,7 @@
         });
       } catch(bcErr) {}
 
-      // Path B: Server-set cookie — handles case where popup redirected to /admin.
-      // Cookie is set server-side by /api/callback in a first-party context,
-      // so Edge tracking prevention does not apply.
-      (function() {
-        var match = document.cookie.match(/(?:^|;\s*)decap-oauth=([^;]+)/);
-        if (match) {
-          document.cookie = 'decap-oauth=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; SameSite=Lax';
-          var rawValue;
-          try { rawValue = decodeURIComponent(match[1]); } catch(e) { return; }
-          setTimeout(function() { applyToken(rawValue); }, 1500);
-        }
-      })();
-
-      // Path C: localStorage on load — popup redirected to /admin and wrote token
+      // FALLBACK B: localStorage on load (Chrome/Firefox popup redirect path)
       try {
         var pending = localStorage.getItem('decap-cms-oauth-token');
         if (pending) {
@@ -63,7 +80,7 @@
         }
       } catch(e) {}
 
-      // Path D: localStorage storage event — popup wrote token while this tab was open (Chrome/Firefox)
+      // FALLBACK C: localStorage storage event (Chrome/Firefox cross-window)
       try {
         window.addEventListener('storage', function(e) {
           if (e.key === 'decap-cms-oauth-token' && e.newValue) {
