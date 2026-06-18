@@ -46,6 +46,9 @@ export default async function handler(req, res) {
   const start = Date.now();
 
   try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 55_000);
+
     const upstream = await fetch(N8N_WEBHOOK_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -54,7 +57,9 @@ export default async function handler(req, res) {
         sessionId: sessionId || 'anonymous',
         chatInput: message.trim(),
       }),
+      signal: controller.signal,
     });
+    clearTimeout(timeout);
 
     if (!upstream.ok) {
       const text = await upstream.text().catch(() => '');

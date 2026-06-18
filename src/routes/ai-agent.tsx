@@ -640,7 +640,7 @@ function ChatInterface() {
           id: nextId.current++,
           role: "agent",
           content:
-            "I'm having trouble connecting right now. Please try again in a moment — or book an AI Strategy Call to speak directly.",
+            "I'm having trouble connecting right now. Please try again in a moment.",
         },
       ]);
     } finally {
