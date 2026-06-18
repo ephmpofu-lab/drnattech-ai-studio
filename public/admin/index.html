@@ -46,60 +46,60 @@
     <!-- OAuth token receiver -->
     <script>
     (function() {
+      // Store the token as a Decap CMS user object in localStorage.
+      // Decap CMS calls loadUser() on every page load and calls restoreUser() if a
+      // stored user is found — this is the "stay logged in" path that does NOT require
+      // the user to have clicked Login first, so it works after a full-page OAuth redirect.
       function applyToken(rawValue) {
         try {
           var data = JSON.parse(rawValue);
           if (!data || !data.token) return;
-          window.dispatchEvent(new MessageEvent('message', {
-            data: 'authorization:github:success:' + JSON.stringify({ token: data.token, provider: 'github' }),
-            origin: window.location.origin,
-            source: window,
-          }));
+
+          var user = {
+            token: data.token,
+            backendName: 'github',
+            login: data.login || '',
+            name: data.name || data.login || '',
+            avatar_url: data.avatar_url || '',
+            email: data.email || '',
+          };
+
+          // Write under both the old (netlify-cms) and new (decap-cms) storage keys
+          // so whichever version of the internal auth store is active will find it.
+          try {
+            localStorage.setItem('decap-cms-user', JSON.stringify(user));
+            localStorage.setItem('netlify-cms-user', JSON.stringify(user));
+          } catch(lsErr) {}
+
+          // Also dispatch the message-event approach as a fallback (for browsers / versions
+          // where the auth Promise listener is still alive on redirect return).
+          try {
+            window.dispatchEvent(new MessageEvent('message', {
+              data: 'authorization:github:success:' + JSON.stringify({ token: data.token, provider: 'github' }),
+              origin: window.location.origin,
+              source: window,
+            }));
+          } catch(evErr) {}
+
+          // Reload so Decap CMS picks up the localStorage entry via its loadUser() init path.
+          // Short delay lets any in-flight CMS init complete first.
+          setTimeout(function() { window.location.reload(); }, 800);
         } catch(e) {}
       }
 
       // PRIMARY: server-set cookie from /api/callback after full-page OAuth redirect.
-      // First-party cookie, not blocked by Edge Tracking Prevention.
+      // First-party cookie on the main navigation — not blocked by Edge Tracking Prevention.
       (function() {
         var match = document.cookie.match(/(?:^|;\s*)decap-oauth=([^;]+)/);
         if (match) {
+          // Consume immediately so a hard refresh doesn't replay it.
           document.cookie = 'decap-oauth=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; SameSite=Lax';
           var rawValue;
           try { rawValue = decodeURIComponent(match[1]); } catch(e) { return; }
-          // Delay so CMS.init() registers its message listener first
-          setTimeout(function() { applyToken(rawValue); }, 1500);
+          // Short delay lets CMS.init() complete before we write to localStorage + reload.
+          setTimeout(function() { applyToken(rawValue); }, 500);
         }
       })();
-
-      // FALLBACK A: BroadcastChannel (if popup was used on a non-Edge browser)
-      try {
-        var bc = new BroadcastChannel('decap-cms-oauth');
-        bc.addEventListener('message', function(e) {
-          bc.close();
-          if (e.data && e.data.token) {
-            setTimeout(function() { applyToken(JSON.stringify(e.data)); }, 1500);
-          }
-        });
-      } catch(bcErr) {}
-
-      // FALLBACK B: localStorage on load (Chrome/Firefox popup redirect path)
-      try {
-        var pending = localStorage.getItem('decap-cms-oauth-token');
-        if (pending) {
-          localStorage.removeItem('decap-cms-oauth-token');
-          setTimeout(function() { applyToken(pending); }, 1500);
-        }
-      } catch(e) {}
-
-      // FALLBACK C: localStorage storage event (Chrome/Firefox cross-window)
-      try {
-        window.addEventListener('storage', function(e) {
-          if (e.key === 'decap-cms-oauth-token' && e.newValue) {
-            try { localStorage.removeItem('decap-cms-oauth-token'); } catch(e2) {}
-            applyToken(e.newValue);
-          }
-        });
-      } catch(e) {}
     })();
     </script>
 

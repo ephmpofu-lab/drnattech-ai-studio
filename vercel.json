@@ -1,4 +1,6 @@
 {
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
   "functions": {
     "api/chat.js": { "maxDuration": 60 },
     "api/stats.js": { "maxDuration": 15 }
