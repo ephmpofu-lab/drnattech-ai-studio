@@ -12,7 +12,7 @@
     <script>window.CMS_MANUAL_INIT = true;</script>
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
-    <!-- OAuth localStorage fallback: handles COOP-restricted browsers where window.opener is null -->
+    <!-- OAuth multi-path fallback: handles COOP + Edge Tracking Prevention -->
     <script>
     (function() {
       function applyToken(rawValue) {
@@ -28,21 +28,50 @@
         } catch(e) {}
       }
 
-      // Same-tab redirect path: popup couldn't close, redirected to /admin instead
-      var pending = localStorage.getItem('decap-cms-oauth-token');
-      if (pending) {
-        localStorage.removeItem('decap-cms-oauth-token');
-        // Delay so CMS.init() runs first and registers its message listener
-        setTimeout(function() { applyToken(pending); }, 1500);
-      }
+      // Path A: BroadcastChannel — primary method for Edge with Tracking Prevention.
+      // BroadcastChannel is event-based messaging, not classified as "storage",
+      // so Edge's tracking prevention does not block it.
+      try {
+        var bc = new BroadcastChannel('decap-cms-oauth');
+        bc.addEventListener('message', function(e) {
+          bc.close();
+          if (e.data && e.data.token) {
+            setTimeout(function() { applyToken(JSON.stringify(e.data)); }, 1500);
+          }
+        });
+      } catch(bcErr) {}
 
-      // Cross-window path: popup wrote token while this tab was open
-      window.addEventListener('storage', function(e) {
-        if (e.key === 'decap-cms-oauth-token' && e.newValue) {
-          localStorage.removeItem('decap-cms-oauth-token');
-          applyToken(e.newValue);
+      // Path B: Server-set cookie — handles case where popup redirected to /admin.
+      // Cookie is set server-side by /api/callback in a first-party context,
+      // so Edge tracking prevention does not apply.
+      (function() {
+        var match = document.cookie.match(/(?:^|;\s*)decap-oauth=([^;]+)/);
+        if (match) {
+          document.cookie = 'decap-oauth=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; SameSite=Lax';
+          var rawValue;
+          try { rawValue = decodeURIComponent(match[1]); } catch(e) { return; }
+          setTimeout(function() { applyToken(rawValue); }, 1500);
         }
-      });
+      })();
+
+      // Path C: localStorage on load — popup redirected to /admin and wrote token
+      try {
+        var pending = localStorage.getItem('decap-cms-oauth-token');
+        if (pending) {
+          localStorage.removeItem('decap-cms-oauth-token');
+          setTimeout(function() { applyToken(pending); }, 1500);
+        }
+      } catch(e) {}
+
+      // Path D: localStorage storage event — popup wrote token while this tab was open (Chrome/Firefox)
+      try {
+        window.addEventListener('storage', function(e) {
+          if (e.key === 'decap-cms-oauth-token' && e.newValue) {
+            try { localStorage.removeItem('decap-cms-oauth-token'); } catch(e2) {}
+            applyToken(e.newValue);
+          }
+        });
+      } catch(e) {}
     })();
     </script>
 

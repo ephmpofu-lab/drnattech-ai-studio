@@ -25,6 +25,17 @@ export default async function handler(req, res) {
       return res.status(401).send(renderPage('error', data.error_description || 'Token exchange failed'));
     }
 
+    // Set a first-party same-origin cookie as the most reliable fallback.
+    // This is NOT affected by Edge tracking prevention because it is set in a
+    // first-party response (the popup is visiting dr-ephraim-mpofu.com/api/callback).
+    const tokenPayload = encodeURIComponent(
+      JSON.stringify({ token: data.access_token, provider: 'github' })
+    );
+    res.setHeader(
+      'Set-Cookie',
+      `decap-oauth=${tokenPayload}; Path=/; Secure; SameSite=Lax; Max-Age=120`
+    );
+
     return res.status(200).send(renderPage('success', data.access_token));
   } catch (err) {
     return res.status(500).send(renderPage('error', 'Server error during authentication'));
@@ -37,9 +48,8 @@ function renderPage(status, content) {
     ? { token: content, provider: 'github' }
     : { message: content };
   const cmsMsg = `authorization:github:${status}:${JSON.stringify(cmsMsgData)}`;
-  // Stored as a JSON string so the admin tab can JSON.parse it
-  const localStorageValue = isSuccess
-    ? JSON.stringify(JSON.stringify({ token: content, provider: 'github' }))
+  const tokenJson = isSuccess
+    ? JSON.stringify({ token: content, provider: 'github' })
     : null;
 
   return `<!DOCTYPE html>
@@ -51,7 +61,7 @@ function renderPage(status, content) {
 (function () {
   var msg = ${JSON.stringify(cmsMsg)};
 
-  // Path 1: standard popup — opener is reachable
+  // Path 1: standard popup — opener reachable (no COOP interference)
   if (window.opener && window.opener !== window) {
     try {
       window.addEventListener('message', function receiveMessage(e) {
@@ -62,26 +72,31 @@ function renderPage(status, content) {
     } catch (ignore) {}
   }
 
-  // Path 2: COOP-restricted — window.opener is null
-  // Write token to localStorage; the admin tab storage listener picks it up
-  ${isSuccess
-    ? `try {
-    localStorage.setItem('decap-cms-oauth-token', ${localStorageValue});
+  ${isSuccess ? `
+  // Path 2: BroadcastChannel — same-origin event messaging, NOT blocked by
+  // Edge Tracking Prevention (unlike localStorage which is classified as storage).
+  try {
+    var bc = new BroadcastChannel('decap-cms-oauth');
+    bc.postMessage(${JSON.stringify(cmsMsgData)});
+    bc.close();
     document.getElementById('s').textContent = 'Authenticated — you may close this window.';
     document.getElementById('s').style.color = '#22c55e';
-  } catch(e) {
-    document.getElementById('s').textContent = 'Auth error: could not store token.';
-    document.getElementById('s').style.color = '#ef4444';
-  }`
-    : `document.getElementById('s').style.color = '#ef4444';
-  document.getElementById('s').textContent = ${JSON.stringify('Authentication failed: ' + content)};`
-  }
+  } catch (bcErr) {}
 
-  // Try to close; fall back to redirecting to admin
-  setTimeout(function() {
-    try { window.close(); } catch(e) {}
-    setTimeout(function() { window.location.replace('/admin'); }, 400);
-  }, 1000);
+  // Path 3: localStorage — fallback for Chrome / Firefox / Edge without strict tracking prevention
+  try {
+    localStorage.setItem('decap-cms-oauth-token', ${JSON.stringify(tokenJson)});
+  } catch (e) {}
+
+  // Path 4: redirect popup to /admin so it can read the server-set cookie on load.
+  // This handles the case where both BroadcastChannel and localStorage are blocked.
+  setTimeout(function () {
+    window.location.replace('/admin');
+  }, 1200);
+  ` : `
+  document.getElementById('s').style.color = '#ef4444';
+  document.getElementById('s').textContent = ${JSON.stringify('Authentication failed: ' + content)};
+  `}
 })();
 <\/script>
 </body>
