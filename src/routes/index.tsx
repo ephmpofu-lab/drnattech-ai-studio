@@ -1142,12 +1142,35 @@ const AGENT_TOPICS = [
 
 function AgentCard() {
   const [query, setQuery] = useState("");
+  const [userMsg, setUserMsg] = useState("");
+  const [agentMsg, setAgentMsg] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function sendQuery(q: string) {
+    const trimmed = q.trim();
+    if (!trimmed || loading) return;
+    setUserMsg(trimmed);
+    setAgentMsg("");
+    setLoading(true);
+    setQuery("");
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: trimmed, sessionId: "homepage" }),
+      });
+      const data = await res.json();
+      setAgentMsg(data.output || "I didn't get a response. Try the full AI Agent page.");
+    } catch {
+      setAgentMsg("Connection error. Please try again or visit the AI Agent page.");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   function handleSend(e: { preventDefault(): void }) {
     e.preventDefault();
-    const q = query.trim();
-    if (!q) return;
-    window.location.href = `/ai-agent?q=${encodeURIComponent(q)}`;
+    sendQuery(query);
   }
 
   return (
@@ -1163,7 +1186,6 @@ function AgentCard() {
 
           {/* LEFT */}
           <div className="p-8 lg:p-10">
-            {/* Hexagon icon */}
             <div
               className="mb-5 flex h-14 w-14 items-center justify-center"
               style={{
@@ -1183,7 +1205,7 @@ function AgentCard() {
               {AGENT_TOPICS.map((t) => (
                 <button
                   key={t}
-                  onClick={() => { window.location.href = `/ai-agent?q=${encodeURIComponent(t)}`; }}
+                  onClick={() => sendQuery(t)}
                   className="rounded-full px-3 py-1 text-[11.5px] font-medium transition-colors hover:bg-white/10"
                   style={{
                     background: "rgba(255,255,255,0.06)",
@@ -1197,12 +1219,12 @@ function AgentCard() {
             </div>
           </div>
 
-          {/* RIGHT — mini chat panel */}
+          {/* RIGHT — inline chat panel */}
           <div
             className="flex flex-col justify-between p-6"
             style={{ background: "rgba(5,8,22,0.6)", borderLeft: "1px solid rgba(139,92,246,0.14)" }}
           >
-            <div>
+            <div className="min-h-[100px] overflow-y-auto">
               <div
                 className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em]"
                 style={{ color: "#6B7280" }}
@@ -1210,17 +1232,47 @@ function AgentCard() {
                 AI Assistant
               </div>
 
-              {/* Greeting bubble */}
-              <div
-                className="inline-block rounded-[12px] rounded-tl-none px-4 py-2.5 text-[13px] font-medium text-white"
-                style={{ background: "linear-gradient(135deg, #7C3AED, #A855F7)", maxWidth: "90%" }}
-              >
-                How can I help you today?
-              </div>
+              {!userMsg && (
+                <div
+                  className="inline-block rounded-[12px] rounded-tl-none px-4 py-2.5 text-[13px] font-medium text-white"
+                  style={{ background: "linear-gradient(135deg, #7C3AED, #A855F7)", maxWidth: "90%" }}
+                >
+                  How can I help you today?
+                </div>
+              )}
+
+              {userMsg && (
+                <div className="flex flex-col gap-3">
+                  {/* User message */}
+                  <div className="flex justify-end">
+                    <div
+                      className="rounded-[12px] rounded-tr-none px-3 py-2 text-[12.5px] text-white"
+                      style={{ background: "rgba(139,92,246,0.25)", maxWidth: "85%" }}
+                    >
+                      {userMsg}
+                    </div>
+                  </div>
+                  {/* Agent response */}
+                  {loading ? (
+                    <div className="flex items-center gap-1.5 px-1" style={{ color: "#6B7280" }}>
+                      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-purple-400" style={{ animationDelay: "0ms" }} />
+                      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-purple-400" style={{ animationDelay: "150ms" }} />
+                      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-purple-400" style={{ animationDelay: "300ms" }} />
+                    </div>
+                  ) : agentMsg ? (
+                    <div
+                      className="inline-block rounded-[12px] rounded-tl-none px-4 py-2.5 text-[12.5px] leading-relaxed text-white"
+                      style={{ background: "linear-gradient(135deg, #7C3AED, #A855F7)", maxWidth: "90%" }}
+                    >
+                      {agentMsg}
+                    </div>
+                  ) : null}
+                </div>
+              )}
             </div>
 
             {/* Input */}
-            <form onSubmit={handleSend} className="mt-8 flex items-center gap-2">
+            <form onSubmit={handleSend} className="mt-4 flex items-center gap-2">
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
@@ -1234,7 +1286,8 @@ function AgentCard() {
               />
               <button
                 type="submit"
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] transition-opacity hover:opacity-90"
+                disabled={loading}
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] transition-opacity hover:opacity-90 disabled:opacity-40"
                 style={{ background: "linear-gradient(135deg, #7C3AED, #A855F7)" }}
                 aria-label="Send"
               >

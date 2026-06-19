@@ -61,10 +61,6 @@ const contactCards = [
     title: "Email",
     lines: [
       { text: "ephmpofu@gmail.com", href: "mailto:ephmpofu@gmail.com" },
-      {
-        text: "ephraim.mpofu@OmniaIntelligence.io",
-        href: "mailto:ephraim.mpofu@OmniaIntelligence.io",
-      },
     ],
   },
   {
