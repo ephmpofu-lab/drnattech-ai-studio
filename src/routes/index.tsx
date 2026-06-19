@@ -64,7 +64,7 @@ export const Route = createFileRoute("/")({
       {
         name: "keywords",
         content:
-          "AI Solutions Architect Vienna, KI-Architekt Wien, enterprise AI systems, EU AI Act compliance, KI-Verordnung Beratung, RAG knowledge platform, multi-agent AI, workflow automation, SKAIDO Framework, Dr Ephraim Mpofu, DACH AI consultant, KI Lösungen Österreich",
+          "AI Solutions Architect Vienna, KI-Architekt Wien, enterprise AI systems, EU AI Act compliance, KI-Verordnung Beratung, RAG knowledge platform, multi-agent orchestration, agent-to-agent protocol, A2A MCP LangGraph, multi-agent coordination, IDS IDSA data sovereignty, enterprise AI integration, agent architecture, workflow automation, Dr Ephraim Mpofu, DACH AI consultant, KI Lösungen Österreich",
       },
       { name: "robots", content: "index, follow" },
     ],
@@ -347,7 +347,7 @@ export function Home() {
    1. HERO
    ============================================================ */
 
-const TYPED_PHRASES = ["AI Solutions Architect", "KI-Architekt Wien", "EU AI Act Expert", "Enterprise RAG Architect"];
+const TYPED_PHRASES = ["Enterprise AI Architect", "KI-Architekt Wien", "A2A · MCP · LangGraph Architecture", "Data-Sovereign AI Architecture"];
 
 function TypedText() {
   const [phraseIdx, setPhraseIdx] = useState(0);
@@ -389,7 +389,7 @@ const capabilities = [
   {
     Icon: Box,
     title: "Build AI Systems",
-    desc: "Production-ready enterprise AI — multi-agent architectures with scalability, reliability and security built in.",
+    desc: "Production-ready enterprise AI — multi-agent orchestration using LangGraph and agent-to-agent coordination frameworks, built for scalability and reliability.",
   },
   {
     Icon: Database,
@@ -399,7 +399,7 @@ const capabilities = [
   {
     Icon: ShieldCheck,
     title: "AI Governance",
-    desc: "EU AI Act compliance, high-risk system classification, audit trail and responsible AI architecture from day one.",
+    desc: "EU AI Act compliance, IDS/IDSA data sovereignty, high-risk system classification, audit trail and responsible AI architecture from day one.",
   },
 ];
 
@@ -423,7 +423,7 @@ function Hero() {
             className="h-1.5 w-1.5 rounded-full"
             style={{ background: "#A855F7", boxShadow: "0 0 8px #A855F7" }}
           />
-          AI SOLUTIONS ARCHITECT · WIEN
+          ENTERPRISE AI ARCHITECT · WIEN
         </span>
 
         <h1 className="mt-6 text-[42px] font-bold leading-[1.04] tracking-tight text-white sm:text-[48px] lg:text-[54px]">
@@ -436,9 +436,10 @@ function Hero() {
         </div>
 
         <p className="mt-5 max-w-md text-[15px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-          I design enterprise AI systems — multi-agent architectures, RAG
-          knowledge platforms and EU AI Act-compliant governance — for
-          organisations that need production reliability and measurable outcomes.
+          I architect enterprise AI systems — multi-agent coordination,
+          agent-to-agent protocols, RAG knowledge platforms and IDS-compliant
+          data-sovereign governance — for organisations that need production
+          reliability and measurable outcomes.
         </p>
 
         <div className="mt-8 flex flex-wrap gap-3">
