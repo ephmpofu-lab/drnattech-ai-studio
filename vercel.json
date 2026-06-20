@@ -5,8 +5,7 @@
     "api/chat.js": { "maxDuration": 60 },
     "api/stats.js": { "maxDuration": 15 }
   },
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
+  "rewrites": [
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }
