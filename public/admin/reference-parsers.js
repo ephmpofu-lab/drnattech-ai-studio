@@ -1,13 +1,13 @@
+/**
+ * Reference import — DOM injection approach.
+ * Decap CMS 3.14+ does not expose window.h / window.createClass, so custom
+ * widget registration is not possible without a build step.  Instead this
+ * script waits for the CMS to render the References list section, injects an
+ * "↑ Import" button next to the existing "Add references +" button, and
+ * handles bulk import via a modal overlay using only standard browser APIs.
+ */
 (function () {
   'use strict';
-
-  var h = window.h;
-  var createClass = window.createClass;
-
-  if (!h || !createClass) {
-    console.error('[RefsWidget] window.h or window.createClass not available — widget not registered.');
-    return;
-  }
 
   // ─── Parsers ────────────────────────────────────────────────────────────────
 
@@ -25,10 +25,10 @@
       if (!title) return;
       refs.push({
         authors: field('author').replace(/\s+and\s+/gi, ', '),
-        year:    field('year'),
-        title:   title,
-        source:  field('journal') || field('booktitle') || field('publisher') || '',
-        url:     field('url') || field('doi') || '',
+        year: field('year'),
+        title: title,
+        source: field('journal') || field('booktitle') || field('publisher') || '',
+        url: field('url') || field('doi') || '',
       });
     });
     return refs;
@@ -89,225 +89,259 @@
     return parsePlainText(t);
   }
 
-  // ─── Styles ─────────────────────────────────────────────────────────────────
+  // ─── React input setter (works with React 16/17/18) ──────────────────────────
 
-  var S = {
-    wrap:        { fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif', fontSize: '14px', color: '#333', lineHeight: '1.4' },
-    topBar:      { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' },
-    count:       { fontSize: '12px', color: '#888' },
-    btn:         { display: 'inline-flex', alignItems: 'center', gap: '5px', padding: '6px 13px', borderRadius: '5px', cursor: 'pointer', fontSize: '13px', border: '1px solid #ccc', background: '#f7f7f7', color: '#333', fontFamily: 'inherit', lineHeight: '1' },
-    btnPrimary:  { background: '#3b82f6', color: '#fff', border: '1px solid #3b82f6' },
-    btnRemove:   { padding: '3px 8px', fontSize: '12px', borderRadius: '4px', cursor: 'pointer', border: '1px solid #fca5a5', background: 'transparent', color: '#dc2626', fontFamily: 'inherit' },
-    card:        { padding: '9px 12px', marginBottom: '7px', borderRadius: '6px', border: '1px solid #e4e4e4', background: '#fafafa' },
-    cardHeader:  { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px' },
-    cardTitle:   { fontSize: '13px', cursor: 'pointer', flex: '1', color: '#333', lineHeight: '1.4', userSelect: 'none' },
-    grid:        { marginTop: '10px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' },
-    fullCol:     { gridColumn: '1 / -1' },
-    lbl:         { display: 'block', fontSize: '11px', fontWeight: '600', color: '#777', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '3px' },
-    input:       { width: '100%', padding: '5px 8px', borderRadius: '4px', border: '1px solid #ccc', fontSize: '13px', boxSizing: 'border-box', fontFamily: 'inherit' },
-    textarea:    { width: '100%', padding: '8px', borderRadius: '5px', border: '1px solid #ccc', fontSize: '13px', boxSizing: 'border-box', minHeight: '180px', resize: 'vertical', fontFamily: 'monospace, monospace' },
-    hint:        { fontSize: '12px', color: '#666', margin: '0 0 8px' },
-    error:       { fontSize: '13px', color: '#dc2626', margin: '6px 0 0' },
-    preview:     { background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '6px', padding: '10px 12px', margin: '10px 0' },
-    previewHdr:  { fontWeight: '700', fontSize: '13px', marginBottom: '6px', color: '#1e40af' },
-    previewLine: { fontSize: '12px', color: '#555', margin: '3px 0' },
-    empty:       { fontSize: '13px', color: '#aaa', textAlign: 'center', padding: '16px 0', fontStyle: 'italic' },
-  };
+  var nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
 
-  // ─── Widget Control ──────────────────────────────────────────────────────────
+  function setReactInput(el, value) {
+    nativeSetter.call(el, value);
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+  }
 
-  var RefsControl = createClass({
-    displayName: 'RefsControl',
+  // ─── DOM helpers ─────────────────────────────────────────────────────────────
 
-    getInitialState: function () {
-      return { mode: 'list', importText: '', importParsed: null, importError: '', expanded: {} };
-    },
+  function findAddRefsButton() {
+    var all = document.querySelectorAll('button');
+    for (var i = 0; i < all.length; i++) {
+      // Match "Add references +" (Decap CMS list widget button text)
+      if (/add\s+reference/i.test(all[i].textContent)) return all[i];
+    }
+    return null;
+  }
 
-    getRefs: function () {
-      var v = this.props.value;
-      if (!v) return [];
-      if (typeof v.toJS === 'function') return v.toJS();
-      if (Array.isArray(v)) return v;
-      return [];
-    },
+  function allTextInputs() {
+    // Collect all visible text inputs (excludes hidden, submit, checkbox, radio, file)
+    var sel = 'input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"])';
+    return Array.prototype.slice.call(document.querySelectorAll(sel));
+  }
 
-    setRefs: function (refs) { this.props.onChange(refs); },
+  // ─── Import modal ─────────────────────────────────────────────────────────────
 
-    handleAdd: function () {
-      var refs = this.getRefs();
-      var newRefs = refs.concat([{ id: 'ref-' + (refs.length + 1), authors: '', year: '', title: '', source: '', url: '' }]);
-      this.setRefs(newRefs);
-      var exp = Object.assign({}, this.state.expanded);
-      exp[newRefs.length - 1] = true;
-      this.setState({ expanded: exp });
-    },
+  var activeModal = null;
 
-    handleDelete: function (idx) {
-      var exp = Object.assign({}, this.state.expanded);
-      delete exp[idx];
-      this.setRefs(this.getRefs().filter(function (_, i) { return i !== idx; }));
-      this.setState({ expanded: exp });
-    },
+  function openModal(addRefsBtn) {
+    if (activeModal) return;
 
-    handleField: function (idx, field, val) {
-      var refs = this.getRefs().slice();
-      var obj = Object.assign({}, refs[idx]);
-      obj[field] = val;
-      refs[idx] = obj;
-      this.setRefs(refs);
-    },
+    var PLACEHOLDER = [
+      'APA:',
+      '  Smith, J., & Jones, A. (2024). Paper title. Journal of Science, 10(2), 45–67.',
+      '',
+      'BibTeX:',
+      '  @article{smith2024,',
+      '    author  = {Smith, J.},',
+      '    title   = {Paper Title},',
+      '    year    = {2024},',
+      '    journal = {Nature}',
+      '  }',
+      '',
+      'RIS:',
+      '  TY  - JOUR',
+      '  AU  - Smith, J.',
+      '  TI  - Paper Title',
+      '  PY  - 2024',
+      '  JO  - Nature',
+      '  ER  -',
+    ].join('\n');
 
-    toggle: function (idx) {
-      var exp = Object.assign({}, this.state.expanded);
-      exp[idx] = !exp[idx];
-      this.setState({ expanded: exp });
-    },
+    var overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.55);z-index:99999;display:flex;align-items:center;justify-content:center;font-family:-apple-system,BlinkMacSystemFont,sans-serif;';
 
-    handleParse: function () {
-      var text = tr(this.state.importText);
-      if (!text) { this.setState({ importError: 'Please paste some reference text first.', importParsed: null }); return; }
+    var box = document.createElement('div');
+    box.style.cssText = 'background:#fff;border-radius:10px;padding:28px;width:640px;max-width:92vw;max-height:85vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,0.35);';
+
+    box.innerHTML = [
+      '<h3 style="margin:0 0 6px;font-size:17px;font-weight:700;color:#111;">Import References</h3>',
+      '<p style="margin:0 0 14px;font-size:13px;color:#666;line-height:1.5;">Paste references in APA, Harvard, Vancouver, BibTeX, or RIS format. One reference per line for plain text.</p>',
+      '<textarea id="refs-ta" style="width:100%;height:190px;padding:10px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;font-family:monospace;box-sizing:border-box;resize:vertical;line-height:1.5;" placeholder="' + PLACEHOLDER.replace(/"/g, '&quot;') + '"></textarea>',
+      '<div id="refs-preview" style="margin:12px 0;min-height:20px;"></div>',
+      '<div style="display:flex;gap:8px;flex-wrap:wrap;">',
+      '  <button id="refs-parse" type="button" style="padding:9px 18px;background:#3b82f6;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-family:inherit;font-weight:600;">Parse References</button>',
+      '  <button id="refs-confirm" type="button" style="padding:9px 18px;background:#16a34a;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-family:inherit;font-weight:600;display:none;">Import to CMS</button>',
+      '  <button id="refs-cancel" type="button" style="padding:9px 18px;background:#f3f4f6;color:#374151;border:1px solid #d1d5db;border-radius:6px;cursor:pointer;font-size:14px;font-family:inherit;margin-left:auto;">Cancel</button>',
+      '</div>',
+    ].join('');
+
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+    activeModal = overlay;
+
+    var textarea  = box.querySelector('#refs-ta');
+    var preview   = box.querySelector('#refs-preview');
+    var parseBtn  = box.querySelector('#refs-parse');
+    var confirmBtn = box.querySelector('#refs-confirm');
+    var cancelBtn = box.querySelector('#refs-cancel');
+    var parsedRefs = null;
+
+    textarea.focus();
+
+    // Close on overlay click or Cancel
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
+    cancelBtn.addEventListener('click', close);
+
+    function close() {
+      if (activeModal) { activeModal.remove(); activeModal = null; }
+    }
+
+    // Parse
+    parseBtn.addEventListener('click', function () {
+      var text = tr(textarea.value);
+      if (!text) {
+        preview.innerHTML = '<p style="color:#dc2626;font-size:13px;">⚠ Please paste some reference text first.</p>';
+        confirmBtn.style.display = 'none';
+        parsedRefs = null;
+        return;
+      }
       try {
-        var parsed = parseReferences(text);
-        if (!parsed.length) {
-          this.setState({ importError: 'No references detected. Check the format and try again.', importParsed: null });
+        var refs = parseReferences(text);
+        if (!refs.length) {
+          preview.innerHTML = '<p style="color:#dc2626;font-size:13px;">⚠ No references detected — check the format and try again.</p>';
+          confirmBtn.style.display = 'none';
+          parsedRefs = null;
         } else {
-          this.setState({ importParsed: parsed, importError: '' });
+          var rows = refs.slice(0, 6).map(function (r, i) {
+            return '<p style="font-size:12px;color:#444;margin:3px 0;">' + (i + 1) + '. ' + [r.authors, r.year ? '(' + r.year + ')' : '', r.title].filter(Boolean).join(' ') + '</p>';
+          }).join('');
+          if (refs.length > 6) rows += '<p style="font-size:12px;color:#888;margin:3px 0;">… and ' + (refs.length - 6) + ' more</p>';
+          preview.innerHTML = '<div style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:10px 12px;"><p style="font-size:13px;font-weight:700;color:#166534;margin:0 0 6px;">✓ ' + refs.length + ' reference' + (refs.length > 1 ? 's' : '') + ' found:</p>' + rows + '</div>';
+          confirmBtn.textContent = 'Import ' + refs.length + ' Reference' + (refs.length > 1 ? 's' : '') + ' to CMS';
+          confirmBtn.style.display = '';
+          parsedRefs = refs;
         }
       } catch (e) {
-        this.setState({ importError: 'Parse error: ' + (e.message || e), importParsed: null });
+        preview.innerHTML = '<p style="color:#dc2626;font-size:13px;">⚠ Parse error: ' + e.message + '</p>';
+        confirmBtn.style.display = 'none';
+        parsedRefs = null;
       }
-    },
+    });
 
-    handleConfirm: function () {
-      var existing = this.getRefs();
-      var start = existing.length;
-      var toAdd = (this.state.importParsed || []).map(function (r, i) {
-        return { id: 'ref-' + (start + i + 1), authors: r.authors || '', year: r.year || '', title: r.title || '', source: r.source || '', url: r.url || '' };
-      });
-      this.setRefs(existing.concat(toAdd));
-      this.setState({ mode: 'list', importText: '', importParsed: null, importError: '' });
-    },
+    // Import
+    confirmBtn.addEventListener('click', function () {
+      if (!parsedRefs || !parsedRefs.length) return;
+      close();
+      performImport(parsedRefs, addRefsBtn);
+    });
+  }
 
-    renderImport: function () {
-      var self = this;
-      var parsed = this.state.importParsed;
-      var placeholder = 'APA:  Smith, J. (2024). Title of the paper. Journal, 10(2), 45–67.\n\nBibTeX:\n@article{key,\n  author  = {Smith, J.},\n  title   = {Paper Title},\n  year    = {2024},\n  journal = {Nature}\n}\n\nRIS:\nTY  - JOUR\nAU  - Smith, J.\nTI  - Paper Title\nPY  - 2024\nJO  - Nature\nER  -';
+  // ─── Sequential import using click + React native setter ─────────────────────
 
-      return h('div', { style: S.wrap },
-        h('div', { style: S.topBar },
-          h('strong', { style: { fontSize: '14px' } }, 'Import References'),
-          h('button', { style: S.btn, type: 'button', onClick: function () { self.setState({ mode: 'list', importText: '', importParsed: null, importError: '' }); } }, '← Back to list')
-        ),
-        h('p', { style: S.hint }, 'Paste references in APA, Harvard, Vancouver, BibTeX (.bib), or RIS format. One reference per line for plain text.'),
-        h('textarea', {
-          style: S.textarea,
-          value: this.state.importText,
-          placeholder: placeholder,
-          onChange: function (e) { self.setState({ importText: e.target.value, importParsed: null, importError: '' }); },
-        }),
-        h('div', { style: { marginTop: '8px' } },
-          h('button', { style: Object.assign({}, S.btn, S.btnPrimary), type: 'button', onClick: function () { self.handleParse(); } }, 'Parse References')
-        ),
-        this.state.importError ? h('p', { style: S.error }, '⚠ ' + this.state.importError) : null,
-        parsed && parsed.length > 0
-          ? h('div', null,
-              h('div', { style: S.preview },
-                h('p', { style: S.previewHdr }, '✓ ' + parsed.length + ' reference' + (parsed.length > 1 ? 's' : '') + ' found:'),
-                parsed.map(function (r, i) {
-                  return h('p', { key: i, style: S.previewLine },
-                    (i + 1) + '. ' + [r.authors, r.year ? '(' + r.year + ')' : '', r.title].filter(Boolean).join(' '));
-                })
-              ),
-              h('button', {
-                style: Object.assign({}, S.btn, S.btnPrimary),
-                type: 'button',
-                onClick: function () { self.handleConfirm(); },
-              }, 'Append ' + parsed.length + ' Reference' + (parsed.length !== 1 ? 's' : '') + ' to List')
-            )
-          : null
-      );
-    },
+  var importing = false;
 
-    renderList: function () {
-      var self = this;
-      var refs = this.getRefs();
-      return h('div', { style: S.wrap },
-        h('div', { style: S.topBar },
-          h('span', { style: S.count }, refs.length + ' reference' + (refs.length !== 1 ? 's' : '')),
-          h('button', { style: S.btn, type: 'button', onClick: function () { self.setState({ mode: 'import' }); } }, '↑ Import References')
-        ),
-        refs.length === 0
-          ? h('p', { style: S.empty }, 'No references yet. Add one below or use Import References.')
-          : refs.map(function (ref, idx) {
-              var isOpen = !!self.state.expanded[idx];
-              var lbl = [ref.authors, ref.year ? '(' + ref.year + ')' : '', ref.title].filter(Boolean).join(' ') || 'Reference ' + (idx + 1);
-              return h('div', { key: idx, style: S.card },
-                h('div', { style: S.cardHeader },
-                  h('span', { style: S.cardTitle, onClick: function () { self.toggle(idx); } }, (isOpen ? '▾ ' : '▸ ') + lbl),
-                  h('button', { style: S.btnRemove, type: 'button', onClick: function () { self.handleDelete(idx); } }, 'Remove')
-                ),
-                isOpen
-                  ? h('div', { style: S.grid },
-                      h('div', null,
-                        h('label', { style: S.lbl }, 'ID'),
-                        h('input', { style: S.input, value: ref.id || '', placeholder: 'ref-1', onChange: function (e) { self.handleField(idx, 'id', e.target.value); } })
-                      ),
-                      h('div', null,
-                        h('label', { style: S.lbl }, 'Year'),
-                        h('input', { style: S.input, value: ref.year || '', placeholder: '2024', onChange: function (e) { self.handleField(idx, 'year', e.target.value); } })
-                      ),
-                      h('div', { style: S.fullCol },
-                        h('label', { style: S.lbl }, 'Authors'),
-                        h('input', { style: S.input, value: ref.authors || '', placeholder: 'Smith, J., Jones, A.', onChange: function (e) { self.handleField(idx, 'authors', e.target.value); } })
-                      ),
-                      h('div', { style: S.fullCol },
-                        h('label', { style: S.lbl }, 'Title'),
-                        h('input', { style: S.input, value: ref.title || '', placeholder: 'Paper title', onChange: function (e) { self.handleField(idx, 'title', e.target.value); } })
-                      ),
-                      h('div', null,
-                        h('label', { style: S.lbl }, 'Source / Journal'),
-                        h('input', { style: S.input, value: ref.source || '', placeholder: 'Journal name', onChange: function (e) { self.handleField(idx, 'source', e.target.value); } })
-                      ),
-                      h('div', null,
-                        h('label', { style: S.lbl }, 'URL (optional)'),
-                        h('input', { style: S.input, value: ref.url || '', placeholder: 'https://...', onChange: function (e) { self.handleField(idx, 'url', e.target.value); } })
-                      )
-                    )
-                  : null
-              );
-            }),
-        h('button', { style: Object.assign({}, S.btn, { marginTop: '8px' }), type: 'button', onClick: function () { self.handleAdd(); } }, '+ Add Reference')
-      );
-    },
+  function performImport(refs, addRefsBtn) {
+    if (importing) return;
+    importing = true;
+    var queue = refs.slice();
+    var autoId = 1;
 
-    render: function () {
-      return this.state.mode === 'import' ? this.renderImport() : this.renderList();
-    },
-  });
+    // Try to figure out starting ID offset from existing entries
+    var existingInputs = allTextInputs();
+    existingInputs.forEach(function (inp) {
+      if (/^ref-(\d+)$/i.test((inp.value || '').trim())) {
+        var n = parseInt(RegExp.$1, 10);
+        if (n >= autoId) autoId = n + 1;
+      }
+    });
 
-  // ─── Preview ─────────────────────────────────────────────────────────────────
+    function next() {
+      if (!queue.length) { importing = false; return; }
+      var ref = queue.shift();
 
-  var RefsPreview = function (props) {
-    var refs = props.value;
-    if (!refs) return null;
-    if (typeof refs.toJS === 'function') refs = refs.toJS();
-    if (!Array.isArray(refs) || !refs.length) return null;
-    return h('ol', { style: { paddingLeft: '18px', fontSize: '13px', lineHeight: '1.6' } },
-      refs.map(function (r, i) {
-        return h('li', { key: i, style: { marginBottom: '5px' } },
-          [r.authors, r.year ? '(' + r.year + ')' : '', r.title, r.source].filter(Boolean).join('. '));
-      })
-    );
-  };
+      // Snapshot inputs before adding
+      var before = allTextInputs();
 
-  // ─── Register ────────────────────────────────────────────────────────────────
+      // Re-find the button each time (DOM can change between iterations)
+      var btn = findAddRefsButton();
+      if (!btn) { importing = false; return; }
+      btn.click();
 
-  try {
-    window.CMS.registerWidget('references-bulk', RefsControl, RefsPreview);
-    window._refsWidgetLoaded = true;
-    console.log('[RefsWidget] Registered successfully.');
-  } catch (err) {
-    console.error('[RefsWidget] Registration failed:', err);
+      // Poll until 5–6 new inputs appear (one per sub-field)
+      var attempts = 0;
+      var poll = setInterval(function () {
+        attempts++;
+        var after = allTextInputs();
+        var newInputs = after.filter(function (el) { return before.indexOf(el) === -1; });
+
+        if (newInputs.length >= 5 || attempts > 30) {
+          clearInterval(poll);
+
+          // Fill in order: ID, Authors, Year, Title, Source/Journal, URL
+          var vals = [
+            'ref-' + (autoId++),
+            ref.authors || '',
+            ref.year    || '',
+            ref.title   || '',
+            ref.source  || '',
+            ref.url     || '',
+          ];
+          newInputs.slice(0, vals.length).forEach(function (inp, i) {
+            if (vals[i]) setReactInput(inp, vals[i]);
+          });
+
+          // Brief pause so Decap CMS state settles before next entry
+          setTimeout(next, 120);
+        }
+      }, 40);
+    }
+
+    next();
+  }
+
+  // ─── Inject button next to "Add references +" ────────────────────────────────
+
+  var INJECTED_ATTR = 'data-refs-import-btn';
+
+  function injectButton() {
+    var addBtn = findAddRefsButton();
+    if (!addBtn) return;
+
+    // Already injected?
+    var parent = addBtn.parentNode;
+    if (!parent || parent.querySelector('[' + INJECTED_ATTR + ']')) return;
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.setAttribute(INJECTED_ATTR, '1');
+    btn.textContent = '↑ Import';
+
+    // Mirror the visual style of the "Add references +" button
+    var cs = window.getComputedStyle(addBtn);
+    btn.style.cssText = [
+      'cursor:pointer',
+      'margin-left:8px',
+      'padding:' + cs.getPropertyValue('padding'),
+      'border:' + cs.getPropertyValue('border'),
+      'border-radius:' + cs.getPropertyValue('border-radius'),
+      'background:' + cs.getPropertyValue('background-color'),
+      'color:' + cs.getPropertyValue('color'),
+      'font-size:' + cs.getPropertyValue('font-size'),
+      'font-weight:' + cs.getPropertyValue('font-weight'),
+      'font-family:inherit',
+      'line-height:' + cs.getPropertyValue('line-height'),
+    ].join(';');
+
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      openModal(addBtn);
+    });
+
+    parent.insertBefore(btn, addBtn.nextSibling);
+    console.log('[RefsImport] "↑ Import" button injected next to "Add references +"');
+  }
+
+  // ─── Observe DOM until References section renders ─────────────────────────────
+
+  var observer = new MutationObserver(function () { injectButton(); });
+
+  function start() {
+    observer.observe(document.body, { childList: true, subtree: true });
+    injectButton(); // in case CMS already rendered
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
   }
 
 })();
