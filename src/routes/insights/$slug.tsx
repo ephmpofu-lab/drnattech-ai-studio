@@ -434,6 +434,54 @@ function CiteBox({ pub }: { pub: Publication }) {
   );
 }
 
+// ─── Raw Bibliography ─────────────────────────────────────────────────────────
+
+function RawBibliography({ text }: { text: string }) {
+  // Split on blank lines to get one block per reference entry
+  const rawBlocks = text.split(/\r?\n(?:\s*\r?\n)+/);
+
+  // If there are no blank-line separators, fall back to one line = one entry
+  const blocks =
+    rawBlocks.length > 1
+      ? rawBlocks.map((b) => b.trim()).filter(Boolean)
+      : text
+          .split(/\r?\n/)
+          .map((l) => l.trim())
+          .filter(Boolean);
+
+  return (
+    <div className="space-y-4">
+      {blocks.map((block, i) => {
+        const lines = block.split(/\r?\n/);
+        return (
+          <div
+            key={i}
+            className="rounded-[10px] p-4"
+            style={{
+              background: "rgba(255,255,255,0.025)",
+              border: "1px solid rgba(255,255,255,0.06)",
+            }}
+          >
+            {lines.map((line, j) => (
+              <div
+                key={j}
+                style={{
+                  color: j === 0 ? "#CBD5E1" : "#64748B",
+                  fontSize: "13.5px",
+                  lineHeight: "1.75",
+                  fontWeight: j === 0 ? 500 : 400,
+                }}
+              >
+                {line}
+              </div>
+            ))}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 // ─── Page Component ───────────────────────────────────────────────────────────
 
 function ArticlePage() {
@@ -677,18 +725,7 @@ function ArticlePage() {
                 </h2>
 
                 {pub.rawReferences ? (
-                  // Verbatim bibliography — preserve all line breaks and spacing
-                  <div
-                    style={{
-                      whiteSpace: "pre-wrap",
-                      fontFamily: "inherit",
-                      fontSize: "13.5px",
-                      lineHeight: "1.8",
-                      color: "#94A3B8",
-                    }}
-                  >
-                    {pub.rawReferences}
-                  </div>
+                  <RawBibliography text={pub.rawReferences} />
                 ) : (
                   // Structured references list
                   <ol className="space-y-4">
