@@ -103,7 +103,6 @@
     })();
     </script>
 
-    <script src="reference-parsers.js"></script>
     <script>
       CMS.init({
         config: {
@@ -127,13 +126,12 @@
               folder: 'content/publications',
               create: true,
               delete: true,
-              identifier_field: 'slug',
+              identifier_field: 'title',
               format: 'json',
               extension: 'json',
               slug: '{{fields.slug}}',
               preview_path: '/insights/{{fields.slug}}',
-              summary: '{{title}}',
-              sortable_fields: ['date', 'title', 'category'],
+              summary: '{{fields.title}}',
               fields: [
                 {
                   label: 'Title',
@@ -264,9 +262,17 @@
                 {
                   label: 'References',
                   name: 'references',
-                  widget: 'references-bulk',
+                  widget: 'list',
                   required: false,
-                  hint: 'Use "Bulk Import" to paste or upload 20–50 references at once. Supports APA, Harvard, Vancouver, BibTeX, RIS, and CSV.',
+                  summary: '{{fields.authors}} ({{fields.year}}) — {{fields.title}}',
+                  fields: [
+                    { label: 'ID', name: 'id', widget: 'string', hint: 'e.g. ref-1' },
+                    { label: 'Authors', name: 'authors', widget: 'string' },
+                    { label: 'Year', name: 'year', widget: 'string' },
+                    { label: 'Title', name: 'title', widget: 'string' },
+                    { label: 'Source / Journal', name: 'source', widget: 'string' },
+                    { label: 'URL (optional)', name: 'url', widget: 'string', required: false },
+                  ],
                 },
                 {
                   label: 'Suggested Citation',
