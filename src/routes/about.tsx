@@ -1,4 +1,4 @@
-import type React from "react";
+﻿import type React from "react";
 import { useState, useEffect, useRef } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
@@ -65,7 +65,7 @@ export const Route = createFileRoute("/about")({
       { property: "og:url", content: "https://drnattech.com/about" },
       {
         property: "og:image",
-        content: "https://drnattech.com/images/Dr%20Mpofu_purple2.png",
+        content: "https://drnattech.com/images/Dr%20Mpofu_purple2.webp",
       },
       { name: "twitter:card", content: "summary_large_image" },
       {
@@ -168,7 +168,7 @@ function AboutStructuredData() {
         description:
           "PhD-credentialed AI Solutions Architect and KI-Architekt based in Vienna, Austria. Creator of the SKAIDO, AISA and Three Structural Laws frameworks. Specialises in enterprise AI systems, RAG knowledge platforms, multi-agent architectures and EU AI Act compliance. Has been designing and delivering production AI systems since January 2026. Serves the DACH region and EU.",
         url: "https://drnattech.com",
-        image: "https://drnattech.com/images/Dr%20Mpofu_purple2.png",
+        image: "https://drnattech.com/images/Dr%20Mpofu_purple2.webp",
         alumniOf: {
           "@type": "CollegeOrUniversity",
           name: "BOKU University Vienna",
@@ -496,7 +496,7 @@ function Hero() {
         style={{ border: "1px solid rgba(255,255,255,0.06)" }}
       >
         <img
-          src="/images/Dr Mpofu_purple2.png"
+          src="/images/Dr Mpofu_purple2.webp"
           alt="Dr. Ephraim Mpofu — AI Solutions Architect and KI-Architekt based in Vienna, Austria"
           className="absolute inset-0 h-full w-full object-cover object-top"
         />

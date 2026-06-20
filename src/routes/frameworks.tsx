@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+﻿import { createFileRoute } from "@tanstack/react-router";
 import { SiteNav } from "@/components/brand/SiteNav";
 import { BrandBackground } from "@/components/brand/Background";
 import { Link } from "@tanstack/react-router";
@@ -24,7 +24,7 @@ export const Route = createFileRoute("/frameworks")({
       { property: "og:description", content: "Five proprietary enterprise AI frameworks by Dr. Ephraim Mpofu — SKAIDO, AISA, Three Structural Laws, Four Workflow Layers and Knowledge Architecture." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://drnattech.com/frameworks" },
-      { property: "og:image", content: "https://drnattech.com/images/Dr%20Mpofu_purple2.png" },
+      { property: "og:image", content: "https://drnattech.com/images/Dr%20Mpofu_purple2.webp" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "index, follow" },
     ],

@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+﻿import { createFileRoute } from "@tanstack/react-router";
 import { PortfolioPage } from "@/routes/portfolio/index";
 
 export const Route = createFileRoute("/de/portfolio/")({
@@ -32,7 +32,7 @@ export const Route = createFileRoute("/de/portfolio/")({
       { property: "og:url", content: "https://drnattech.com/de/portfolio/" },
       {
         property: "og:image",
-        content: "https://drnattech.com/images/Dr%20Mpofu_purple2.png",
+        content: "https://drnattech.com/images/Dr%20Mpofu_purple2.webp",
       },
       { name: "robots", content: "index, follow" },
     ],

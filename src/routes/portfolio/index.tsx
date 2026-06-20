@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+﻿import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   ArrowRight,
@@ -59,7 +59,7 @@ export const Route = createFileRoute("/portfolio/")({
       { property: "og:url", content: "https://drnattech.com/portfolio" },
       {
         property: "og:image",
-        content: "https://drnattech.com/images/Dr%20Mpofu_purple2.png",
+        content: "https://drnattech.com/images/Dr%20Mpofu_purple2.webp",
       },
       { name: "twitter:card", content: "summary_large_image" },
       {
@@ -506,7 +506,7 @@ const featuredSystemsData = [
       { icon: ShieldCheck, label: "Decision" },
       { icon: Database, label: "Audit" },
     ],
-    workflowImage: "/images/WF_Insurance_MAIN_Insurance_Claims_Orchestrator.png",
+    workflowImage: "/images/WF_Insurance_MAIN_Insurance_Claims_Orchestrator.webp",
     imagePosition: "50% 60%",
     impacts: [
       { value: "70%", label: "Reduction in Processing Time", highlight: true },
@@ -528,7 +528,7 @@ const featuredSystemsData = [
       { icon: FileText, label: "CV Personalisation" },
       { icon: TrendingUp, label: "Application Tracking" },
     ],
-    workflowImage: "/images/WF_02_acp_CV_Upload_Candidate_Intelligence.png",
+    workflowImage: "/images/WF_02_acp_CV_Upload_Candidate_Intelligence.webp",
     imagePosition: "50% 68%",
     impacts: [
       { value: "85%", label: "Time Saved on Applications", highlight: true },
@@ -549,7 +549,7 @@ const featuredSystemsData = [
       { icon: Layers, label: "Index" },
       { icon: ShieldCheck, label: "Governance" },
     ],
-    workflowImage: "/images/WF02_RAG_Knowledge_Intelligence.png",
+    workflowImage: "/images/WF02_RAG_Knowledge_Intelligence.webp",
     imagePosition: "50% 68%",
     impacts: [
       { value: "Centralized", label: "Knowledge Repositories", highlight: false },

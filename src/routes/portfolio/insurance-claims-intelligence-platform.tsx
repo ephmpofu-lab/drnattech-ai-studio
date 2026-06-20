@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight,
@@ -58,7 +58,7 @@ export const Route = createFileRoute(
       {
         property: "og:image",
         content:
-          "https://drnattech.com/images/WF_Insurance_MAIN_Insurance_Claims_Orchestrator.png",
+          "https://drnattech.com/images/WF_Insurance_MAIN_Insurance_Claims_Orchestrator.webp",
       },
       { name: "twitter:card", content: "summary_large_image" },
       {
@@ -159,14 +159,14 @@ function InsuranceStructuredData() {
    ============================================================ */
 
 const IMG = {
-  MAIN: "/images/WF_Insurance_MAIN_Insurance_Claims_Orchestrator.png",
-  UPLOAD: "/images/WF_Insurance_Upload_Binary_Files.png",
-  VALIDATION: "/images/WF_Insurance_Error_Validation_Missing_Fields.png",
-  IMAGE_SAFETY: "/images/WF_Insurance_Image_Safety_Gateway.png",
-  IMAGE_INTEL: "/images/WF_Insurance_Image_Intelligence.png",
-  DOC_INTEL: "/images/WF_Insurance_Document_Intelligence.png",
-  DECISION: "/images/WF_Insurance_Decision_and_Report_Creator.png",
-  NOTIFY: "/images/WF_Insurance_Notify%20me.png",
+  MAIN: "/images/WF_Insurance_MAIN_Insurance_Claims_Orchestrator.webp",
+  UPLOAD: "/images/WF_Insurance_Upload_Binary_Files.webp",
+  VALIDATION: "/images/WF_Insurance_Error_Validation_Missing_Fields.webp",
+  IMAGE_SAFETY: "/images/WF_Insurance_Image_Safety_Gateway.webp",
+  IMAGE_INTEL: "/images/WF_Insurance_Image_Intelligence.webp",
+  DOC_INTEL: "/images/WF_Insurance_Document_Intelligence.webp",
+  DECISION: "/images/WF_Insurance_Decision_and_Report_Creator.webp",
+  NOTIFY: "/images/WF_Insurance_Notify%20me.webp",
 };
 
 /* ============================================================

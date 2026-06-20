@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+﻿import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   ArrowLeft,
@@ -14,10 +14,10 @@ import {
 import { SiteNav } from "@/components/brand/SiteNav";
 import { SiteFooter } from "@/components/brand/SiteFooter";
 import { BrandBackground } from "@/components/brand/Background";
-import art2 from "@/assets/insight-article-2.jpg";
-import art3 from "@/assets/insight-article-3.jpg";
-import art4 from "@/assets/insight-article-4.jpg";
-import heroImg from "@/assets/insights-hero-v2.jpg";
+import art2 from "@/assets/insight-article-2.webp";
+import art3 from "@/assets/insight-article-3.webp";
+import art4 from "@/assets/insight-article-4.webp";
+import heroImg from "@/assets/insights-hero-v2.webp";
 
 export const Route = createFileRoute("/publications")({
   head: () => ({

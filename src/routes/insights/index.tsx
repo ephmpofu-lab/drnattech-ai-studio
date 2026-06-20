@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+﻿import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   Search,
@@ -12,7 +12,7 @@ import { SiteNav } from "@/components/brand/SiteNav";
 import { SiteFooter } from "@/components/brand/SiteFooter";
 import { BrandBackground } from "@/components/brand/Background";
 import { publications, type Publication } from "@/lib/publications";
-import portrait from "@/assets/hero-portrait.jpg";
+import portrait from "@/assets/hero-portrait.webp";
 
 // ─── Route ────────────────────────────────────────────────────────────────────
 

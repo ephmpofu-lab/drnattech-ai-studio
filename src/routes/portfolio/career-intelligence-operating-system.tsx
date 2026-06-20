@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight,
@@ -56,7 +56,7 @@ export const Route = createFileRoute(
       },
       {
         property: "og:image",
-        content: "https://drnattech.com/images/career-image.png",
+        content: "https://drnattech.com/images/career-image.webp",
       },
       { name: "twitter:card", content: "summary_large_image" },
       {
@@ -157,12 +157,12 @@ function AcpStructuredData() {
    ============================================================ */
 
 const IMG = {
-  WF01: "/images/WF_01_acp_Account_User_Registration.png",
-  WF02: "/images/WF_02_acp_CV_Upload_Candidate_Intelligence.png",
-  WF03: "/images/WF_03_acp_Job_Search_Request_Ingestion.png",
-  WF04: "/images/WF_04_Job_Search_Processing.png",
-  CWF01: "/images/cWF_04_Candidate_Data_Assembly.png",
-  CWF02: "/images/cWF_04_Job_Search_Matching.png",
+  WF01: "/images/WF_01_acp_Account_User_Registration.webp",
+  WF02: "/images/WF_02_acp_CV_Upload_Candidate_Intelligence.webp",
+  WF03: "/images/WF_03_acp_Job_Search_Request_Ingestion.webp",
+  WF04: "/images/WF_04_Job_Search_Processing.webp",
+  CWF01: "/images/cWF_04_Candidate_Data_Assembly.webp",
+  CWF02: "/images/cWF_04_Job_Search_Matching.webp",
 };
 
 /* ============================================================

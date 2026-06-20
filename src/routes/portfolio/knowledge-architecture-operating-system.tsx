@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight,
@@ -56,7 +56,7 @@ export const Route = createFileRoute(
       {
         property: "og:image",
         content:
-          "https://drnattech.com/images/WF01_RAG_Knowledge_Acquisition.png",
+          "https://drnattech.com/images/WF01_RAG_Knowledge_Acquisition.webp",
       },
       { name: "twitter:card", content: "summary_large_image" },
       {
@@ -162,10 +162,10 @@ function KnowledgeStructuredData() {
    ============================================================ */
 
 const IMG = {
-  ACQUISITION: "/images/WF01_RAG_Knowledge_Acquisition.png",
-  INTELLIGENCE: "/images/WF02_RAG_Knowledge_Intelligence.png",
-  INDEXING: "/images/WF03_RAG_Vector_Indexing.png",
-  RETRIEVAL: "/images/WF04_RAG_Retrival.png",
+  ACQUISITION: "/images/WF01_RAG_Knowledge_Acquisition.webp",
+  INTELLIGENCE: "/images/WF02_RAG_Knowledge_Intelligence.webp",
+  INDEXING: "/images/WF03_RAG_Vector_Indexing.webp",
+  RETRIEVAL: "/images/WF04_RAG_Retrival.webp",
 };
 
 /* ============================================================

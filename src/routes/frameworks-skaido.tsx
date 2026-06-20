@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+﻿import { createFileRoute } from "@tanstack/react-router";
 import { SiteNav } from "@/components/brand/SiteNav";
 import { BrandBackground } from "@/components/brand/Background";
 
@@ -23,7 +23,7 @@ export const Route = createFileRoute("/frameworks-skaido")({
       { property: "og:description", content: "Scope → Knowledge → Architecture → Implementation → Deployment → Optimisation. Dr. Ephraim Mpofu's proprietary methodology for delivering production-ready enterprise AI." },
       { property: "og:type", content: "article" },
       { property: "og:url", content: "https://drnattech.com/frameworks-skaido" },
-      { property: "og:image", content: "https://drnattech.com/images/Dr%20Mpofu_purple2.png" },
+      { property: "og:image", content: "https://drnattech.com/images/Dr%20Mpofu_purple2.webp" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "index, follow" },
     ],

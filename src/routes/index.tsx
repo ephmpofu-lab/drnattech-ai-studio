@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+﻿import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import {
   ArrowRight,
@@ -48,7 +48,7 @@ export const Route = createFileRoute("/")({
       { property: "og:url", content: "https://drnattech.com/" },
       {
         property: "og:image",
-        content: "https://drnattech.com/images/Dr%20Mpofu_purple2.png",
+        content: "https://drnattech.com/images/Dr%20Mpofu_purple2.webp",
       },
       { name: "twitter:card", content: "summary_large_image" },
       {
@@ -166,7 +166,7 @@ function HomeStructuredData() {
         description:
           "PhD-credentialed AI Solutions Architect and KI-Architekt based in Vienna, Austria. Specialises in enterprise AI systems, RAG knowledge platforms, multi-agent workflows and EU AI Act compliance architecture. Serves organisations across the DACH region and EU.",
         url: "https://drnattech.com",
-        image: "https://drnattech.com/images/Dr%20Mpofu_purple2.png",
+        image: "https://drnattech.com/images/Dr%20Mpofu_purple2.webp",
         alumniOf: {
           "@type": "CollegeOrUniversity",
           name: "BOKU University Vienna",
@@ -483,7 +483,7 @@ function Hero() {
       {/* CENTER — hero portrait */}
       <div className="relative hidden min-h-[500px] overflow-hidden lg:block">
         <img
-          src="/images/Dr Mpofu_purple2.png"
+          src="/images/Dr Mpofu_purple2.webp"
           alt="Dr. Ephraim Mpofu — AI Solutions Architect and KI-Architekt based in Vienna, Austria"
           className="absolute inset-0 h-full w-full object-cover object-top"
         />
@@ -859,7 +859,7 @@ function FeaturedCaseStudy() {
               style={{ border: "1px solid rgba(255,255,255,0.07)" }}
             >
               <img
-                src="/images/WF02_RAG_Knowledge_Intelligence.png"
+                src="/images/WF02_RAG_Knowledge_Intelligence.webp"
                 alt="RAG Knowledge Intelligence workflow"
                 className="h-full w-full object-cover"
                 style={{ objectPosition: "50% 68%" }}

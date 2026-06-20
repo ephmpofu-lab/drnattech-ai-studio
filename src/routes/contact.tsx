@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+﻿import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   MapPin,
@@ -19,7 +19,7 @@ import { SiteNav } from "@/components/brand/SiteNav";
 import { SiteFooter } from "@/components/brand/SiteFooter";
 import { BrandBackground } from "@/components/brand/Background";
 import { Signature } from "@/components/brand/Signature";
-import heroImg from "@/assets/contact-hero.jpg";
+import heroImg from "@/assets/contact-hero.webp";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({

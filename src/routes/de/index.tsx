@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+﻿import { createFileRoute } from "@tanstack/react-router";
 import { Home } from "@/routes/index";
 
 export const Route = createFileRoute("/de/")({
@@ -30,7 +30,7 @@ export const Route = createFileRoute("/de/")({
       { property: "og:url", content: "https://drnattech.com/de/" },
       {
         property: "og:image",
-        content: "https://drnattech.com/images/Dr%20Mpofu_purple2.png",
+        content: "https://drnattech.com/images/Dr%20Mpofu_purple2.webp",
       },
       { name: "robots", content: "index, follow" },
     ],

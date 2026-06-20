@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+﻿import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useRef, useEffect } from "react";
 import type { KeyboardEvent } from "react";
 import {
@@ -153,7 +153,7 @@ export const Route = createFileRoute("/ai-agent")({
       { property: "og:url", content: "https://drnattech.com/ai-agent" },
       {
         property: "og:image",
-        content: "https://drnattech.com/images/Dr%20Mpofu_purple2.png",
+        content: "https://drnattech.com/images/Dr%20Mpofu_purple2.webp",
       },
       { name: "twitter:card", content: "summary_large_image" },
       {

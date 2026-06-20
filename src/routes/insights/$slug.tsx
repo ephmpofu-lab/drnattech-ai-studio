@@ -1,4 +1,4 @@
-import {
+﻿import {
   createFileRoute,
   Link,
   notFound,
@@ -27,7 +27,7 @@ import {
   getRelatedPublications,
   type Publication,
 } from "@/lib/publications";
-const portrait = "/images/Dr Mpofu_purple2.png";
+const portrait = "/images/Dr Mpofu_purple2.webp";
 
 // ─── Route ────────────────────────────────────────────────────────────────────
 

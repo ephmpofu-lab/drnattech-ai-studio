@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+﻿import { createFileRoute } from "@tanstack/react-router";
 import { AcpPage } from "@/routes/portfolio/career-intelligence-operating-system";
 
 export const Route = createFileRoute(
@@ -38,7 +38,7 @@ export const Route = createFileRoute(
       },
       {
         property: "og:image",
-        content: "https://drnattech.com/images/Dr%20Mpofu_purple2.png",
+        content: "https://drnattech.com/images/Dr%20Mpofu_purple2.webp",
       },
       { name: "robots", content: "index, follow" },
     ],
