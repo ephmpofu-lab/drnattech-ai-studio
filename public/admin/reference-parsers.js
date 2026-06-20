@@ -450,13 +450,95 @@
     console.log('[RefsImport] "↑ Import" button injected.');
   }
 
+  // ─── Save Draft button ────────────────────────────────────────────────────────
+
+  var SAVE_DRAFT_ATTR = 'data-save-draft-btn';
+  var selectSetter = Object.getOwnPropertyDescriptor(window.HTMLSelectElement.prototype, 'value').set;
+
+  function findStatusSelect() {
+    var selects = document.querySelectorAll('select');
+    for (var i = 0; i < selects.length; i++) {
+      var opts = Array.prototype.slice.call(selects[i].options).map(function (o) { return o.value; });
+      if (opts.indexOf('draft') !== -1 && opts.indexOf('published') !== -1) return selects[i];
+    }
+    return null;
+  }
+
+  function injectSaveDraftButton() {
+    // Only relevant in the article editor — look for the "Publish" button
+    var publishBtn = null;
+    var all = document.querySelectorAll('button');
+    for (var i = 0; i < all.length; i++) {
+      var t = all[i].textContent.trim();
+      if (t === 'Publish' && !all[i].hasAttribute(SAVE_DRAFT_ATTR)) { publishBtn = all[i]; break; }
+    }
+    if (!publishBtn) return;
+
+    var parent = publishBtn.parentNode;
+    if (!parent || parent.querySelector('[' + SAVE_DRAFT_ATTR + ']')) return;
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.setAttribute(SAVE_DRAFT_ATTR, '1');
+    btn.textContent = 'Save Draft';
+
+    var cs = window.getComputedStyle(publishBtn);
+    btn.style.cssText = [
+      'cursor:pointer',
+      'margin-right:8px',
+      'padding:' + cs.getPropertyValue('padding'),
+      'border:1px solid rgba(255,255,255,0.18)',
+      'border-radius:' + cs.getPropertyValue('border-radius'),
+      'background:transparent',
+      'color:#94A3B8',
+      'font-size:' + cs.getPropertyValue('font-size'),
+      'font-weight:' + cs.getPropertyValue('font-weight'),
+      'font-family:inherit',
+      'white-space:nowrap',
+    ].join(';');
+
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      // 1. Set the Status field to "draft"
+      var statusEl = findStatusSelect();
+      if (statusEl) {
+        selectSetter.call(statusEl, 'draft');
+        statusEl.dispatchEvent(new Event('change', { bubbles: true }));
+        statusEl.dispatchEvent(new Event('input',  { bubbles: true }));
+      } else {
+        // Status field not a native <select> — warn and fall through anyway
+        console.warn('[CMS] Status select not found; proceeding with Publish. Ensure Status is set to "draft" manually.');
+      }
+
+      // 2. Click Publish (after a short delay so React state settles)
+      setTimeout(function () {
+        var btns = document.querySelectorAll('button');
+        for (var j = 0; j < btns.length; j++) {
+          if (btns[j].textContent.trim() === 'Publish' && !btns[j].hasAttribute(SAVE_DRAFT_ATTR)) {
+            btns[j].click();
+            break;
+          }
+        }
+      }, 250);
+    });
+
+    parent.insertBefore(btn, publishBtn);
+    console.log('[CMS] "Save Draft" button injected.');
+  }
+
   // ─── MutationObserver ─────────────────────────────────────────────────────────
 
-  var observer = new MutationObserver(function () { injectButton(); });
+  var observer = new MutationObserver(function () {
+    injectButton();
+    injectSaveDraftButton();
+  });
 
   function start() {
     observer.observe(document.body, { childList: true, subtree: true });
     injectButton();
+    injectSaveDraftButton();
   }
 
   if (document.readyState === 'loading') {

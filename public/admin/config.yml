@@ -24,7 +24,7 @@ collections:
     extension: json
     slug: "{{fields.slug}}"
     preview_path: "/insights/{{fields.slug}}"
-    summary: "{{fields.title}} — {{fields.date}}"
+    summary: "[{{fields.status}}] {{fields.title}} — {{fields.date}}"
     sortable_fields: ["date", "title", "category"]
     fields:
       - label: "Title"

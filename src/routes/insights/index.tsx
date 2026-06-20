@@ -50,17 +50,25 @@ export const Route = createFileRoute("/insights/")({
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
-const ALL_CATEGORIES = [
-  { label: "Enterprise AI", count: 12 },
-  { label: "AI Governance", count: 15 },
-  { label: "EU AI Act", count: 8 },
-  { label: "Knowledge Architecture", count: 10 },
-  { label: "RAG Systems", count: 7 },
-  { label: "Agentic AI", count: 6 },
-  { label: "AI Operations", count: 9 },
-  { label: "Case Studies", count: 11 },
-  { label: "Research Notes", count: 5 },
-] as const;
+const CATEGORY_LABELS = [
+  "Enterprise AI",
+  "AI Governance",
+  "EU AI Act",
+  "Knowledge Architecture",
+  "RAG Systems",
+  "Agentic AI",
+  "AI Operations",
+  "Case Studies",
+  "Research Notes",
+];
+
+// Real counts from actual published articles — hides empty categories
+const ALL_CATEGORIES = CATEGORY_LABELS
+  .map((label) => ({
+    label,
+    count: publications.filter((p) => p.category === label).length,
+  }))
+  .filter((c) => c.count > 0);
 
 const PAGE_SIZE = 6;
 
@@ -313,7 +321,7 @@ export function InsightsIndexPage() {
                       {publications.length}
                     </span>
                   </button>
-                  {ALL_CATEGORIES.map(({ label, count }) => (
+                  {ALL_CATEGORIES.map(({ label, count }: { label: string; count: number }) => (
                     <button
                       key={label}
                       onClick={() => {
