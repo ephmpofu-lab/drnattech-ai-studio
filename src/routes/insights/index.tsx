@@ -12,7 +12,7 @@ import { SiteNav } from "@/components/brand/SiteNav";
 import { SiteFooter } from "@/components/brand/SiteFooter";
 import { BrandBackground } from "@/components/brand/Background";
 import { publications, type Publication } from "@/lib/publications";
-import portrait from "@/assets/hero-portrait.webp";
+const portrait = "/images/Dr Mpofu_purple2.webp";
 
 // ─── Route ────────────────────────────────────────────────────────────────────
 
