@@ -152,6 +152,12 @@ collections:
           - { label: "Source / Journal", name: source, widget: string }
           - { label: "URL (optional)", name: url, widget: string, required: false }
 
+      - label: "Raw References"
+        name: rawReferences
+        widget: text
+        required: false
+        hint: "Paste your complete bibliography exactly as written — no parsing, no splitting. If filled, this is shown on the website instead of the structured References above."
+
       - label: "Suggested Citation"
         name: citation
         widget: text

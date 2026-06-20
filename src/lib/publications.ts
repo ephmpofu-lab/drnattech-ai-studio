@@ -32,6 +32,7 @@ export type Publication = {
   figures: Figure[];
   tags: string[];
   references: Reference[];
+  rawReferences?: string; // verbatim bibliography — shown instead of structured references when set
   citation: string;
   seoTitle?: string;
   seoDescription?: string;
@@ -57,6 +58,7 @@ interface RawPublication {
   figures?: Figure[];
   tags?: string[];
   references?: Reference[];
+  rawReferences?: string;
   citation?: string;
   seoTitle?: string;
   seoDescription?: string;
@@ -115,6 +117,7 @@ export const publications: Publication[] = Object.values(modules)
       figures: (r.figures ?? []).map((f) => ({ ...f, image: imgPath(f.image) })),
       tags: r.tags ?? [],
       references: r.references ?? [],
+      rawReferences: r.rawReferences,
       citation: r.citation ?? '',
       seoTitle: r.seoTitle,
       seoDescription: r.seoDescription,

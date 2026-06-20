@@ -662,8 +662,8 @@ function ArticlePage() {
             {/* Article Body — Markdown */}
             <MarkdownBody body={pub.body} figures={pub.figures} />
 
-            {/* References */}
-            {pub.references.length > 0 && (
+            {/* References — raw takes priority over structured */}
+            {(pub.rawReferences || pub.references.length > 0) && (
               <section className="mb-10">
                 <h2
                   className="mb-5 text-[20px] font-bold"
@@ -675,37 +675,54 @@ function ArticlePage() {
                 >
                   References
                 </h2>
-                <ol className="space-y-4">
-                  {pub.references.map((ref, i) => (
-                    <li
-                      key={ref.id}
-                      className="flex gap-4 text-[13.5px] leading-[1.7]"
-                      style={{ color: "#94A3B8" }}
-                    >
-                      <span
-                        className="mt-0.5 shrink-0 font-semibold tabular-nums"
-                        style={{ color: "#64748B" }}
+
+                {pub.rawReferences ? (
+                  // Verbatim bibliography — preserve all line breaks and spacing
+                  <div
+                    style={{
+                      whiteSpace: "pre-wrap",
+                      fontFamily: "inherit",
+                      fontSize: "13.5px",
+                      lineHeight: "1.8",
+                      color: "#94A3B8",
+                    }}
+                  >
+                    {pub.rawReferences}
+                  </div>
+                ) : (
+                  // Structured references list
+                  <ol className="space-y-4">
+                    {pub.references.map((ref, i) => (
+                      <li
+                        key={ref.id}
+                        className="flex gap-4 text-[13.5px] leading-[1.7]"
+                        style={{ color: "#94A3B8" }}
                       >
-                        [{i + 1}]
-                      </span>
-                      <span>
-                        {ref.authors} ({ref.year}). {ref.title}.{" "}
-                        <em>{ref.source}</em>.{" "}
-                        {ref.url && (
-                          <a
-                            href={ref.url}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex items-center gap-1 transition-colors hover:text-white"
-                            style={{ color: "#A855F7" }}
-                          >
-                            View <ExternalLink className="h-3 w-3" />
-                          </a>
-                        )}
-                      </span>
-                    </li>
-                  ))}
-                </ol>
+                        <span
+                          className="mt-0.5 shrink-0 font-semibold tabular-nums"
+                          style={{ color: "#64748B" }}
+                        >
+                          [{i + 1}]
+                        </span>
+                        <span>
+                          {ref.authors} ({ref.year}). {ref.title}.{" "}
+                          <em>{ref.source}</em>.{" "}
+                          {ref.url && (
+                            <a
+                              href={ref.url}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-flex items-center gap-1 transition-colors hover:text-white"
+                              style={{ color: "#A855F7" }}
+                            >
+                              View <ExternalLink className="h-3 w-3" />
+                            </a>
+                          )}
+                        </span>
+                      </li>
+                    ))}
+                  </ol>
+                )}
               </section>
             )}
 
