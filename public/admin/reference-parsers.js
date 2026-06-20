@@ -1,424 +1,313 @@
 (function () {
   'use strict';
 
-  // ─── Helpers ──────────────────────────────────────────────────────────────────
-  function makeId(i) { return 'ref-' + (i + 1); }
-
-  // ─── Format detector ──────────────────────────────────────────────────────────
-  function detectFormat(text) {
-    if (/@\w+\s*\{/.test(text)) return 'bibtex';
-    if (/^TY\s+-/m.test(text)) return 'ris';
-    var first = text.split('\n')[0];
-    if (first.indexOf(',') !== -1 && /title|author/i.test(first)) return 'csv';
-    return 'text';
-  }
-
-  function parseReferences(raw) {
-    var text = (raw || '').trim();
-    if (!text) return [];
-    switch (detectFormat(text)) {
-      case 'bibtex': return parseBibTeX(text);
-      case 'ris':    return parseRIS(text);
-      case 'csv':    return parseCSV(text);
-      default:       return parsePlainText(text);
-    }
-  }
-
-  // ─── Plain text (APA / Harvard / Vancouver / fallback) ────────────────────────
-  function parsePlainText(text) {
-    var blocks = text.split(/\n\s*\n+/).map(function (b) { return b.trim(); }).filter(Boolean);
-    if (blocks.length <= 1) {
-      blocks = text.split(/\n(?=\s*[\[\(]?\d+[\]\)\.]?\s+\S)/).map(function (b) { return b.trim(); }).filter(Boolean);
-    }
-    return blocks.map(function (block, i) { return parseOneRef(block, i); }).filter(Boolean);
-  }
-
-  function parseOneRef(raw, i) {
-    var text = raw.replace(/^\s*[\[\(]?\d+[\]\)\.]?\s*/, '').trim();
-    if (text.length < 5) return null;
-    var ref = { id: makeId(i), authors: '', year: '', title: '', source: '', url: '' };
-
-    var urlM = text.match(/https?:\/\/[^\s,)\]>]+/);
-    if (urlM) {
-      ref.url = urlM[0].replace(/[.,)>]+$/, '');
-      text = text.replace(urlM[0], '').replace(/\s{2,}/g, ' ').trim();
-    }
-
-    var apa = text.match(/^(.+?)\s*\((\d{4}[a-z]?)\)\.\s*(.+?)\.\s*(.+)/);
-    if (apa) {
-      ref.authors = apa[1].replace(/[.,\s]+$/, '');
-      ref.year = apa[2];
-      ref.title = apa[3].replace(/\.+$/, '');
-      ref.source = apa[4].replace(/[.,\s]+$/, '');
-      return ref;
-    }
-
-    var harv = text.match(/^(.+?)\s*\((\d{4})\)\s+(.+?)\.\s*(.+)/);
-    if (harv) {
-      ref.authors = harv[1].replace(/[.,\s]+$/, '');
-      ref.year = harv[2];
-      ref.title = harv[3].replace(/\.+$/, '');
-      ref.source = harv[4].replace(/[.,\s]+$/, '');
-      return ref;
-    }
-
-    var vanc = text.match(/^(.+?)\.\s+(.+?)\.\s+(.+?)\.\s+(\d{4})/);
-    if (vanc) {
-      ref.authors = vanc[1];
-      ref.title = vanc[2];
-      ref.source = vanc[3];
-      ref.year = vanc[4];
-      return ref;
-    }
-
-    var yM = text.match(/\b(19|20)\d{2}\b/);
-    if (yM) ref.year = yM[0];
-    ref.title = text.substring(0, 300);
-    return ref;
-  }
-
-  // ─── BibTeX ───────────────────────────────────────────────────────────────────
-  function getBibField(body, field) {
-    var re = new RegExp('\\b' + field + '\\s*=\\s*', 'i');
-    var m = re.exec(body);
-    if (!m) return '';
-    var rest = body.slice(m.index + m[0].length);
-    if (rest.charAt(0) === '"') {
-      var end = rest.indexOf('"', 1);
-      return end > 0 ? rest.slice(1, end).replace(/\s+/g, ' ').trim() : '';
-    }
-    if (rest.charAt(0) === '{') {
-      var depth = 0, j = 0, out = '';
-      while (j < rest.length) {
-        if (rest[j] === '{') { depth++; }
-        else if (rest[j] === '}') { depth--; if (depth === 0) break; }
-        if (depth > 0 && j > 0) out += rest[j];
-        j++;
-      }
-      return out.replace(/\s+/g, ' ').trim();
-    }
-    var num = rest.match(/^(\d+)/);
-    return num ? num[1] : '';
-  }
-
-  function parseBibTeX(text) {
-    var entries = text.match(/@\w+\s*\{[^@]+/g) || [];
-    return entries.map(function (entry, i) {
-      var keyM = entry.match(/@\w+\s*\{([^,\s]+)/);
-      var key = keyM ? keyM[1] : makeId(i);
-      var doi = getBibField(entry, 'doi');
-      return {
-        id:      key,
-        authors: getBibField(entry, 'author').replace(/\s+and\s+/gi, '; '),
-        year:    getBibField(entry, 'year'),
-        title:   getBibField(entry, 'title'),
-        source:  getBibField(entry, 'journal') || getBibField(entry, 'booktitle') || getBibField(entry, 'publisher') || '',
-        url:     getBibField(entry, 'url') || (doi ? 'https://doi.org/' + doi : ''),
-      };
-    }).filter(function (r) { return r.title || r.authors; });
-  }
-
-  // ─── RIS ──────────────────────────────────────────────────────────────────────
-  function parseRIS(text) {
-    var refs = [];
-    var chunks = text.split(/^ER\s*-[^\n]*/m).filter(function (c) { return c.trim(); });
-    chunks.forEach(function (chunk, i) {
-      var ref = { id: makeId(i), authors: '', year: '', title: '', source: '', url: '' };
-      var auths = [];
-      chunk.split('\n').forEach(function (line) {
-        var lm = line.match(/^([A-Z][A-Z0-9])\s*-\s*(.+)/);
-        if (!lm) return;
-        var tag = lm[1], val = lm[2].trim();
-        if (tag === 'AU' || tag === 'A1') { auths.push(val); }
-        else if (tag === 'PY' || tag === 'Y1') { ref.year = val.split('/')[0]; }
-        else if (tag === 'TI' || tag === 'T1') { ref.title = val; }
-        else if ((tag === 'JO' || tag === 'JF' || tag === 'T2' || tag === 'SO') && !ref.source) { ref.source = val; }
-        else if (tag === 'UR' || tag === 'L1') { ref.url = val; }
-      });
-      ref.authors = auths.join('; ');
-      if (ref.title || ref.authors) refs.push(ref);
-    });
-    return refs;
-  }
-
-  // ─── CSV ──────────────────────────────────────────────────────────────────────
-  function splitCSV(line) {
-    var cells = [], cur = '', q = false;
-    for (var j = 0; j < line.length; j++) {
-      var c = line[j];
-      if (c === '"') { q = !q; }
-      else if (c === ',' && !q) { cells.push(cur.trim()); cur = ''; }
-      else { cur += c; }
-    }
-    cells.push(cur.trim());
-    return cells;
-  }
-
-  function parseCSV(text) {
-    var rows = text.trim().split('\n');
-    if (rows.length < 2) return [];
-    var headers = splitCSV(rows[0]).map(function (h) { return h.toLowerCase().replace(/^["'\s]+|["'\s]+$/g, ''); });
-    var aliases = { id: ['id','key','ref_id'], authors: ['authors','author','au'], year: ['year','date','yr','py'], title: ['title','ti','name'], source: ['source','journal','venue','booktitle','publisher'], url: ['url','doi','link','uri'] };
-    var cols = {};
-    Object.keys(aliases).forEach(function (f) {
-      aliases[f].forEach(function (a) { var idx = headers.indexOf(a); if (idx >= 0 && cols[f] === undefined) cols[f] = idx; });
-    });
-    var refs = [];
-    rows.slice(1).forEach(function (row, i) {
-      if (!row.trim()) return;
-      var cells = splitCSV(row);
-      var get = function (f) { return cols[f] !== undefined ? (cells[cols[f]] || '') : ''; };
-      var ref = { id: get('id') || makeId(i), authors: get('authors'), year: get('year'), title: get('title'), source: get('source'), url: get('url') };
-      if (ref.title || ref.authors) refs.push(ref);
-    });
-    return refs;
-  }
-
-  // ─── Widget — uses window.h and window.createClass (Decap CMS 3 globals) ──────
   var h = window.h;
   var createClass = window.createClass;
 
   if (!h || !createClass) {
-    console.error('[reference-parsers] window.h or window.createClass not available. Bulk import widget not registered.');
+    console.error('[RefsWidget] window.h or window.createClass not available — widget not registered.');
     return;
   }
 
-  function toArr(val) {
-    if (!val) return [];
-    if (typeof val.toJS === 'function') return val.toJS();
-    if (Array.isArray(val)) return val;
-    return [];
+  // ─── Parsers ────────────────────────────────────────────────────────────────
+
+  function tr(s) { return (s || '').trim(); }
+
+  function parseBibTeX(text) {
+    var refs = [];
+    var entries = text.match(/@\w+\{[^@]+/g) || [];
+    entries.forEach(function (entry) {
+      function field(name) {
+        var m = entry.match(new RegExp(name + '\\s*=\\s*[{"]([\\s\\S]*?)[}"]', 'i'));
+        return m ? tr(m[1].replace(/\s+/g, ' ')) : '';
+      }
+      var title = field('title');
+      if (!title) return;
+      refs.push({
+        authors: field('author').replace(/\s+and\s+/gi, ', '),
+        year:    field('year'),
+        title:   title,
+        source:  field('journal') || field('booktitle') || field('publisher') || '',
+        url:     field('url') || field('doi') || '',
+      });
+    });
+    return refs;
   }
 
-  var BLANK = { id: '', authors: '', year: '', title: '', source: '', url: '' };
+  function parseRIS(text) {
+    var refs = [];
+    var blocks = text.split(/(?:\r?\n)ER\s*-/);
+    if (blocks.length === 1) blocks = [text];
+    blocks.forEach(function (block) {
+      if (!tr(block)) return;
+      var ref = { authors: [], title: '', year: '', source: '', url: '' };
+      block.split(/\r?\n/).forEach(function (line) {
+        var m = line.match(/^([A-Z][A-Z0-9])\s*-\s*(.*)/);
+        if (!m) return;
+        var tag = m[1], val = tr(m[2]);
+        if (tag === 'AU' || tag === 'A1') ref.authors.push(val);
+        else if (tag === 'TI' || tag === 'T1') ref.title = val;
+        else if (tag === 'PY' || tag === 'Y1') ref.year = val.split('/')[0].slice(0, 4);
+        else if ((tag === 'JO' || tag === 'JF' || tag === 'T2') && !ref.source) ref.source = val;
+        else if (tag === 'UR') ref.url = val;
+      });
+      if (ref.title) refs.push({ authors: ref.authors.join('; '), year: ref.year, title: ref.title, source: ref.source, url: ref.url });
+    });
+    return refs;
+  }
 
-  // ─── Styles ───────────────────────────────────────────────────────────────────
-  var C = {
-    root:   { fontFamily: '-apple-system,BlinkMacSystemFont,sans-serif', fontSize: '14px' },
-    tabs:   { display: 'flex', gap: '6px', marginBottom: '14px' },
-    tab:    function (on) { return { padding: '5px 14px', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: on ? '600' : '400', border: '1px solid ' + (on ? '#4f46e5' : '#d1d5db'), background: on ? '#4f46e5' : '#fff', color: on ? '#fff' : '#374151' }; },
-    refRow: { display: 'flex', alignItems: 'flex-start', gap: '8px', padding: '10px 12px', marginBottom: '6px', borderRadius: '8px', border: '1px solid #e5e7eb', background: '#fafafa' },
-    idx:    { color: '#9ca3af', fontSize: '12px', minWidth: '28px', marginTop: '3px' },
-    body:   { flex: '1', fontSize: '13px', lineHeight: '1.55' },
-    del:    { background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '18px', lineHeight: '1', padding: '0 2px' },
-    empty:  { color: '#9ca3af', fontSize: '13px', padding: '10px 0' },
-    ta:     { width: '100%', minHeight: '160px', padding: '10px', boxSizing: 'border-box', fontFamily: 'monospace', fontSize: '12.5px', border: '1px solid #d1d5db', borderRadius: '6px', resize: 'vertical', lineHeight: '1.5', marginTop: '8px' },
-    hint:   { fontSize: '12px', color: '#6b7280', lineHeight: '1.5' },
-    bar:    { display: 'flex', gap: '8px', alignItems: 'center', marginTop: '10px', flexWrap: 'wrap' },
-    btn:    function (bg) { return { padding: '6px 14px', borderRadius: '6px', border: 'none', cursor: 'pointer', fontWeight: '600', fontSize: '13px', background: bg || '#4f46e5', color: '#fff' }; },
-    ghost:  { padding: '6px 14px', borderRadius: '6px', border: '1px solid #d1d5db', background: '#f9fafb', color: '#374151', fontSize: '13px', cursor: 'pointer' },
-    err:    { color: '#dc2626', fontSize: '13px', marginTop: '6px' },
-    box:    { marginTop: '12px', padding: '12px', borderRadius: '8px', background: '#f0fdf4', border: '1px solid #86efac' },
-    boxH:   { fontWeight: '600', fontSize: '13px', color: '#15803d', margin: '0 0 8px 0' },
-    boxL:   { fontSize: '12px', color: '#166534', margin: '0 0 3px 0' },
-    form:   { marginTop: '10px', padding: '12px', border: '1px solid #e5e7eb', borderRadius: '8px', background: '#f9fafb' },
-    grid:   { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '8px' },
-    lbl:    { display: 'block', fontSize: '11px', color: '#6b7280', marginBottom: '3px', fontWeight: '600', textTransform: 'uppercase' },
-    inp:    { width: '100%', padding: '6px 9px', border: '1px solid #d1d5db', borderRadius: '6px', fontSize: '13px', boxSizing: 'border-box' },
+  function parsePlainText(text) {
+    var refs = [];
+    text.split(/\r?\n/).map(tr).filter(Boolean).forEach(function (line) {
+      line = line.replace(/^[\[\(]?\d+[\]\)\.\s]+/, '');
+      var yearMatch = line.match(/\((\d{4}[a-z]?)\)/);
+      var year = yearMatch ? yearMatch[1] : '';
+      var urlMatch = line.match(/https?:\/\/[^\s,]+/);
+      var url = urlMatch ? urlMatch[0] : '';
+      var authorsPart = '';
+      var afterYear = line;
+      if (yearMatch) {
+        authorsPart = tr(line.slice(0, yearMatch.index)).replace(/[.,]\s*$/, '');
+        afterYear = tr(line.slice(yearMatch.index + yearMatch[0].length)).replace(/^[.\s]+/, '');
+      }
+      var titleEnd = afterYear.search(/\.\s+[A-Z*_]/);
+      var title = titleEnd !== -1 ? tr(afterYear.slice(0, titleEnd)) : tr(afterYear.split('.')[0]);
+      title = title.replace(/\.$/, '');
+      var afterTitle = titleEnd !== -1 ? tr(afterYear.slice(titleEnd + 1)) : tr(afterYear.slice(title.length + 1));
+      afterTitle = afterTitle.replace(/^\*+/, '').replace(/\*+$/, '');
+      var source = tr(afterTitle.split(/[,.\d]/)[0]).replace(/^[.\s]+/, '');
+      if (title) refs.push({ authors: authorsPart, year: year, title: title, source: source, url: url });
+    });
+    return refs;
+  }
+
+  function parseReferences(text) {
+    var t = tr(text);
+    if (!t) return [];
+    if (/@\w+\s*\{/.test(t)) return parseBibTeX(t);
+    if (/^TY\s+-/m.test(t) || /^AU\s+-/m.test(t) || /^A1\s+-/m.test(t)) return parseRIS(t);
+    return parsePlainText(t);
+  }
+
+  // ─── Styles ─────────────────────────────────────────────────────────────────
+
+  var S = {
+    wrap:        { fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif', fontSize: '14px', color: '#333', lineHeight: '1.4' },
+    topBar:      { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' },
+    count:       { fontSize: '12px', color: '#888' },
+    btn:         { display: 'inline-flex', alignItems: 'center', gap: '5px', padding: '6px 13px', borderRadius: '5px', cursor: 'pointer', fontSize: '13px', border: '1px solid #ccc', background: '#f7f7f7', color: '#333', fontFamily: 'inherit', lineHeight: '1' },
+    btnPrimary:  { background: '#3b82f6', color: '#fff', border: '1px solid #3b82f6' },
+    btnRemove:   { padding: '3px 8px', fontSize: '12px', borderRadius: '4px', cursor: 'pointer', border: '1px solid #fca5a5', background: 'transparent', color: '#dc2626', fontFamily: 'inherit' },
+    card:        { padding: '9px 12px', marginBottom: '7px', borderRadius: '6px', border: '1px solid #e4e4e4', background: '#fafafa' },
+    cardHeader:  { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px' },
+    cardTitle:   { fontSize: '13px', cursor: 'pointer', flex: '1', color: '#333', lineHeight: '1.4', userSelect: 'none' },
+    grid:        { marginTop: '10px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' },
+    fullCol:     { gridColumn: '1 / -1' },
+    lbl:         { display: 'block', fontSize: '11px', fontWeight: '600', color: '#777', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '3px' },
+    input:       { width: '100%', padding: '5px 8px', borderRadius: '4px', border: '1px solid #ccc', fontSize: '13px', boxSizing: 'border-box', fontFamily: 'inherit' },
+    textarea:    { width: '100%', padding: '8px', borderRadius: '5px', border: '1px solid #ccc', fontSize: '13px', boxSizing: 'border-box', minHeight: '180px', resize: 'vertical', fontFamily: 'monospace, monospace' },
+    hint:        { fontSize: '12px', color: '#666', margin: '0 0 8px' },
+    error:       { fontSize: '13px', color: '#dc2626', margin: '6px 0 0' },
+    preview:     { background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '6px', padding: '10px 12px', margin: '10px 0' },
+    previewHdr:  { fontWeight: '700', fontSize: '13px', marginBottom: '6px', color: '#1e40af' },
+    previewLine: { fontSize: '12px', color: '#555', margin: '3px 0' },
+    empty:       { fontSize: '13px', color: '#aaa', textAlign: 'center', padding: '16px 0', fontStyle: 'italic' },
   };
 
-  // ─── RefsControl — createClass (no hooks required) ────────────────────────────
+  // ─── Widget Control ──────────────────────────────────────────────────────────
+
   var RefsControl = createClass({
+    displayName: 'RefsControl',
+
     getInitialState: function () {
-      return { tab: 'list', raw: '', parsed: null, err: '', fstat: '', showForm: false, entry: Object.assign({}, BLANK) };
+      return { mode: 'list', importText: '', importParsed: null, importError: '', expanded: {} };
     },
 
-    save: function (arr) { this.props.onChange(arr); },
-
-    setField: function (k, v) {
-      var e = Object.assign({}, this.state.entry); e[k] = v;
-      this.setState({ entry: e });
+    getRefs: function () {
+      var v = this.props.value;
+      if (!v) return [];
+      if (typeof v.toJS === 'function') return v.toJS();
+      if (Array.isArray(v)) return v;
+      return [];
     },
 
-    doParse: function () {
-      var raw = this.state.raw;
-      if (!raw.trim()) { this.setState({ err: 'Paste references first.' }); return; }
+    setRefs: function (refs) { this.props.onChange(refs); },
+
+    handleAdd: function () {
+      var refs = this.getRefs();
+      var newRefs = refs.concat([{ id: 'ref-' + (refs.length + 1), authors: '', year: '', title: '', source: '', url: '' }]);
+      this.setRefs(newRefs);
+      var exp = Object.assign({}, this.state.expanded);
+      exp[newRefs.length - 1] = true;
+      this.setState({ expanded: exp });
+    },
+
+    handleDelete: function (idx) {
+      var exp = Object.assign({}, this.state.expanded);
+      delete exp[idx];
+      this.setRefs(this.getRefs().filter(function (_, i) { return i !== idx; }));
+      this.setState({ expanded: exp });
+    },
+
+    handleField: function (idx, field, val) {
+      var refs = this.getRefs().slice();
+      var obj = Object.assign({}, refs[idx]);
+      obj[field] = val;
+      refs[idx] = obj;
+      this.setRefs(refs);
+    },
+
+    toggle: function (idx) {
+      var exp = Object.assign({}, this.state.expanded);
+      exp[idx] = !exp[idx];
+      this.setState({ expanded: exp });
+    },
+
+    handleParse: function () {
+      var text = tr(this.state.importText);
+      if (!text) { this.setState({ importError: 'Please paste some reference text first.', importParsed: null }); return; }
       try {
-        var r = parseReferences(raw);
-        if (!r.length) { this.setState({ err: 'No references detected — check the format.' }); return; }
-        this.setState({ parsed: r, err: '' });
-      } catch (e) { this.setState({ err: 'Parse error: ' + e.message }); }
-    },
-
-    doAppend: function () {
-      var refs = toArr(this.props.value);
-      var base = refs.length;
-      var parsed = this.state.parsed;
-      this.save(refs.concat(parsed.map(function (r, i) { return Object.assign({}, r, { id: r.id || makeId(base + i) }); })));
-      this.setState({ parsed: null, raw: '', fstat: '', tab: 'list' });
-    },
-
-    doReplace: function () { this.save(this.state.parsed); this.setState({ parsed: null, raw: '', fstat: '', tab: 'list' }); },
-
-    doDelete: function (i) {
-      var refs = toArr(this.props.value);
-      this.save(refs.filter(function (_, j) { return j !== i; }));
-    },
-
-    doAddManual: function () {
-      var entry = this.state.entry;
-      if (!entry.title && !entry.authors) return;
-      var refs = toArr(this.props.value);
-      this.save(refs.concat([Object.assign({}, entry, { id: entry.id || makeId(refs.length) })]));
-      this.setState({ entry: Object.assign({}, BLANK), showForm: false });
-    },
-
-    onFile: function (e) {
-      var self = this;
-      var f = e.target.files[0]; if (!f) return;
-      self.setState({ fstat: 'Reading ' + f.name + '…' });
-      var rdr = new FileReader();
-      rdr.onload = function (ev) { self.setState({ raw: ev.target.result || '', fstat: 'Loaded: ' + f.name, parsed: null, err: '' }); };
-      rdr.onerror = function () { self.setState({ fstat: 'Error reading file.' }); };
-      rdr.readAsText(f);
-    },
-
-    // ── Render helpers ───────────────────────────────────────────────────────────
-    renderList: function () {
-      var self = this;
-      var refs = toArr(this.props.value);
-      var state = this.state;
-
-      return h('div', null,
-        refs.length === 0
-          ? h('p', { style: C.empty }, 'No references yet. Use "Bulk Import" to add many at once, or "+ Add one manually" below.')
-          : refs.map(function (ref, i) {
-              return h('div', { key: i, style: C.refRow },
-                h('span', { style: C.idx }, '[' + (i + 1) + ']'),
-                h('div', { style: C.body },
-                  ref.authors ? h('strong', null, ref.authors) : null,
-                  (ref.authors && ref.year) ? h('span', null, ' (' + ref.year + '). ') : null,
-                  ref.title ? h('em', null, ref.title) : null,
-                  ref.title ? '. ' : null,
-                  ref.source ? h('span', null, ref.source) : null,
-                  ref.source ? '.' : null,
-                  ref.url ? h('a', { href: ref.url, target: '_blank', rel: 'noreferrer', style: { color: '#4f46e5', fontSize: '12px', marginLeft: '6px' } }, 'Link ↗') : null
-                ),
-                h('button', { type: 'button', style: C.del, onClick: function () { self.doDelete(i); }, title: 'Remove' }, '×')
-              );
-            }),
-        h('div', { style: { marginTop: '10px' } },
-          state.showForm ? this.renderManualForm() : h('button', { type: 'button', style: C.ghost, onClick: function () { self.setState({ showForm: true }); } }, '+ Add one manually')
-        )
-      );
-    },
-
-    renderManualForm: function () {
-      var self = this;
-      var entry = this.state.entry;
-      function inp(label, key) {
-        return h('div', null,
-          h('label', { style: C.lbl }, label),
-          h('input', { type: 'text', style: C.inp, value: entry[key] || '', onChange: function (e) { self.setField(key, e.target.value); } })
-        );
+        var parsed = parseReferences(text);
+        if (!parsed.length) {
+          this.setState({ importError: 'No references detected. Check the format and try again.', importParsed: null });
+        } else {
+          this.setState({ importParsed: parsed, importError: '' });
+        }
+      } catch (e) {
+        this.setState({ importError: 'Parse error: ' + (e.message || e), importParsed: null });
       }
-      return h('div', { style: C.form },
-        h('p', { style: { fontWeight: '600', fontSize: '13px', margin: '0 0 10px 0' } }, 'Add a reference manually'),
-        h('div', { style: C.grid }, inp('Authors', 'authors'), inp('Year', 'year')),
-        h('div', { style: { marginBottom: '8px' } }, inp('Title', 'title')),
-        h('div', { style: C.grid }, inp('Source / Journal', 'source'), inp('URL (optional)', 'url')),
-        h('div', { style: Object.assign({}, C.grid, { marginBottom: '10px' }) }, inp('Reference ID (optional)', 'id'), h('div', null)),
-        h('div', { style: C.bar },
-          h('button', { type: 'button', style: C.btn(), onClick: function () { self.doAddManual(); } }, 'Add reference'),
-          h('button', { type: 'button', style: C.ghost, onClick: function () { self.setState({ showForm: false, entry: Object.assign({}, BLANK) }); } }, 'Cancel')
-        )
-      );
+    },
+
+    handleConfirm: function () {
+      var existing = this.getRefs();
+      var start = existing.length;
+      var toAdd = (this.state.importParsed || []).map(function (r, i) {
+        return { id: 'ref-' + (start + i + 1), authors: r.authors || '', year: r.year || '', title: r.title || '', source: r.source || '', url: r.url || '' };
+      });
+      this.setRefs(existing.concat(toAdd));
+      this.setState({ mode: 'list', importText: '', importParsed: null, importError: '' });
     },
 
     renderImport: function () {
       var self = this;
-      var state = this.state;
-      return h('div', null,
-        h('p', { style: C.hint },
-          'Paste references in APA, Harvard, Vancouver, BibTeX, or RIS format (one per blank line), or upload a ',
-          h('code', null, '.bib'), ', ', h('code', null, '.ris'), ', ', h('code', null, '.csv'), ', or ', h('code', null, '.txt'), ' file.'
+      var parsed = this.state.importParsed;
+      var placeholder = 'APA:  Smith, J. (2024). Title of the paper. Journal, 10(2), 45–67.\n\nBibTeX:\n@article{key,\n  author  = {Smith, J.},\n  title   = {Paper Title},\n  year    = {2024},\n  journal = {Nature}\n}\n\nRIS:\nTY  - JOUR\nAU  - Smith, J.\nTI  - Paper Title\nPY  - 2024\nJO  - Nature\nER  -';
+
+      return h('div', { style: S.wrap },
+        h('div', { style: S.topBar },
+          h('strong', { style: { fontSize: '14px' } }, 'Import References'),
+          h('button', { style: S.btn, type: 'button', onClick: function () { self.setState({ mode: 'list', importText: '', importParsed: null, importError: '' }); } }, '← Back to list')
         ),
+        h('p', { style: S.hint }, 'Paste references in APA, Harvard, Vancouver, BibTeX (.bib), or RIS format. One reference per line for plain text.'),
         h('textarea', {
-          style: C.ta,
-          placeholder: 'APA example:\nMpofu, E. (2024). Agentic AI Systems in Enterprise. AI Quarterly, 12(3), 45–67.\n\nSmith, J. & Lee, A. (2023). RAG Architectures at Scale. Journal of AI, 5(1), 1–20.',
-          value: state.raw,
-          onChange: function (e) { self.setState({ raw: e.target.value, parsed: null, err: '' }); },
+          style: S.textarea,
+          value: this.state.importText,
+          placeholder: placeholder,
+          onChange: function (e) { self.setState({ importText: e.target.value, importParsed: null, importError: '' }); },
         }),
-        state.fstat ? h('p', { style: Object.assign({}, C.hint, { marginTop: '4px' }) }, state.fstat) : null,
-        h('div', { style: C.bar },
-          h('button', {
-            type: 'button', style: C.ghost,
-            onClick: function () { if (self._fileInput) self._fileInput.click(); }
-          }, '📎 Upload file (.bib .ris .csv .txt)'),
-          h('input', {
-            type: 'file', accept: '.bib,.ris,.csv,.txt,.text',
-            style: { display: 'none' },
-            ref: function (el) { self._fileInput = el; },
-            onChange: function (e) { self.onFile(e); }
-          }),
-          h('button', { type: 'button', style: C.btn(), onClick: function () { self.doParse(); } }, 'Parse References →')
+        h('div', { style: { marginTop: '8px' } },
+          h('button', { style: Object.assign({}, S.btn, S.btnPrimary), type: 'button', onClick: function () { self.handleParse(); } }, 'Parse References')
         ),
-        state.err ? h('p', { style: C.err }, state.err) : null,
-        state.parsed ? this.renderParsedPreview() : null
+        this.state.importError ? h('p', { style: S.error }, '⚠ ' + this.state.importError) : null,
+        parsed && parsed.length > 0
+          ? h('div', null,
+              h('div', { style: S.preview },
+                h('p', { style: S.previewHdr }, '✓ ' + parsed.length + ' reference' + (parsed.length > 1 ? 's' : '') + ' found:'),
+                parsed.map(function (r, i) {
+                  return h('p', { key: i, style: S.previewLine },
+                    (i + 1) + '. ' + [r.authors, r.year ? '(' + r.year + ')' : '', r.title].filter(Boolean).join(' '));
+                })
+              ),
+              h('button', {
+                style: Object.assign({}, S.btn, S.btnPrimary),
+                type: 'button',
+                onClick: function () { self.handleConfirm(); },
+              }, 'Append ' + parsed.length + ' Reference' + (parsed.length !== 1 ? 's' : '') + ' to List')
+            )
+          : null
       );
     },
 
-    renderParsedPreview: function () {
+    renderList: function () {
       var self = this;
-      var parsed = this.state.parsed;
-      var refs = toArr(this.props.value);
-      return h('div', { style: C.box },
-        h('p', { style: C.boxH }, '✓ Found ' + parsed.length + ' reference' + (parsed.length !== 1 ? 's' : '') + ':'),
-        parsed.slice(0, 5).map(function (ref, i) {
-          return h('p', { key: i, style: C.boxL },
-            '[' + (i + 1) + '] ' +
-            (ref.authors || '—') + (ref.year ? ' (' + ref.year + ')' : '') +
-            ' — ' + (ref.title || '').substring(0, 80) + (ref.title && ref.title.length > 80 ? '…' : '')
-          );
-        }),
-        parsed.length > 5 ? h('p', { style: C.boxL }, '… and ' + (parsed.length - 5) + ' more') : null,
-        h('div', { style: Object.assign({}, C.bar, { marginTop: '10px' }) },
-          refs.length > 0
-            ? h('button', { type: 'button', style: C.btn('#15803d'), onClick: function () { self.doAppend(); } }, 'Append ' + parsed.length + ' to existing ' + refs.length)
-            : null,
-          h('button', { type: 'button', style: C.btn(), onClick: function () { self.doReplace(); } },
-            (refs.length > 0 ? 'Replace all with ' : 'Add ') + parsed.length + ' references'),
-          h('button', { type: 'button', style: C.ghost, onClick: function () { self.setState({ parsed: null }); } }, 'Cancel')
-        )
+      var refs = this.getRefs();
+      return h('div', { style: S.wrap },
+        h('div', { style: S.topBar },
+          h('span', { style: S.count }, refs.length + ' reference' + (refs.length !== 1 ? 's' : '')),
+          h('button', { style: S.btn, type: 'button', onClick: function () { self.setState({ mode: 'import' }); } }, '↑ Import References')
+        ),
+        refs.length === 0
+          ? h('p', { style: S.empty }, 'No references yet. Add one below or use Import References.')
+          : refs.map(function (ref, idx) {
+              var isOpen = !!self.state.expanded[idx];
+              var lbl = [ref.authors, ref.year ? '(' + ref.year + ')' : '', ref.title].filter(Boolean).join(' ') || 'Reference ' + (idx + 1);
+              return h('div', { key: idx, style: S.card },
+                h('div', { style: S.cardHeader },
+                  h('span', { style: S.cardTitle, onClick: function () { self.toggle(idx); } }, (isOpen ? '▾ ' : '▸ ') + lbl),
+                  h('button', { style: S.btnRemove, type: 'button', onClick: function () { self.handleDelete(idx); } }, 'Remove')
+                ),
+                isOpen
+                  ? h('div', { style: S.grid },
+                      h('div', null,
+                        h('label', { style: S.lbl }, 'ID'),
+                        h('input', { style: S.input, value: ref.id || '', placeholder: 'ref-1', onChange: function (e) { self.handleField(idx, 'id', e.target.value); } })
+                      ),
+                      h('div', null,
+                        h('label', { style: S.lbl }, 'Year'),
+                        h('input', { style: S.input, value: ref.year || '', placeholder: '2024', onChange: function (e) { self.handleField(idx, 'year', e.target.value); } })
+                      ),
+                      h('div', { style: S.fullCol },
+                        h('label', { style: S.lbl }, 'Authors'),
+                        h('input', { style: S.input, value: ref.authors || '', placeholder: 'Smith, J., Jones, A.', onChange: function (e) { self.handleField(idx, 'authors', e.target.value); } })
+                      ),
+                      h('div', { style: S.fullCol },
+                        h('label', { style: S.lbl }, 'Title'),
+                        h('input', { style: S.input, value: ref.title || '', placeholder: 'Paper title', onChange: function (e) { self.handleField(idx, 'title', e.target.value); } })
+                      ),
+                      h('div', null,
+                        h('label', { style: S.lbl }, 'Source / Journal'),
+                        h('input', { style: S.input, value: ref.source || '', placeholder: 'Journal name', onChange: function (e) { self.handleField(idx, 'source', e.target.value); } })
+                      ),
+                      h('div', null,
+                        h('label', { style: S.lbl }, 'URL (optional)'),
+                        h('input', { style: S.input, value: ref.url || '', placeholder: 'https://...', onChange: function (e) { self.handleField(idx, 'url', e.target.value); } })
+                      )
+                    )
+                  : null
+              );
+            }),
+        h('button', { style: Object.assign({}, S.btn, { marginTop: '8px' }), type: 'button', onClick: function () { self.handleAdd(); } }, '+ Add Reference')
       );
     },
 
     render: function () {
-      var self = this;
-      var refs = toArr(this.props.value);
-      var tab = this.state.tab;
-      return h('div', { style: C.root },
-        h('div', { style: C.tabs },
-          h('button', { type: 'button', style: C.tab(tab === 'list'), onClick: function () { self.setState({ tab: 'list' }); } },
-            'References' + (refs.length ? ' (' + refs.length + ')' : '')
-          ),
-          h('button', { type: 'button', style: C.tab(tab === 'import'), onClick: function () { self.setState({ tab: 'import' }); } },
-            '⬇ Bulk Import'
-          )
-        ),
-        tab === 'list' ? this.renderList() : this.renderImport()
-      );
+      return this.state.mode === 'import' ? this.renderImport() : this.renderList();
     },
   });
 
-  // ─── Preview ──────────────────────────────────────────────────────────────────
-  var RefsPreview = createClass({
-    render: function () {
-      var refs = toArr(this.props.value);
-      if (!refs.length) return h('p', null, 'No references.');
-      return h('ol', { style: { fontSize: '13px', lineHeight: '1.6' } },
-        refs.map(function (ref, i) {
-          return h('li', { key: i, style: { marginBottom: '6px' } },
-            ref.authors, ref.year ? ' (' + ref.year + '). ' : ' ',
-            h('em', null, ref.title), '. ',
-            ref.source, '.',
-            ref.url ? h('a', { href: ref.url, target: '_blank', style: { color: '#4f46e5', marginLeft: '4px' } }, ' [Link]') : null
-          );
-        })
-      );
-    }
-  });
+  // ─── Preview ─────────────────────────────────────────────────────────────────
 
-  CMS.registerWidget('references-bulk', RefsControl, RefsPreview);
+  var RefsPreview = function (props) {
+    var refs = props.value;
+    if (!refs) return null;
+    if (typeof refs.toJS === 'function') refs = refs.toJS();
+    if (!Array.isArray(refs) || !refs.length) return null;
+    return h('ol', { style: { paddingLeft: '18px', fontSize: '13px', lineHeight: '1.6' } },
+      refs.map(function (r, i) {
+        return h('li', { key: i, style: { marginBottom: '5px' } },
+          [r.authors, r.year ? '(' + r.year + ')' : '', r.title, r.source].filter(Boolean).join('. '));
+      })
+    );
+  };
+
+  // ─── Register ────────────────────────────────────────────────────────────────
+
+  try {
+    window.CMS.registerWidget('references-bulk', RefsControl, RefsPreview);
+    window._refsWidgetLoaded = true;
+    console.log('[RefsWidget] Registered successfully.');
+  } catch (err) {
+    console.error('[RefsWidget] Registration failed:', err);
+  }
 
 })();

@@ -46,6 +46,7 @@ interface RawPublication {
   slug: string;
   author?: string;
   date: string;        // "2026-06-16"
+  status?: string;     // "draft" | "published" — absent means published (backward compat)
   category: string;
   categoryColor: string;
   readTime: number;
@@ -81,7 +82,20 @@ function formatDate(isoDate: string): string {
   }
 }
 
+// CMS stores image paths as /uploads/... but occasionally as public/uploads/...
+// Normalise both so the frontend always gets a web-root-relative path.
+function imgPath(p: string | undefined): string {
+  if (!p) return '';
+  if (p.startsWith('public/')) return p.slice('public'.length); // "public/uploads/x.jpg" → "/uploads/x.jpg"
+  return p;
+}
+
 export const publications: Publication[] = Object.values(modules)
+  // Omit drafts; articles without a status field are treated as published (backward compat)
+  .filter((m) => {
+    const s = m.default.status;
+    return !s || s === 'published';
+  })
   .map((m): Publication => {
     const r = m.default;
     return {
@@ -94,11 +108,11 @@ export const publications: Publication[] = Object.values(modules)
       date: formatDate(r.date),
       dateISO: r.date,
       readTime: r.readTime,
-      heroImage: r.heroImage ?? '',
+      heroImage: imgPath(r.heroImage),
       heroCaption: r.heroCaption ?? '',
       abstract: r.abstract,
       body: r.body,
-      figures: r.figures ?? [],
+      figures: (r.figures ?? []).map((f) => ({ ...f, image: imgPath(f.image) })),
       tags: r.tags ?? [],
       references: r.references ?? [],
       citation: r.citation ?? '',

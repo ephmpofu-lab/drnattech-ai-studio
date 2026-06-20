@@ -55,6 +55,13 @@ collections:
         date_format: "DD MMM YYYY"
         time_format: false
 
+      - label: "Status"
+        name: status
+        widget: select
+        options: ["draft", "published"]
+        default: "draft"
+        hint: "Draft: saved but hidden on the website. Published: live."
+
       - label: "Category"
         name: category
         widget: select

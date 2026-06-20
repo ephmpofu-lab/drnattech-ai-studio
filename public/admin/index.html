@@ -43,6 +43,10 @@
     <script>window.CMS_MANUAL_INIT = true;</script>
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
+    <!-- Custom widgets — must run AFTER decap-cms.js (which exposes window.h, window.createClass, window.CMS)
+         and BEFORE CMS.init() so widgets are registered before the collection config is parsed. -->
+    <script src="reference-parsers.js"></script>
+
     <!-- OAuth token receiver -->
     <script>
     (function() {
@@ -104,6 +108,27 @@
     </script>
 
     <script>
+      // Use the bulk-import widget if it registered successfully, otherwise fall back to the
+      // standard list widget so references are always editable even if the script failed.
+      var _useCustomRefs = window._refsWidgetLoaded === true;
+      var _refsField = _useCustomRefs
+        ? { label: 'References', name: 'references', widget: 'references-bulk', required: false }
+        : {
+            label: 'References',
+            name: 'references',
+            widget: 'list',
+            required: false,
+            summary: '{{fields.authors}} ({{fields.year}}) — {{fields.title}}',
+            fields: [
+              { label: 'ID',              name: 'id',      widget: 'string', hint: 'e.g. ref-1' },
+              { label: 'Authors',         name: 'authors', widget: 'string' },
+              { label: 'Year',            name: 'year',    widget: 'string' },
+              { label: 'Title',           name: 'title',   widget: 'string' },
+              { label: 'Source / Journal',name: 'source',  widget: 'string' },
+              { label: 'URL (optional)',  name: 'url',     widget: 'string', required: false },
+            ],
+          };
+
       CMS.init({
         config: {
           backend: {
@@ -165,6 +190,14 @@
                   format: 'YYYY-MM-DD',
                   date_format: 'DD MMM YYYY',
                   time_format: false,
+                },
+                {
+                  label: 'Status',
+                  name: 'status',
+                  widget: 'select',
+                  options: ['draft', 'published'],
+                  default: 'draft',
+                  hint: 'Draft: saved to GitHub but hidden on the website. Published: live on the website.',
                 },
                 {
                   label: 'Category',
@@ -259,21 +292,7 @@
                   allow_add: true,
                   hint: 'Keyword tags (e.g. AI Governance, RAG, EU AI Act)',
                 },
-                {
-                  label: 'References',
-                  name: 'references',
-                  widget: 'list',
-                  required: false,
-                  summary: '{{fields.authors}} ({{fields.year}}) — {{fields.title}}',
-                  fields: [
-                    { label: 'ID', name: 'id', widget: 'string', hint: 'e.g. ref-1' },
-                    { label: 'Authors', name: 'authors', widget: 'string' },
-                    { label: 'Year', name: 'year', widget: 'string' },
-                    { label: 'Title', name: 'title', widget: 'string' },
-                    { label: 'Source / Journal', name: 'source', widget: 'string' },
-                    { label: 'URL (optional)', name: 'url', widget: 'string', required: false },
-                  ],
-                },
+                _refsField,
                 {
                   label: 'Suggested Citation',
                   name: 'citation',
