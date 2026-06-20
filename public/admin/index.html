@@ -103,6 +103,7 @@
     })();
     </script>
 
+    <script src="reference-parsers.js"></script>
     <script>
       CMS.init({
         config: {
@@ -126,12 +127,13 @@
               folder: 'content/publications',
               create: true,
               delete: true,
-              identifier_field: 'title',
+              identifier_field: 'slug',
               format: 'json',
               extension: 'json',
               slug: '{{fields.slug}}',
               preview_path: '/insights/{{fields.slug}}',
               summary: '{{fields.title}} — {{fields.date}}',
+              sortable_fields: ['date', 'title', 'category'],
               fields: [
                 {
                   label: 'Title',
@@ -210,6 +212,36 @@
                   required: false,
                 },
                 {
+                  label: 'Article Figures',
+                  name: 'figures',
+                  widget: 'list',
+                  required: false,
+                  allow_add: true,
+                  hint: 'Upload figures and place [[figure-1]], [[figure-2]], etc. markers in the article body where each should appear.',
+                  summary: '[[{{fields.marker}}]] — {{fields.caption}}',
+                  fields: [
+                    {
+                      label: 'Figure Image',
+                      name: 'image',
+                      widget: 'image',
+                      hint: 'Upload the figure image (JPG, PNG, or WebP)',
+                    },
+                    {
+                      label: 'Figure Caption',
+                      name: 'caption',
+                      widget: 'string',
+                      hint: 'Caption shown beneath the figure in the article',
+                    },
+                    {
+                      label: 'Figure Placement Marker',
+                      name: 'marker',
+                      widget: 'select',
+                      options: ['figure-1', 'figure-2', 'figure-3', 'figure-4', 'figure-5'],
+                      hint: 'Place [[figure-1]] in the article body exactly where this figure should appear',
+                    },
+                  ],
+                },
+                {
                   label: 'Abstract',
                   name: 'abstract',
                   widget: 'text',
@@ -220,7 +252,7 @@
                   name: 'body',
                   widget: 'markdown',
                   buttons: ['bold', 'italic', 'link', 'heading-two', 'heading-three', 'quote', 'bulleted-list', 'numbered-list'],
-                  hint: 'Use ## for section headings. Supports tables, bullet lists, blockquotes.',
+                  hint: 'Use ## for section headings. Supports tables, bullet lists, blockquotes. To embed a figure, type [[figure-1]], [[figure-2]], etc. at the exact position — then upload it in Article Figures below.',
                 },
                 {
                   label: 'Tags',
@@ -232,17 +264,9 @@
                 {
                   label: 'References',
                   name: 'references',
-                  widget: 'list',
+                  widget: 'references-bulk',
                   required: false,
-                  summary: '{{fields.authors}} ({{fields.year}}) — {{fields.title}}',
-                  fields: [
-                    { label: 'ID', name: 'id', widget: 'string', hint: 'e.g. ref-1' },
-                    { label: 'Authors', name: 'authors', widget: 'string' },
-                    { label: 'Year', name: 'year', widget: 'string' },
-                    { label: 'Title', name: 'title', widget: 'string' },
-                    { label: 'Source / Journal', name: 'source', widget: 'string' },
-                    { label: 'URL (optional)', name: 'url', widget: 'string', required: false },
-                  ],
+                  hint: 'Use "Bulk Import" to paste or upload 20–50 references at once. Supports APA, Harvard, Vancouver, BibTeX, RIS, and CSV.',
                 },
                 {
                   label: 'Suggested Citation',

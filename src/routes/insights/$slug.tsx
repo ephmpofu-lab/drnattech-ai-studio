@@ -26,6 +26,7 @@ import {
   getPublicationBySlug,
   getRelatedPublications,
   type Publication,
+  type Figure,
 } from "@/lib/publications";
 const portrait = "/images/Dr Mpofu_purple2.webp";
 
@@ -122,153 +123,226 @@ function extractHeadings(markdown: string): Array<{ id: string; heading: string 
 
 // ─── Markdown Body Component ──────────────────────────────────────────────────
 
-function MarkdownBody({ body }: { body: string }) {
-  return (
-    <ReactMarkdown
-      remarkPlugins={[remarkGfm]}
-      components={{
-        h2: ({ children }) => {
-          const id = slugify(String(children));
-          return (
-            <h2
-              id={id}
-              className="mb-5 mt-10 scroll-mt-[120px] text-[24px] font-bold leading-[1.25] tracking-[-0.01em] first:mt-0"
-              style={{
-                color: '#CBD5E1',
-                borderBottom: '1px solid rgba(255,255,255,0.06)',
-                paddingBottom: '0.75rem',
-              }}
-            >
-              {children}
-            </h2>
-          );
-        },
-        h3: ({ children }) => (
-          <h3
-            className="mb-4 mt-7 text-[19px] font-semibold leading-[1.3]"
-            style={{ color: '#E2E8F0' }}
-          >
-            {children}
-          </h3>
-        ),
-        p: ({ children }) => (
-          <p className="mb-5 text-[15.5px] leading-[1.8]" style={{ color: '#CBD5E1' }}>
-            {children}
-          </p>
-        ),
-        ul: ({ children }) => (
-          <ul className="mb-5 space-y-2.5 pl-1">{children}</ul>
-        ),
-        ol: ({ children }) => (
-          <ol className="mb-5 list-decimal space-y-2 pl-5 text-[15px] leading-[1.7]" style={{ color: '#CBD5E1' }}>
-            {children}
-          </ol>
-        ),
-        li: ({ children }) => (
-          <li
-            className="flex gap-3 text-[15px] leading-[1.7]"
-            style={{ color: '#CBD5E1' }}
-          >
-            <span
-              className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full"
-              style={{ background: '#A855F7' }}
-            />
-            <span>{children}</span>
-          </li>
-        ),
-        blockquote: ({ children }) => (
-          <blockquote
-            className="my-7 rounded-r-[12px] py-5 pl-6 pr-5"
-            style={{
-              background: 'rgba(139,92,246,0.06)',
-              borderLeft: '3px solid #A855F7',
-            }}
-          >
-            <div
-              className="text-[16px] font-medium italic leading-[1.75]"
-              style={{ color: '#E2E8F0' }}
-            >
-              {children}
-            </div>
-          </blockquote>
-        ),
-        table: ({ children }) => (
-          <div className="my-8 overflow-x-auto">
-            <table className="w-full text-[14px]">{children}</table>
-          </div>
-        ),
-        thead: ({ children }) => (
-          <thead style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-            {children}
-          </thead>
-        ),
-        th: ({ children }) => (
-          <th
-            className="pb-3 pr-6 text-left text-[12px] font-semibold tracking-[0.08em]"
-            style={{ color: '#64748B' }}
-          >
-            {String(children).toUpperCase()}
-          </th>
-        ),
-        td: ({ children }) => (
-          <td
-            className="py-3.5 pr-6 text-[14px] leading-[1.55]"
-            style={{
-              color: '#94A3B8',
-              borderBottom: '1px solid rgba(255,255,255,0.05)',
-            }}
-          >
-            {children}
-          </td>
-        ),
-        strong: ({ children }) => (
-          <strong className="font-semibold" style={{ color: '#E2E8F0' }}>
-            {children}
-          </strong>
-        ),
-        a: ({ href, children }) => (
-          <a
-            href={href}
-            target="_blank"
-            rel="noreferrer"
-            style={{ color: '#A855F7' }}
-            className="underline underline-offset-2 transition-colors hover:text-white"
-          >
-            {children}
-          </a>
-        ),
-        code: ({ children, className }) => {
-          const isBlock = className?.includes('language-');
-          if (isBlock) {
-            return (
-              <pre
-                className="my-6 overflow-x-auto rounded-[12px] p-5 text-[13px] leading-[1.65]"
-                style={{
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  color: '#94A3B8',
-                }}
-              >
-                <code>{children}</code>
-              </pre>
-            );
-          }
-          return (
-            <code
-              className="rounded px-1.5 py-0.5 text-[13px]"
-              style={{
-                background: 'rgba(255,255,255,0.07)',
-                color: '#C4B5FD',
-              }}
-            >
-              {children}
-            </code>
-          );
-        },
+const MARKDOWN_COMPONENTS = {
+  h2: ({ children }: { children?: React.ReactNode }) => {
+    const id = slugify(String(children));
+    return (
+      <h2
+        id={id}
+        className="mb-5 mt-10 scroll-mt-[120px] text-[24px] font-bold leading-[1.25] tracking-[-0.01em] first:mt-0"
+        style={{
+          color: '#CBD5E1',
+          borderBottom: '1px solid rgba(255,255,255,0.06)',
+          paddingBottom: '0.75rem',
+        }}
+      >
+        {children}
+      </h2>
+    );
+  },
+  h3: ({ children }: { children?: React.ReactNode }) => (
+    <h3
+      className="mb-4 mt-7 text-[19px] font-semibold leading-[1.3]"
+      style={{ color: '#E2E8F0' }}
+    >
+      {children}
+    </h3>
+  ),
+  p: ({ children }: { children?: React.ReactNode }) => (
+    <p className="mb-5 text-[15.5px] leading-[1.8]" style={{ color: '#CBD5E1' }}>
+      {children}
+    </p>
+  ),
+  ul: ({ children }: { children?: React.ReactNode }) => (
+    <ul className="mb-5 space-y-2.5 pl-1">{children}</ul>
+  ),
+  ol: ({ children }: { children?: React.ReactNode }) => (
+    <ol className="mb-5 list-decimal space-y-2 pl-5 text-[15px] leading-[1.7]" style={{ color: '#CBD5E1' }}>
+      {children}
+    </ol>
+  ),
+  li: ({ children }: { children?: React.ReactNode }) => (
+    <li
+      className="flex gap-3 text-[15px] leading-[1.7]"
+      style={{ color: '#CBD5E1' }}
+    >
+      <span
+        className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full"
+        style={{ background: '#A855F7' }}
+      />
+      <span>{children}</span>
+    </li>
+  ),
+  blockquote: ({ children }: { children?: React.ReactNode }) => (
+    <blockquote
+      className="my-7 rounded-r-[12px] py-5 pl-6 pr-5"
+      style={{
+        background: 'rgba(139,92,246,0.06)',
+        borderLeft: '3px solid #A855F7',
       }}
     >
-      {body}
-    </ReactMarkdown>
+      <div
+        className="text-[16px] font-medium italic leading-[1.75]"
+        style={{ color: '#E2E8F0' }}
+      >
+        {children}
+      </div>
+    </blockquote>
+  ),
+  table: ({ children }: { children?: React.ReactNode }) => (
+    <div className="my-8 overflow-x-auto">
+      <table className="w-full text-[14px]">{children}</table>
+    </div>
+  ),
+  thead: ({ children }: { children?: React.ReactNode }) => (
+    <thead style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+      {children}
+    </thead>
+  ),
+  th: ({ children }: { children?: React.ReactNode }) => (
+    <th
+      className="pb-3 pr-6 text-left text-[12px] font-semibold tracking-[0.08em]"
+      style={{ color: '#64748B' }}
+    >
+      {String(children).toUpperCase()}
+    </th>
+  ),
+  td: ({ children }: { children?: React.ReactNode }) => (
+    <td
+      className="py-3.5 pr-6 text-[14px] leading-[1.55]"
+      style={{
+        color: '#94A3B8',
+        borderBottom: '1px solid rgba(255,255,255,0.05)',
+      }}
+    >
+      {children}
+    </td>
+  ),
+  strong: ({ children }: { children?: React.ReactNode }) => (
+    <strong className="font-semibold" style={{ color: '#E2E8F0' }}>
+      {children}
+    </strong>
+  ),
+  a: ({ href, children }: { href?: string; children?: React.ReactNode }) => (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      style={{ color: '#A855F7' }}
+      className="underline underline-offset-2 transition-colors hover:text-white"
+    >
+      {children}
+    </a>
+  ),
+  code: ({ children, className }: { children?: React.ReactNode; className?: string }) => {
+    const isBlock = className?.includes('language-');
+    if (isBlock) {
+      return (
+        <pre
+          className="my-6 overflow-x-auto rounded-[12px] p-5 text-[13px] leading-[1.65]"
+          style={{
+            background: 'rgba(255,255,255,0.04)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            color: '#94A3B8',
+          }}
+        >
+          <code>{children}</code>
+        </pre>
+      );
+    }
+    return (
+      <code
+        className="rounded px-1.5 py-0.5 text-[13px]"
+        style={{
+          background: 'rgba(255,255,255,0.07)',
+          color: '#C4B5FD',
+        }}
+      >
+        {children}
+      </code>
+    );
+  },
+};
+
+const FIGURE_MARKER_RE = /(\[\[figure-\d+\]\])/g;
+const FIGURE_KEY_RE = /^\[\[(figure-\d+)\]\]$/;
+
+function MarkdownBody({ body, figures }: { body: string; figures?: Figure[] }) {
+  const figureMap: Record<string, Figure> = {};
+  for (const f of figures ?? []) {
+    figureMap[f.marker] = f;
+  }
+
+  const bodyMarkers = [...body.matchAll(/\[\[(figure-\d+)\]\]/g)].map(m => m[1]);
+  const uploadedSet = new Set(Object.keys(figureMap));
+  const bodySet = new Set(bodyMarkers);
+  const orphaned = [...uploadedSet].filter(m => !bodySet.has(m));
+  const missing = [...bodySet].filter(m => !uploadedSet.has(m));
+
+  const parts = body.split(FIGURE_MARKER_RE);
+
+  return (
+    <div>
+      {(orphaned.length > 0 || missing.length > 0) && (
+        <div
+          className="mb-6 rounded-[10px] p-4"
+          style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.3)' }}
+        >
+          <p className="mb-1 text-[12px] font-semibold" style={{ color: '#F59E0B' }}>
+            Figure Placement Warnings
+          </p>
+          {orphaned.map(m => (
+            <p key={m} className="text-[12px]" style={{ color: '#FCD34D' }}>
+              [[{m}]] — figure uploaded but no matching marker found in the article body.
+            </p>
+          ))}
+          {missing.map(m => (
+            <p key={m} className="text-[12px]" style={{ color: '#FCD34D' }}>
+              [[{m}]] — marker found in body but no figure was uploaded for it.
+            </p>
+          ))}
+        </div>
+      )}
+      {parts.map((part, i) => {
+        const markerMatch = part.match(FIGURE_KEY_RE);
+        if (markerMatch) {
+          const fig = figureMap[markerMatch[1]];
+          if (!fig) return null;
+          return (
+            <figure
+              key={i}
+              className="my-8 overflow-hidden rounded-[14px]"
+              style={{ border: '1px solid rgba(255,255,255,0.08)' }}
+            >
+              <img
+                src={fig.image}
+                alt={fig.caption}
+                className="w-full object-cover"
+                loading="lazy"
+              />
+              {fig.caption && (
+                <figcaption
+                  className="px-4 py-3 text-center text-[13px] leading-[1.6]"
+                  style={{
+                    color: '#64748B',
+                    background: 'rgba(255,255,255,0.02)',
+                    borderTop: '1px solid rgba(255,255,255,0.06)',
+                  }}
+                >
+                  {fig.caption}
+                </figcaption>
+              )}
+            </figure>
+          );
+        }
+        if (!part.trim()) return null;
+        return (
+          <ReactMarkdown key={i} remarkPlugins={[remarkGfm]} components={MARKDOWN_COMPONENTS}>
+            {part}
+          </ReactMarkdown>
+        );
+      })}
+    </div>
   );
 }
 
@@ -586,7 +660,7 @@ function ArticlePage() {
             </div>
 
             {/* Article Body — Markdown */}
-            <MarkdownBody body={pub.body} />
+            <MarkdownBody body={pub.body} figures={pub.figures} />
 
             {/* References */}
             {pub.references.length > 0 && (

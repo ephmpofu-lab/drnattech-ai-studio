@@ -9,6 +9,12 @@ export type Reference = {
   url?: string;
 };
 
+export type Figure = {
+  image: string;
+  caption: string;
+  marker: string;
+};
+
 export type Publication = {
   slug: string;
   title: string;
@@ -23,6 +29,7 @@ export type Publication = {
   heroCaption: string;
   abstract: string;
   body: string;        // Markdown
+  figures: Figure[];
   tags: string[];
   references: Reference[];
   citation: string;
@@ -46,6 +53,7 @@ interface RawPublication {
   heroCaption?: string;
   abstract: string;
   body: string;
+  figures?: Figure[];
   tags?: string[];
   references?: Reference[];
   citation?: string;
@@ -90,6 +98,7 @@ export const publications: Publication[] = Object.values(modules)
       heroCaption: r.heroCaption ?? '',
       abstract: r.abstract,
       body: r.body,
+      figures: r.figures ?? [],
       tags: r.tags ?? [],
       references: r.references ?? [],
       citation: r.citation ?? '',

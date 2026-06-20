@@ -93,6 +93,28 @@ collections:
         required: false
         hint: "Caption shown at the bottom of the hero image"
 
+      - label: "Article Figures"
+        name: figures
+        widget: list
+        required: false
+        allow_add: true
+        hint: "Upload figures and place [[figure-1]], [[figure-2]], etc. markers in the article body where each figure should appear."
+        summary: "[[{{fields.marker}}]] — {{fields.caption}}"
+        fields:
+          - label: "Figure Image"
+            name: image
+            widget: image
+            hint: "Upload the figure image (JPG, PNG, or WebP)"
+          - label: "Figure Caption"
+            name: caption
+            widget: string
+            hint: "Caption shown beneath the figure in the article"
+          - label: "Figure Placement Marker"
+            name: marker
+            widget: select
+            options: ["figure-1", "figure-2", "figure-3", "figure-4", "figure-5"]
+            hint: "Place [[figure-1]] in the article body exactly where this figure should appear"
+
       - label: "Abstract"
         name: abstract
         widget: text
@@ -101,7 +123,7 @@ collections:
       - label: "Article Body"
         name: body
         widget: markdown
-        hint: "Use ## for section headings. Supports tables, bullet lists, blockquotes, and bold/italic."
+        hint: "Use ## for section headings. Supports tables, bullet lists, blockquotes, and bold/italic. To embed a figure, type [[figure-1]], [[figure-2]], etc. at the exact point where it should appear — then upload the figure in the Article Figures section below."
         buttons: [bold, italic, link, heading-two, heading-three, quote, bulleted-list, numbered-list]
 
       - label: "Tags"
