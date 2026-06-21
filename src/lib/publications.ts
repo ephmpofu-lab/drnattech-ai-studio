@@ -92,6 +92,15 @@ function imgPath(p: string | undefined): string {
   return p;
 }
 
+// Decap CMS 3 (Slate editor) incorrectly backslash-escapes # at the start of
+// heading lines (\## Heading) and [[ in figure markers (\[[figure-1]]).
+// Strip those spurious backslashes before the body reaches ReactMarkdown.
+function fixMarkdown(body: string): string {
+  return body
+    .replace(/^\\(#{1,6} )/gm, '$1')   // \## Heading  → ## Heading
+    .replace(/\\\[\[/g, '[[');           // \[[figure-1]] → [[figure-1]]
+}
+
 export const publications: Publication[] = Object.values(modules)
   // Omit drafts; articles without a status field are treated as published (backward compat)
   .filter((m) => {
@@ -113,7 +122,7 @@ export const publications: Publication[] = Object.values(modules)
       heroImage: imgPath(r.heroImage),
       heroCaption: r.heroCaption ?? '',
       abstract: r.abstract,
-      body: r.body,
+      body: fixMarkdown(r.body),
       figures: (r.figures ?? []).map((f) => ({ ...f, image: imgPath(f.image) })),
       tags: r.tags ?? [],
       references: r.references ?? [],
