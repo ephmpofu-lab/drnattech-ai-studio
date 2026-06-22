@@ -1,10 +1,10 @@
 ﻿import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useRef, useEffect } from "react";
 import type { KeyboardEvent } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Bot,
   Brain,
-  BookOpen,
   ChevronRight,
   Send,
   FileText,
@@ -35,7 +35,7 @@ type Message = {
   content: string;
 };
 
-const SUGGESTED = [
+const SUGGESTED_FALLBACK = [
   "What AI systems have you built?",
   "Tell me about your EU AI Act experience",
   "What is your technical background?",
@@ -224,6 +224,7 @@ export function AIAgentPage() {
    ============================================================ */
 
 function AuthorityHero() {
+  const { t } = useTranslation("common");
   return (
     <section className="grid items-center gap-8 lg:grid-cols-[1fr_400px] lg:gap-10">
       {/* Left — copy */}
@@ -241,7 +242,7 @@ function AuthorityHero() {
               className="h-1.5 w-1.5 rounded-full"
               style={{ background: "#A855F7", boxShadow: "0 0 8px #A855F7" }}
             />
-            AI AGENT · LIVE
+            {t("aiAgent.liveBadge")}
           </span>
           <span
             className="inline-flex items-center rounded-full px-3 py-1 text-[10.5px] font-semibold"
@@ -251,12 +252,12 @@ function AuthorityHero() {
               color: "#34D399",
             }}
           >
-            Free · No Registration · 24/7
+            {t("aiAgent.freeBadge")}
           </span>
         </div>
 
         <h1 className="mt-5 text-[42px] font-bold leading-[1.06] tracking-tight text-white sm:text-[50px] lg:text-[54px]">
-          Ask My AI. Access Enterprise AI Expertise{" "}
+          {t("aiAgent.heroTitle1")}{" "}
           <span
             style={{
               background: "linear-gradient(90deg, #A855F7, #C4B5FD)",
@@ -264,7 +265,7 @@ function AuthorityHero() {
               WebkitTextFillColor: "transparent",
             }}
           >
-            in Real Time.
+            {t("aiAgent.heroTitle2")}
           </span>
         </h1>
 
@@ -272,19 +273,14 @@ function AuthorityHero() {
           className="mt-4 max-w-[520px] text-[16px] leading-relaxed"
           style={{ color: "#9CA3AF" }}
         >
-          One focused purpose: let the AI agent answer your enterprise AI questions
-          from a grounded, prioritized knowledge base. No distractions, no generic
-          noise — only expert insight from proprietary frameworks, case studies
-          and compliance architecture.
+          {t("aiAgent.heroDesc")}
         </p>
 
         <p
           className="mt-3 max-w-[480px] text-[13.5px] leading-relaxed"
           style={{ color: "#6B7280" }}
         >
-          Ask about: AI architecture, RAG knowledge systems, SKAIDO, AISA, Three
-          Structural Laws, EU AI Act readiness, insurance AI, multi-agent design,
-          and enterprise AI strategy.
+          {t("aiAgent.heroSub")}
         </p>
 
         <div className="mt-6 flex flex-wrap gap-3">
@@ -297,14 +293,14 @@ function AuthorityHero() {
             style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
           >
             <MessageSquare className="h-4 w-4" />
-            Start a Conversation
+            {t("aiAgent.startConversation")}
           </button>
           <Link
             to="/contact"
             className="inline-flex items-center gap-2 rounded-[10px] px-5 py-2.5 text-[13.5px] font-semibold text-white transition-all hover:bg-white/5"
             style={{ border: "1px solid rgba(255,255,255,0.14)" }}
           >
-            Book Strategy Call
+            {t("aiAgent.bookCall")}
           </Link>
         </div>
       </div>
@@ -458,8 +454,17 @@ function AgentVisual() {
       </div>
 
       {/* Identity */}
+      <AgentIdentity />
+    </div>
+  );
+}
+
+function AgentIdentity() {
+  const { t } = useTranslation("common");
+  return (
+    <>
       <div className="relative mt-4 text-[16px] font-bold text-white">
-        Dr. NatTech AI Agent
+        {t("aiAgent.agentName")}
       </div>
       <div className="relative mt-1.5 flex items-center gap-1.5">
         <span
@@ -467,10 +472,10 @@ function AgentVisual() {
           style={{ background: "#10B981", boxShadow: "0 0 8px #10B981" }}
         />
         <span className="text-[12px] font-semibold" style={{ color: "#10B981" }}>
-          Online · Knowledge-Grounded
+          {t("aiAgent.agentStatus")}
         </span>
       </div>
-    </div>
+    </>
   );
 }
 
@@ -490,14 +495,10 @@ function ChatSection() {
 
 /* What You Can Ask — right sidebar */
 function WhatYouCanAsk() {
-  const categories = [
-    { icon: Layers, title: "Frameworks", sub: "My proprietary frameworks" },
-    { icon: Building2, title: "Projects", sub: "Real implementations & results" },
-    { icon: Network, title: "AI Architecture", sub: "Systems, patterns & design" },
-    { icon: Target, title: "AI Strategy", sub: "Enterprise AI & transformation" },
-    { icon: GraduationCap, title: "Research", sub: "PhD research & publications" },
-    { icon: Cpu, title: "Technical Expertise", sub: "Tools, stacks & methodologies" },
-  ];
+  const { t } = useTranslation("common");
+  const CATEGORY_ICONS = [Layers, Building2, Network, Target, GraduationCap, Cpu];
+  const categories = (t("aiAgent.categories", { returnObjects: true }) as Array<{ title: string; sub: string }>)
+    .map((cat, i) => ({ ...cat, icon: CATEGORY_ICONS[i] }));
 
   return (
     <div className="glass-card overflow-hidden">
@@ -508,7 +509,7 @@ function WhatYouCanAsk() {
           color: "#9CA3AF",
         }}
       >
-        You can ask me about
+        {t("aiAgent.whatYouCanAsk")}
       </div>
       {categories.map((cat, i) => (
         <div
@@ -543,11 +544,11 @@ function WhatYouCanAsk() {
 
 /* Chat Welcome State — shown when no messages yet */
 function ChatWelcomeState({ onSuggest }: { onSuggest: (q: string) => void }) {
-  const suggestions = [
-    { icon: Building2,   text: "What AI systems have you built?",              color: "#60A5FA" },
-    { icon: ShieldCheck, text: "Tell me about your EU AI Act experience",       color: "#34D399" },
-    { icon: GraduationCap, text: "What is your technical and academic background?", color: "#F59E0B" },
-  ];
+  const { t } = useTranslation("common");
+  const SUGGESTION_ICONS = [Building2, ShieldCheck, GraduationCap];
+  const SUGGESTION_COLORS = ["#60A5FA", "#34D399", "#F59E0B"];
+  const suggestions = (t("aiAgent.suggestions", { returnObjects: true }) as Array<{ text: string }>)
+    .map((s, i) => ({ ...s, icon: SUGGESTION_ICONS[i], color: SUGGESTION_COLORS[i] }));
 
   return (
     <div className="flex flex-col items-center px-5 py-5">
@@ -573,9 +574,9 @@ function ChatWelcomeState({ onSuggest }: { onSuggest: (q: string) => void }) {
         <Bot className="h-7 w-7 text-white" />
       </div>
 
-      <div className="text-[15px] font-bold text-white">What would you like to know?</div>
+      <div className="text-[15px] font-bold text-white">{t("aiAgent.chatWelcomeTitle")}</div>
       <div className="mt-1 mb-5 text-[12px]" style={{ color: "#6B7280" }}>
-        Ask about my work, background or experience
+        {t("aiAgent.chatWelcomeSub")}
       </div>
 
       <div className="w-full space-y-2">
@@ -603,12 +604,15 @@ function ChatWelcomeState({ onSuggest }: { onSuggest: (q: string) => void }) {
 
 /* Chat Interface */
 function ChatInterface() {
+  const { t } = useTranslation("common");
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
   const nextId = useRef(1);
   const sessionId = useRef(`s_${Date.now()}_${Math.random().toString(36).slice(2)}`);
+  const suggested = (t("aiAgent.suggestions", { returnObjects: true }) as Array<{ text: string }>)
+    .map((s) => s.text);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -639,8 +643,7 @@ function ChatInterface() {
         {
           id: nextId.current++,
           role: "agent",
-          content:
-            "I'm having trouble connecting right now. Please try again in a moment.",
+          content: t("aiAgent.chatError"),
         },
       ]);
     } finally {
@@ -670,9 +673,9 @@ function ChatInterface() {
             <Bot className="h-3.5 w-3.5 text-white" />
           </div>
           <div>
-            <div className="text-[13px] font-bold text-white">Chat with My AI Agent</div>
+            <div className="text-[13px] font-bold text-white">{t("aiAgent.chatTitle")}</div>
             <div className="text-[10.5px]" style={{ color: "#9CA3AF" }}>
-              Accurate answers backed by my knowledge base.
+              {t("aiAgent.chatSub")}
             </div>
           </div>
         </div>
@@ -681,7 +684,7 @@ function ChatInterface() {
           className="rounded-lg px-3 py-1.5 text-[11px] transition-colors hover:bg-white/5"
           style={{ border: "1px solid rgba(255,255,255,0.08)", color: "#9CA3AF" }}
         >
-          Clear Chat
+          {t("aiAgent.clearChat")}
         </button>
       </div>
 
@@ -763,7 +766,7 @@ function ChatInterface() {
         className="flex gap-2 overflow-x-auto px-5 py-2.5"
         style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
       >
-        {SUGGESTED.map((q) => (
+        {(suggested.length > 0 ? suggested : SUGGESTED_FALLBACK).map((q) => (
           <button
             key={q}
             onClick={() => sendMessage(q)}
@@ -790,7 +793,7 @@ function ChatInterface() {
         >
           <input
             className="flex-1 bg-transparent text-[13.5px] text-white outline-none placeholder:text-gray-500"
-            placeholder="Ask about my work, projects, background or experience..."
+            placeholder={t("aiAgent.chatPlaceholder")}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKey}
@@ -815,22 +818,11 @@ function ChatInterface() {
    ============================================================ */
 
 function KnowledgeTransparency() {
-  const layer1Docs = [
-    { num: "01", title: "Master Professional Profile", desc: "Core identity, positioning and professional overview" },
-    { num: "02", title: "Career Journey", desc: "Career arc, key decisions and professional evolution" },
-    { num: "03", title: "AI Solutions Architecture Philosophy", desc: "Architectural principles, frameworks and design thinking" },
-    { num: "04", title: "Leadership Philosophy", desc: "Leadership approach, team dynamics and decision-making" },
-    { num: "05", title: "Technical Expertise", desc: "Tools, stacks, methodologies and technical depth" },
-    { num: "06", title: "Professional Experience", desc: "Engagements, roles and project outcomes" },
-    { num: "07", title: "Education & Intelligence", desc: "PhD, academic background and research methodology" },
-  ];
-
-  const layer2Docs = [
-    { title: "Insurance Claims Intelligence Platform", badge: "Case Study", color: "#A855F7" },
-    { title: "Career Intelligence Operating System", badge: "Case Study", color: "#10B981" },
-    { title: "Knowledge Architecture Operating System", badge: "Case Study", color: "#60A5FA" },
-    { title: "Insights & Thought Leadership", badge: "Articles", color: "#F59E0B" },
-  ];
+  const { t } = useTranslation("common");
+  const L1_COLORS = ["#A855F7", "#10B981", "#60A5FA", "#F59E0B"];
+  const layer1Docs = t("aiAgent.layer1Docs", { returnObjects: true }) as Array<{ num: string; title: string }>;
+  const layer2Docs = (t("aiAgent.layer2Docs", { returnObjects: true }) as Array<{ title: string; badge: string }>)
+    .map((doc, i) => ({ ...doc, color: L1_COLORS[i] }));
 
   return (
     <section className="mt-10">
@@ -841,7 +833,7 @@ function KnowledgeTransparency() {
             className="text-[10px] font-bold uppercase tracking-[0.25em]"
             style={{ color: "#A855F7" }}
           >
-            KNOWLEDGE TRANSPARENCY
+            {t("aiAgent.knowledgeLabel")}
           </div>
           <span
             className="inline-flex items-center gap-1.5 rounded-full px-3 py-0.5 text-[10px] font-semibold"
@@ -852,19 +844,17 @@ function KnowledgeTransparency() {
             }}
           >
             <ShieldCheck className="h-3 w-3" />
-            Governance Pillar
+            {t("aiAgent.knowledgePillar")}
           </span>
         </div>
         <h2 className="mt-2 text-[22px] font-bold text-white">
-          What powers this agent — fully disclosed.
+          {t("aiAgent.knowledgeTitle")}
         </h2>
         <p
           className="mt-3 max-w-[680px] text-[14px] leading-relaxed"
           style={{ color: "#9CA3AF" }}
         >
-          Transparency is a core pillar of AI governance. Below is the exact knowledge base
-          this agent retrieves answers from — curated, owner-authored documents, not scraped
-          internet data. Every answer can be traced to a source layer.
+          {t("aiAgent.knowledgeDesc")}
         </p>
       </div>
 
@@ -888,9 +878,9 @@ function KnowledgeTransparency() {
             >
               L1
             </span>
-            <span className="text-[13px] font-bold text-white">Core Identity Layer</span>
+            <span className="text-[13px] font-bold text-white">{t("aiAgent.l1Label")}</span>
             <span className="ml-auto text-[11px]" style={{ color: "#6B7280" }}>
-              7 documents
+              {t("aiAgent.l1Count")}
             </span>
           </div>
           {layer1Docs.map((doc, i) => (
@@ -930,9 +920,9 @@ function KnowledgeTransparency() {
             >
               L2
             </span>
-            <span className="text-[13px] font-bold text-white">Project Intelligence Layer</span>
+            <span className="text-[13px] font-bold text-white">{t("aiAgent.l2Label")}</span>
             <span className="ml-auto text-[11px]" style={{ color: "#6B7280" }}>
-              4 documents
+              {t("aiAgent.l2Count")}
             </span>
           </div>
           {layer2Docs.map((doc, i) => (
@@ -978,10 +968,10 @@ function KnowledgeTransparency() {
       >
         <ShieldCheck className="h-4 w-4 shrink-0" style={{ color: "#34D399" }} />
         <span className="text-[12px] font-semibold" style={{ color: "#34D399" }}>
-          Knowledge Governance
+          {t("aiAgent.knowledgeGovLabel")}
         </span>
         <span className="text-[11.5px]" style={{ color: "#6B7280" }}>
-          All 11 documents are owner-authored and verified · No scraped or third-party data · Vector-indexed for precision retrieval
+          {t("aiAgent.knowledgeGovDesc")}
         </span>
       </div>
     </section>
@@ -1000,38 +990,14 @@ function KnowledgeTransparency() {
    ============================================================ */
 
 function FaqAndCta() {
-  const faqs = [
-    {
-      q: "What can I ask the Dr. NatTech AI Agent?",
-      a: "You can ask about: Dr. Ephraim Mpofu's SKAIDO Framework (six-phase AI implementation methodology), AISA Framework (strategic AI engagement framework), Three Structural Laws (architectural principles preventing AI failure), Knowledge Architecture (enterprise RAG and retrieval system design), real case studies (insurance claims AI, career intelligence platform, knowledge management systems), EU AI Act compliance and high-risk AI classification, multi-agent AI system design, RAG and vector database implementation, PhD research background (Dr.nat.techn., BOKU Vienna), enterprise AI strategy for DACH and EU enterprises, and how to get started with enterprise AI. The agent is available 24/7, free of charge, with no registration required.",
-    },
-    {
-      q: "What is the difference between the AISA Framework and the SKAIDO Framework?",
-      a: "The AISA Framework governs the strategic engagement — from first contact to production AI delivery. The SKAIDO Framework is the implementation methodology — the systematic process for delivering the technical AI system. AISA is the strategic wrapper; SKAIDO is the implementation engine.",
-    },
-    {
-      q: "What makes this AI Agent different from generic AI tools like ChatGPT?",
-      a: "This agent is trained specifically on Dr. Mpofu's proprietary frameworks, real enterprise AI case studies, methodologies and expertise — not general internet data. It provides expert-level answers grounded in actual production systems, cites its sources and applies framework-based reasoning to every response. It is one of very few deployed AI agents by an independent AI architect — a live proof of the same multi-agent and knowledge architecture expertise Dr. Mpofu applies in client engagements.",
-    },
-    {
-      q: "How does Dr. Mpofu approach enterprise AI architecture?",
-      a: "Dr. Ephraim Mpofu uses a system-first approach: start with the business problem, map processes and knowledge flows, then design a governed architecture using the SKAIDO Framework and Three Structural Laws. Every system is built for production reliability, auditability, EU AI Act compliance and long-term maintainability. He has been formally building enterprise AI systems since January 2026, with a PhD (Dr.nat.techn.) from BOKU University Vienna as the scientific foundation.",
-    },
-    {
-      q: "Can the AI Agent help with EU AI Act compliance questions?",
-      a: "Yes. The agent can explain what EU AI Act compliance means for different AI system types, which systems are classified as high-risk (including insurance AI, CV screening AI, and financial decision AI), what audit trail, human-in-the-loop and transparency requirements apply, and how Dr. Mpofu's architectural approach embeds compliance from day one. For a personalised EU AI Act compliance assessment, book an AI Strategy Call.",
-    },
-    {
-      q: "Is Dr. Ephraim Mpofu available for AI consulting in Germany, Austria and Switzerland (DACH)?",
-      a: "Yes. Dr. Ephraim Mpofu is based in Vienna, Austria and serves enterprises across the DACH region (Deutschland, Österreich, Schweiz) and the wider EU. He designs KI-Systeme (AI systems) that meet EU AI Act (EU KI-Verordnung), GDPR and Austrian regulatory requirements. German-language consultation and technical documentation are available. His AI agent is also accessible 24/7 for initial questions in German.",
-    },
-  ];
+  const { t } = useTranslation("common");
+  const faqs = t("aiAgent.faq", { returnObjects: true }) as Array<{ q: string; a: string }>;
 
   return (
     <section className="mt-10 grid gap-5 lg:grid-cols-[1fr_340px]">
       {/* FAQ — <details>/<summary> so all answers are always in DOM for crawlers */}
       <div>
-        <h3 className="text-[20px] font-bold text-white">Frequently Asked Questions</h3>
+        <h3 className="text-[20px] font-bold text-white">{t("aiAgent.faqTitle")}</h3>
         <div className="mt-4 space-y-2">
           {faqs.map((f) => (
             <details
@@ -1085,15 +1051,15 @@ function FaqAndCta() {
               color: "#C4B5FD",
             }}
           >
-            START A CONVERSATION
+            {t("aiAgent.ctaBadge")}
           </div>
 
           <h3 className="mt-4 text-[20px] font-bold leading-tight text-white">
-            Ready to explore how I can help your organisation?
+            {t("aiAgent.ctaTitle")}
           </h3>
 
           <p className="mt-2.5 text-[13px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-            Ask my AI agent anything about my frameworks, expertise and approach — or book an AI Strategy Call to discuss your challenges directly.
+            {t("aiAgent.ctaDesc")}
           </p>
 
           <div className="mt-5 flex flex-col gap-2.5">
@@ -1103,14 +1069,14 @@ function FaqAndCta() {
               style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
             >
               <MessageSquare className="h-4 w-4" />
-              Ask My AI Agent
+              {t("aiAgent.ctaAskAgent")}
             </button>
             <Link
               to="/contact"
               className="flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-[13.5px] font-semibold text-white transition-all hover:bg-white/5"
               style={{ border: "1px solid rgba(255,255,255,0.13)" }}
             >
-              Book AI Strategy Call <ArrowRight className="h-4 w-4" />
+              {t("aiAgent.ctaBookCall")} <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
 
@@ -1119,7 +1085,7 @@ function FaqAndCta() {
             style={{ color: "#6B7280" }}
           >
             <MapPin className="h-3 w-3" style={{ color: "#A855F7" }} />
-            AI Solutions Architect · Vienna, Austria · DACH & Remote
+            {t("aiAgent.ctaLocation")}
           </div>
         </div>
       </div>

@@ -1,8 +1,8 @@
 ﻿import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   ArrowRight,
-  ExternalLink,
   Box,
   Database,
   ShieldCheck,
@@ -347,36 +347,36 @@ export function Home() {
    1. HERO
    ============================================================ */
 
-const TYPED_PHRASES = ["Enterprise AI Architect", "KI-Architekt Wien", "A2A · MCP · LangGraph Architecture", "Data-Sovereign AI Architecture"];
-
 function TypedText() {
+  const { t } = useTranslation("common");
+  const phrases = t("home.typedPhrases", { returnObjects: true }) as string[];
   const [phraseIdx, setPhraseIdx] = useState(0);
   const [charIdx, setCharIdx] = useState(0);
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    const current = TYPED_PHRASES[phraseIdx];
+    const current = phrases[phraseIdx] ?? "";
     const speed = deleting ? 35 : 65;
 
     if (!deleting && charIdx === current.length) {
-      const t = setTimeout(() => setDeleting(true), 2200);
-      return () => clearTimeout(t);
+      const timer = setTimeout(() => setDeleting(true), 2200);
+      return () => clearTimeout(timer);
     }
     if (deleting && charIdx === 0) {
       setDeleting(false);
-      setPhraseIdx((i) => (i + 1) % TYPED_PHRASES.length);
+      setPhraseIdx((i) => (i + 1) % phrases.length);
       return;
     }
 
-    const t = setTimeout(() => {
+    const timer = setTimeout(() => {
       setCharIdx((c) => (deleting ? c - 1 : c + 1));
     }, speed);
-    return () => clearTimeout(t);
-  }, [charIdx, deleting, phraseIdx]);
+    return () => clearTimeout(timer);
+  }, [charIdx, deleting, phraseIdx, phrases]);
 
   return (
     <span className="inline-flex items-center">
-      <span style={{ color: "#C4B5FD" }}>{TYPED_PHRASES[phraseIdx].slice(0, charIdx)}</span>
+      <span style={{ color: "#C4B5FD" }}>{(phrases[phraseIdx] ?? "").slice(0, charIdx)}</span>
       <span
         className="ml-[1px] inline-block w-[2px] h-[1em] rounded-full align-middle"
         style={{ background: "#A855F7", animation: "blink-caret 1s step-end infinite" }}
@@ -385,25 +385,12 @@ function TypedText() {
   );
 }
 
-const capabilities = [
-  {
-    Icon: Box,
-    title: "Build AI Systems",
-    desc: "Production-ready enterprise AI — multi-agent orchestration using LangGraph and agent-to-agent coordination frameworks, built for scalability and reliability.",
-  },
-  {
-    Icon: Database,
-    title: "Knowledge Platforms",
-    desc: "RAG systems, vector databases, enterprise semantic search and knowledge governance at scale.",
-  },
-  {
-    Icon: ShieldCheck,
-    title: "AI Governance",
-    desc: "EU AI Act compliance, IDS/IDSA data sovereignty, high-risk system classification, audit trail and responsible AI architecture from day one.",
-  },
-];
+const CAPABILITY_ICONS = [Box, Database, ShieldCheck];
 
 function Hero() {
+  const { t } = useTranslation("common");
+  const caps = t("home.capabilities", { returnObjects: true }) as Array<{ title: string; desc: string }>;
+  const capabilities = CAPABILITY_ICONS.map((Icon, i) => ({ Icon, ...caps[i] }));
   return (
     <section
       className="grid grid-cols-1 gap-5 pt-10 lg:grid-cols-[2fr_1.8fr_1.5fr] lg:gap-6 lg:pt-14"
@@ -423,12 +410,11 @@ function Hero() {
             className="h-1.5 w-1.5 rounded-full"
             style={{ background: "#A855F7", boxShadow: "0 0 8px #A855F7" }}
           />
-          ENTERPRISE AI ARCHITECT · WIEN
+          {t("home.heroBadge")}
         </span>
 
         <h1 className="mt-6 text-[42px] font-bold leading-[1.04] tracking-tight text-white sm:text-[48px] lg:text-[54px]">
-          Enterprise AI Systems That{" "}
-          <span className="text-gradient-brand">Work in Production</span>
+          {t("home.heroTitleMain")}<span className="text-gradient-brand">{t("home.heroTitleGradient")}</span>
         </h1>
 
         <div className="mt-3 text-[16px] font-medium" style={{ color: "#9CA3AF" }}>
@@ -436,10 +422,7 @@ function Hero() {
         </div>
 
         <p className="mt-5 max-w-md text-[15px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-          I architect enterprise AI systems — multi-agent coordination,
-          agent-to-agent protocols, RAG knowledge platforms and IDS-compliant
-          data-sovereign governance — for organisations that need production
-          reliability and measurable outcomes.
+          {t("home.heroDesc")}
         </p>
 
         <div className="mt-8 flex flex-wrap gap-3">
@@ -448,14 +431,14 @@ function Hero() {
             className="inline-flex items-center gap-2 rounded-[10px] px-5 py-3 text-[13.5px] font-semibold text-white shadow-lg transition-all hover:scale-[1.03]"
             style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
           >
-            View My Work <ArrowRight className="h-4 w-4" />
+            {t("home.viewWork")} <ArrowRight className="h-4 w-4" />
           </Link>
           <Link
             to="/ai-agent"
             className="inline-flex items-center gap-2 rounded-[10px] px-5 py-3 text-[13.5px] font-semibold text-white transition-all hover:bg-white/5"
             style={{ border: "1px solid rgba(255,255,255,0.14)" }}
           >
-            <Bot className="h-4 w-4" /> Talk to My Agent
+            <Bot className="h-4 w-4" /> {t("home.talkAgent")}
           </Link>
         </div>
 
@@ -526,7 +509,7 @@ function Hero() {
           className="mt-1 inline-flex items-center gap-1.5 text-[12px] font-semibold"
           style={{ color: "#A855F7" }}
         >
-          Let's build together <ArrowRight className="h-3 w-3" />
+          {t("home.letsBuild")} <ArrowRight className="h-3 w-3" />
         </Link>
       </div>
     </section>
@@ -537,14 +520,12 @@ function Hero() {
    2. TRUST BAR
    ============================================================ */
 
-const trustMetrics = [
-  { Icon: FileText, value: "9+", label: "Peer-Reviewed Publications" },
-  { Icon: Clock, value: "3,500+", label: "Hours Automated" },
-  { Icon: TrendingUp, value: "6", label: "Industries Served" },
-  { Icon: Globe, value: "DACH & EU", label: "Vienna, Austria" },
-];
+const TRUST_ICONS = [FileText, Clock, TrendingUp, Globe];
 
 function TrustBar() {
+  const { t } = useTranslation("common");
+  const trustText = t("home.trustMetrics", { returnObjects: true }) as Array<{ value: string; label: string }>;
+  const trustMetrics = TRUST_ICONS.map((Icon, i) => ({ Icon, ...trustText[i] }));
   return (
     <section className="mt-5" aria-label="Authority metrics">
       <div className="glass-card flex flex-wrap items-stretch">
@@ -580,17 +561,9 @@ function TrustBar() {
    2b. EU AI ACT COMPLIANCE STRIP
    ============================================================ */
 
-const euAiActSignals = [
-  "High-Risk System Classification",
-  "Full Audit Trail Architecture",
-  "Human-in-the-Loop Oversight",
-  "GDPR-Aligned by Design",
-  "Transparency Documentation",
-  "Risk Management Framework",
-  "Responsible AI from Day One",
-];
-
 function EuAiActStrip() {
+  const { t } = useTranslation("common");
+  const euAiActSignals = t("home.euSignals", { returnObjects: true }) as string[];
   return (
     <section className="mt-3" aria-label="EU AI Act compliance signals">
       <div
@@ -605,7 +578,7 @@ function EuAiActStrip() {
             className="shrink-0 text-[9px] font-bold uppercase tracking-[0.22em]"
             style={{ color: "#A855F7" }}
           >
-            EU AI Act Ready
+            {t("home.euActBadge")}
           </div>
           <div
             className="hidden h-3.5 w-px lg:block"
@@ -629,31 +602,13 @@ function EuAiActStrip() {
    3. WHAT I BUILD
    ============================================================ */
 
-const buildItems = [
-  {
-    Icon: Box,
-    title: "AI Systems",
-    desc: "End-to-end enterprise AI systems designed for scale. Multi-agent architectures, intelligent automation and production deployment with full auditability and governance embedded from the start.",
-    link: "/portfolio" as const,
-    linkLabel: "View case studies",
-  },
-  {
-    Icon: Database,
-    title: "Knowledge Platforms",
-    desc: "RAG-powered knowledge architectures that surface the right information at the right time. Semantic search, vector databases, enterprise knowledge governance and hallucination-prevention by design.",
-    link: "/frameworks" as const,
-    linkLabel: "See the architecture",
-  },
-  {
-    Icon: ShieldCheck,
-    title: "AI Governance",
-    desc: "EU AI Act-compliant governance architectures. Risk classification of high-risk AI systems, audit trail design, human-in-the-loop oversight mechanisms and GDPR-aligned responsible AI built in from day one.",
-    link: "/frameworks" as const,
-    linkLabel: "Explore frameworks",
-  },
-];
+const BUILD_ICONS = [Box, Database, ShieldCheck];
+const BUILD_LINKS = ["/portfolio", "/frameworks", "/frameworks"] as const;
 
 function WhatIBuild() {
+  const { t } = useTranslation("common");
+  const buildText = t("home.buildItems", { returnObjects: true }) as Array<{ title: string; desc: string; link: string }>;
+  const buildItems = BUILD_ICONS.map((Icon, i) => ({ Icon, to: BUILD_LINKS[i], ...buildText[i] }));
   return (
     <section className="mt-14 lg:mt-16" aria-label="Services">
       <div className="mb-8">
@@ -661,15 +616,15 @@ function WhatIBuild() {
           className="text-[10px] font-bold uppercase tracking-[0.22em]"
           style={{ color: "#8B8B9A" }}
         >
-          What I Build
+          {t("home.buildLabel")}
         </div>
         <h2 className="mt-2.5 text-[28px] font-bold leading-tight text-white lg:text-[34px]">
-          Intelligent Systems for Organisations
+          {t("home.buildTitle")}
         </h2>
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-        {buildItems.map(({ Icon, title, desc, link, linkLabel }) => (
+        {buildItems.map(({ Icon, title, desc, to, link: linkLabel }) => (
           <div key={title} className="glass-card flex flex-col p-5">
             <div
               className="flex h-10 w-10 items-center justify-center rounded-xl"
@@ -685,7 +640,7 @@ function WhatIBuild() {
               {desc}
             </p>
             <Link
-              to={link}
+              to={to}
               className="mt-5 inline-flex items-center gap-1.5 text-[12.5px] font-semibold"
               style={{ color: "#A855F7" }}
             >
@@ -710,6 +665,11 @@ const ragSources = [
 ];
 
 function RagDashboard() {
+  const { t } = useTranslation("common");
+  const metricLabels = t("home.ragMetricLabels", { returnObjects: true }) as string[];
+  const kbRows = t("home.ragKbRows", { returnObjects: true }) as string[];
+  const sourceNames = t("home.ragSourceNames", { returnObjects: true }) as string[];
+
   const [stats, setStats] = useState({
     totalQueries: 0, successRate: 100, totalChunks: 0, totalDocuments: 0, avgResponseMs: 0,
   });
@@ -726,22 +686,17 @@ function RagDashboard() {
   const filled = circ * (stats.successRate / 100);
 
   const metrics = [
-    {
-      label: "Total Queries",
-      value: stats.totalQueries > 0 ? stats.totalQueries.toLocaleString() : "0",
-    },
-    {
-      label: "Chunks Indexed",
-      value: stats.totalChunks > 0 ? stats.totalChunks.toLocaleString() : "—",
-    },
-    {
-      label: "Avg Response",
-      value: stats.avgResponseMs > 0 ? `${(stats.avgResponseMs / 1000).toFixed(1)}s` : "—",
-    },
-    {
-      label: "Success Rate",
-      value: `${stats.successRate}%`,
-    },
+    { label: metricLabels[0], value: stats.totalQueries > 0 ? stats.totalQueries.toLocaleString() : "0" },
+    { label: metricLabels[1], value: stats.totalChunks > 0 ? stats.totalChunks.toLocaleString() : "—" },
+    { label: metricLabels[2], value: stats.avgResponseMs > 0 ? `${(stats.avgResponseMs / 1000).toFixed(1)}s` : "—" },
+    { label: metricLabels[3], value: `${stats.successRate}%` },
+  ];
+
+  const kbData = [
+    { label: kbRows[0], value: stats.totalChunks > 0 ? stats.totalChunks.toLocaleString() : t("home.ragKbLoading") },
+    { label: kbRows[1], value: stats.totalDocuments > 0 ? String(stats.totalDocuments) : t("home.ragKbLoading") },
+    { label: kbRows[2], value: "OpenAI" },
+    { label: kbRows[3], value: "Supabase pgvector" },
   ];
 
   return (
@@ -749,7 +704,7 @@ function RagDashboard() {
       className="rounded-[14px] p-5"
       style={{ background: "rgba(7,11,28,0.88)", border: "1px solid rgba(255,255,255,0.07)" }}
     >
-      <div className="mb-3 text-[11px] font-bold text-white">RAG Performance Overview</div>
+      <div className="mb-3 text-[11px] font-bold text-white">{t("home.ragOverview")}</div>
 
       {/* 4 live metric cards */}
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
@@ -768,17 +723,12 @@ function RagDashboard() {
       <div className="mt-4 grid grid-cols-1 items-start gap-4 sm:grid-cols-[1fr_auto_auto]">
         {/* Knowledge base real stats */}
         <div>
-          <div className="mb-1.5 text-[9.5px]" style={{ color: "#6B7280" }}>Knowledge Base</div>
+          <div className="mb-1.5 text-[9.5px]" style={{ color: "#6B7280" }}>{t("home.ragKb")}</div>
           <div
             className="rounded-[8px] p-3 space-y-2"
             style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)" }}
           >
-            {[
-              { label: "Vector Chunks", value: stats.totalChunks > 0 ? stats.totalChunks.toLocaleString() : "loading…" },
-              { label: "Source Documents", value: stats.totalDocuments > 0 ? String(stats.totalDocuments) : "loading…" },
-              { label: "Embedding Model", value: "OpenAI" },
-              { label: "Vector Store", value: "Supabase pgvector" },
-            ].map((row) => (
+            {kbData.map((row) => (
               <div key={row.label} className="flex items-center justify-between">
                 <span className="text-[10px]" style={{ color: "#9CA3AF" }}>{row.label}</span>
                 <span className="text-[11px] font-bold text-white">{row.value}</span>
@@ -789,7 +739,7 @@ function RagDashboard() {
 
         {/* Success rate donut — live */}
         <div className="flex flex-col items-center">
-          <div className="mb-1.5 text-[9.5px]" style={{ color: "#6B7280" }}>Query Success Rate</div>
+          <div className="mb-1.5 text-[9.5px]" style={{ color: "#6B7280" }}>{t("home.ragSuccessRate")}</div>
           <svg width="70" height="70" viewBox="0 0 70 70">
             <circle cx="35" cy="35" r={r} fill="none" stroke="rgba(139,92,246,0.15)" strokeWidth="8" />
             <circle
@@ -807,11 +757,11 @@ function RagDashboard() {
 
         {/* Knowledge categories — real document breakdown */}
         <div>
-          <div className="mb-2 text-[9.5px]" style={{ color: "#6B7280" }}>Knowledge Categories</div>
+          <div className="mb-2 text-[9.5px]" style={{ color: "#6B7280" }}>{t("home.ragCategories")}</div>
           <div className="space-y-1.5">
-            {ragSources.map((s) => (
+            {ragSources.map((s, i) => (
               <div key={s.name} className="flex items-center gap-2">
-                <div className="w-[72px] shrink-0 text-right text-[9.5px]" style={{ color: "#9CA3AF" }}>{s.name}</div>
+                <div className="w-[72px] shrink-0 text-right text-[9.5px]" style={{ color: "#9CA3AF" }}>{sourceNames[i]}</div>
                 <div className="h-1.5 w-[80px] overflow-hidden rounded-full" style={{ background: "rgba(255,255,255,0.08)" }}>
                   <div className="h-full rounded-full" style={{ width: `${Math.round(s.pct / 0.45)}%`, background: "#8B5CF6" }} />
                 </div>
@@ -826,6 +776,10 @@ function RagDashboard() {
 }
 
 function FeaturedCaseStudy() {
+  const { t } = useTranslation("common");
+  const desc1 = t("home.caseStudyDesc1");
+  const highlight = t("home.caseStudyHighlight");
+  const [before, after] = desc1.split(highlight);
   return (
     <section className="mt-5" aria-label="Featured case study">
       <div className="glass-card p-7 lg:p-9">
@@ -836,22 +790,20 @@ function FeaturedCaseStudy() {
               className="inline-flex w-fit items-center rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em]"
               style={{ background: "rgba(139,92,246,0.14)", border: "1px solid rgba(139,92,246,0.32)", color: "#C4B5FD" }}
             >
-              RAG System
+              {t("home.caseStudyBadge")}
             </span>
 
             <h2 className="mt-4 text-[28px] font-bold leading-[1.12] text-white lg:text-[32px]">
-              Enterprise RAG<br />Knowledge Hub
+              {t("home.caseStudyTitle1")}<br />{t("home.caseStudyTitle2")}
             </h2>
 
             <p className="mt-3 text-[13.5px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-              A retrieval-augmented generation system engineered on the five pillars of governable AI —{" "}
-              <span style={{ color: "#E2E8F0" }}>explainability, traceability, oversight, monitoring and accountability</span>{" "}
-              — so every answer is grounded in its source, every decision is auditable, and every failure surfaces before it becomes a crisis.
+              {before}<span style={{ color: "#E2E8F0" }}>{highlight}</span>{after}
             </p>
             <p className="mt-3 text-[13.5px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-              Governed by three structural laws:{" "}
-              <span style={{ color: "#E2E8F0" }}>no deception in reasoning, no silent failure in execution, no ungovernable system in production.</span>{" "}
-              This is the architecture most enterprises discover they needed only after something goes wrong.
+              {t("home.caseStudyDesc2")}{" "}
+              <span style={{ color: "#E2E8F0" }}>{t("home.caseStudyLaws")}</span>{" "}
+              {t("home.caseStudyDesc2b")}
             </p>
 
             <div
@@ -876,7 +828,7 @@ function FeaturedCaseStudy() {
                 className="inline-flex items-center gap-2 rounded-[10px] px-5 py-2.5 text-[13px] font-semibold text-white transition-all hover:scale-[1.02]"
                 style={{ border: "1px solid rgba(139,92,246,0.4)", background: "rgba(139,92,246,0.12)" }}
               >
-                View Case Study <ArrowRight className="h-3.5 w-3.5" />
+                {t("home.viewCaseStudy")} <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>
           </div>
@@ -960,6 +912,7 @@ function FrameworkLayersVisual() {
 }
 
 function FrameworksSection() {
+  const { t } = useTranslation("common");
   return (
     <section className="mt-5" aria-label="Proprietary AI frameworks">
       <div
@@ -974,23 +927,20 @@ function FrameworksSection() {
             className="text-[10px] font-bold uppercase tracking-[0.22em]"
             style={{ color: "#8B8B9A" }}
           >
-            Proprietary Frameworks
+            {t("home.frameworksLabel")}
           </div>
           <h2 className="mt-4 text-[28px] font-bold leading-tight text-white lg:text-[34px]">
-            The Frameworks Behind Every System
+            {t("home.frameworksTitle")}
           </h2>
           <p className="mt-4 max-w-lg text-[14px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-            Every system I build is grounded in five proprietary frameworks —
-            AISA, SKAIDO, Three Structural Laws, Four Workflow Layers and
-            Knowledge Architecture — developed through years of scientific
-            research and enterprise AI practice across the DACH region and EU.
+            {t("home.frameworksDesc")}
           </p>
           <Link
             to="/frameworks"
             className="mt-8 inline-flex items-center gap-2 rounded-[10px] px-6 py-3 text-[13.5px] font-semibold text-white transition-all hover:scale-[1.02]"
             style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
           >
-            Explore Frameworks <ArrowRight className="h-4 w-4" />
+            {t("home.exploreFrameworks")} <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
 
@@ -1050,6 +1000,7 @@ function GovernanceIllustration() {
 }
 
 function AuthoritySection() {
+  const { t } = useTranslation("common");
   return (
     <section className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-2" aria-label="Research and thought leadership">
 
@@ -1061,23 +1012,21 @@ function AuthoritySection() {
               className="text-[10px] font-bold uppercase tracking-[0.22em]"
               style={{ color: "#8B8B9A" }}
             >
-              Research &amp; Publications
+              {t("home.researchLabel")}
             </div>
             <div className="mt-4 text-[48px] font-bold leading-none text-gradient-brand">9+</div>
             <div className="mt-2 text-[15px] font-semibold text-white">
-              Peer-Reviewed Publications
+              {t("home.researchTitle")}
             </div>
             <p className="mt-2.5 text-[13px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-              Research spanning AI systems, knowledge management, RAG
-              architectures, sustainability science and enterprise intelligent
-              automation — published in peer-reviewed academic journals.
+              {t("home.researchDesc")}
             </p>
             <Link
               to="/publications"
               className="mt-5 inline-flex w-fit items-center gap-2 rounded-lg px-5 py-2.5 text-[13px] font-semibold text-white"
               style={{ border: "1px solid rgba(255,255,255,0.15)" }}
             >
-              View Publications <ArrowRight className="h-3.5 w-3.5" />
+              {t("home.viewPublications")} <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
           <div className="shrink-0 pt-1">
@@ -1094,7 +1043,7 @@ function AuthoritySection() {
               className="text-[10px] font-bold uppercase tracking-[0.22em]"
               style={{ color: "#8B8B9A" }}
             >
-              Featured Insight
+              {t("home.featuredInsightLabel")}
             </div>
             <div
               className="mt-4 inline-flex w-fit rounded-md px-2.5 py-1 text-[11px] font-semibold"
@@ -1104,22 +1053,20 @@ function AuthoritySection() {
                 color: "#C4B5FD",
               }}
             >
-              EU AI Act · KI-Verordnung
+              {t("home.featuredInsightBadge")}
             </div>
             <h3 className="mt-3 text-[20px] font-bold leading-tight text-white">
-              EU AI Act Compliance for Enterprises in 2025–2026
+              {t("home.featuredInsightTitle")}
             </h3>
             <p className="mt-2.5 flex-1 text-[13px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-              What the EU AI Act means for your AI systems, how to classify
-              risk and what governance architecture you need before the
-              August 2026 obligation deadline.
+              {t("home.featuredInsightDesc")}
             </p>
             <Link
               to="/insights"
               className="mt-5 inline-flex w-fit items-center gap-2 rounded-lg px-5 py-2.5 text-[13px] font-semibold text-white"
               style={{ border: "1px solid rgba(255,255,255,0.15)" }}
             >
-              Read Article <ArrowRight className="h-3.5 w-3.5" />
+              {t("home.readArticle")} <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
           <div className="shrink-0 pt-1">
@@ -1135,12 +1082,9 @@ function AuthoritySection() {
    7. AI AGENT
    ============================================================ */
 
-const AGENT_TOPICS = [
-  "AI Governance", "EU AI Act", "Knowledge Architecture",
-  "Multi-Agent Systems", "My Research", "My Frameworks",
-];
-
 function AgentCard() {
+  const { t } = useTranslation("common");
+  const agentTopics = t("home.agentTopics", { returnObjects: true }) as string[];
   const [query, setQuery] = useState("");
   const [userMsg, setUserMsg] = useState("");
   const [agentMsg, setAgentMsg] = useState("");
@@ -1160,9 +1104,9 @@ function AgentCard() {
         body: JSON.stringify({ message: trimmed, sessionId: "homepage" }),
       });
       const data = await res.json();
-      setAgentMsg(data.output || "I didn't get a response. Try the full AI Agent page.");
+      setAgentMsg(data.output || t("home.agentFallback"));
     } catch {
-      setAgentMsg("Connection error. Please try again or visit the AI Agent page.");
+      setAgentMsg(t("home.agentError"));
     } finally {
       setLoading(false);
     }
@@ -1196,16 +1140,16 @@ function AgentCard() {
               <Bot className="h-6 w-6 text-white" />
             </div>
 
-            <h2 className="text-[22px] font-bold text-white">Ask My AI Agent</h2>
+            <h2 className="text-[22px] font-bold text-white">{t("home.agentTitle")}</h2>
             <p className="mt-2 max-w-[400px] text-[13.5px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-              Get instant answers about AI governance, frameworks, enterprise AI systems, publications and more.
+              {t("home.agentDesc")}
             </p>
 
             <div className="mt-5 flex flex-wrap gap-2">
-              {AGENT_TOPICS.map((t) => (
+              {agentTopics.map((topic) => (
                 <button
-                  key={t}
-                  onClick={() => sendQuery(t)}
+                  key={topic}
+                  onClick={() => sendQuery(topic)}
                   className="rounded-full px-3 py-1 text-[11.5px] font-medium transition-colors hover:bg-white/10"
                   style={{
                     background: "rgba(255,255,255,0.06)",
@@ -1213,7 +1157,7 @@ function AgentCard() {
                     color: "#D1D5DB",
                   }}
                 >
-                  {t}
+                  {topic}
                 </button>
               ))}
             </div>
@@ -1229,7 +1173,7 @@ function AgentCard() {
                 className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em]"
                 style={{ color: "#6B7280" }}
               >
-                AI Assistant
+                {t("home.agentLabel")}
               </div>
 
               {!userMsg && (
@@ -1237,7 +1181,7 @@ function AgentCard() {
                   className="inline-block rounded-[12px] rounded-tl-none px-4 py-2.5 text-[13px] font-medium text-white"
                   style={{ background: "linear-gradient(135deg, #7C3AED, #A855F7)", maxWidth: "90%" }}
                 >
-                  How can I help you today?
+                  {t("home.agentGreeting")}
                 </div>
               )}
 
@@ -1276,7 +1220,7 @@ function AgentCard() {
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Ask anything about AI, frameworks, or my work..."
+                placeholder={t("home.agentPlaceholder")}
                 className="flex-1 rounded-[8px] px-3 py-2.5 text-[12.5px] text-white outline-none"
                 style={{
                   background: "rgba(255,255,255,0.05)",
@@ -1307,6 +1251,8 @@ function AgentCard() {
    ============================================================ */
 
 function HomeFaqSection() {
+  const { t } = useTranslation("common");
+  const faqItems = t("home.faq", { returnObjects: true }) as Array<{ q: string; a: string }>;
   return (
     <section className="mt-14 lg:mt-16" aria-label="Frequently asked questions">
       <div className="mb-8">
@@ -1314,19 +1260,18 @@ function HomeFaqSection() {
           className="text-[10px] font-bold uppercase tracking-[0.22em]"
           style={{ color: "#8B8B9A" }}
         >
-          Common Questions
+          {t("home.faqLabel")}
         </div>
         <h2 className="mt-2.5 text-[28px] font-bold leading-tight text-white lg:text-[34px]">
-          Frequently Asked Questions
+          {t("home.faqTitle")}
         </h2>
         <p className="mt-2 text-[14px]" style={{ color: "#9CA3AF" }}>
-          Questions about enterprise AI implementation, EU AI Act compliance and working
-          with a KI-Architekt in Vienna.
+          {t("home.faqDesc")}
         </p>
       </div>
 
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-        {homeFaq.map((item) => (
+        {faqItems.map((item) => (
           <details
             key={item.q}
             className="group rounded-[14px] p-5"
@@ -1363,6 +1308,8 @@ function HomeFaqSection() {
    ============================================================ */
 
 function FinalCta() {
+  const { t, i18n } = useTranslation("common");
+  const agentHref = i18n.language === "de" ? "/de/ai-agent" : "/ai-agent";
   return (
     <section className="mt-5 mb-5" aria-label="Contact call to action">
       <div
@@ -1386,12 +1333,10 @@ function FinalCta() {
           </div>
           <div>
             <h2 className="text-[22px] font-bold leading-tight text-white lg:text-[26px]">
-              Ready to Build AI Systems That Work in Production?
+              {t("home.ctaTitle")}
             </h2>
             <p className="mt-1.5 text-[13.5px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-              AI strategy, enterprise architecture, multi-agent systems, RAG knowledge
-              platforms, EU AI Act compliance and intelligent automation — from Vienna,
-              Austria, for the DACH region and EU.
+              {t("home.ctaDesc")}
             </p>
           </div>
         </div>
@@ -1402,14 +1347,14 @@ function FinalCta() {
             className="inline-flex items-center gap-2 rounded-[10px] px-6 py-3 text-[13.5px] font-semibold text-white transition-all hover:scale-[1.02] whitespace-nowrap"
             style={{ background: "linear-gradient(135deg,#A855F7,#7C3AED)" }}
           >
-            View My Work <ArrowRight className="h-4 w-4" />
+            {t("home.ctaViewWork")} <ArrowRight className="h-4 w-4" />
           </Link>
           <Link
-            to="/ai-agent"
+            to={agentHref}
             className="inline-flex items-center gap-2 rounded-[10px] px-6 py-3 text-[13.5px] font-semibold text-white transition-all hover:bg-white/5 whitespace-nowrap"
             style={{ border: "1px solid rgba(255,255,255,0.15)" }}
           >
-            <Bot className="h-4 w-4" /> Talk to My Agent
+            <Bot className="h-4 w-4" /> {t("home.ctaTalkAgent")}
           </Link>
         </div>
       </div>

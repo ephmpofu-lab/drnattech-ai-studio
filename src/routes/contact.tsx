@@ -1,5 +1,6 @@
-﻿import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   MapPin,
   Phone,
@@ -45,43 +46,8 @@ const CARD_BG =
   "linear-gradient(180deg, rgba(15,20,40,0.85), rgba(11,16,32,0.7))";
 const CARD_BORDER = "1px solid rgba(139,92,246,0.18)";
 
-const contactCards = [
-  {
-    icon: MapPin,
-    title: "Address",
-    lines: ["Hopfengasse 5", "1210 Vienna", "Austria"],
-  },
-  {
-    icon: Phone,
-    title: "Phone",
-    lines: [{ text: "+43 677 64883723", href: "tel:+4367764883723" }],
-  },
-  {
-    icon: Mail,
-    title: "Email",
-    lines: [
-      { text: "ephmpofu@gmail.com", href: "mailto:ephmpofu@gmail.com" },
-    ],
-  },
-  {
-    icon: Clock,
-    title: "Available Hours",
-    lines: ["08:00 – 21:00", "Every Day"],
-  },
-  {
-    icon: Linkedin,
-    title: "LinkedIn",
-    lines: [
-      {
-        text: "linkedin.com/in/ephraim-mpofu",
-        href: "https://www.linkedin.com/in/ephraim-mpofu-a340608b/",
-        external: true,
-      },
-    ],
-  },
-] as const;
-
 function CopyEmailButton({ email }: { email: string }) {
+  const { t } = useTranslation("common");
   const [copied, setCopied] = useState(false);
 
   async function copy() {
@@ -102,12 +68,13 @@ function CopyEmailButton({ email }: { email: string }) {
       aria-label={`Copy ${email}`}
     >
       {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-      {copied ? "Copied!" : "Copy"}
+      {copied ? t("contact.copiedEmail") : t("contact.copyEmail")}
     </button>
   );
 }
 
 export function ContactPage() {
+  const { t, i18n } = useTranslation("common");
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -116,6 +83,44 @@ export function ContactPage() {
   });
   const [submitted, setSubmitted] = useState(false);
   const [calendlyOpen, setCalendlyOpen] = useState(false);
+
+  const agentHref = i18n.language === "de" ? "/de/ai-agent" : "/ai-agent";
+
+  const contactCards = [
+    {
+      icon: MapPin,
+      title: t("contact.cardAddress"),
+      lines: ["Hopfengasse 5", "1210 Vienna", "Austria"],
+    },
+    {
+      icon: Phone,
+      title: t("contact.cardPhone"),
+      lines: [{ text: "+43 677 64883723", href: "tel:+4367764883723" }],
+    },
+    {
+      icon: Mail,
+      title: t("contact.cardEmail"),
+      lines: [
+        { text: "ephmpofu@gmail.com", href: "mailto:ephmpofu@gmail.com" },
+      ],
+    },
+    {
+      icon: Clock,
+      title: t("contact.cardHours"),
+      lines: ["08:00 – 21:00", "Every Day"],
+    },
+    {
+      icon: Linkedin,
+      title: t("contact.cardLinkedin"),
+      lines: [
+        {
+          text: "linkedin.com/in/ephraim-mpofu",
+          href: "https://www.linkedin.com/in/ephraim-mpofu-a340608b/",
+          external: true,
+        },
+      ],
+    },
+  ] as const;
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -152,11 +157,11 @@ export function ContactPage() {
                 color: "#C4B5FD",
               }}
             >
-              <Sparkles className="h-3 w-3" /> LET'S CONNECT
+              <Sparkles className="h-3 w-3" /> {t("contact.badge")}
             </span>
 
             <h1 className="mt-7 text-[44px] font-bold leading-[1.08] tracking-[-0.02em] md:text-[56px] lg:text-[64px]">
-              Let's Build Intelligent Systems{" "}
+              {t("contact.heroTitle1")}{" "}
               <span
                 style={{
                   background:
@@ -165,7 +170,7 @@ export function ContactPage() {
                   WebkitTextFillColor: "transparent",
                 }}
               >
-                Together.
+                {t("contact.heroTitle2")}
               </span>
             </h1>
 
@@ -173,14 +178,13 @@ export function ContactPage() {
               className="mt-7 max-w-[540px] text-[16.5px] leading-[1.75]"
               style={{ color: "#A3A3B2" }}
             >
-              Whether you have a project in mind, need expert guidance, or want
-              to explore potential collaboration, I'd love to hear from you.
+              {t("contact.heroDesc1")}
             </p>
             <p
               className="mt-3 max-w-[540px] text-[16.5px] leading-[1.75]"
               style={{ color: "#A3A3B2" }}
             >
-              Let's create real impact through technology and research.
+              {t("contact.heroDesc2")}
             </p>
 
             <div className="mt-10 flex flex-col items-start gap-2">
@@ -189,7 +193,7 @@ export function ContactPage() {
                 className="text-[11px] font-semibold tracking-[0.26em]"
                 style={{ color: "#A855F7" }}
               >
-                AI SOLUTIONS ARCHITECT • RESEARCHER • BUILDER
+                {t("contact.tagline")}
               </span>
             </div>
           </div>
@@ -226,10 +230,10 @@ export function ContactPage() {
           {/* LEFT */}
           <div>
             <h2 className="text-[32px] font-bold tracking-[-0.01em] md:text-[36px]">
-              Get in Touch
+              {t("contact.sectionTitle")}
             </h2>
             <p className="mt-3 text-[15px]" style={{ color: "#A3A3B2" }}>
-              Real conversations. Real collaboration. Real impact.
+              {t("contact.sectionDesc")}
             </p>
 
             <button
@@ -237,7 +241,7 @@ export function ContactPage() {
               className="mt-6 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-[13.5px] font-semibold text-white transition-all hover:scale-[1.02]"
               style={{ background: "linear-gradient(135deg, #8B5CF6 0%, #A855F7 100%)", boxShadow: "0 12px 30px -10px rgba(139,92,246,0.6)" }}
             >
-              Book Strategy Call
+              {t("contact.bookCall")}
             </button>
 
             <div className="mt-8 space-y-4">
@@ -281,7 +285,7 @@ export function ContactPage() {
                             );
                           }
                           const isExt = "external" in line && line.external;
-                          const isEmail = card.title === "Email";
+                          const isEmail = card.title === t("contact.cardEmail");
                           return (
                             <div key={i} className="flex flex-wrap items-center gap-1">
                               <a
@@ -315,43 +319,42 @@ export function ContactPage() {
             }}
           >
             <h2 className="text-[32px] font-bold tracking-[-0.01em] md:text-[36px]">
-              Send a Message
+              {t("contact.formTitle")}
             </h2>
             <p className="mt-3 text-[15px]" style={{ color: "#A3A3B2" }}>
-              Fill out the form below and I'll get back to you as soon as
-              possible.
+              {t("contact.formDesc")}
             </p>
 
             <form onSubmit={onSubmit} className="mt-8 space-y-5">
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                 <Field
-                  label="Full Name"
+                  label={t("contact.labelName")}
                   value={form.name}
                   onChange={(v) => setForm({ ...form, name: v })}
-                  placeholder="Your name"
+                  placeholder={t("contact.placeholderName")}
                   required
                 />
                 <Field
-                  label="Email Address"
+                  label={t("contact.labelEmail")}
                   type="email"
                   value={form.email}
                   onChange={(v) => setForm({ ...form, email: v })}
-                  placeholder="you@example.com"
+                  placeholder={t("contact.placeholderEmail")}
                   required
                 />
               </div>
               <Field
-                label="Subject"
+                label={t("contact.labelSubject")}
                 value={form.subject}
                 onChange={(v) => setForm({ ...form, subject: v })}
-                placeholder="What's this about?"
+                placeholder={t("contact.placeholderSubject")}
               />
               <div>
                 <label
                   className="mb-2 block text-[12px] font-semibold tracking-[0.18em]"
                   style={{ color: "#A3A3B2" }}
                 >
-                  MESSAGE
+                  {t("contact.labelMessage")}
                 </label>
                 <textarea
                   value={form.message}
@@ -360,7 +363,7 @@ export function ContactPage() {
                   }
                   required
                   rows={6}
-                  placeholder="Tell me about your project, question, or idea…"
+                  placeholder={t("contact.placeholderMessage")}
                   className="w-full resize-none rounded-xl px-4 py-3 text-[15px] text-white outline-none transition-all placeholder:text-[#6B7280] focus:border-[#8B5CF6]"
                   style={{
                     background: "rgba(5,8,22,0.6)",
@@ -379,7 +382,7 @@ export function ContactPage() {
                 }}
               >
                 <Send className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                {submitted ? "Message Ready" : "Send Message"}
+                {submitted ? t("contact.sentBtn") : t("contact.sendBtn")}
               </button>
 
               <div
@@ -387,7 +390,7 @@ export function ContactPage() {
                 style={{ color: "#6B7280" }}
               >
                 <Lock className="h-3.5 w-3.5" style={{ color: "#A855F7" }} />
-                Your information is secure and will never be shared.
+                {t("contact.privacy")}
               </div>
             </form>
           </div>
@@ -447,8 +450,7 @@ export function ContactPage() {
                   className="mt-5 text-[14.5px] leading-[1.7]"
                   style={{ color: "#A3A3B2" }}
                 >
-                  Located in Vienna's 21st district and available for both
-                  local and remote collaboration worldwide.
+                  {t("contact.locationDesc")}
                 </p>
                 <a
                   href={directionsUrl}
@@ -461,7 +463,7 @@ export function ContactPage() {
                     boxShadow: "0 12px 30px -10px rgba(139,92,246,0.6)",
                   }}
                 >
-                  Get Directions <ExternalLink className="h-4 w-4" />
+                  {t("contact.getDirections")} <ExternalLink className="h-4 w-4" />
                 </a>
               </div>
             </div>
@@ -506,27 +508,24 @@ export function ContactPage() {
 
               <div>
                 <h3 className="text-[26px] font-bold tracking-[-0.01em] md:text-[30px]">
-                  Not sure where to start?
+                  {t("contact.agentTitle")}
                 </h3>
                 <p
                   className="mt-3 max-w-[640px] text-[15px] leading-[1.7]"
                   style={{ color: "#A3A3B2" }}
                 >
-                  Ask my AI Agent anything about my projects, services,
-                  technical expertise, architecture approach, certifications,
-                  or experience. It has been trained on my portfolio, research,
-                  systems, and professional background.
+                  {t("contact.agentDesc")}
                 </p>
                 <div
                   className="mt-3 text-[13px]"
                   style={{ color: "#6B7280" }}
                 >
-                  Get answers instantly before scheduling a conversation.
+                  {t("contact.agentSub")}
                 </div>
               </div>
 
               <Link
-                to="/ai-agent"
+                to={agentHref}
                 className="inline-flex items-center justify-center gap-2 rounded-xl px-6 py-4 text-[14px] font-semibold text-white transition-all hover:scale-[1.03]"
                 style={{
                   background:
@@ -534,7 +533,7 @@ export function ContactPage() {
                   boxShadow: "0 14px 36px -10px rgba(139,92,246,0.6)",
                 }}
               >
-                <MessageSquare className="h-4 w-4" /> Ask Me Anything
+                <MessageSquare className="h-4 w-4" /> {t("contact.askAnything")}
               </Link>
             </div>
           </div>

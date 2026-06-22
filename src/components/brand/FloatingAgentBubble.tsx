@@ -1,12 +1,16 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { MessageSquare, X, Send, ArrowRight } from "lucide-react";
 
 export function FloatingAgentBubble() {
+  const { t, i18n } = useTranslation("common");
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [userMsg, setUserMsg] = useState("");
   const [agentMsg, setAgentMsg] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const agentHref = i18n.language === "de" ? "/de/ai-agent" : "/ai-agent";
 
   async function sendQuery(q: string) {
     const trimmed = q.trim();
@@ -22,9 +26,9 @@ export function FloatingAgentBubble() {
         body: JSON.stringify({ message: trimmed, sessionId: "bubble" }),
       });
       const data = await res.json();
-      setAgentMsg(data.output || "I couldn't get a response. Try the full agent.");
+      setAgentMsg(data.output || t("bubble.fallback"));
     } catch {
-      setAgentMsg("Connection error. Please try the full agent page.");
+      setAgentMsg(t("bubble.error"));
     } finally {
       setLoading(false);
     }
@@ -64,9 +68,9 @@ export function FloatingAgentBubble() {
             >
               <MessageSquare className="h-3 w-3" style={{ color: "#C4B5FD" }} />
             </div>
-            <span className="text-[12px] font-bold text-white">Dr. Ephraim Mpofu AI Agent</span>
+            <span className="text-[12px] font-bold text-white">{t("bubble.title")}</span>
           </div>
-          <button onClick={() => setOpen(false)} aria-label="Close">
+          <button onClick={() => setOpen(false)} aria-label={t("bubble.ariaClose")}>
             <X className="h-4 w-4" style={{ color: "#6B7280" }} />
           </button>
         </div>
@@ -77,7 +81,7 @@ export function FloatingAgentBubble() {
           <div className="mb-3 flex max-h-[200px] flex-col gap-2 overflow-y-auto">
             {!userMsg ? (
               <p className="text-[12px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-                Ask me about my background, AI governance, enterprise architecture or multi-agent systems.
+                {t("bubble.prompt")}
               </p>
             ) : (
               <>
@@ -118,7 +122,7 @@ export function FloatingAgentBubble() {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Ask anything..."
+              placeholder={t("bubble.placeholder")}
               className="flex-1 rounded-[8px] px-3 py-2 text-[12px] text-white placeholder-gray-500 outline-none"
               style={{
                 background: "rgba(255,255,255,0.06)",
@@ -130,18 +134,18 @@ export function FloatingAgentBubble() {
               disabled={loading}
               className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] disabled:opacity-40"
               style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
-              aria-label="Send"
+              aria-label={t("bubble.ariaOpen")}
             >
               <Send className="h-3.5 w-3.5 text-white" />
             </button>
           </form>
 
           <a
-            href="/ai-agent"
+            href={agentHref}
             className="mt-3 flex items-center gap-1 text-[11px] font-medium"
             style={{ color: "#A855F7" }}
           >
-            Open full agent <ArrowRight className="h-3 w-3" />
+            {t("bubble.openAgent")} <ArrowRight className="h-3 w-3" />
           </a>
         </div>
       </div>
@@ -155,7 +159,7 @@ export function FloatingAgentBubble() {
           boxShadow: "0 8px 32px rgba(139,92,246,0.55), 0 0 0 0 rgba(139,92,246,0.4)",
           animation: open ? "none" : "bubble-pulse 2.5s infinite",
         }}
-        aria-label={open ? "Close AI Agent" : "Ask Dr. Ephraim Mpofu AI Agent"}
+        aria-label={open ? t("bubble.ariaClose") : t("bubble.ariaOpen")}
       >
         {open ? (
           <X className="h-5 w-5 text-white" />

@@ -4,6 +4,7 @@
   notFound,
 } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Calendar,
   Clock,
@@ -268,6 +269,7 @@ const FIGURE_MARKER_RE = /(\[\[figure-\d+\]\])/g;
 const FIGURE_KEY_RE = /^\[\[(figure-\d+)\]\]$/;
 
 function MarkdownBody({ body, figures }: { body: string; figures?: Figure[] }) {
+  const { t } = useTranslation("common");
   const figureMap: Record<string, Figure> = {};
   for (const f of figures ?? []) {
     figureMap[f.marker] = f;
@@ -289,7 +291,7 @@ function MarkdownBody({ body, figures }: { body: string; figures?: Figure[] }) {
           style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.3)' }}
         >
           <p className="mb-1 text-[12px] font-semibold" style={{ color: '#F59E0B' }}>
-            Figure Placement Warnings
+            {t("article.figurePlacementWarning")}
           </p>
           {orphaned.map(m => (
             <p key={m} className="text-[12px]" style={{ color: '#FCD34D' }}>
@@ -382,6 +384,7 @@ function useTOCActiveSection(sectionIds: string[]) {
 // ─── Cite Box ─────────────────────────────────────────────────────────────────
 
 function CiteBox({ pub }: { pub: Publication }) {
+  const { t } = useTranslation("common");
   const [copied, setCopied] = useState(false);
   const citation = pub.citation || `Mpofu, E. (${pub.dateISO.slice(0, 4)}). ${pub.title}. Dr. Ephraim Mpofu — Insights & Publications. https://dr-ephraim-mpofu.com/insights/${pub.slug}`;
 
@@ -404,7 +407,7 @@ function CiteBox({ pub }: { pub: Publication }) {
         className="mb-3 text-[11px] font-bold tracking-[0.18em]"
         style={{ color: "#64748B" }}
       >
-        CITE THIS ARTICLE
+        {t("article.cite").toUpperCase()}
       </div>
       <p
         className="mb-4 font-mono text-[13px] leading-[1.7]"
@@ -422,11 +425,11 @@ function CiteBox({ pub }: { pub: Publication }) {
       >
         {copied ? (
           <>
-            <Check className="h-3.5 w-3.5" /> Copied!
+            <Check className="h-3.5 w-3.5" /> {t("article.citationCopied")}
           </>
         ) : (
           <>
-            <Copy className="h-3.5 w-3.5" /> Copy Citation
+            <Copy className="h-3.5 w-3.5" /> {t("article.copyCitation")}
           </>
         )}
       </button>
@@ -485,6 +488,7 @@ function RawBibliography({ text }: { text: string }) {
 // ─── Page Component ───────────────────────────────────────────────────────────
 
 function ArticlePage() {
+  const { t } = useTranslation("common");
   const pub = Route.useLoaderData() as Publication;
   const related = getRelatedPublications(pub.relatedSlugs);
   const toc = extractHeadings(pub.body);
@@ -528,7 +532,7 @@ function ArticlePage() {
             to="/insights"
             className="transition-colors hover:text-white"
           >
-            Insights
+            {t("nav.insights")}
           </Link>
           <ChevronRight className="h-3.5 w-3.5" />
           <span
@@ -602,7 +606,7 @@ function ArticlePage() {
                   className="text-[12px]"
                   style={{ color: "#64748B" }}
                 >
-                  AI Solutions Architect · Vienna
+                  {t("article.authorRole")}
                 </div>
               </div>
             </div>
@@ -625,7 +629,7 @@ function ArticlePage() {
               style={{ color: "#64748B" }}
             >
               <Clock className="h-3.5 w-3.5" />
-              {pub.readTime} min read
+              {pub.readTime} {t("article.minRead")}
             </div>
 
             <div className="ml-auto flex items-center gap-2">
@@ -636,7 +640,7 @@ function ArticlePage() {
                   border: "1px solid rgba(255,255,255,0.08)",
                   color: bookmarked ? "#A855F7" : "#64748B",
                 }}
-                aria-label={bookmarked ? "Remove bookmark" : "Bookmark"}
+                aria-label={bookmarked ? t("article.bookmarked") : t("article.bookmark")}
               >
                 <Bookmark className="h-3.5 w-3.5" fill={bookmarked ? "#A855F7" : "none"} />
               </button>
@@ -647,7 +651,7 @@ function ArticlePage() {
                   border: "1px solid rgba(255,255,255,0.08)",
                   color: linkCopied ? "#34D399" : "#64748B",
                 }}
-                aria-label="Share"
+                aria-label={t("article.share")}
               >
                 <Share2 className="h-3.5 w-3.5" />
               </button>
@@ -697,7 +701,7 @@ function ArticlePage() {
                 className="mb-2.5 text-[11px] font-bold tracking-[0.18em]"
                 style={{ color: "#A855F7" }}
               >
-                ABSTRACT
+                {t("article.abstract").toUpperCase()}
               </div>
               <p
                 className="text-[15px] leading-[1.8]"
@@ -721,7 +725,7 @@ function ArticlePage() {
                     paddingBottom: "0.75rem",
                   }}
                 >
-                  References
+                  {t("article.references")}
                 </h2>
 
                 {pub.rawReferences ? (
@@ -778,7 +782,7 @@ function ArticlePage() {
                 className="mb-4 text-[11px] font-bold tracking-[0.18em]"
                 style={{ color: "#64748B" }}
               >
-                ABOUT THE AUTHOR
+                {t("article.aboutAuthor").toUpperCase()}
               </div>
               <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
                 <img
@@ -798,29 +802,24 @@ function ArticlePage() {
                     className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-[12.5px]"
                     style={{ color: "#64748B" }}
                   >
-                    <span>AI Solutions Architect</span>
+                    <span>{t("article.authorTitle")}</span>
                     <span>·</span>
-                    <span>Knowledge Systems Expert</span>
+                    <span>{t("article.authorExpertise")}</span>
                     <span>·</span>
-                    <span>Vienna, Austria</span>
+                    <span>{t("article.authorLocation")}</span>
                   </div>
                   <p
                     className="mt-3 text-[14px] leading-[1.75]"
                     style={{ color: "#94A3B8" }}
                   >
-                    Dr. Ephraim Mpofu is an AI Solutions Architect and researcher
-                    specialising in enterprise AI systems, knowledge architecture,
-                    and AI governance. He holds a PhD (Dr.nat.techn.) from BOKU
-                    Vienna and consults for enterprises navigating EU AI Act
-                    compliance, RAG system design, and multi-agent workflow
-                    automation.
+                    {t("article.authorBio")}
                   </p>
                   <Link
                     to="/about"
                     className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold transition-colors"
                     style={{ color: "#A855F7" }}
                   >
-                    View Full Profile <ArrowLeft className="h-3.5 w-3.5 rotate-180" />
+                    {t("article.viewProfile")} <ArrowLeft className="h-3.5 w-3.5 rotate-180" />
                   </Link>
                 </div>
               </div>
@@ -843,7 +842,7 @@ function ArticlePage() {
                     className="mb-4 text-[10px] font-bold tracking-[0.2em]"
                     style={{ color: "#64748B" }}
                   >
-                    ON THIS PAGE
+                    {t("article.toc").toUpperCase()}
                   </div>
                   <nav className="flex flex-col gap-1">
                     {toc.map((s) => (
@@ -882,7 +881,7 @@ function ArticlePage() {
                   className="mb-4 text-[10px] font-bold tracking-[0.2em]"
                   style={{ color: "#64748B" }}
                 >
-                  TAGS
+                  {t("article.tags").toUpperCase()}
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {pub.tags.map((tag) => (
@@ -913,7 +912,7 @@ function ArticlePage() {
                   className="mb-4 text-[10px] font-bold tracking-[0.2em]"
                   style={{ color: "#64748B" }}
                 >
-                  SHARE
+                  {t("article.share").toUpperCase()}
                 </div>
                 <div className="flex flex-col gap-2">
                   <a
@@ -927,7 +926,7 @@ function ArticlePage() {
                     }}
                   >
                     <Linkedin className="h-4 w-4 shrink-0" style={{ color: "#0A66C2" }} />
-                    Share on LinkedIn
+                    {t("article.shareLinkedIn")}
                   </a>
                   <a
                     href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(articleUrl)}&text=${encodeURIComponent(pub.title)}`}
@@ -940,7 +939,7 @@ function ArticlePage() {
                     }}
                   >
                     <Twitter className="h-4 w-4 shrink-0" style={{ color: "#1DA1F2" }} />
-                    Share on Twitter
+                    {t("article.shareTwitter")}
                   </a>
                   <button
                     onClick={handleCopyLink}
@@ -953,12 +952,12 @@ function ArticlePage() {
                     {linkCopied ? (
                       <>
                         <Check className="h-4 w-4 shrink-0" />
-                        Link copied!
+                        {t("article.copied")}
                       </>
                     ) : (
                       <>
                         <Copy className="h-4 w-4 shrink-0" />
-                        Copy link
+                        {t("article.copyLink")}
                       </>
                     )}
                   </button>
@@ -978,7 +977,7 @@ function ArticlePage() {
                     className="mb-4 text-[10px] font-bold tracking-[0.2em]"
                     style={{ color: "#64748B" }}
                   >
-                    RELATED ARTICLES
+                    {t("article.relatedArticles").toUpperCase()}
                   </div>
                   <div className="flex flex-col gap-4">
                     {related.map((rel) => (
@@ -1037,7 +1036,7 @@ function ArticlePage() {
             style={{ color: "#64748B" }}
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to Insights
+            {t("article.backToInsights")}
           </Link>
         </div>
       </main>

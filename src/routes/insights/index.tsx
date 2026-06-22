@@ -1,5 +1,6 @@
-﻿import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Search,
   Calendar,
@@ -62,7 +63,6 @@ const CATEGORY_LABELS = [
   "Research Notes",
 ];
 
-// Real counts from actual published articles — hides empty categories
 const ALL_CATEGORIES = CATEGORY_LABELS
   .map((label) => ({
     label,
@@ -75,6 +75,7 @@ const PAGE_SIZE = 6;
 // ─── PublicationCard ──────────────────────────────────────────────────────────
 
 function PublicationCard({ pub }: { pub: Publication }) {
+  const { t } = useTranslation("common");
   return (
     <Link
       to="/insights/$slug"
@@ -100,7 +101,6 @@ function PublicationCard({ pub }: { pub: Publication }) {
               "linear-gradient(180deg, transparent 50%, rgba(5,8,22,0.6) 100%)",
           }}
         />
-        {/* Category badge over image */}
         <div className="absolute bottom-3 left-3">
           <span
             className="rounded-full px-2.5 py-1 text-[10px] font-bold tracking-[0.15em]"
@@ -141,7 +141,7 @@ function PublicationCard({ pub }: { pub: Publication }) {
           </span>
           <span className="flex items-center gap-1.5">
             <Clock className="h-3 w-3" />
-            {pub.readTime} min read
+            {pub.readTime} {t("insights.minRead")}
           </span>
         </div>
       </div>
@@ -152,10 +152,13 @@ function PublicationCard({ pub }: { pub: Publication }) {
 // ─── Page Component ───────────────────────────────────────────────────────────
 
 export function InsightsIndexPage() {
+  const { t } = useTranslation("common");
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const [sortOrder] = useState("Latest First");
+  const [sortOrder, setSortOrder] = useState("latest");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+
+  const footerItems = t("insights.footerItems", { returnObjects: true }) as string[];
 
   // Filter + sort
   const filtered = publications
@@ -164,16 +167,14 @@ export function InsightsIndexPage() {
         search.trim() === "" ||
         p.title.toLowerCase().includes(search.toLowerCase()) ||
         p.abstract.toLowerCase().includes(search.toLowerCase()) ||
-        p.tags.some((t) => t.toLowerCase().includes(search.toLowerCase()));
+        p.tags.some((tag) => tag.toLowerCase().includes(search.toLowerCase()));
       const matchesCategory =
         activeCategory === null || p.category === activeCategory;
       return matchesSearch && matchesCategory;
     })
     .sort((a, b) => {
-      if (sortOrder === "Latest First") {
-        return (
-          new Date(b.dateISO).getTime() - new Date(a.dateISO).getTime()
-        );
+      if (sortOrder === "latest") {
+        return new Date(b.dateISO).getTime() - new Date(a.dateISO).getTime();
       }
       return new Date(a.dateISO).getTime() - new Date(b.dateISO).getTime();
     });
@@ -210,10 +211,10 @@ export function InsightsIndexPage() {
                 color: "#C4B5FD",
               }}
             >
-              INSIGHTS &amp; PUBLICATIONS
+              {t("insights.badge")}
             </span>
             <h1 className="mt-6 text-[52px] font-bold leading-[1.05] tracking-[-0.02em] lg:text-[64px]">
-              Insights &amp;{" "}
+              {t("insights.heroTitle1")}{" "}
               <span
                 style={{
                   background:
@@ -222,16 +223,14 @@ export function InsightsIndexPage() {
                   WebkitTextFillColor: "transparent",
                 }}
               >
-                Publications
+                {t("insights.heroTitle2")}
               </span>
             </h1>
             <p
               className="mt-5 text-[16px] leading-[1.75]"
               style={{ color: "#94A3B8" }}
             >
-              Research-driven insights on enterprise AI architecture, EU AI Act
-              compliance, knowledge systems design, and the practical realities
-              of building AI systems that work in production.
+              {t("insights.heroDesc")}
             </p>
           </div>
         </div>
@@ -251,7 +250,7 @@ export function InsightsIndexPage() {
                 />
                 <input
                   type="text"
-                  placeholder="Search articles..."
+                  placeholder={t("insights.searchPlaceholder")}
                   value={search}
                   onChange={(e) => {
                     setSearch(e.target.value);
@@ -275,10 +274,11 @@ export function InsightsIndexPage() {
                     border: "1px solid rgba(255,255,255,0.08)",
                     color: "#94A3B8",
                   }}
-                  defaultValue="Latest First"
+                  value={sortOrder}
+                  onChange={(e) => setSortOrder(e.target.value)}
                 >
-                  <option>Latest First</option>
-                  <option>Oldest First</option>
+                  <option value="latest">{t("insights.sortLatest")}</option>
+                  <option value="oldest">{t("insights.sortOldest")}</option>
                 </select>
                 <ChevronDown
                   className="pointer-events-none absolute right-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2"
@@ -292,7 +292,7 @@ export function InsightsIndexPage() {
                   className="mb-3 text-[10px] font-bold tracking-[0.22em]"
                   style={{ color: "#64748B" }}
                 >
-                  CATEGORIES
+                  {t("insights.categoriesLabel")}
                 </div>
                 <div className="flex flex-col gap-1">
                   <button
@@ -310,7 +310,7 @@ export function InsightsIndexPage() {
                         : { color: "#94A3B8" }
                     }
                   >
-                    <span>All Articles</span>
+                    <span>{t("insights.allArticles")}</span>
                     <span
                       className="rounded-full px-1.5 py-0.5 text-[10px] font-semibold"
                       style={{
@@ -361,7 +361,7 @@ export function InsightsIndexPage() {
                   className="mb-3 text-[10px] font-bold tracking-[0.22em]"
                   style={{ color: "#64748B" }}
                 >
-                  FEATURED PUBLICATION
+                  {t("insights.featuredLabel")}
                 </div>
                 <Link
                   to="/insights/$slug"
@@ -398,7 +398,7 @@ export function InsightsIndexPage() {
                       style={{ color: "#64748B" }}
                     >
                       <Clock className="h-3 w-3" />
-                      {featuredPub.readTime} min read
+                      {featuredPub.readTime} {t("insights.minRead")}
                     </div>
                   </div>
                 </Link>
@@ -416,7 +416,7 @@ export function InsightsIndexPage() {
                   className="mb-3 text-[10px] font-bold tracking-[0.22em]"
                   style={{ color: "#64748B" }}
                 >
-                  ABOUT THE AUTHOR
+                  {t("insights.authorLabel")}
                 </div>
                 <div className="flex items-center gap-3">
                   <img
@@ -436,7 +436,7 @@ export function InsightsIndexPage() {
                       className="text-[11px]"
                       style={{ color: "#64748B" }}
                     >
-                      AI Solutions Architect
+                      {t("insights.authorRole")}
                     </div>
                   </div>
                 </div>
@@ -444,16 +444,14 @@ export function InsightsIndexPage() {
                   className="mt-3 text-[12px] leading-[1.6]"
                   style={{ color: "#94A3B8" }}
                 >
-                  Building enterprise AI systems at the intersection of
-                  governance, knowledge architecture, and agentic design.
-                  Vienna, Austria.
+                  {t("insights.authorBio")}
                 </p>
                 <Link
                   to="/about"
                   className="mt-3 inline-flex items-center gap-1 text-[12px] font-medium transition-colors"
                   style={{ color: "#A855F7" }}
                 >
-                  View Full Profile <ArrowRight className="h-3 w-3" />
+                  {t("insights.viewFullProfile")} <ArrowRight className="h-3 w-3" />
                 </Link>
               </div>
             </div>
@@ -468,11 +466,11 @@ export function InsightsIndexPage() {
                   className="text-[22px] font-bold tracking-[-0.01em]"
                   style={{ color: "#F1F5F9" }}
                 >
-                  {activeCategory ?? "All Articles"}
+                  {activeCategory ?? t("insights.allArticles")}
                 </h2>
                 <p className="mt-0.5 text-[13px]" style={{ color: "#64748B" }}>
-                  {filtered.length} article{filtered.length !== 1 ? "s" : ""}
-                  {search.trim() ? ` matching "${search}"` : ""}
+                  {filtered.length} {filtered.length !== 1 ? t("insights.allArticles").toLowerCase() : t("insights.allArticles").toLowerCase().replace(/e?s$/, "")}
+                  {search.trim() ? ` ${t("insights.matching")} "${search}"` : ""}
                 </p>
               </div>
             </div>
@@ -501,7 +499,7 @@ export function InsightsIndexPage() {
                     className="mt-3 text-[14px]"
                     style={{ color: "#64748B" }}
                   >
-                    No articles found
+                    {t("insights.noArticles")}
                     {search.trim() ? ` for "${search}"` : ""}.
                   </p>
                   <button
@@ -512,7 +510,7 @@ export function InsightsIndexPage() {
                     className="mt-3 text-[13px]"
                     style={{ color: "#A855F7" }}
                   >
-                    Clear filters
+                    {t("insights.clearFilters")}
                   </button>
                 </div>
               </div>
@@ -529,7 +527,7 @@ export function InsightsIndexPage() {
                     border: "1px solid rgba(139,92,246,0.4)",
                   }}
                 >
-                  Load More Publications{" "}
+                  {t("insights.loadMore")}{" "}
                   <ArrowRight className="h-4 w-4" />
                 </button>
               </div>
@@ -548,12 +546,7 @@ export function InsightsIndexPage() {
             className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-[12px] font-medium tracking-[0.08em]"
             style={{ color: "#475569" }}
           >
-            {[
-              "Research Driven",
-              "Practical Focus",
-              "Continuous Updates",
-              "Open Knowledge",
-            ].map((item, i) => (
+            {footerItems.map((item, i) => (
               <span key={item} className="flex items-center gap-8">
                 {i > 0 && (
                   <span

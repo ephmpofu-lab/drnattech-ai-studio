@@ -1,5 +1,6 @@
 ﻿import type React from "react";
 import { useState, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
 import { createFileRoute, Link } from "@tanstack/react-router";
@@ -346,23 +347,7 @@ export function AboutPage() {
    1. HERO
    ============================================================ */
 
-const credentials = [
-  {
-    glyph: "boku",
-    title: "PhD (Dr.nat.techn.) — BOKU University Vienna",
-    sub: "Scientific rigour applied to enterprise AI system design",
-  },
-  {
-    glyph: "ai",
-    title: "Enterprise AI Systems Architect",
-    sub: "Building since January 2026 · DACH & EU",
-  },
-  {
-    glyph: "google",
-    title: "Google Analytics · Azure AI · NEBOSH Certified",
-    sub: "Data & quantitative research practice since 2016",
-  },
-];
+const CREDENTIAL_GLYPHS = ["boku", "ai", "google"];
 
 function CredentialGlyph({ g }: { g: string }) {
   const box = "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg";
@@ -408,6 +393,10 @@ function CredentialGlyph({ g }: { g: string }) {
 }
 
 function Hero() {
+  const { t, i18n } = useTranslation("common");
+  const agentHref = i18n.language === "de" ? "/de/ai-agent" : "/ai-agent";
+  const credentialText = t("about.credentials", { returnObjects: true }) as Array<{ title: string; sub: string }>;
+  const credentials = CREDENTIAL_GLYPHS.map((glyph, i) => ({ glyph, ...credentialText[i] }));
   return (
     <section
       className="grid grid-cols-1 gap-6 pt-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10 lg:pt-12"
@@ -424,7 +413,7 @@ function Hero() {
               color: "#C4B5FD",
             }}
           >
-            About Me
+            {t("about.heroBadge")}
           </span>
           <span
             className="inline-flex w-fit items-center rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em]"
@@ -434,46 +423,36 @@ function Hero() {
               color: "#A855F7",
             }}
           >
-            KI-Architekt · Wien
+            {t("about.heroBadge2")}
           </span>
         </div>
 
         <h1 className="mt-5 text-[38px] font-bold leading-[1.06] tracking-tight text-white lg:text-[48px]">
-          The Mind Behind Production{" "}
-          <span className="text-gradient-brand">AI Systems</span>
+          {t("about.heroTitle1")}{" "}
+          <span className="text-gradient-brand">{t("about.heroTitle2")}</span>
         </h1>
 
         <p className="mt-5 text-[15px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-          I combine scientific rigour with engineering mindset to design
-          enterprise AI systems — multi-agent architectures, RAG knowledge
-          platforms and EU AI Act-compliant governance — that solve real
-          business problems and scale reliably in production.
+          {t("about.heroDesc1")}
         </p>
         <p className="mt-4 text-[14.5px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-          After four years of doctoral research at BOKU University Vienna's Transitions
-          to Sustainability doctoral school — including a multi-country landscape
-          governance initiative across Southern Africa delivered for the World Bank IBRD,
-          peer-reviewed publications and university teaching — I transitioned into
-          enterprise AI systems architecture in January 2026. The governance, systems
-          and data rigour built through that research now underpin how I design AI
-          systems: auditable, regulation-ready and built to last in production.
-          I consult and deliver in <strong style={{ color: "#fff" }}>English</strong> and <strong style={{ color: "#fff" }}>Deutsch</strong>.
+          {t("about.heroDesc2")} <strong style={{ color: "#fff" }}>{t("about.heroLangEn")}</strong> and <strong style={{ color: "#fff" }}>{t("about.heroLangDe")}</strong>.
         </p>
 
         <div className="mt-8 flex flex-wrap gap-3">
           <Link
-            to="/ai-agent"
+            to={agentHref}
             className="inline-flex items-center gap-2 rounded-[10px] px-5 py-3 text-[13.5px] font-semibold text-white shadow-lg transition-all hover:scale-[1.03]"
             style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
           >
-            <Bot className="h-4 w-4" /> Ask My AI Agent
+            <Bot className="h-4 w-4" /> {t("about.askAgent")}
           </Link>
           <Link
             to="/portfolio"
             className="inline-flex items-center gap-2 rounded-[10px] px-5 py-3 text-[13.5px] font-semibold text-white transition-all hover:bg-white/5"
             style={{ border: "1px solid rgba(255,255,255,0.14)" }}
           >
-            View Portfolio
+            {t("about.viewPortfolio")}
           </Link>
         </div>
 
@@ -513,15 +492,12 @@ function Hero() {
    2. AUTHORITY METRICS
    ============================================================ */
 
-const metrics = [
-  { icon: Puzzle,      value: "12+",    a: "AI Systems",    b: "Delivered"     },
-  { icon: Clock,       value: "3,500+", a: "Hours",         b: "Automated"     },
-  { icon: TrendingUp,  value: "70%+",   a: "Process Time",  b: "Reduction"     },
-  { icon: ShieldCheck, value: "100%",   a: "Production",    b: "Focus"         },
-  { icon: Layers,      value: "5",      a: "Proprietary",   b: "Frameworks"    },
-];
+const METRIC_ICONS = [Puzzle, Clock, TrendingUp, ShieldCheck, Layers];
 
 function AuthorityMetrics() {
+  const { t } = useTranslation("common");
+  const metricText = t("about.metrics", { returnObjects: true }) as Array<{ value: string; a: string; b: string }>;
+  const metrics = METRIC_ICONS.map((icon, i) => ({ icon, ...metricText[i] }));
   const ref = useScrollReveal<HTMLElement>(0);
   return (
     <section ref={ref} className="mt-5" aria-label="Impact metrics">
@@ -643,40 +619,7 @@ function KnowledgeArchVisual() {
   );
 }
 
-const methodologyCards = [
-  {
-    title: "SKAIDO FRAMEWORK",
-    Visual: SkaidoVisual,
-    desc: "A six-phase AI implementation methodology — Scope, Knowledge, Architecture, Implementation, Deployment, Optimisation — for taking enterprises from business problem to production AI with EU AI Act compliance embedded at every stage.",
-    hoverDetail: "Six-phase implementation: Scope → Knowledge → Architecture → Implementation → Deployment → Optimisation",
-    cta: "Explore Framework",
-    link: "/frameworks" as const,
-  },
-  {
-    title: "THREE STRUCTURAL LAWS",
-    Visual: ThreeLawsVisual,
-    desc: "Three foundational architectural laws that prevent fraud, unmaintainable systems and silent failure in enterprise AI: No-Fraud Architecture, Structural Integrity and Continuous Observability.",
-    hoverDetail: "No-Fraud Architecture · Structural Integrity · Continuous Observability",
-    cta: "View Principles",
-    link: "/frameworks" as const,
-  },
-  {
-    title: "FOUR WORKFLOW LAYERS",
-    Visual: WorkflowLayersVisual,
-    desc: "A layered automation architecture — Input, Processing, Output and Governance layers — providing a scalable, auditable structure for enterprise AI workflows and intelligent process automation.",
-    hoverDetail: "Strategic engagement model: moving organisations from AI ambiguity to governed, deployed AI systems",
-    cta: "See Layers",
-    link: "/frameworks" as const,
-  },
-  {
-    title: "KNOWLEDGE ARCHITECTURE",
-    Visual: KnowledgeArchVisual,
-    desc: "A proprietary approach to enterprise knowledge design, semantic retrieval governance and RAG system architecture — enabling accurate, hallucination-free AI knowledge platforms at scale.",
-    hoverDetail: "Semantic retrieval governance for enterprise RAG — preventing hallucination through structure",
-    cta: "Learn More",
-    link: "/frameworks" as const,
-  },
-];
+const METHODOLOGY_VISUALS = [SkaidoVisual, ThreeLawsVisual, WorkflowLayersVisual, KnowledgeArchVisual];
 
 function MethodologyCard({
   title,
@@ -736,16 +679,22 @@ function MethodologyCard({
 }
 
 function MyMethodology() {
+  const { t } = useTranslation("common");
+  const methodText = t("about.methodologyCards", { returnObjects: true }) as Array<{
+    title: string; desc: string; hoverDetail: string; cta: string;
+  }>;
+  const methodologyCards = METHODOLOGY_VISUALS.map((Visual, i) => ({
+    Visual, link: "/frameworks" as const, ...methodText[i],
+  }));
   const ref = useScrollReveal<HTMLElement>(150);
   return (
     <section ref={ref} className="mt-14 lg:mt-16" aria-label="Methodology and proprietary frameworks">
       <div className="mb-8 text-center">
         <h2 className="text-[28px] font-bold text-white lg:text-[34px]">
-          My Methodology
+          {t("about.methodologyTitle")}
         </h2>
         <p className="mx-auto mt-2 max-w-xl text-[14px]" style={{ color: "#9CA3AF" }}>
-          Five proprietary frameworks developed through scientific research and enterprise AI
-          practice — the structured foundation of every system I design.
+          {t("about.methodologyDesc")}
         </p>
       </div>
 
@@ -898,17 +847,16 @@ function TechPill({ item }: { item: (typeof techItems)[number] }) {
 }
 
 function TechnologiesSection() {
+  const { t } = useTranslation("common");
   return (
     <section className="mt-5" aria-label="Technologies and platforms">
       <div className="glass-card px-6 py-7">
         <div className="mb-6 text-center">
           <h2 className="text-[22px] font-bold text-white lg:text-[26px]">
-            Technologies I Work With
+            {t("about.techTitle")}
           </h2>
           <p className="mx-auto mt-1.5 max-w-xl text-[13.5px]" style={{ color: "#9CA3AF" }}>
-            The enterprise AI and KI stack I use to design, build and deliver intelligent
-            systems — all selected for production reliability, GDPR alignment and EU AI
-            Act auditability.
+            {t("about.techDesc")}
           </p>
         </div>
         <div className="flex flex-wrap justify-center gap-2.5">
@@ -925,35 +873,12 @@ function TechnologiesSection() {
    5. MY JOURNEY — horizontal connected timeline
    ============================================================ */
 
-const journeySteps = [
-  {
-    Icon: BookOpen,
-    title: "Research & Doctoral Study",
-    desc: "PhD (Dr.nat.techn.) at BOKU University Vienna (2021–2025) within the Transitions to Sustainability doctoral school. Prior: MSc Sustainable Urban Planning (UJ), BSc Environmental Science (NUST Zimbabwe), exchange at Beijing Normal University, China.",
-  },
-  {
-    Icon: Globe,
-    title: "Multi-Continent Experience",
-    desc: "Worked across Africa (Zimbabwe, South Africa), Asia (China) and Europe (Austria). Partners and clients include the World Bank IBRD, Huawei Technologies, BOKU University and the University of Johannesburg.",
-  },
-  {
-    Icon: Brain,
-    title: "Governance & Data",
-    desc: "Four years leading a multi-country landscape governance initiative across Southern Africa. EU research network member (FOGOS COST Action). Data analysis practice in research settings since 2016. Active Sustainable AI orientation: governance, auditability and regulation are not afterthoughts.",
-  },
-  {
-    Icon: Zap,
-    title: "AI & Automation",
-    desc: "January 2026 — formal transition into enterprise AI systems architecture, multi-agent workflows, RAG platforms and intelligent process automation. Google Analytics certified · Azure AI certified.",
-  },
-  {
-    Icon: Boxes,
-    title: "Building & Delivering",
-    desc: "Since January 2026 — designed and delivered 12+ production AI systems across insurance, HR technology, knowledge management and enterprise automation for DACH and EU organisations.",
-  },
-];
+const JOURNEY_ICONS = [BookOpen, Globe, Brain, Zap, Boxes];
 
 function MyJourney() {
+  const { t } = useTranslation("common");
+  const journeyText = t("about.journeySteps", { returnObjects: true }) as Array<{ title: string; desc: string }>;
+  const journeySteps = JOURNEY_ICONS.map((Icon, i) => ({ Icon, ...journeyText[i] }));
   const [inView, setInView] = useState(false);
   const ref = useRef<HTMLElement>(null);
 
@@ -971,10 +896,9 @@ function MyJourney() {
   return (
     <section ref={ref} className="mt-14 lg:mt-16" aria-label="Professional journey">
       <div className="mb-10 text-center">
-        <h2 className="text-[28px] font-bold text-white lg:text-[34px]">My Journey</h2>
+        <h2 className="text-[28px] font-bold text-white lg:text-[34px]">{t("about.journeyTitle")}</h2>
         <p className="mx-auto mt-2 max-w-xl text-[14px]" style={{ color: "#9CA3AF" }}>
-          From scientific research to enterprise AI systems architecture — a path built
-          on rigour, systems thinking and measurable impact.
+          {t("about.journeyDesc")}
         </p>
       </div>
 
@@ -1080,16 +1004,17 @@ const mapLocations = [
 ];
 
 function WorldMap() {
+  const { t } = useTranslation("common");
   const [active, setActive] = useState<(typeof mapLocations)[number] | null>(null);
 
   return (
     <div className="glass-card overflow-hidden">
       <div className="px-6 pt-5 pb-2">
         <div className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: "#8B8B9A" }}>
-          Where I've Worked &amp; Studied
+          {t("about.mapTitle")}
         </div>
         <p className="mt-0.5 text-[12px]" style={{ color: "#6B7280" }}>
-          Select a pin to learn more
+          {t("about.mapSub")}
         </p>
       </div>
 
@@ -1168,7 +1093,7 @@ function WorldMap() {
               onClick={() => setActive(null)}
               className="shrink-0 text-[18px] leading-none"
               style={{ color: "#6B7280" }}
-              aria-label="Close"
+              aria-label={t("about.mapClose")}
             >
               ×
             </button>
@@ -1187,10 +1112,11 @@ const educationTimeline = [
 ];
 
 function EducationTimeline() {
+  const { t } = useTranslation("common");
   return (
     <div className="glass-card p-6 flex-1">
       <div className="text-[10px] font-bold uppercase tracking-[0.22em] mb-5" style={{ color: "#8B8B9A" }}>
-        Academic Timeline
+        {t("about.educationTitle")}
       </div>
       <div className="relative pl-5">
         {/* Gradient spine */}
@@ -1280,10 +1206,11 @@ const verifyLinks = [
 ];
 
 function Certifications() {
+  const { t } = useTranslation("common");
   return (
     <div className="glass-card p-6">
       <div className="text-[10px] font-bold uppercase tracking-[0.22em] mb-5" style={{ color: "#8B8B9A" }}>
-        Certifications
+        {t("about.certsTitle")}
       </div>
       <div className="space-y-3">
         {certifications.map(({ Logo, name, detail, accent, link }) => (
@@ -1309,7 +1236,7 @@ function Certifications() {
       {/* Affiliations strip */}
       <div className="mt-5 border-t pt-4" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
         <div className="text-[10px] font-bold uppercase tracking-[0.18em] mb-2.5" style={{ color: "#8B8B9A" }}>
-          Verify &amp; Connect
+          {t("about.verifyTitle")}
         </div>
         <div className="flex flex-wrap gap-2">
           {verifyLinks.map((v) => (
@@ -1355,44 +1282,15 @@ function BackgroundSection() {
    6. ARCHITECTURAL PRINCIPLES + CORE EXPERTISE
    ============================================================ */
 
-const principles = [
-  {
-    Icon: Target,
-    title: "Rigour",
-    desc: "PhD-level scientific methodology applied to every system design and architectural decision.",
-  },
-  {
-    Icon: Eye,
-    title: "Auditability",
-    desc: "Every decision is traceable, measurable and explainable — EU AI Act and GDPR compliant by design.",
-  },
-  {
-    Icon: ShieldCheck,
-    title: "Production-First",
-    desc: "Built for enterprise scale, security, reliability and real-world deployment from day one.",
-  },
-  {
-    Icon: Layers,
-    title: "Simplicity",
-    desc: "Simple, maintainable systems are reliable systems. Complexity is an engineering failure.",
-  },
-  {
-    Icon: TrendingUp,
-    title: "Business Impact",
-    desc: "Every AI system must deliver measurable, verifiable business outcomes — not just technical results.",
-  },
-];
-
-const expertiseItems = [
-  { Icon: Layers2,    title: "AI Systems",         sub: "Architecture"          },
-  { Icon: BookOpen,   title: "Knowledge",          sub: "Architecture & RAG"    },
-  { Icon: LayoutGrid, title: "Data Architecture",  sub: "& Engineering"         },
-  { Icon: Network,    title: "Workflow Automation", sub: "& Orchestration"      },
-  { Icon: Search,     title: "Retrieval & RAG",    sub: "Systems"               },
-  { Icon: Settings2,  title: "AI Strategy &",      sub: "EU AI Act Advisory"    },
-];
+const PRINCIPLE_ICONS = [Target, Eye, ShieldCheck, Layers, TrendingUp];
+const EXPERTISE_ICONS = [Layers2, BookOpen, LayoutGrid, Network, Search, Settings2];
 
 function PrinciplesAndExpertise() {
+  const { t } = useTranslation("common");
+  const principleText = t("about.principles", { returnObjects: true }) as Array<{ title: string; desc: string }>;
+  const principles = PRINCIPLE_ICONS.map((Icon, i) => ({ Icon, ...principleText[i] }));
+  const expertiseText = t("about.expertise", { returnObjects: true }) as Array<{ title: string; sub: string }>;
+  const expertiseItems = EXPERTISE_ICONS.map((Icon, i) => ({ Icon, ...expertiseText[i] }));
   const ref = useScrollReveal<HTMLElement>(200);
   return (
     <section ref={ref} className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-2" aria-label="Principles and expertise">
@@ -1400,10 +1298,10 @@ function PrinciplesAndExpertise() {
       {/* LEFT — Principles */}
       <div className="glass-card p-6 lg:p-8">
         <div className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: "#8B8B9A" }}>
-          My Architectural Principles
+          {t("about.principlesLabel")}
         </div>
         <h3 className="mt-1.5 text-[18px] font-bold text-white">
-          These principles guide every enterprise AI system I design.
+          {t("about.principlesTitle")}
         </h3>
 
         {/* Horizontal row on lg */}
@@ -1459,10 +1357,10 @@ function PrinciplesAndExpertise() {
       {/* RIGHT — Core Expertise */}
       <div className="glass-card p-6 lg:p-8">
         <div className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: "#8B8B9A" }}>
-          Core Expertise
+          {t("about.expertiseLabel")}
         </div>
         <h3 className="mt-1.5 text-[18px] font-bold text-white">
-          End-to-end capabilities across the enterprise AI and KI stack.
+          {t("about.expertiseTitle")}
         </h3>
 
         <div className="mt-6 grid grid-cols-3 gap-5">
@@ -1492,23 +1390,24 @@ function PrinciplesAndExpertise() {
    ============================================================ */
 
 function AboutFaqSection() {
+  const { t } = useTranslation("common");
+  const faqItems = t("about.faq", { returnObjects: true }) as Array<{ q: string; a: string }>;
   return (
     <section className="mt-14 lg:mt-16" aria-label="Frequently asked questions">
       <div className="mb-8">
         <div className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: "#8B8B9A" }}>
-          Common Questions
+          {t("about.faqLabel")}
         </div>
         <h2 className="mt-2.5 text-[28px] font-bold leading-tight text-white lg:text-[34px]">
-          Questions About My Background &amp; Approach
+          {t("about.faqTitle")}
         </h2>
         <p className="mt-2 text-[14px]" style={{ color: "#9CA3AF" }}>
-          Questions about credentials, AI building experience, EU AI Act compliance and
-          working with a KI-Architekt in Vienna.
+          {t("about.faqDesc")}
         </p>
       </div>
 
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-        {aboutFaq.map((item) => (
+        {faqItems.map((item) => (
           <details
             key={item.q}
             className="group rounded-[14px] p-5"
@@ -1542,6 +1441,8 @@ function AboutFaqSection() {
    ============================================================ */
 
 function CTA() {
+  const { t, i18n } = useTranslation("common");
+  const agentHref = i18n.language === "de" ? "/de/ai-agent" : "/ai-agent";
   return (
     <section className="mt-5 mb-5" aria-label="Contact call to action">
       <div
@@ -1563,29 +1464,27 @@ function CTA() {
 
         <div>
           <h2 className="text-[22px] font-bold leading-tight text-white lg:text-[26px]">
-            Ready to Build Enterprise AI Systems That Deliver Real Impact?
+            {t("about.ctaTitle")}
           </h2>
           <p className="mt-1.5 text-[13.5px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-            Enterprise AI architecture, EU AI Act compliance, RAG knowledge platforms,
-            multi-agent systems and intelligent automation — from Vienna, Austria, for the
-            DACH region and EU. Ask my AI agent or book a strategy call.
+            {t("about.ctaDesc")}
           </p>
         </div>
 
         <div className="flex flex-col gap-3 lg:items-end">
           <Link
-            to="/ai-agent"
+            to={agentHref}
             className="inline-flex items-center gap-2 rounded-[10px] px-6 py-3 text-[13.5px] font-semibold text-white transition-all hover:scale-[1.02] whitespace-nowrap"
             style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
           >
-            <Bot className="h-4 w-4" /> Ask My AI Agent
+            <Bot className="h-4 w-4" /> {t("about.ctaAskAgent")}
           </Link>
           <Link
             to="/portfolio"
             className="inline-flex items-center gap-2 rounded-[10px] px-6 py-3 text-[13.5px] font-semibold text-white transition-all hover:bg-white/5 whitespace-nowrap"
             style={{ border: "1px solid rgba(255,255,255,0.15)" }}
           >
-            View Portfolio <ArrowRight className="h-4 w-4" />
+            {t("about.ctaViewPortfolio")} <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </div>
