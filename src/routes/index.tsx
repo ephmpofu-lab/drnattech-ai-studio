@@ -361,19 +361,14 @@ function TypedText() {
   );
 }
 
-const CAPABILITY_ICONS = [Cpu, Database, ShieldCheck];
-
 function Hero() {
   const { t } = useTranslation("common");
-  const caps = t("home.capabilities", { returnObjects: true }) as Array<{ title: string; desc: string }>;
-  const capabilities = CAPABILITY_ICONS.map((Icon, i) => ({ Icon, ...caps[i] }));
   return (
     <section
-      className="grid grid-cols-1 gap-5 pt-10 lg:grid-cols-[2fr_1.5fr] lg:gap-6 lg:pt-14"
+      className="pt-10 lg:pt-14"
       aria-label="Dr. Ephraim Mpofu — AI Solutions Architect Vienna"
     >
-      {/* LEFT — value proposition */}
-      <div className="flex flex-col justify-center">
+      <div className="flex flex-col max-w-2xl">
         <span
           className="inline-flex w-fit items-center gap-2 rounded-full px-3.5 py-1.5 text-[10.5px] font-semibold uppercase tracking-[0.2em]"
           style={{
@@ -437,43 +432,6 @@ function Hero() {
             KI-Architekt
           </span>
         </div>
-      </div>
-
-      {/* RIGHT — 3 capability cards */}
-      <div className="flex flex-col justify-center gap-3">
-        {capabilities.map(({ Icon, title, desc }) => (
-          <div
-            key={title}
-            className="flex items-start gap-3 rounded-[14px] p-4"
-            style={{
-              background: "#F2F0EA",
-              border: "1px solid #E3E1DA",
-            }}
-          >
-            <div
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px]"
-              style={{
-                background: "#E9EFF4",
-                border: "1px solid #D7D4CC",
-              }}
-            >
-              <Icon className="h-4 w-4" style={{ color: "#34506E" }} />
-            </div>
-            <div>
-              <div className="text-[13px] font-medium" style={{ color: "#1F2125" }}>{title}</div>
-              <div className="mt-0.5 text-[11px] leading-snug" style={{ color: "#5A5D63" }}>
-                {desc}
-              </div>
-            </div>
-          </div>
-        ))}
-        <Link
-          to="/contact"
-          className="mt-1 inline-flex items-center gap-1.5 text-[12px] font-semibold"
-          style={{ color: "#34506E" }}
-        >
-          {t("home.letsBuild")} <ArrowRight className="h-3 w-3" />
-        </Link>
       </div>
     </section>
   );
