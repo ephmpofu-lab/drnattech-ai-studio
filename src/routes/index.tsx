@@ -263,22 +263,13 @@ function HomeStructuredData() {
       },
       {
         "@type": "CreativeWork",
-        name: "SKAIDO Framework",
-        alternateName: "SKAIDO AI Implementation Methodology",
+        name: "AISA — AI Solutions Architecture",
+        alternateName: "AI Solutions Architecture Methodology",
         description:
-          "The SKAIDO Framework is a six-phase AI implementation methodology developed by Dr. Ephraim Mpofu to systematically take enterprises from business problem definition to deployed, production-ready AI solution.",
+          "AISA is Dr. Ephraim Mpofu's proprietary 6-phase AI implementation methodology — problem definition, potential analysis, make-or-buy assessment, governance integration, deployment and evaluation — grounded in software engineering principles and governance science developed through doctoral research.",
         author: { "@id": "https://drnattech.com/#person" },
         url: "https://drnattech.com/frameworks",
         about: { "@type": "Thing", name: "Enterprise AI Implementation Methodology" },
-      },
-      {
-        "@type": "CreativeWork",
-        name: "AISA Framework",
-        alternateName: "AI Systems Architecture Strategic Engagement Framework",
-        description:
-          "The AISA Framework is Dr. Ephraim Mpofu's proprietary strategic engagement model for enterprise AI — structuring how organisations move from AI ambiguity to deployed, governed AI systems with measurable business outcomes.",
-        author: { "@id": "https://drnattech.com/#person" },
-        url: "https://drnattech.com/frameworks",
       },
     ],
   };

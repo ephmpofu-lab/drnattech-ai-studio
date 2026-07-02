@@ -8,20 +8,20 @@ export const Route = createFileRoute("/frameworks")({
     meta: [
       {
         title:
-          "KI-Frameworks | SKAIDO, AISA, Wissensarchitektur | KI-Implementierung Wien — Dr. Ephraim Mpofu",
+          "AI Frameworks | AISA (AI Solutions Architecture), Three Structural Laws | KI-Implementierung Wien — Dr. Ephraim Mpofu",
       },
       {
         name: "description",
         content:
-          "Proprietary enterprise AI frameworks by Dr. Ephraim Mpofu, KI-Architekt Vienna: SKAIDO (six-phase AI implementation methodology), AISA (strategic AI engagement framework), Three Structural Laws (architectural principles preventing AI failure) and Knowledge Architecture (enterprise RAG system design). Structured AI implementation methodology for DACH and EU organisations.",
+          "Proprietary enterprise AI frameworks by Dr. Ephraim Mpofu, KI-Architekt Vienna: AISA — AI Solutions Architecture (6-phase implementation methodology), Three Structural Laws (architectural principles preventing AI failure) and Knowledge Architecture (enterprise RAG system design). Structured AI implementation methodology for DACH and EU organisations.",
       },
       {
         name: "keywords",
         content:
-          "SKAIDO Framework, AISA Framework, Three Structural Laws, Knowledge Architecture, AI implementation methodology, KI-Frameworks Wien, enterprise AI methodology, RAG system design, EU AI Act framework, KI-Implementierung Österreich",
+          "AISA Framework, AI Solutions Architecture, Three Structural Laws, Knowledge Architecture, AI implementation methodology, KI-Frameworks Wien, enterprise AI methodology, RAG system design, EU AI Act framework, KI-Implementierung Österreich",
       },
-      { property: "og:title", content: "SKAIDO, AISA & Knowledge Architecture | Proprietary AI Frameworks | Dr. Ephraim Mpofu Vienna" },
-      { property: "og:description", content: "Five proprietary enterprise AI frameworks by Dr. Ephraim Mpofu — SKAIDO, AISA, Three Structural Laws, Four Workflow Layers and Knowledge Architecture." },
+      { property: "og:title", content: "AISA — AI Solutions Architecture & Proprietary AI Frameworks | Dr. Ephraim Mpofu Vienna" },
+      { property: "og:description", content: "Four proprietary enterprise AI frameworks by Dr. Ephraim Mpofu — AISA (AI Solutions Architecture), Three Structural Laws, Four Workflow Layers and Knowledge Architecture." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://drnattech.com/frameworks" },
       { property: "og:image", content: "https://drnattech.com/images/Dr_Mpofu_purple-removebg-preview.png" },
@@ -65,17 +65,10 @@ function FrameworksStructuredData() {
 export function FrameworksPage() {
   const frameworks = [
     {
-      title: "AISA Framework",
+      title: "AISA — AI Solutions Architecture",
       description:
-        "Strategic AI Engagement Framework for translating business problems into scalable AI architectures and production systems.",
+        "A proprietary 6-phase AI implementation methodology: problem definition, potential analysis, make-or-buy assessment, governance integration, deployment and evaluation. Grounded in software engineering principles and governance science developed through doctoral research — giving organisations a repeatable, auditable path from AI strategy to production system with compliance built in from phase one.",
       link: "/aisa",
-      available: true,
-    },
-    {
-      title: "SKAIDO Framework",
-      description:
-        "Enterprise AI implementation framework for moving from strategy to measurable business outcomes.",
-      link: "/frameworks-skaido",
       available: true,
     },
     {

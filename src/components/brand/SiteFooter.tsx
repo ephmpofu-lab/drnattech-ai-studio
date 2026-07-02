@@ -21,8 +21,8 @@ export function SiteFooter() {
   ] as const;
 
   const frameworks = [
-    { labelKey: "AISA Framework", to: `${prefix}/frameworks` },
-    { labelKey: "SKAIDO Framework", to: `${prefix}/frameworks` },
+    { labelKey: "AISA — AI Solutions Architecture", to: `${prefix}/frameworks` },
+    { labelKey: "Three Structural Laws", to: `${prefix}/frameworks` },
     { labelKey: "Knowledge Architecture", to: `${prefix}/frameworks` },
     { labelKey: "Four Workflow Layers", to: `${prefix}/frameworks` },
   ] as const;
