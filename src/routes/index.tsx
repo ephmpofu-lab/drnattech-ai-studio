@@ -308,7 +308,6 @@ export function Home() {
         <Hero />
         <TrustBar />
         <FeaturedCaseStudy />
-        <WhatIBuild />
         <EuAiActStrip />
         <FrameworksSection />
         <HomeFaqSection />
@@ -562,62 +561,7 @@ function EuAiActStrip() {
 }
 
 /* ============================================================
-   3. WHAT I BUILD
-   ============================================================ */
-
-const BUILD_ICONS = [Cpu, Database, ShieldCheck];
-const BUILD_LINKS = ["/portfolio", "/frameworks", "/frameworks"] as const;
-
-function WhatIBuild() {
-  const { t } = useTranslation("common");
-  const buildText = t("home.buildItems", { returnObjects: true }) as Array<{ title: string; desc: string; link: string }>;
-  const buildItems = BUILD_ICONS.map((Icon, i) => ({ Icon, to: BUILD_LINKS[i], ...buildText[i] }));
-  return (
-    <section className="mt-14 lg:mt-16" aria-label="Services">
-      <div className="mb-8">
-        <div
-          className="text-[10px] font-semibold uppercase tracking-[0.22em]"
-          style={{ color: "#8A8D93" }}
-        >
-          {t("home.buildLabel")}
-        </div>
-        <h2 className="mt-2.5 text-[28px] font-medium leading-tight lg:text-[34px]" style={{ color: "#1F2125" }}>
-          {t("home.buildTitle")}
-        </h2>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-        {buildItems.map(({ Icon, title, desc, to, link: linkLabel }) => (
-          <div key={title} className="glass-card flex flex-col p-5">
-            <div
-              className="flex h-10 w-10 items-center justify-center rounded-xl"
-              style={{
-                background: "#E9EFF4",
-                border: "1px solid #D7D4CC",
-              }}
-            >
-              <Icon className="h-5 w-5" style={{ color: "#34506E" }} />
-            </div>
-            <h3 className="mt-4 text-[18px] font-medium" style={{ color: "#1F2125" }}>{title}</h3>
-            <p className="mt-2.5 flex-1 text-[13px] leading-[1.7]" style={{ color: "#5A5D63" }}>
-              {desc}
-            </p>
-            <Link
-              to={to}
-              className="mt-5 inline-flex items-center gap-1.5 text-[12.5px] font-semibold"
-              style={{ color: "#34506E" }}
-            >
-              {linkLabel} <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-/* ============================================================
-   4. FEATURED CASE STUDY — RAG Knowledge Hub
+   3. FEATURED CASE STUDY — RAG Knowledge Hub
    ============================================================ */
 
 const ragSources = [
