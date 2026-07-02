@@ -68,8 +68,8 @@
     "talkAgent": "Talk to My Agent",
     "letsBuild": "Let's build together",
     "capabilities": [
-      { "title": "Build AI Systems", "desc": "Production-ready enterprise AI — multi-agent orchestration using LangGraph and agent-to-agent coordination frameworks, built for scalability and reliability." },
-      { "title": "Knowledge Platforms", "desc": "RAG systems, vector databases, enterprise semantic search and knowledge governance at scale." },
+      { "title": "AI Development", "desc": "End-to-end enterprise AI development — LLM integration, multi-agent orchestration, production deployment and agent-to-agent coordination frameworks built for scale." },
+      { "title": "AI Architecture", "desc": "Scalable AI foundations — knowledge platforms, RAG pipelines, vector databases, semantic search and the technical layers enterprise AI systems run on." },
       { "title": "AI Governance", "desc": "EU AI Act compliance, IDS/IDSA data sovereignty, high-risk system classification, audit trail and responsible AI architecture from day one." }
     ],
     "trustMetrics": [

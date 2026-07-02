@@ -68,8 +68,8 @@
     "talkAgent": "Mit meinem Agenten sprechen",
     "letsBuild": "Lassen Sie uns gemeinsam bauen",
     "capabilities": [
-      { "title": "KI-Systeme bauen", "desc": "Produktionsreife Enterprise-KI — Multi-Agenten-Orchestrierung mit LangGraph und Agent-zu-Agent-Koordinations-Frameworks, für Skalierbarkeit und Zuverlässigkeit konzipiert." },
-      { "title": "Wissensplattformen", "desc": "RAG-Systeme, Vektordatenbanken, semantische Unternehmenssuche und Wissens-Governance in großem Maßstab." },
+      { "title": "KI-Entwicklung", "desc": "End-to-End Enterprise-KI-Entwicklung — LLM-Integration, Multi-Agenten-Orchestrierung, Produktions-Deployment und Agent-zu-Agent-Koordinations-Frameworks für Skalierbarkeit." },
+      { "title": "KI-Architektur", "desc": "Skalierbare KI-Grundlagen — Wissensplattformen, RAG-Pipelines, Vektordatenbanken, semantische Suche und die technischen Schichten, auf denen Enterprise-KI-Systeme aufbauen." },
       { "title": "KI-Governance", "desc": "EU-KI-Verordnung-Compliance, IDS/IDSA-Datensouveränität, Hochrisiko-Systemklassifizierung, Audit-Trail und verantwortungsvolle KI-Architektur von Anfang an." }
     ],
     "trustMetrics": [
