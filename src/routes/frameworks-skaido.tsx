@@ -1,6 +1,5 @@
-﻿import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { SiteNav } from "@/components/brand/SiteNav";
-import { BrandBackground } from "@/components/brand/Background";
 
 export const Route = createFileRoute("/frameworks-skaido")({
   head: () => ({
@@ -23,7 +22,7 @@ export const Route = createFileRoute("/frameworks-skaido")({
       { property: "og:description", content: "Scope → Knowledge → Architecture → Implementation → Deployment → Optimisation. Dr. Ephraim Mpofu's proprietary methodology for delivering production-ready enterprise AI." },
       { property: "og:type", content: "article" },
       { property: "og:url", content: "https://drnattech.com/frameworks-skaido" },
-      { property: "og:image", content: "https://drnattech.com/images/Dr%20Mpofu_purple2.webp" },
+      { property: "og:image", content: "https://drnattech.com/images/Dr_Mpofu_purple-removebg-preview.png" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "index, follow" },
     ],
@@ -50,42 +49,12 @@ function SkaidoStructuredData() {
         author: { "@id": "https://drnattech.com/#person" },
         totalTime: "P6W",
         step: [
-          {
-            "@type": "HowToStep",
-            position: 1,
-            name: "Scope",
-            text: "Define the business problem, objectives, KPIs, constraints and EU AI Act risk classification. Establish what the AI system must achieve, what governance requirements apply and what success looks like.",
-          },
-          {
-            "@type": "HowToStep",
-            position: 2,
-            name: "Knowledge",
-            text: "Map existing knowledge assets, data sources, knowledge gaps and information retrieval requirements. Design the knowledge architecture and RAG retrieval strategy where applicable.",
-          },
-          {
-            "@type": "HowToStep",
-            position: 3,
-            name: "Architecture",
-            text: "Design the full AI system architecture — agent roles and orchestration logic, integration points with existing systems, audit trail design, governance layers and human-in-the-loop oversight mechanisms.",
-          },
-          {
-            "@type": "HowToStep",
-            position: 4,
-            name: "Implementation",
-            text: "Build the AI system components, multi-agent workflows, knowledge retrieval pipelines and governance instrumentation. Apply the Three Structural Laws to prevent silent failure.",
-          },
-          {
-            "@type": "HowToStep",
-            position: 5,
-            name: "Deployment",
-            text: "Deploy to production with monitoring, automated testing, full audit trail activation and stakeholder handover. Validate and document EU AI Act compliance requirements.",
-          },
-          {
-            "@type": "HowToStep",
-            position: 6,
-            name: "Optimisation",
-            text: "Measure outcomes against Scope-phase success metrics, iterate on architecture, scale the system and refine governance processes based on production data and usage patterns.",
-          },
+          { "@type": "HowToStep", position: 1, name: "Scope", text: "Define the business problem, objectives, KPIs, constraints and EU AI Act risk classification." },
+          { "@type": "HowToStep", position: 2, name: "Knowledge", text: "Map existing knowledge assets, data sources, knowledge gaps and information retrieval requirements." },
+          { "@type": "HowToStep", position: 3, name: "Architecture", text: "Design the full AI system architecture — agent roles, orchestration logic, integration points, audit trail design and governance layers." },
+          { "@type": "HowToStep", position: 4, name: "Implementation", text: "Build the AI system components, multi-agent workflows, knowledge retrieval pipelines and governance instrumentation." },
+          { "@type": "HowToStep", position: 5, name: "Deployment", text: "Deploy to production with monitoring, automated testing, full audit trail activation and stakeholder handover." },
+          { "@type": "HowToStep", position: 6, name: "Optimisation", text: "Measure outcomes against Scope-phase success metrics, iterate on architecture, scale the system and refine governance processes." },
         ],
       },
       {
@@ -94,7 +63,7 @@ function SkaidoStructuredData() {
         name: "SKAIDO Framework",
         alternateName: "SKAIDO AI Implementation Methodology",
         description:
-          "The SKAIDO Framework is a six-phase enterprise AI implementation methodology: Scope, Knowledge, Architecture, Implementation, Deployment and Optimisation. Developed by Dr. Ephraim Mpofu (PhD, Dr.nat.techn., BOKU Vienna) to systematically take enterprises from business problem definition to deployed, EU AI Act-compliant, production-ready AI systems.",
+          "The SKAIDO Framework is a six-phase enterprise AI implementation methodology: Scope, Knowledge, Architecture, Implementation, Deployment and Optimisation. Developed by Dr. Ephraim Mpofu to systematically take enterprises from business problem definition to deployed, EU AI Act-compliant, production-ready AI systems.",
         url: "https://drnattech.com/frameworks-skaido",
         author: { "@id": "https://drnattech.com/#person" },
       },
@@ -111,11 +80,10 @@ function SkaidoStructuredData() {
 function SkaidoPage() {
   return (
     <div
-      className="relative min-h-screen overflow-hidden"
-      style={{ backgroundColor: "#050816" }}
+      className="light-page relative min-h-screen overflow-hidden"
+      style={{ backgroundColor: "#FAFAF8" }}
     >
       <SkaidoStructuredData />
-      <BrandBackground />
       <SiteNav active="Frameworks" />
 
       <main className="mx-auto max-w-[1280px] px-6 lg:px-10 pt-20 pb-20">
@@ -123,21 +91,24 @@ function SkaidoPage() {
           <div
             className="inline-flex rounded-full px-4 py-2 text-[12px] font-semibold tracking-[0.22em]"
             style={{
-              background: "rgba(139,92,246,0.12)",
-              border: "1px solid rgba(139,92,246,0.25)",
-              color: "#C4B5FD",
+              background: "#E9EFF4",
+              border: "1px solid #D7D4CC",
+              color: "#34506E",
             }}
           >
             PROPRIETARY FRAMEWORK
           </div>
 
-          <h1 className="mt-6 text-[56px] font-bold text-white leading-tight">
+          <h1
+            className="mt-6 text-[56px] font-medium leading-tight"
+            style={{ color: "#1F2125" }}
+          >
             SKAIDO Framework
           </h1>
 
           <p
-            className="mt-6 text-[18px] max-w-[800px]"
-            style={{ color: "#9CA3AF" }}
+            className="mt-6 text-[18px] max-w-[800px] leading-[1.7]"
+            style={{ color: "#5A5D63" }}
           >
             A system-first enterprise AI implementation framework designed to
             move organisations from strategy to measurable business outcomes.
@@ -145,11 +116,11 @@ function SkaidoPage() {
         </div>
 
         <section className="mt-16 glass-card p-8">
-          <h2 className="text-[32px] font-bold text-white">
+          <h2 className="text-[32px] font-medium" style={{ color: "#1F2125" }}>
             Why The Framework Exists
           </h2>
 
-          <p className="mt-4 text-[16px]" style={{ color: "#9CA3AF" }}>
+          <p className="mt-4 text-[16px] leading-[1.7]" style={{ color: "#5A5D63" }}>
             Most AI projects fail because organisations focus on tools before
             systems. The SKAIDO Framework provides a structured implementation
             methodology that aligns business objectives, architecture,
@@ -158,24 +129,24 @@ function SkaidoPage() {
         </section>
 
         <section className="mt-10 glass-card p-8">
-          <h2 className="text-[32px] font-bold text-white">
+          <h2 className="text-[32px] font-medium" style={{ color: "#1F2125" }}>
             Core Principle
           </h2>
 
-          <p className="mt-4 text-[16px]" style={{ color: "#9CA3AF" }}>
+          <p className="mt-4 text-[16px] leading-[1.7]" style={{ color: "#5A5D63" }}>
             AI implementation should be approached as a business system design
             exercise rather than a technology deployment exercise.
           </p>
         </section>
 
         <section className="mt-10 glass-card p-8">
-          <h2 className="text-[32px] font-bold text-white">
+          <h2 className="text-[32px] font-medium" style={{ color: "#1F2125" }}>
             Business Outcomes
           </h2>
 
           <ul
-            className="mt-4 space-y-3 text-[16px]"
-            style={{ color: "#9CA3AF" }}
+            className="mt-4 space-y-3 text-[16px] leading-[1.7]"
+            style={{ color: "#5A5D63" }}
           >
             <li>• Faster implementation cycles</li>
             <li>• Reduced AI project failure rates</li>

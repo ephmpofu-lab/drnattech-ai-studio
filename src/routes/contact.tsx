@@ -18,7 +18,6 @@ import {
 import { CalendlyModal } from "@/components/brand/CalendlyModal";
 import { SiteNav } from "@/components/brand/SiteNav";
 import { SiteFooter } from "@/components/brand/SiteFooter";
-import { BrandBackground } from "@/components/brand/Background";
 import { Signature } from "@/components/brand/Signature";
 import heroImg from "@/assets/contact-hero.webp";
 
@@ -42,10 +41,6 @@ export const Route = createFileRoute("/contact")({
   component: ContactPage,
 });
 
-const CARD_BG =
-  "linear-gradient(180deg, rgba(15,20,40,0.85), rgba(11,16,32,0.7))";
-const CARD_BORDER = "1px solid rgba(139,92,246,0.18)";
-
 function CopyEmailButton({ email }: { email: string }) {
   const { t } = useTranslation("common");
   const [copied, setCopied] = useState(false);
@@ -62,8 +57,8 @@ function CopyEmailButton({ email }: { email: string }) {
       className="ml-2 inline-flex items-center gap-1 rounded-[6px] px-2 py-0.5 text-[11px] font-semibold transition-all"
       style={
         copied
-          ? { background: "rgba(16,185,129,0.15)", border: "1px solid rgba(16,185,129,0.35)", color: "#34D399" }
-          : { background: "rgba(139,92,246,0.12)", border: "1px solid rgba(139,92,246,0.28)", color: "#A855F7" }
+          ? { background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.3)", color: "#059669" }
+          : { background: "#E9EFF4", border: "1px solid #D7D4CC", color: "#34506E" }
       }
       aria-label={`Copy ${email}`}
     >
@@ -139,10 +134,9 @@ export function ContactPage() {
 
   return (
     <div
-      className="relative min-h-screen overflow-hidden text-white"
-      style={{ background: "#050816" }}
+      className="light-page relative min-h-screen overflow-hidden"
+      style={{ backgroundColor: "#FAFAF8" }}
     >
-      <BrandBackground />
       <SiteNav active="Contact" />
 
       <main className="mx-auto max-w-[1400px] px-6 lg:px-10">
@@ -152,46 +146,39 @@ export function ContactPage() {
             <span
               className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[11px] font-semibold tracking-[0.22em]"
               style={{
-                background: "rgba(139,92,246,0.12)",
-                border: "1px solid rgba(139,92,246,0.4)",
-                color: "#C4B5FD",
+                background: "#E9EFF4",
+                border: "1px solid #D7D4CC",
+                color: "#34506E",
               }}
             >
               <Sparkles className="h-3 w-3" /> {t("contact.badge")}
             </span>
 
-            <h1 className="mt-7 text-[44px] font-bold leading-[1.08] tracking-[-0.02em] md:text-[56px] lg:text-[64px]">
+            <h1 className="mt-7 text-[44px] font-medium leading-[1.08] tracking-[-0.02em] md:text-[56px] lg:text-[64px]" style={{ color: "#1F2125" }}>
               {t("contact.heroTitle1")}{" "}
-              <span
-                style={{
-                  background:
-                    "linear-gradient(135deg, #A855F7 0%, #8B5CF6 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
+              <span style={{ color: "#34506E" }}>
                 {t("contact.heroTitle2")}
               </span>
             </h1>
 
             <p
               className="mt-7 max-w-[540px] text-[16.5px] leading-[1.75]"
-              style={{ color: "#A3A3B2" }}
+              style={{ color: "#5A5D63" }}
             >
               {t("contact.heroDesc1")}
             </p>
             <p
               className="mt-3 max-w-[540px] text-[16.5px] leading-[1.75]"
-              style={{ color: "#A3A3B2" }}
+              style={{ color: "#5A5D63" }}
             >
               {t("contact.heroDesc2")}
             </p>
 
             <div className="mt-10 flex flex-col items-start gap-2">
-              <Signature size="lg" />
+              <Signature size="lg" color="#1F2125" />
               <span
                 className="text-[11px] font-semibold tracking-[0.26em]"
-                style={{ color: "#A855F7" }}
+                style={{ color: "#34506E" }}
               >
                 {t("contact.tagline")}
               </span>
@@ -200,19 +187,8 @@ export function ContactPage() {
 
           <div className="relative">
             <div
-              className="absolute -inset-6 -z-10 rounded-[28px] opacity-60 blur-3xl"
-              style={{
-                background:
-                  "radial-gradient(closest-side, rgba(139,92,246,0.5), transparent)",
-              }}
-            />
-            <div
               className="overflow-hidden rounded-[22px]"
-              style={{
-                border: "1px solid rgba(139,92,246,0.25)",
-                boxShadow:
-                  "0 30px 80px -20px rgba(139,92,246,0.35), 0 0 0 1px rgba(255,255,255,0.04)",
-              }}
+              style={{ border: "1px solid #E3E1DA" }}
             >
               <img
                 src={heroImg}
@@ -229,17 +205,17 @@ export function ContactPage() {
         <section className="grid grid-cols-1 gap-10 pb-24 lg:grid-cols-[1fr_1.15fr] lg:gap-14">
           {/* LEFT */}
           <div>
-            <h2 className="text-[32px] font-bold tracking-[-0.01em] md:text-[36px]">
+            <h2 className="text-[32px] font-medium tracking-[-0.01em] md:text-[36px]" style={{ color: "#1F2125" }}>
               {t("contact.sectionTitle")}
             </h2>
-            <p className="mt-3 text-[15px]" style={{ color: "#A3A3B2" }}>
+            <p className="mt-3 text-[15px] leading-[1.7]" style={{ color: "#5A5D63" }}>
               {t("contact.sectionDesc")}
             </p>
 
             <button
               onClick={() => setCalendlyOpen(true)}
-              className="mt-6 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-[13.5px] font-semibold text-white transition-all hover:scale-[1.02]"
-              style={{ background: "linear-gradient(135deg, #8B5CF6 0%, #A855F7 100%)", boxShadow: "0 12px 30px -10px rgba(139,92,246,0.6)" }}
+              className="mt-6 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-[13.5px] font-semibold transition-all hover:opacity-80"
+              style={{ background: "#34506E", color: "#FAFAF8" }}
             >
               {t("contact.bookCall")}
             </button>
@@ -251,24 +227,21 @@ export function ContactPage() {
                   <div
                     key={card.title}
                     className="group flex items-start gap-5 rounded-2xl p-5 transition-all hover:-translate-y-0.5"
-                    style={{ background: CARD_BG, border: CARD_BORDER }}
+                    style={{ background: "#F2F0EA", border: "1px solid #E3E1DA" }}
                   >
                     <div
                       className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl"
                       style={{
-                        background:
-                          "linear-gradient(135deg, rgba(139,92,246,0.25), rgba(168,85,247,0.15))",
-                        border: "1px solid rgba(139,92,246,0.45)",
-                        boxShadow:
-                          "0 0 22px -6px rgba(139,92,246,0.6), inset 0 0 10px rgba(139,92,246,0.15)",
+                        background: "#E9EFF4",
+                        border: "1px solid #D7D4CC",
                       }}
                     >
-                      <Icon className="h-5 w-5" style={{ color: "#C4B5FD" }} />
+                      <Icon className="h-5 w-5" style={{ color: "#34506E" }} />
                     </div>
                     <div className="min-w-0 flex-1">
                       <div
                         className="text-[11px] font-semibold tracking-[0.22em]"
-                        style={{ color: "#A855F7" }}
+                        style={{ color: "#34506E" }}
                       >
                         {card.title.toUpperCase()}
                       </div>
@@ -276,10 +249,7 @@ export function ContactPage() {
                         {card.lines.map((line, i) => {
                           if (typeof line === "string") {
                             return (
-                              <div
-                                key={i}
-                                className="text-[15px] leading-[1.5] text-white"
-                              >
+                              <div key={i} className="text-[15px] leading-[1.5]" style={{ color: "#1F2125" }}>
                                 {line}
                               </div>
                             );
@@ -292,7 +262,8 @@ export function ContactPage() {
                                 href={line.href}
                                 target={isExt ? "_blank" : undefined}
                                 rel={isExt ? "noopener noreferrer" : undefined}
-                                className="break-all text-[15px] leading-[1.5] text-white transition-colors hover:text-[#C4B5FD]"
+                                className="break-all text-[15px] leading-[1.5] transition-colors hover:text-[#34506E]"
+                                style={{ color: "#1F2125" }}
                               >
                                 {line.text}
                               </a>
@@ -312,16 +283,14 @@ export function ContactPage() {
           <div
             className="rounded-3xl p-8 md:p-10"
             style={{
-              background: CARD_BG,
-              border: CARD_BORDER,
-              boxShadow:
-                "0 30px 80px -30px rgba(139,92,246,0.35), inset 0 1px 0 rgba(255,255,255,0.04)",
+              background: "#F2F0EA",
+              border: "1px solid #E3E1DA",
             }}
           >
-            <h2 className="text-[32px] font-bold tracking-[-0.01em] md:text-[36px]">
+            <h2 className="text-[32px] font-medium tracking-[-0.01em] md:text-[36px]" style={{ color: "#1F2125" }}>
               {t("contact.formTitle")}
             </h2>
-            <p className="mt-3 text-[15px]" style={{ color: "#A3A3B2" }}>
+            <p className="mt-3 text-[15px] leading-[1.7]" style={{ color: "#5A5D63" }}>
               {t("contact.formDesc")}
             </p>
 
@@ -352,7 +321,7 @@ export function ContactPage() {
               <div>
                 <label
                   className="mb-2 block text-[12px] font-semibold tracking-[0.18em]"
-                  style={{ color: "#A3A3B2" }}
+                  style={{ color: "#8A8D93" }}
                 >
                   {t("contact.labelMessage")}
                 </label>
@@ -364,21 +333,21 @@ export function ContactPage() {
                   required
                   rows={6}
                   placeholder={t("contact.placeholderMessage")}
-                  className="w-full resize-none rounded-xl px-4 py-3 text-[15px] text-white outline-none transition-all placeholder:text-[#6B7280] focus:border-[#8B5CF6]"
+                  className="w-full resize-none rounded-xl px-4 py-3 text-[15px] outline-none transition-all placeholder:text-[#8A8D93]"
                   style={{
-                    background: "rgba(5,8,22,0.6)",
-                    border: "1px solid rgba(139,92,246,0.22)",
+                    background: "#FAFAF8",
+                    border: "1px solid #E3E1DA",
+                    color: "#1F2125",
                   }}
                 />
               </div>
 
               <button
                 type="submit"
-                className="group flex w-full items-center justify-center gap-2.5 rounded-xl px-6 py-4 text-[15px] font-semibold text-white shadow-lg transition-all hover:scale-[1.01]"
+                className="group flex w-full items-center justify-center gap-2.5 rounded-xl px-6 py-4 text-[15px] font-semibold transition-all hover:opacity-80"
                 style={{
-                  background:
-                    "linear-gradient(135deg, #8B5CF6 0%, #A855F7 100%)",
-                  boxShadow: "0 14px 36px -10px rgba(139,92,246,0.6)",
+                  background: "#34506E",
+                  color: "#FAFAF8",
                 }}
               >
                 <Send className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -387,9 +356,9 @@ export function ContactPage() {
 
               <div
                 className="flex items-center justify-center gap-2 text-[12.5px]"
-                style={{ color: "#6B7280" }}
+                style={{ color: "#8A8D93" }}
               >
-                <Lock className="h-3.5 w-3.5" style={{ color: "#A855F7" }} />
+                <Lock className="h-3.5 w-3.5" style={{ color: "#34506E" }} />
                 {t("contact.privacy")}
               </div>
             </form>
@@ -400,7 +369,7 @@ export function ContactPage() {
         <section className="pb-24">
           <div
             className="relative overflow-hidden rounded-3xl"
-            style={{ background: CARD_BG, border: CARD_BORDER }}
+            style={{ background: "#F2F0EA", border: "1px solid #E3E1DA" }}
           >
             <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr]">
               <div className="relative h-[380px] lg:h-[500px]">
@@ -408,20 +377,9 @@ export function ContactPage() {
                   title="Map — Hopfengasse 5, 1210 Vienna"
                   src={mapSrc}
                   className="h-full w-full"
-                  style={{
-                    border: 0,
-                    filter:
-                      "invert(0.92) hue-rotate(190deg) saturate(0.85) brightness(0.92) contrast(1.05)",
-                  }}
+                  style={{ border: 0 }}
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                />
-                <div
-                  className="pointer-events-none absolute inset-0"
-                  style={{
-                    background:
-                      "linear-gradient(90deg, rgba(5,8,22,0.35) 0%, transparent 35%, transparent 65%, rgba(5,8,22,0.55) 100%)",
-                  }}
                 />
               </div>
 
@@ -429,39 +387,27 @@ export function ContactPage() {
                 <div
                   className="inline-flex h-12 w-12 items-center justify-center rounded-xl"
                   style={{
-                    background:
-                      "linear-gradient(135deg, rgba(139,92,246,0.3), rgba(168,85,247,0.15))",
-                    border: "1px solid rgba(139,92,246,0.45)",
-                    boxShadow: "0 0 22px -4px rgba(139,92,246,0.7)",
+                    background: "#E9EFF4",
+                    border: "1px solid #D7D4CC",
                   }}
                 >
-                  <MapPin className="h-5 w-5" style={{ color: "#C4B5FD" }} />
+                  <MapPin className="h-5 w-5" style={{ color: "#34506E" }} />
                 </div>
-                <h3 className="mt-5 text-[28px] font-bold tracking-[-0.01em]">
+                <h3 className="mt-5 text-[28px] font-medium tracking-[-0.01em]" style={{ color: "#1F2125" }}>
                   Hopfengasse 5
                 </h3>
-                <div
-                  className="mt-1 text-[15px]"
-                  style={{ color: "#A3A3B2" }}
-                >
+                <div className="mt-1 text-[15px] leading-[1.7]" style={{ color: "#5A5D63" }}>
                   1210 Vienna, Austria
                 </div>
-                <p
-                  className="mt-5 text-[14.5px] leading-[1.7]"
-                  style={{ color: "#A3A3B2" }}
-                >
+                <p className="mt-5 text-[14.5px] leading-[1.7]" style={{ color: "#5A5D63" }}>
                   {t("contact.locationDesc")}
                 </p>
                 <a
                   href={directionsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-7 inline-flex items-center justify-center gap-2 self-start rounded-xl px-5 py-3 text-[13.5px] font-semibold text-white transition-all hover:scale-[1.02]"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #8B5CF6 0%, #A855F7 100%)",
-                    boxShadow: "0 12px 30px -10px rgba(139,92,246,0.6)",
-                  }}
+                  className="mt-7 inline-flex items-center justify-center gap-2 self-start rounded-xl px-5 py-3 text-[13.5px] font-semibold transition-all hover:opacity-80"
+                  style={{ background: "#34506E", color: "#FAFAF8" }}
                 >
                   {t("contact.getDirections")} <ExternalLink className="h-4 w-4" />
                 </a>
@@ -475,63 +421,37 @@ export function ContactPage() {
           <div
             className="relative overflow-hidden rounded-3xl p-8 md:p-12"
             style={{
-              background:
-                "linear-gradient(135deg, rgba(139,92,246,0.18) 0%, rgba(11,16,32,0.85) 60%)",
-              border: "1px solid rgba(139,92,246,0.3)",
-              boxShadow: "0 30px 80px -30px rgba(139,92,246,0.45)",
+              background: "#F2F0EA",
+              border: "1px solid #E3E1DA",
             }}
           >
-            <div
-              className="pointer-events-none absolute -right-20 -top-20 h-[280px] w-[280px] rounded-full opacity-50 blur-3xl"
-              style={{
-                background:
-                  "radial-gradient(closest-side, rgba(168,85,247,0.6), transparent)",
-              }}
-            />
-
             <div className="relative grid grid-cols-1 items-center gap-8 md:grid-cols-[auto_1fr_auto]">
               <div
                 className="flex h-20 w-20 items-center justify-center rounded-2xl"
                 style={{
-                  background:
-                    "linear-gradient(135deg, rgba(139,92,246,0.35), rgba(168,85,247,0.2))",
-                  border: "1px solid rgba(139,92,246,0.55)",
-                  boxShadow:
-                    "0 0 30px -6px rgba(139,92,246,0.7), inset 0 0 12px rgba(139,92,246,0.2)",
+                  background: "#E9EFF4",
+                  border: "1px solid #D7D4CC",
                 }}
               >
-                <MessageSquare
-                  className="h-8 w-8"
-                  style={{ color: "#C4B5FD" }}
-                />
+                <MessageSquare className="h-8 w-8" style={{ color: "#34506E" }} />
               </div>
 
               <div>
-                <h3 className="text-[26px] font-bold tracking-[-0.01em] md:text-[30px]">
+                <h3 className="text-[26px] font-medium tracking-[-0.01em] md:text-[30px]" style={{ color: "#1F2125" }}>
                   {t("contact.agentTitle")}
                 </h3>
-                <p
-                  className="mt-3 max-w-[640px] text-[15px] leading-[1.7]"
-                  style={{ color: "#A3A3B2" }}
-                >
+                <p className="mt-3 max-w-[640px] text-[15px] leading-[1.7]" style={{ color: "#5A5D63" }}>
                   {t("contact.agentDesc")}
                 </p>
-                <div
-                  className="mt-3 text-[13px]"
-                  style={{ color: "#6B7280" }}
-                >
+                <div className="mt-3 text-[13px]" style={{ color: "#8A8D93" }}>
                   {t("contact.agentSub")}
                 </div>
               </div>
 
               <Link
                 to={agentHref}
-                className="inline-flex items-center justify-center gap-2 rounded-xl px-6 py-4 text-[14px] font-semibold text-white transition-all hover:scale-[1.03]"
-                style={{
-                  background:
-                    "linear-gradient(135deg, #8B5CF6 0%, #A855F7 100%)",
-                  boxShadow: "0 14px 36px -10px rgba(139,92,246,0.6)",
-                }}
+                className="inline-flex items-center justify-center gap-2 rounded-xl px-6 py-4 text-[14px] font-semibold transition-all hover:opacity-80"
+                style={{ background: "#34506E", color: "#FAFAF8" }}
               >
                 <MessageSquare className="h-4 w-4" /> {t("contact.askAnything")}
               </Link>
@@ -565,7 +485,7 @@ function Field({
     <div>
       <label
         className="mb-2 block text-[12px] font-semibold tracking-[0.18em]"
-        style={{ color: "#A3A3B2" }}
+        style={{ color: "#8A8D93" }}
       >
         {label.toUpperCase()}
       </label>
@@ -575,10 +495,11 @@ function Field({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         required={required}
-        className="w-full rounded-xl px-4 py-3 text-[15px] text-white outline-none transition-all placeholder:text-[#6B7280] focus:border-[#8B5CF6]"
+        className="w-full rounded-xl px-4 py-3 text-[15px] outline-none transition-all placeholder:text-[#8A8D93]"
         style={{
-          background: "rgba(5,8,22,0.6)",
-          border: "1px solid rgba(139,92,246,0.22)",
+          background: "#FAFAF8",
+          border: "1px solid #E3E1DA",
+          color: "#1F2125",
         }}
       />
     </div>

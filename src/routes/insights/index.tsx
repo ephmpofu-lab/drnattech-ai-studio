@@ -11,7 +11,6 @@ import {
 } from "lucide-react";
 import { SiteNav } from "@/components/brand/SiteNav";
 import { SiteFooter } from "@/components/brand/SiteFooter";
-import { BrandBackground } from "@/components/brand/Background";
 import { publications, type Publication } from "@/lib/publications";
 const portrait = "/images/Dr Mpofu_purple2.webp";
 
@@ -80,10 +79,10 @@ function PublicationCard({ pub }: { pub: Publication }) {
     <Link
       to="/insights/$slug"
       params={{ slug: pub.slug }}
-      className="group flex flex-col overflow-hidden rounded-[18px] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_60px_-15px_rgba(168,85,247,0.25)]"
+      className="group flex flex-col overflow-hidden rounded-[18px] transition-all duration-300 hover:-translate-y-1"
       style={{
-        background: "rgba(255,255,255,0.04)",
-        border: "1px solid rgba(255,255,255,0.08)",
+        background: "#F2F0EA",
+        border: "1px solid #E3E1DA",
       }}
     >
       {/* Image */}
@@ -93,13 +92,6 @@ function PublicationCard({ pub }: { pub: Publication }) {
           alt={pub.title}
           loading="lazy"
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(180deg, transparent 50%, rgba(5,8,22,0.6) 100%)",
-          }}
         />
         <div className="absolute bottom-3 left-3">
           <span
@@ -118,14 +110,14 @@ function PublicationCard({ pub }: { pub: Publication }) {
       {/* Content */}
       <div className="flex flex-1 flex-col p-5">
         <h3
-          className="line-clamp-2 text-[15px] font-semibold leading-[1.45]"
-          style={{ color: "#F1F5F9" }}
+          className="line-clamp-2 text-[15px] font-medium leading-[1.45]"
+          style={{ color: "#1F2125" }}
         >
           {pub.title}
         </h3>
         <p
           className="mt-2 line-clamp-2 text-[13px] leading-[1.6]"
-          style={{ color: "#94A3B8" }}
+          style={{ color: "#5A5D63" }}
         >
           {pub.abstract}
         </p>
@@ -133,7 +125,7 @@ function PublicationCard({ pub }: { pub: Publication }) {
         {/* Footer */}
         <div
           className="mt-auto flex items-center justify-between border-t pt-4 text-[12px]"
-          style={{ borderColor: "rgba(255,255,255,0.06)", color: "#64748B" }}
+          style={{ borderColor: "#E3E1DA", color: "#8A8D93" }}
         >
           <span className="flex items-center gap-1.5">
             <Calendar className="h-3 w-3" />
@@ -160,7 +152,6 @@ export function InsightsIndexPage() {
 
   const footerItems = t("insights.footerItems", { returnObjects: true }) as string[];
 
-  // Filter + sort
   const filtered = publications
     .filter((p) => {
       const matchesSearch =
@@ -186,19 +177,17 @@ export function InsightsIndexPage() {
 
   return (
     <div
-      className="relative min-h-screen"
-      style={{ background: "#050816", color: "#fff" }}
+      className="light-page relative min-h-screen"
+      style={{ background: "#FAFAF8", color: "#1F2125" }}
     >
-      <BrandBackground />
       <SiteNav active="Insights" />
 
       {/* ── Hero ── */}
       <section
         className="relative overflow-hidden"
         style={{
-          background:
-            "linear-gradient(180deg, rgba(139,92,246,0.08) 0%, transparent 100%)",
-          borderBottom: "1px solid rgba(255,255,255,0.05)",
+          background: "#FAFAF8",
+          borderBottom: "1px solid #E3E1DA",
         }}
       >
         <div className="mx-auto max-w-[1400px] px-6 py-20 lg:px-10">
@@ -206,29 +195,22 @@ export function InsightsIndexPage() {
             <span
               className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold tracking-[0.22em]"
               style={{
-                background: "rgba(139,92,246,0.12)",
-                border: "1px solid rgba(139,92,246,0.35)",
-                color: "#C4B5FD",
+                background: "#E9EFF4",
+                border: "1px solid #D7D4CC",
+                color: "#34506E",
               }}
             >
               {t("insights.badge")}
             </span>
-            <h1 className="mt-6 text-[52px] font-bold leading-[1.05] tracking-[-0.02em] lg:text-[64px]">
+            <h1 className="mt-6 text-[52px] font-medium leading-[1.05] tracking-[-0.02em] lg:text-[64px]" style={{ color: "#1F2125" }}>
               {t("insights.heroTitle1")}{" "}
-              <span
-                style={{
-                  background:
-                    "linear-gradient(135deg, #8B5CF6 0%, #A855F7 50%, #EC4899 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
+              <span style={{ color: "#34506E" }}>
                 {t("insights.heroTitle2")}
               </span>
             </h1>
             <p
               className="mt-5 text-[16px] leading-[1.75]"
-              style={{ color: "#94A3B8" }}
+              style={{ color: "#5A5D63" }}
             >
               {t("insights.heroDesc")}
             </p>
@@ -246,7 +228,7 @@ export function InsightsIndexPage() {
               <div className="relative">
                 <Search
                   className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2"
-                  style={{ color: "#64748B" }}
+                  style={{ color: "#8A8D93" }}
                 />
                 <input
                   type="text"
@@ -258,9 +240,9 @@ export function InsightsIndexPage() {
                   }}
                   className="h-11 w-full rounded-[10px] pl-10 pr-4 text-[13.5px] outline-none"
                   style={{
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    color: "#fff",
+                    background: "#FAFAF8",
+                    border: "1px solid #E3E1DA",
+                    color: "#1F2125",
                   }}
                 />
               </div>
@@ -270,9 +252,9 @@ export function InsightsIndexPage() {
                 <select
                   className="h-10 w-full appearance-none rounded-[10px] pl-3.5 pr-9 text-[13px] outline-none"
                   style={{
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    color: "#94A3B8",
+                    background: "#FAFAF8",
+                    border: "1px solid #E3E1DA",
+                    color: "#5A5D63",
                   }}
                   value={sortOrder}
                   onChange={(e) => setSortOrder(e.target.value)}
@@ -282,7 +264,7 @@ export function InsightsIndexPage() {
                 </select>
                 <ChevronDown
                   className="pointer-events-none absolute right-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2"
-                  style={{ color: "#64748B" }}
+                  style={{ color: "#8A8D93" }}
                 />
               </div>
 
@@ -290,7 +272,7 @@ export function InsightsIndexPage() {
               <div>
                 <div
                   className="mb-3 text-[10px] font-bold tracking-[0.22em]"
-                  style={{ color: "#64748B" }}
+                  style={{ color: "#8A8D93" }}
                 >
                   {t("insights.categoriesLabel")}
                 </div>
@@ -304,18 +286,18 @@ export function InsightsIndexPage() {
                     style={
                       activeCategory === null
                         ? {
-                            background: "rgba(139,92,246,0.15)",
-                            color: "#C4B5FD",
+                            background: "#E9EFF4",
+                            color: "#34506E",
                           }
-                        : { color: "#94A3B8" }
+                        : { color: "#5A5D63" }
                     }
                   >
                     <span>{t("insights.allArticles")}</span>
                     <span
                       className="rounded-full px-1.5 py-0.5 text-[10px] font-semibold"
                       style={{
-                        background: "rgba(255,255,255,0.06)",
-                        color: "#64748B",
+                        background: "#EDEBE3",
+                        color: "#8A8D93",
                       }}
                     >
                       {publications.length}
@@ -334,18 +316,18 @@ export function InsightsIndexPage() {
                       style={
                         activeCategory === label
                           ? {
-                              background: "rgba(139,92,246,0.15)",
-                              color: "#C4B5FD",
+                              background: "#E9EFF4",
+                              color: "#34506E",
                             }
-                          : { color: "#94A3B8" }
+                          : { color: "#5A5D63" }
                       }
                     >
                       <span>{label}</span>
                       <span
                         className="rounded-full px-1.5 py-0.5 text-[10px] font-semibold"
                         style={{
-                          background: "rgba(255,255,255,0.06)",
-                          color: "#64748B",
+                          background: "#EDEBE3",
+                          color: "#8A8D93",
                         }}
                       >
                         {count}
@@ -359,17 +341,17 @@ export function InsightsIndexPage() {
               <div>
                 <div
                   className="mb-3 text-[10px] font-bold tracking-[0.22em]"
-                  style={{ color: "#64748B" }}
+                  style={{ color: "#8A8D93" }}
                 >
                   {t("insights.featuredLabel")}
                 </div>
                 <Link
                   to="/insights/$slug"
                   params={{ slug: featuredPub.slug }}
-                  className="group block overflow-hidden rounded-[12px] transition-all hover:border-purple-500/40"
+                  className="group block overflow-hidden rounded-[12px] transition-all"
                   style={{
-                    background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.07)",
+                    background: "#F2F0EA",
+                    border: "1px solid #E3E1DA",
                   }}
                 >
                   <div className="relative h-[120px] overflow-hidden">
@@ -378,7 +360,6 @@ export function InsightsIndexPage() {
                       alt={featuredPub.title}
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#050816]/70 to-transparent" />
                   </div>
                   <div className="p-3">
                     <span
@@ -389,13 +370,13 @@ export function InsightsIndexPage() {
                     </span>
                     <p
                       className="mt-1 line-clamp-2 text-[12px] font-medium leading-[1.4]"
-                      style={{ color: "#E2E8F0" }}
+                      style={{ color: "#1F2125" }}
                     >
                       {featuredPub.title}
                     </p>
                     <div
                       className="mt-2 flex items-center gap-1 text-[11px]"
-                      style={{ color: "#64748B" }}
+                      style={{ color: "#8A8D93" }}
                     >
                       <Clock className="h-3 w-3" />
                       {featuredPub.readTime} {t("insights.minRead")}
@@ -408,13 +389,13 @@ export function InsightsIndexPage() {
               <div
                 className="rounded-[14px] p-4"
                 style={{
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.07)",
+                  background: "#F2F0EA",
+                  border: "1px solid #E3E1DA",
                 }}
               >
                 <div
                   className="mb-3 text-[10px] font-bold tracking-[0.22em]"
-                  style={{ color: "#64748B" }}
+                  style={{ color: "#8A8D93" }}
                 >
                   {t("insights.authorLabel")}
                 </div>
@@ -423,18 +404,18 @@ export function InsightsIndexPage() {
                     src={portrait}
                     alt="Dr. Ephraim Mpofu"
                     className="h-12 w-12 rounded-full object-cover"
-                    style={{ border: "2px solid rgba(139,92,246,0.4)" }}
+                    style={{ border: "2px solid #D7D4CC" }}
                   />
                   <div>
                     <div
                       className="text-[13px] font-semibold"
-                      style={{ color: "#E2E8F0" }}
+                      style={{ color: "#1F2125" }}
                     >
                       Dr. Ephraim Mpofu
                     </div>
                     <div
                       className="text-[11px]"
-                      style={{ color: "#64748B" }}
+                      style={{ color: "#8A8D93" }}
                     >
                       {t("insights.authorRole")}
                     </div>
@@ -442,14 +423,14 @@ export function InsightsIndexPage() {
                 </div>
                 <p
                   className="mt-3 text-[12px] leading-[1.6]"
-                  style={{ color: "#94A3B8" }}
+                  style={{ color: "#5A5D63" }}
                 >
                   {t("insights.authorBio")}
                 </p>
                 <Link
                   to="/about"
-                  className="mt-3 inline-flex items-center gap-1 text-[12px] font-medium transition-colors"
-                  style={{ color: "#A855F7" }}
+                  className="mt-3 inline-flex items-center gap-1 text-[12px] font-medium transition-colors hover:opacity-80"
+                  style={{ color: "#34506E" }}
                 >
                   {t("insights.viewFullProfile")} <ArrowRight className="h-3 w-3" />
                 </Link>
@@ -463,12 +444,12 @@ export function InsightsIndexPage() {
             <div className="mb-6 flex items-center justify-between">
               <div>
                 <h2
-                  className="text-[22px] font-bold tracking-[-0.01em]"
-                  style={{ color: "#F1F5F9" }}
+                  className="text-[22px] font-medium tracking-[-0.01em]"
+                  style={{ color: "#1F2125" }}
                 >
                   {activeCategory ?? t("insights.allArticles")}
                 </h2>
-                <p className="mt-0.5 text-[13px]" style={{ color: "#64748B" }}>
+                <p className="mt-0.5 text-[13px]" style={{ color: "#8A8D93" }}>
                   {filtered.length} {filtered.length !== 1 ? t("insights.allArticles").toLowerCase() : t("insights.allArticles").toLowerCase().replace(/e?s$/, "")}
                   {search.trim() ? ` ${t("insights.matching")} "${search}"` : ""}
                 </p>
@@ -486,18 +467,18 @@ export function InsightsIndexPage() {
               <div
                 className="flex h-[240px] items-center justify-center rounded-[18px] text-center"
                 style={{
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.07)",
+                  background: "#F2F0EA",
+                  border: "1px solid #E3E1DA",
                 }}
               >
                 <div>
                   <User
                     className="mx-auto h-10 w-10 opacity-30"
-                    style={{ color: "#64748B" }}
+                    style={{ color: "#8A8D93" }}
                   />
                   <p
                     className="mt-3 text-[14px]"
-                    style={{ color: "#64748B" }}
+                    style={{ color: "#8A8D93" }}
                   >
                     {t("insights.noArticles")}
                     {search.trim() ? ` for "${search}"` : ""}.
@@ -507,8 +488,8 @@ export function InsightsIndexPage() {
                       setSearch("");
                       setActiveCategory(null);
                     }}
-                    className="mt-3 text-[13px]"
-                    style={{ color: "#A855F7" }}
+                    className="mt-3 text-[13px] transition-colors hover:opacity-80"
+                    style={{ color: "#34506E" }}
                   >
                     {t("insights.clearFilters")}
                   </button>
@@ -521,10 +502,10 @@ export function InsightsIndexPage() {
               <div className="mt-10 flex justify-center">
                 <button
                   onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
-                  className="inline-flex items-center gap-2 rounded-[12px] px-7 py-3 text-[13.5px] font-semibold transition-all hover:bg-white/5"
+                  className="inline-flex items-center gap-2 rounded-[12px] px-7 py-3 text-[13.5px] font-semibold transition-all hover:opacity-80"
                   style={{
-                    color: "#C4B5FD",
-                    border: "1px solid rgba(139,92,246,0.4)",
+                    color: "#1F2125",
+                    border: "1px solid #D7D4CC",
                   }}
                 >
                   {t("insights.loadMore")}{" "}
@@ -539,19 +520,19 @@ export function InsightsIndexPage() {
       {/* ── Footer Strip ── */}
       <div
         className="border-t"
-        style={{ borderColor: "rgba(255,255,255,0.05)" }}
+        style={{ borderColor: "#E3E1DA" }}
       >
         <div className="mx-auto max-w-[1400px] px-6 py-5 lg:px-10">
           <div
             className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-[12px] font-medium tracking-[0.08em]"
-            style={{ color: "#475569" }}
+            style={{ color: "#8A8D93" }}
           >
             {footerItems.map((item, i) => (
               <span key={item} className="flex items-center gap-8">
                 {i > 0 && (
                   <span
                     className="h-3 w-px"
-                    style={{ background: "rgba(255,255,255,0.08)" }}
+                    style={{ background: "#E3E1DA" }}
                   />
                 )}
                 {item}

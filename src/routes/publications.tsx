@@ -1,4 +1,4 @@
-﻿import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   ArrowLeft,
@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import { SiteNav } from "@/components/brand/SiteNav";
 import { SiteFooter } from "@/components/brand/SiteFooter";
-import { BrandBackground } from "@/components/brand/Background";
 import art2 from "@/assets/insight-article-2.webp";
 import art3 from "@/assets/insight-article-3.webp";
 import art4 from "@/assets/insight-article-4.webp";
@@ -186,8 +185,10 @@ export function PublicationsPage() {
   };
 
   return (
-    <div className="relative min-h-screen" style={{ background: "#050816", color: "#fff" }}>
-      <BrandBackground />
+    <div
+      className="light-page relative min-h-screen"
+      style={{ backgroundColor: "#FAFAF8", color: "#1F2125" }}
+    >
       <SiteNav active="Publications" />
 
       <main className="mx-auto max-w-[1280px] px-6 lg:px-10">
@@ -195,8 +196,8 @@ export function PublicationsPage() {
         <section className="pt-20 pb-14">
           <Link
             to="/insights"
-            className="inline-flex items-center gap-2 text-[12.5px] font-medium transition-colors hover:text-white"
-            style={{ color: "#A3A3B2" }}
+            className="inline-flex items-center gap-2 text-[12.5px] font-medium transition-colors hover:text-[#34506E]"
+            style={{ color: "#8A8D93" }}
           >
             <ArrowLeft className="h-3.5 w-3.5" /> Back to Insights
           </Link>
@@ -205,26 +206,18 @@ export function PublicationsPage() {
               <span
                 className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold tracking-[0.22em]"
                 style={{
-                  background: "rgba(139,92,246,0.12)",
-                  border: "1px solid rgba(139,92,246,0.35)",
-                  color: "#C4B5FD",
+                  background: "#E9EFF4",
+                  border: "1px solid #D7D4CC",
+                  color: "#34506E",
                 }}
               >
                 PUBLICATIONS LIBRARY
               </span>
-              <h1 className="mt-5 text-[48px] font-bold leading-[1.05] tracking-[-0.02em] lg:text-[60px]">
+              <h1 className="mt-5 text-[48px] font-medium leading-[1.05] tracking-[-0.02em] lg:text-[60px]" style={{ color: "#1F2125" }}>
                 Academic{" "}
-                <span
-                  style={{
-                    background: "linear-gradient(135deg, #8B5CF6, #A855F7)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                  }}
-                >
-                  Publications
-                </span>
+                <span style={{ color: "#34506E" }}>Publications</span>
               </h1>
-              <p className="mt-5 text-[15.5px] leading-[1.7]" style={{ color: "#A3A3B2" }}>
+              <p className="mt-5 text-[15.5px] leading-[1.7]" style={{ color: "#5A5D63" }}>
                 Peer-reviewed research, systems thinking, governance,
                 sustainability, and interdisciplinary knowledge systems —
                 authored and co-authored by Dr. Ephraim Mpofu.
@@ -249,8 +242,8 @@ export function PublicationsPage() {
           <div
             className="mt-10 overflow-hidden rounded-[20px]"
             style={{
-              background: "#0B1020",
-              border: "1px solid rgba(255,255,255,0.06)",
+              background: "#F2F0EA",
+              border: "1px solid #E3E1DA",
             }}
           >
             {published.map((p, i) => {
@@ -260,13 +253,13 @@ export function PublicationsPage() {
                   key={p.doi}
                   className="px-7 py-8 lg:px-9"
                   style={{
-                    borderTop: i === 0 ? "none" : "1px solid rgba(255,255,255,0.05)",
+                    borderTop: i === 0 ? "none" : "1px solid #E3E1DA",
                   }}
                 >
                   <div className="grid grid-cols-[40px_96px_1fr] items-start gap-6 lg:grid-cols-[40px_110px_1fr_auto] lg:gap-8">
                     <div
                       className="pt-1 text-[14px] font-semibold tabular-nums"
-                      style={{ color: "#A855F7" }}
+                      style={{ color: "#34506E" }}
                     >
                       {String(i + 1).padStart(2, "0")}
                     </div>
@@ -279,29 +272,26 @@ export function PublicationsPage() {
                       />
                     </div>
                     <div className="min-w-0 col-span-3 lg:col-span-1">
-                      <h3 className="text-[18px] font-semibold leading-[1.4]">
+                      <h3 className="text-[18px] font-medium leading-[1.4]" style={{ color: "#1F2125" }}>
                         {p.title}
                       </h3>
                       <p
                         className="mt-2 text-[13px] leading-[1.6]"
-                        style={{ color: "#A3A3B2" }}
+                        style={{ color: "#5A5D63" }}
                       >
                         {p.authors}
                       </p>
                       <div
                         className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px]"
-                        style={{ color: "#C4B5FD" }}
+                        style={{ color: "#34506E" }}
                       >
                         <span className="flex items-center gap-1.5">
                           <BookOpen className="h-3.5 w-3.5" /> {p.journal}
                         </span>
-                        <span style={{ color: "#6B7280" }}>·</span>
-                        <span style={{ color: "#A3A3B2" }}>{p.year}</span>
-                        <span style={{ color: "#6B7280" }}>·</span>
-                        <span
-                          className="font-mono text-[12px]"
-                          style={{ color: "#6B7280" }}
-                        >
+                        <span style={{ color: "#D7D4CC" }}>·</span>
+                        <span style={{ color: "#5A5D63" }}>{p.year}</span>
+                        <span style={{ color: "#D7D4CC" }}>·</span>
+                        <span className="font-mono text-[12px]" style={{ color: "#8A8D93" }}>
                           DOI: {p.doi}
                         </span>
                       </div>
@@ -309,30 +299,26 @@ export function PublicationsPage() {
                     <div className="col-span-3 mt-3 flex flex-wrap items-center gap-2 lg:col-span-1 lg:mt-0 lg:justify-end">
                       <button
                         onClick={() => copyCitation(i, p)}
-                        className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-[12px] font-medium transition-all hover:bg-white/5"
+                        className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-[12px] font-medium transition-all hover:bg-black/5"
                         style={{
-                          color: "#A3A3B2",
-                          border: "1px solid rgba(255,255,255,0.08)",
+                          color: "#5A5D63",
+                          border: "1px solid #E3E1DA",
                         }}
                       >
                         {copiedIdx === i ? (
-                          <>
-                            <Check className="h-3.5 w-3.5" /> Copied
-                          </>
+                          <><Check className="h-3.5 w-3.5" /> Copied</>
                         ) : (
-                          <>
-                            <Copy className="h-3.5 w-3.5" /> Cite
-                          </>
+                          <><Copy className="h-3.5 w-3.5" /> Cite</>
                         )}
                       </button>
                       <a
                         href={p.doiUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-[12px] font-medium transition-all hover:bg-white/5"
+                        className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-[12px] font-medium transition-all hover:bg-black/5"
                         style={{
-                          color: "#A3A3B2",
-                          border: "1px solid rgba(255,255,255,0.08)",
+                          color: "#5A5D63",
+                          border: "1px solid #E3E1DA",
                         }}
                       >
                         <ExternalLink className="h-3.5 w-3.5" /> DOI
@@ -341,29 +327,26 @@ export function PublicationsPage() {
                         href={p.url}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-[12px] font-semibold text-white"
+                        className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-[12px] font-semibold transition-all hover:opacity-80"
                         style={{
-                          background: "linear-gradient(135deg, #8B5CF6, #A855F7)",
+                          background: "#34506E",
+                          color: "#FAFAF8",
                         }}
                       >
                         Read article <ArrowUpRight className="h-3.5 w-3.5" />
                       </a>
                       <button
                         onClick={() => setOpenIdx(open ? null : i)}
-                        className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-[12px] font-medium transition-all hover:bg-white/5"
+                        className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-[12px] font-medium transition-all hover:bg-black/5"
                         style={{
-                          color: "#A3A3B2",
-                          border: "1px solid rgba(255,255,255,0.08)",
+                          color: "#5A5D63",
+                          border: "1px solid #E3E1DA",
                         }}
                       >
                         {open ? (
-                          <>
-                            <ChevronUp className="h-3.5 w-3.5" /> Hide
-                          </>
+                          <><ChevronUp className="h-3.5 w-3.5" /> Hide</>
                         ) : (
-                          <>
-                            <ChevronDown className="h-3.5 w-3.5" /> Details
-                          </>
+                          <><ChevronDown className="h-3.5 w-3.5" /> Details</>
                         )}
                       </button>
                     </div>
@@ -372,19 +355,19 @@ export function PublicationsPage() {
                     <div
                       className="mt-6 rounded-[14px] p-5"
                       style={{
-                        background: "rgba(139,92,246,0.05)",
-                        border: "1px solid rgba(139,92,246,0.18)",
+                        background: "#EDEBE3",
+                        border: "1px solid #D7D4CC",
                       }}
                     >
                       <div
                         className="text-[10.5px] font-semibold tracking-[0.24em]"
-                        style={{ color: "#A855F7" }}
+                        style={{ color: "#34506E" }}
                       >
                         CITATION
                       </div>
                       <p
                         className="mt-2 text-[13.5px] leading-[1.7]"
-                        style={{ color: "#E5E7EB" }}
+                        style={{ color: "#1F2125" }}
                       >
                         {formatCitation(p)}
                       </p>
@@ -410,31 +393,31 @@ export function PublicationsPage() {
                 key={p.title}
                 className="flex flex-col rounded-[18px] p-7"
                 style={{
-                  background: "#0B1020",
-                  border: "1px solid rgba(255,255,255,0.06)",
+                  background: "#F2F0EA",
+                  border: "1px solid #E3E1DA",
                 }}
               >
                 <div className="flex items-center justify-between">
                   <span
                     className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10.5px] font-semibold tracking-[0.2em]"
                     style={{
-                      background: "rgba(168,85,247,0.12)",
-                      color: "#C4B5FD",
-                      border: "1px solid rgba(168,85,247,0.3)",
+                      background: "#E9EFF4",
+                      color: "#34506E",
+                      border: "1px solid #D7D4CC",
                     }}
                   >
                     <FlaskConical className="h-3 w-3" /> {p.status.toUpperCase()}
                   </span>
-                  <span className="text-[12px]" style={{ color: "#6B7280" }}>
+                  <span className="text-[12px]" style={{ color: "#8A8D93" }}>
                     {p.journal}
                   </span>
                 </div>
-                <h3 className="mt-5 text-[17px] font-semibold leading-[1.45]">
+                <h3 className="mt-5 text-[17px] font-medium leading-[1.45]" style={{ color: "#1F2125" }}>
                   {p.title}
                 </h3>
                 <p
                   className="mt-3 text-[13px] leading-[1.65]"
-                  style={{ color: "#A3A3B2" }}
+                  style={{ color: "#5A5D63" }}
                 >
                   {p.authors}
                 </p>
@@ -454,17 +437,13 @@ function Stat({ label, value }: { label: string; value: string }) {
     <div>
       <div
         className="text-[28px] font-bold leading-none"
-        style={{
-          background: "linear-gradient(135deg, #8B5CF6, #A855F7)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-        }}
+        style={{ color: "#34506E" }}
       >
         {value}
       </div>
       <div
         className="mt-1.5 text-[10.5px] font-semibold tracking-[0.22em]"
-        style={{ color: "#A3A3B2" }}
+        style={{ color: "#8A8D93" }}
       >
         {label.toUpperCase()}
       </div>
@@ -485,13 +464,13 @@ function SectionHeader({
     <div>
       <div
         className="text-[11px] font-semibold tracking-[0.28em]"
-        style={{ color: "#A855F7" }}
+        style={{ color: "#34506E" }}
       >
         {eyebrow}
       </div>
-      <h2 className="mt-2 text-[32px] font-bold tracking-[-0.01em]">{title}</h2>
+      <h2 className="mt-2 text-[32px] font-medium tracking-[-0.01em]" style={{ color: "#1F2125" }}>{title}</h2>
       {subtitle && (
-        <p className="mt-2 text-[14px]" style={{ color: "#A3A3B2" }}>
+        <p className="mt-2 text-[14px]" style={{ color: "#5A5D63" }}>
           {subtitle}
         </p>
       )}

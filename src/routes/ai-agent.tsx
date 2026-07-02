@@ -1,4 +1,4 @@
-﻿import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useRef, useEffect } from "react";
 import type { KeyboardEvent } from "react";
 import { useTranslation } from "react-i18next";
@@ -23,7 +23,6 @@ import {
 } from "lucide-react";
 import { SiteNav } from "@/components/brand/SiteNav";
 import { SiteFooter } from "@/components/brand/SiteFooter";
-import { BrandBackground } from "@/components/brand/Background";
 
 /* ============================================================
    TYPES
@@ -202,11 +201,10 @@ export const Route = createFileRoute("/ai-agent")({
 export function AIAgentPage() {
   return (
     <div
-      className="relative min-h-screen overflow-hidden"
-      style={{ backgroundColor: "#050816" }}
+      className="light-page relative min-h-screen overflow-hidden"
+      style={{ backgroundColor: "#FAFAF8" }}
     >
       <AIAgentStructuredData />
-      <BrandBackground />
       <SiteNav active="AI Agent" />
       <main className="mx-auto max-w-[1080px] px-6 pt-12 pb-16 lg:px-10">
         <AuthorityHero />
@@ -233,14 +231,14 @@ function AuthorityHero() {
           <span
             className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.22em]"
             style={{
-              background: "rgba(139,92,246,0.12)",
-              border: "1px solid rgba(139,92,246,0.28)",
-              color: "#C4B5FD",
+              background: "#E9EFF4",
+              border: "1px solid #D7D4CC",
+              color: "#34506E",
             }}
           >
             <span
               className="h-1.5 w-1.5 rounded-full"
-              style={{ background: "#A855F7", boxShadow: "0 0 8px #A855F7" }}
+              style={{ background: "#34506E" }}
             />
             {t("aiAgent.liveBadge")}
           </span>
@@ -249,36 +247,30 @@ function AuthorityHero() {
             style={{
               background: "rgba(16,185,129,0.10)",
               border: "1px solid rgba(16,185,129,0.28)",
-              color: "#34D399",
+              color: "#059669",
             }}
           >
             {t("aiAgent.freeBadge")}
           </span>
         </div>
 
-        <h1 className="mt-5 text-[42px] font-bold leading-[1.06] tracking-tight text-white sm:text-[50px] lg:text-[54px]">
+        <h1 className="mt-5 text-[42px] font-medium leading-[1.06] tracking-tight sm:text-[50px] lg:text-[54px]" style={{ color: "#1F2125" }}>
           {t("aiAgent.heroTitle1")}{" "}
-          <span
-            style={{
-              background: "linear-gradient(90deg, #A855F7, #C4B5FD)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
+          <span style={{ color: "#34506E" }}>
             {t("aiAgent.heroTitle2")}
           </span>
         </h1>
 
         <p
           className="mt-4 max-w-[520px] text-[16px] leading-relaxed"
-          style={{ color: "#9CA3AF" }}
+          style={{ color: "#5A5D63" }}
         >
           {t("aiAgent.heroDesc")}
         </p>
 
         <p
           className="mt-3 max-w-[480px] text-[13.5px] leading-relaxed"
-          style={{ color: "#6B7280" }}
+          style={{ color: "#8A8D93" }}
         >
           {t("aiAgent.heroSub")}
         </p>
@@ -289,16 +281,16 @@ function AuthorityHero() {
               const el = document.getElementById("chat-section");
               el?.scrollIntoView({ behavior: "smooth", block: "start" });
             }}
-            className="inline-flex items-center gap-2 rounded-[10px] px-5 py-2.5 text-[13.5px] font-semibold text-white transition-all hover:scale-[1.02]"
-            style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
+            className="inline-flex items-center gap-2 rounded-[10px] px-5 py-2.5 text-[13.5px] font-semibold transition-all hover:opacity-80"
+            style={{ background: "#34506E", color: "#FAFAF8" }}
           >
             <MessageSquare className="h-4 w-4" />
             {t("aiAgent.startConversation")}
           </button>
           <Link
             to="/contact"
-            className="inline-flex items-center gap-2 rounded-[10px] px-5 py-2.5 text-[13.5px] font-semibold text-white transition-all hover:bg-white/5"
-            style={{ border: "1px solid rgba(255,255,255,0.14)" }}
+            className="inline-flex items-center gap-2 rounded-[10px] px-5 py-2.5 text-[13.5px] font-semibold transition-all hover:bg-black/5"
+            style={{ border: "1px solid #D7D4CC", color: "#1F2125" }}
           >
             {t("aiAgent.bookCall")}
           </Link>
@@ -318,11 +310,11 @@ function AgentVisual() {
   const RADIUS = 96;
 
   const nodes = [
-    { icon: Layers,      label: "Frameworks",   color: "#A855F7", angle: -90 },
+    { icon: Layers,      label: "Frameworks",   color: "#34506E", angle: -90 },
     { icon: Building2,   label: "Projects",     color: "#60A5FA", angle: -30 },
     { icon: ShieldCheck, label: "Governance",   color: "#34D399", angle:  30 },
     { icon: Brain,       label: "Research",     color: "#F59E0B", angle:  90 },
-    { icon: Network,     label: "Architecture", color: "#C4B5FD", angle: 150 },
+    { icon: Network,     label: "Architecture", color: "#6B7280", angle: 150 },
     { icon: Target,      label: "Strategy",     color: "#F472B6", angle: 210 },
   ];
 
@@ -335,29 +327,20 @@ function AgentVisual() {
     <div
       className="relative flex flex-col items-center justify-center overflow-hidden rounded-2xl py-8"
       style={{
-        background: "rgba(10,14,34,0.85)",
-        border: "1px solid rgba(139,92,246,0.18)",
+        background: "#F2F0EA",
+        border: "1px solid #E3E1DA",
       }}
     >
       <style>{`
         @keyframes agentPulse {
-          0%, 100% { box-shadow: 0 0 40px 8px rgba(168,85,247,0.45); }
-          50%       { box-shadow: 0 0 70px 18px rgba(168,85,247,0.7); }
+          0%, 100% { box-shadow: 0 0 30px 6px rgba(52,80,110,0.3); }
+          50%       { box-shadow: 0 0 50px 14px rgba(52,80,110,0.5); }
         }
         @keyframes nodePing {
           0%, 100% { opacity: 0.55; transform: scale(1); }
           50%       { opacity: 1;    transform: scale(1.12); }
         }
       `}</style>
-
-      {/* Atmospheric radial glow */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse at 50% 48%, rgba(168,85,247,0.16) 0%, transparent 68%)",
-        }}
-      />
 
       {/* Neural-network SVG */}
       <div className="relative" style={{ width: SIZE, height: SIZE }}>
@@ -391,13 +374,13 @@ function AgentVisual() {
                 x2={CX}  y2={CY}
                 stroke={n.color}
                 strokeWidth="1"
-                strokeOpacity="0.22"
+                strokeOpacity="0.3"
                 strokeDasharray="4 4"
               />
             );
           })}
 
-          {/* Animated data pulses — travel from node → centre */}
+          {/* Animated data pulses */}
           {nodes.map((n, i) => (
             <circle key={`pulse-${i}`} r="2.5" fill={n.color} opacity="0.85">
               <animateMotion
@@ -424,9 +407,8 @@ function AgentVisual() {
               <div
                 className="flex h-10 w-10 items-center justify-center rounded-full"
                 style={{
-                  background: `${n.color}16`,
+                  background: `${n.color}18`,
                   border: `1px solid ${n.color}45`,
-                  boxShadow: `0 0 14px ${n.color}28`,
                   animation: `nodePing 3s ease-in-out infinite`,
                   animationDelay: `${nodes.indexOf(n) * 0.5}s`,
                 }}
@@ -445,7 +427,7 @@ function AgentVisual() {
             height: 88,
             left: CX - 44,
             top: CY - 44,
-            background: "linear-gradient(135deg, #8B5CF6, #A855F7)",
+            background: "#34506E",
             animation: "agentPulse 2.6s ease-in-out infinite",
           }}
         >
@@ -463,13 +445,13 @@ function AgentIdentity() {
   const { t } = useTranslation("common");
   return (
     <>
-      <div className="relative mt-4 text-[16px] font-bold text-white">
+      <div className="relative mt-4 text-[16px] font-medium" style={{ color: "#1F2125" }}>
         {t("aiAgent.agentName")}
       </div>
       <div className="relative mt-1.5 flex items-center gap-1.5">
         <span
           className="h-2 w-2 rounded-full"
-          style={{ background: "#10B981", boxShadow: "0 0 8px #10B981" }}
+          style={{ background: "#10B981" }}
         />
         <span className="text-[12px] font-semibold" style={{ color: "#10B981" }}>
           {t("aiAgent.agentStatus")}
@@ -505,8 +487,8 @@ function WhatYouCanAsk() {
       <div
         className="px-4 py-3 text-[12px] font-bold uppercase tracking-[0.16em]"
         style={{
-          borderBottom: "1px solid rgba(255,255,255,0.06)",
-          color: "#9CA3AF",
+          borderBottom: "1px solid #E3E1DA",
+          color: "#8A8D93",
         }}
       >
         {t("aiAgent.whatYouCanAsk")}
@@ -514,35 +496,35 @@ function WhatYouCanAsk() {
       {categories.map((cat, i) => (
         <div
           key={cat.title}
-          className="flex cursor-pointer items-center gap-3 px-4 py-3 transition-colors hover:bg-white/[0.025]"
+          className="flex cursor-pointer items-center gap-3 px-4 py-3 transition-colors hover:bg-black/[0.025]"
           style={{
             borderBottom:
-              i < categories.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
+              i < categories.length - 1 ? "1px solid #E3E1DA" : "none",
           }}
         >
           <div
             className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg"
             style={{
-              background: "rgba(139,92,246,0.10)",
-              border: "1px solid rgba(139,92,246,0.2)",
+              background: "#E9EFF4",
+              border: "1px solid #D7D4CC",
             }}
           >
-            <cat.icon className="h-3.5 w-3.5" style={{ color: "#C4B5FD" }} />
+            <cat.icon className="h-3.5 w-3.5" style={{ color: "#34506E" }} />
           </div>
           <div className="flex-1 min-w-0">
-            <div className="text-[12.5px] font-semibold text-white">{cat.title}</div>
-            <div className="text-[10.5px]" style={{ color: "#6B7280" }}>
+            <div className="text-[12.5px] font-semibold" style={{ color: "#1F2125" }}>{cat.title}</div>
+            <div className="text-[10.5px]" style={{ color: "#8A8D93" }}>
               {cat.sub}
             </div>
           </div>
-          <ChevronRight className="h-3.5 w-3.5 shrink-0" style={{ color: "#4B5563" }} />
+          <ChevronRight className="h-3.5 w-3.5 shrink-0" style={{ color: "#D7D4CC" }} />
         </div>
       ))}
     </div>
   );
 }
 
-/* Chat Welcome State — shown when no messages yet */
+/* Chat Welcome State */
 function ChatWelcomeState({ onSuggest }: { onSuggest: (q: string) => void }) {
   const { t } = useTranslation("common");
   const SUGGESTION_ICONS = [Building2, ShieldCheck, GraduationCap];
@@ -558,8 +540,8 @@ function ChatWelcomeState({ onSuggest }: { onSuggest: (q: string) => void }) {
           to   { opacity: 1; transform: translateY(0); }
         }
         @keyframes softPulse {
-          0%, 100% { box-shadow: 0 0 24px 4px rgba(168,85,247,0.35); }
-          50%       { box-shadow: 0 0 44px 10px rgba(168,85,247,0.6); }
+          0%, 100% { box-shadow: 0 0 20px 4px rgba(52,80,110,0.25); }
+          50%       { box-shadow: 0 0 36px 8px rgba(52,80,110,0.4); }
         }
       `}</style>
 
@@ -567,15 +549,15 @@ function ChatWelcomeState({ onSuggest }: { onSuggest: (q: string) => void }) {
       <div
         className="mb-4 flex h-14 w-14 items-center justify-center rounded-full"
         style={{
-          background: "linear-gradient(135deg, #8B5CF6, #A855F7)",
+          background: "#34506E",
           animation: "softPulse 2.4s ease-in-out infinite",
         }}
       >
         <Bot className="h-7 w-7 text-white" />
       </div>
 
-      <div className="text-[15px] font-bold text-white">{t("aiAgent.chatWelcomeTitle")}</div>
-      <div className="mt-1 mb-5 text-[12px]" style={{ color: "#6B7280" }}>
+      <div className="text-[15px] font-medium" style={{ color: "#1F2125" }}>{t("aiAgent.chatWelcomeTitle")}</div>
+      <div className="mt-1 mb-5 text-[12px]" style={{ color: "#8A8D93" }}>
         {t("aiAgent.chatWelcomeSub")}
       </div>
 
@@ -584,17 +566,17 @@ function ChatWelcomeState({ onSuggest }: { onSuggest: (q: string) => void }) {
           <button
             key={s.text}
             onClick={() => onSuggest(s.text)}
-            className="flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-left transition-all hover:bg-white/[0.04]"
+            className="flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-left transition-all hover:bg-black/[0.03]"
             style={{
-              background: "rgba(255,255,255,0.025)",
-              border: "1px solid rgba(255,255,255,0.08)",
+              background: "#FAFAF8",
+              border: "1px solid #E3E1DA",
               animation: "fadeSlideUp 0.4s ease both",
               animationDelay: `${i * 75}ms`,
             }}
           >
             <s.icon className="h-4 w-4 shrink-0" style={{ color: s.color }} />
-            <span className="text-[13px] text-white">{s.text}</span>
-            <ChevronRight className="ml-auto h-3.5 w-3.5 shrink-0" style={{ color: "#4B5563" }} />
+            <span className="text-[13px]" style={{ color: "#1F2125" }}>{s.text}</span>
+            <ChevronRight className="ml-auto h-3.5 w-3.5 shrink-0" style={{ color: "#D7D4CC" }} />
           </button>
         ))}
       </div>
@@ -663,26 +645,26 @@ function ChatInterface() {
       {/* Header */}
       <div
         className="flex items-center justify-between px-5 py-3.5"
-        style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
+        style={{ borderBottom: "1px solid #E3E1DA" }}
       >
         <div className="flex items-center gap-3">
           <div
             className="flex h-7 w-7 items-center justify-center rounded-full"
-            style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
+            style={{ background: "#34506E" }}
           >
             <Bot className="h-3.5 w-3.5 text-white" />
           </div>
           <div>
-            <div className="text-[13px] font-bold text-white">{t("aiAgent.chatTitle")}</div>
-            <div className="text-[10.5px]" style={{ color: "#9CA3AF" }}>
+            <div className="text-[13px] font-medium" style={{ color: "#1F2125" }}>{t("aiAgent.chatTitle")}</div>
+            <div className="text-[10.5px]" style={{ color: "#8A8D93" }}>
               {t("aiAgent.chatSub")}
             </div>
           </div>
         </div>
         <button
           onClick={() => { setMessages([]); nextId.current = 1; }}
-          className="rounded-lg px-3 py-1.5 text-[11px] transition-colors hover:bg-white/5"
-          style={{ border: "1px solid rgba(255,255,255,0.08)", color: "#9CA3AF" }}
+          className="rounded-lg px-3 py-1.5 text-[11px] transition-colors hover:bg-black/5"
+          style={{ border: "1px solid #E3E1DA", color: "#8A8D93" }}
         >
           {t("aiAgent.clearChat")}
         </button>
@@ -705,25 +687,25 @@ function ChatInterface() {
             {msg.role === "agent" ? (
               <div
                 className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
-                style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
+                style={{ background: "#34506E" }}
               >
                 <Bot className="h-3.5 w-3.5 text-white" />
               </div>
             ) : (
               <div
                 className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
-                style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}
+                style={{ background: "#EDEBE3", border: "1px solid #D7D4CC" }}
               >
-                <Users className="h-3.5 w-3.5" style={{ color: "#9CA3AF" }} />
+                <Users className="h-3.5 w-3.5" style={{ color: "#5A5D63" }} />
               </div>
             )}
             <div className={`flex max-w-[82%] flex-col ${msg.role === "user" ? "items-end" : "items-start"}`}>
               <div
-                className="rounded-xl px-4 py-2.5 text-[13.5px] leading-relaxed text-white"
+                className="rounded-xl px-4 py-2.5 text-[13.5px] leading-relaxed"
                 style={
                   msg.role === "user"
-                    ? { background: "rgba(139,92,246,0.18)", border: "1px solid rgba(139,92,246,0.28)" }
-                    : { background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }
+                    ? { background: "#E9EFF4", border: "1px solid #D7D4CC", color: "#1F2125" }
+                    : { background: "#EDEBE3", border: "1px solid #E3E1DA", color: "#1F2125" }
                 }
               >
                 {msg.content}
@@ -736,20 +718,20 @@ function ChatInterface() {
           <div className="flex items-start gap-3">
             <div
               className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
-              style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
+              style={{ background: "#34506E" }}
             >
               <Bot className="h-3.5 w-3.5 text-white" />
             </div>
             <div
               className="rounded-xl px-4 py-2.5"
-              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
+              style={{ background: "#EDEBE3", border: "1px solid #E3E1DA" }}
             >
               <div className="flex items-center gap-1">
                 {[0, 150, 300].map((delay) => (
                   <span
                     key={delay}
                     className="h-1.5 w-1.5 rounded-full animate-bounce"
-                    style={{ background: "#A855F7", animationDelay: `${delay}ms` }}
+                    style={{ background: "#34506E", animationDelay: `${delay}ms` }}
                   />
                 ))}
               </div>
@@ -764,7 +746,7 @@ function ChatInterface() {
       {messages.length > 0 && (
       <div
         className="flex gap-2 overflow-x-auto px-5 py-2.5"
-        style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
+        style={{ borderTop: "1px solid #E3E1DA" }}
       >
         {(suggested.length > 0 ? suggested : SUGGESTED_FALLBACK).map((q) => (
           <button
@@ -773,9 +755,9 @@ function ChatInterface() {
             disabled={isTyping}
             className="shrink-0 rounded-full px-3 py-1 text-[11px] font-medium transition-all disabled:opacity-40"
             style={{
-              background: "rgba(139,92,246,0.08)",
-              border: "1px solid rgba(139,92,246,0.18)",
-              color: "#C4B5FD",
+              background: "#E9EFF4",
+              border: "1px solid #D7D4CC",
+              color: "#34506E",
               whiteSpace: "nowrap",
             }}
           >
@@ -786,13 +768,14 @@ function ChatInterface() {
       )}
 
       {/* Input */}
-      <div className="px-5 py-3.5" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+      <div className="px-5 py-3.5" style={{ borderTop: "1px solid #E3E1DA" }}>
         <div
           className="flex items-center gap-3 rounded-xl px-4 py-2.5"
-          style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)" }}
+          style={{ background: "#FAFAF8", border: "1px solid #E3E1DA" }}
         >
           <input
-            className="flex-1 bg-transparent text-[13.5px] text-white outline-none placeholder:text-gray-500"
+            className="flex-1 bg-transparent text-[13.5px] outline-none placeholder:text-[#8A8D93]"
+            style={{ color: "#1F2125" }}
             placeholder={t("aiAgent.chatPlaceholder")}
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -802,8 +785,8 @@ function ChatInterface() {
           <button
             onClick={() => sendMessage(input)}
             disabled={!input.trim() || isTyping}
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-all disabled:opacity-40 hover:scale-105"
-            style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-all disabled:opacity-40 hover:opacity-80"
+            style={{ background: "#34506E" }}
           >
             <Send className="h-3 w-3 text-white" />
           </button>
@@ -819,7 +802,7 @@ function ChatInterface() {
 
 function KnowledgeTransparency() {
   const { t } = useTranslation("common");
-  const L1_COLORS = ["#A855F7", "#10B981", "#60A5FA", "#F59E0B"];
+  const L1_COLORS = ["#34506E", "#10B981", "#60A5FA", "#F59E0B"];
   const layer1Docs = t("aiAgent.layer1Docs", { returnObjects: true }) as Array<{ num: string; title: string }>;
   const layer2Docs = (t("aiAgent.layer2Docs", { returnObjects: true }) as Array<{ title: string; badge: string }>)
     .map((doc, i) => ({ ...doc, color: L1_COLORS[i] }));
@@ -831,7 +814,7 @@ function KnowledgeTransparency() {
         <div className="flex flex-wrap items-center gap-3 mb-2">
           <div
             className="text-[10px] font-bold uppercase tracking-[0.25em]"
-            style={{ color: "#A855F7" }}
+            style={{ color: "#34506E" }}
           >
             {t("aiAgent.knowledgeLabel")}
           </div>
@@ -840,46 +823,46 @@ function KnowledgeTransparency() {
             style={{
               background: "rgba(16,185,129,0.10)",
               border: "1px solid rgba(16,185,129,0.25)",
-              color: "#34D399",
+              color: "#059669",
             }}
           >
             <ShieldCheck className="h-3 w-3" />
             {t("aiAgent.knowledgePillar")}
           </span>
         </div>
-        <h2 className="mt-2 text-[22px] font-bold text-white">
+        <h2 className="mt-2 text-[22px] font-medium" style={{ color: "#1F2125" }}>
           {t("aiAgent.knowledgeTitle")}
         </h2>
         <p
           className="mt-3 max-w-[680px] text-[14px] leading-relaxed"
-          style={{ color: "#9CA3AF" }}
+          style={{ color: "#5A5D63" }}
         >
           {t("aiAgent.knowledgeDesc")}
         </p>
       </div>
 
-      {/* Two-column table — L1 left, L2 right */}
+      {/* Two-column table */}
       <div
         className="overflow-hidden rounded-xl lg:grid lg:grid-cols-[3fr_2fr]"
-        style={{ border: "1px solid rgba(255,255,255,0.08)" }}
+        style={{ border: "1px solid #E3E1DA" }}
       >
         {/* L1 — Core Identity */}
-        <div style={{ borderRight: "1px solid rgba(255,255,255,0.08)" }}>
+        <div style={{ borderRight: "1px solid #E3E1DA" }}>
           <div
             className="flex items-center gap-2.5 px-5 py-3.5"
             style={{
-              borderBottom: "1px solid rgba(255,255,255,0.08)",
-              background: "rgba(139,92,246,0.06)",
+              borderBottom: "1px solid #E3E1DA",
+              background: "#E9EFF4",
             }}
           >
             <span
               className="inline-flex h-5 w-7 items-center justify-center rounded text-[9px] font-bold"
-              style={{ background: "rgba(139,92,246,0.22)", color: "#C4B5FD" }}
+              style={{ background: "rgba(52,80,110,0.18)", color: "#34506E" }}
             >
               L1
             </span>
-            <span className="text-[13px] font-bold text-white">{t("aiAgent.l1Label")}</span>
-            <span className="ml-auto text-[11px]" style={{ color: "#6B7280" }}>
+            <span className="text-[13px] font-medium" style={{ color: "#1F2125" }}>{t("aiAgent.l1Label")}</span>
+            <span className="ml-auto text-[11px]" style={{ color: "#8A8D93" }}>
               {t("aiAgent.l1Count")}
             </span>
           </div>
@@ -890,17 +873,17 @@ function KnowledgeTransparency() {
               style={{
                 borderBottom:
                   i < layer1Docs.length - 1
-                    ? "1px solid rgba(255,255,255,0.05)"
+                    ? "1px solid #E3E1DA"
                     : "none",
               }}
             >
               <span
                 className="w-6 shrink-0 text-[11px] font-semibold tabular-nums"
-                style={{ color: "#C4B5FD" }}
+                style={{ color: "#34506E" }}
               >
                 {doc.num}
               </span>
-              <span className="text-[13px] text-white">{doc.title}</span>
+              <span className="text-[13px]" style={{ color: "#1F2125" }}>{doc.title}</span>
             </div>
           ))}
         </div>
@@ -910,18 +893,18 @@ function KnowledgeTransparency() {
           <div
             className="flex items-center gap-2.5 px-5 py-3.5"
             style={{
-              borderBottom: "1px solid rgba(255,255,255,0.08)",
-              background: "rgba(16,185,129,0.04)",
+              borderBottom: "1px solid #E3E1DA",
+              background: "rgba(16,185,129,0.06)",
             }}
           >
             <span
               className="inline-flex h-5 w-7 items-center justify-center rounded text-[9px] font-bold"
-              style={{ background: "rgba(16,185,129,0.18)", color: "#34D399" }}
+              style={{ background: "rgba(16,185,129,0.18)", color: "#059669" }}
             >
               L2
             </span>
-            <span className="text-[13px] font-bold text-white">{t("aiAgent.l2Label")}</span>
-            <span className="ml-auto text-[11px]" style={{ color: "#6B7280" }}>
+            <span className="text-[13px] font-medium" style={{ color: "#1F2125" }}>{t("aiAgent.l2Label")}</span>
+            <span className="ml-auto text-[11px]" style={{ color: "#8A8D93" }}>
               {t("aiAgent.l2Count")}
             </span>
           </div>
@@ -932,7 +915,7 @@ function KnowledgeTransparency() {
               style={{
                 borderBottom:
                   i < layer2Docs.length - 1
-                    ? "1px solid rgba(255,255,255,0.05)"
+                    ? "1px solid #E3E1DA"
                     : "none",
               }}
             >
@@ -940,7 +923,7 @@ function KnowledgeTransparency() {
                 className="h-3.5 w-3.5 shrink-0"
                 style={{ color: doc.color }}
               />
-              <span className="min-w-0 flex-1 text-[13px] text-white">
+              <span className="min-w-0 flex-1 text-[13px]" style={{ color: "#1F2125" }}>
                 {doc.title}
               </span>
               <span
@@ -962,28 +945,21 @@ function KnowledgeTransparency() {
       <div
         className="mt-3 flex flex-wrap items-center gap-3 rounded-xl px-5 py-3"
         style={{
-          background: "rgba(16,185,129,0.05)",
-          border: "1px solid rgba(16,185,129,0.15)",
+          background: "rgba(16,185,129,0.06)",
+          border: "1px solid rgba(16,185,129,0.2)",
         }}
       >
-        <ShieldCheck className="h-4 w-4 shrink-0" style={{ color: "#34D399" }} />
-        <span className="text-[12px] font-semibold" style={{ color: "#34D399" }}>
+        <ShieldCheck className="h-4 w-4 shrink-0" style={{ color: "#059669" }} />
+        <span className="text-[12px] font-semibold" style={{ color: "#059669" }}>
           {t("aiAgent.knowledgeGovLabel")}
         </span>
-        <span className="text-[11.5px]" style={{ color: "#6B7280" }}>
+        <span className="text-[11.5px]" style={{ color: "#8A8D93" }}>
           {t("aiAgent.knowledgeGovDesc")}
         </span>
       </div>
     </section>
   );
 }
-
-/* ============================================================
-   5. HOW IT WORKS + WHO THIS IS FOR (2-column)
-   ============================================================ */
-
-
-
 
 /* ============================================================
    7. FAQ + CTA (65 / 35 split)
@@ -995,9 +971,9 @@ function FaqAndCta() {
 
   return (
     <section className="mt-10 grid gap-5 lg:grid-cols-[1fr_340px]">
-      {/* FAQ — <details>/<summary> so all answers are always in DOM for crawlers */}
+      {/* FAQ */}
       <div>
-        <h3 className="text-[20px] font-bold text-white">{t("aiAgent.faqTitle")}</h3>
+        <h3 className="text-[20px] font-medium" style={{ color: "#1F2125" }}>{t("aiAgent.faqTitle")}</h3>
         <div className="mt-4 space-y-2">
           {faqs.map((f) => (
             <details
@@ -1008,20 +984,20 @@ function FaqAndCta() {
                 className="flex cursor-pointer list-none items-start justify-between gap-4 px-5 py-3.5"
                 style={{ userSelect: "none" }}
               >
-                <span className="text-[13.5px] font-semibold text-white">{f.q}</span>
+                <span className="text-[13.5px] font-medium" style={{ color: "#1F2125" }}>{f.q}</span>
                 <span
                   className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full transition-transform group-open:rotate-45"
                   style={{
-                    background: "rgba(139,92,246,0.12)",
-                    border: "1px solid rgba(139,92,246,0.2)",
+                    background: "#E9EFF4",
+                    border: "1px solid #D7D4CC",
                   }}
                 >
-                  <Plus className="h-3 w-3" style={{ color: "#A855F7" }} />
+                  <Plus className="h-3 w-3" style={{ color: "#34506E" }} />
                 </span>
               </summary>
               <div
                 className="px-5 pb-3.5 text-[13px] leading-relaxed"
-                style={{ color: "#9CA3AF", borderTop: "1px solid rgba(255,255,255,0.05)" }}
+                style={{ color: "#5A5D63", borderTop: "1px solid #E3E1DA" }}
               >
                 <div className="pt-2.5">{f.a}</div>
               </div>
@@ -1034,47 +1010,43 @@ function FaqAndCta() {
       <div
         className="relative overflow-hidden rounded-2xl p-5 flex flex-col"
         style={{
-          background: "linear-gradient(135deg, rgba(139,92,246,0.11), rgba(168,85,247,0.05))",
-          border: "1px solid rgba(139,92,246,0.2)",
+          background: "#F2F0EA",
+          border: "1px solid #E3E1DA",
         }}
       >
-        <div
-          className="pointer-events-none absolute left-1/2 top-0 h-[150px] w-[280px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-20"
-          style={{ background: "radial-gradient(circle, #A855F7, transparent 70%)" }}
-        />
         <div className="relative flex flex-1 flex-col">
           <div
             className="inline-flex w-fit rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-[0.18em]"
             style={{
-              background: "rgba(139,92,246,0.14)",
-              border: "1px solid rgba(139,92,246,0.26)",
-              color: "#C4B5FD",
+              background: "#E9EFF4",
+              border: "1px solid #D7D4CC",
+              color: "#34506E",
             }}
           >
             {t("aiAgent.ctaBadge")}
           </div>
 
-          <h3 className="mt-4 text-[20px] font-bold leading-tight text-white">
+          <h3 className="mt-4 text-[20px] font-medium leading-tight" style={{ color: "#1F2125" }}>
             {t("aiAgent.ctaTitle")}
           </h3>
 
-          <p className="mt-2.5 text-[13px] leading-relaxed" style={{ color: "#9CA3AF" }}>
+          <p className="mt-2.5 text-[13px] leading-relaxed" style={{ color: "#5A5D63" }}>
             {t("aiAgent.ctaDesc")}
           </p>
 
           <div className="mt-5 flex flex-col gap-2.5">
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-[13.5px] font-semibold text-white transition-all hover:scale-[1.02]"
-              style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
+              className="flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-[13.5px] font-semibold transition-all hover:opacity-80"
+              style={{ background: "#34506E", color: "#FAFAF8" }}
             >
               <MessageSquare className="h-4 w-4" />
               {t("aiAgent.ctaAskAgent")}
             </button>
             <Link
               to="/contact"
-              className="flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-[13.5px] font-semibold text-white transition-all hover:bg-white/5"
-              style={{ border: "1px solid rgba(255,255,255,0.13)" }}
+              className="flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-[13.5px] font-semibold transition-all hover:bg-black/5"
+              style={{ border: "1px solid #D7D4CC", color: "#1F2125" }}
             >
               {t("aiAgent.ctaBookCall")} <ArrowRight className="h-4 w-4" />
             </Link>
@@ -1082,9 +1054,9 @@ function FaqAndCta() {
 
           <div
             className="mt-4 flex items-center gap-1.5 text-[10.5px]"
-            style={{ color: "#6B7280" }}
+            style={{ color: "#8A8D93" }}
           >
-            <MapPin className="h-3 w-3" style={{ color: "#A855F7" }} />
+            <MapPin className="h-3 w-3" style={{ color: "#34506E" }} />
             {t("aiAgent.ctaLocation")}
           </div>
         </div>
@@ -1092,4 +1064,3 @@ function FaqAndCta() {
     </section>
   );
 }
-

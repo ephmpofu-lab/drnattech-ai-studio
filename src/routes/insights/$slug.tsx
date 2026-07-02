@@ -1,4 +1,4 @@
-﻿import {
+import {
   createFileRoute,
   Link,
   notFound,
@@ -22,7 +22,6 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { SiteNav } from "@/components/brand/SiteNav";
 import { SiteFooter } from "@/components/brand/SiteFooter";
-import { BrandBackground } from "@/components/brand/Background";
 import {
   getPublicationBySlug,
   getRelatedPublications,
@@ -130,10 +129,10 @@ const MARKDOWN_COMPONENTS = {
     return (
       <h2
         id={id}
-        className="mb-5 mt-10 scroll-mt-[120px] text-[24px] font-bold leading-[1.25] tracking-[-0.01em] first:mt-0"
+        className="mb-5 mt-10 scroll-mt-[120px] text-[24px] font-medium leading-[1.25] tracking-[-0.01em] first:mt-0"
         style={{
-          color: '#CBD5E1',
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
+          color: '#1F2125',
+          borderBottom: '1px solid #E3E1DA',
           paddingBottom: '0.75rem',
         }}
       >
@@ -143,14 +142,14 @@ const MARKDOWN_COMPONENTS = {
   },
   h3: ({ children }: { children?: React.ReactNode }) => (
     <h3
-      className="mb-4 mt-7 text-[19px] font-semibold leading-[1.3]"
-      style={{ color: '#E2E8F0' }}
+      className="mb-4 mt-7 text-[19px] font-medium leading-[1.3]"
+      style={{ color: '#1F2125' }}
     >
       {children}
     </h3>
   ),
   p: ({ children }: { children?: React.ReactNode }) => (
-    <p className="mb-5 text-[15.5px] leading-[1.8]" style={{ color: '#CBD5E1' }}>
+    <p className="mb-5 text-[15.5px] leading-[1.8]" style={{ color: '#5A5D63' }}>
       {children}
     </p>
   ),
@@ -158,18 +157,18 @@ const MARKDOWN_COMPONENTS = {
     <ul className="mb-5 space-y-2.5 pl-1">{children}</ul>
   ),
   ol: ({ children }: { children?: React.ReactNode }) => (
-    <ol className="mb-5 list-decimal space-y-2 pl-5 text-[15px] leading-[1.7]" style={{ color: '#CBD5E1' }}>
+    <ol className="mb-5 list-decimal space-y-2 pl-5 text-[15px] leading-[1.7]" style={{ color: '#5A5D63' }}>
       {children}
     </ol>
   ),
   li: ({ children }: { children?: React.ReactNode }) => (
     <li
       className="flex gap-3 text-[15px] leading-[1.7]"
-      style={{ color: '#CBD5E1' }}
+      style={{ color: '#5A5D63' }}
     >
       <span
         className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full"
-        style={{ background: '#A855F7' }}
+        style={{ background: '#34506E' }}
       />
       <span>{children}</span>
     </li>
@@ -178,13 +177,13 @@ const MARKDOWN_COMPONENTS = {
     <blockquote
       className="my-7 rounded-r-[12px] py-5 pl-6 pr-5"
       style={{
-        background: 'rgba(139,92,246,0.06)',
-        borderLeft: '3px solid #A855F7',
+        background: '#E9EFF4',
+        borderLeft: '3px solid #34506E',
       }}
     >
       <div
         className="text-[16px] font-medium italic leading-[1.75]"
-        style={{ color: '#E2E8F0' }}
+        style={{ color: '#1F2125' }}
       >
         {children}
       </div>
@@ -196,14 +195,14 @@ const MARKDOWN_COMPONENTS = {
     </div>
   ),
   thead: ({ children }: { children?: React.ReactNode }) => (
-    <thead style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+    <thead style={{ borderBottom: '1px solid #E3E1DA' }}>
       {children}
     </thead>
   ),
   th: ({ children }: { children?: React.ReactNode }) => (
     <th
       className="pb-3 pr-6 text-left text-[12px] font-semibold tracking-[0.08em]"
-      style={{ color: '#64748B' }}
+      style={{ color: '#8A8D93' }}
     >
       {String(children).toUpperCase()}
     </th>
@@ -212,15 +211,15 @@ const MARKDOWN_COMPONENTS = {
     <td
       className="py-3.5 pr-6 text-[14px] leading-[1.55]"
       style={{
-        color: '#94A3B8',
-        borderBottom: '1px solid rgba(255,255,255,0.05)',
+        color: '#5A5D63',
+        borderBottom: '1px solid #E3E1DA',
       }}
     >
       {children}
     </td>
   ),
   strong: ({ children }: { children?: React.ReactNode }) => (
-    <strong className="font-semibold" style={{ color: '#E2E8F0' }}>
+    <strong className="font-semibold" style={{ color: '#1F2125' }}>
       {children}
     </strong>
   ),
@@ -229,8 +228,8 @@ const MARKDOWN_COMPONENTS = {
       href={href}
       target="_blank"
       rel="noreferrer"
-      style={{ color: '#A855F7' }}
-      className="underline underline-offset-2 transition-colors hover:text-white"
+      style={{ color: '#34506E' }}
+      className="underline underline-offset-2 transition-colors hover:opacity-70"
     >
       {children}
     </a>
@@ -242,9 +241,9 @@ const MARKDOWN_COMPONENTS = {
         <pre
           className="my-6 overflow-x-auto rounded-[12px] p-5 text-[13px] leading-[1.65]"
           style={{
-            background: 'rgba(255,255,255,0.04)',
-            border: '1px solid rgba(255,255,255,0.08)',
-            color: '#94A3B8',
+            background: '#EDEBE3',
+            border: '1px solid #E3E1DA',
+            color: '#5A5D63',
           }}
         >
           <code>{children}</code>
@@ -255,8 +254,8 @@ const MARKDOWN_COMPONENTS = {
       <code
         className="rounded px-1.5 py-0.5 text-[13px]"
         style={{
-          background: 'rgba(255,255,255,0.07)',
-          color: '#C4B5FD',
+          background: '#EDEBE3',
+          color: '#34506E',
         }}
       >
         {children}
@@ -294,12 +293,12 @@ function MarkdownBody({ body, figures }: { body: string; figures?: Figure[] }) {
             {t("article.figurePlacementWarning")}
           </p>
           {orphaned.map(m => (
-            <p key={m} className="text-[12px]" style={{ color: '#FCD34D' }}>
+            <p key={m} className="text-[12px]" style={{ color: '#D97706' }}>
               [[{m}]] — figure uploaded but no matching marker found in the article body.
             </p>
           ))}
           {missing.map(m => (
-            <p key={m} className="text-[12px]" style={{ color: '#FCD34D' }}>
+            <p key={m} className="text-[12px]" style={{ color: '#D97706' }}>
               [[{m}]] — marker found in body but no figure was uploaded for it.
             </p>
           ))}
@@ -314,7 +313,7 @@ function MarkdownBody({ body, figures }: { body: string; figures?: Figure[] }) {
             <figure
               key={i}
               className="my-8 overflow-hidden rounded-[14px]"
-              style={{ border: '1px solid rgba(255,255,255,0.08)' }}
+              style={{ border: '1px solid #E3E1DA' }}
             >
               <img
                 src={fig.image}
@@ -326,9 +325,9 @@ function MarkdownBody({ body, figures }: { body: string; figures?: Figure[] }) {
                 <figcaption
                   className="px-4 py-3 text-center text-[13px] leading-[1.6]"
                   style={{
-                    color: '#64748B',
-                    background: 'rgba(255,255,255,0.02)',
-                    borderTop: '1px solid rgba(255,255,255,0.06)',
+                    color: '#8A8D93',
+                    background: '#FAFAF8',
+                    borderTop: '1px solid #E3E1DA',
                   }}
                 >
                   {fig.caption}
@@ -399,28 +398,28 @@ function CiteBox({ pub }: { pub: Publication }) {
     <div
       className="mt-10 rounded-[14px] p-6"
       style={{
-        background: "rgba(255,255,255,0.03)",
-        border: "1px solid rgba(255,255,255,0.08)",
+        background: "#F2F0EA",
+        border: "1px solid #E3E1DA",
       }}
     >
       <div
         className="mb-3 text-[11px] font-bold tracking-[0.18em]"
-        style={{ color: "#64748B" }}
+        style={{ color: "#8A8D93" }}
       >
         {t("article.cite").toUpperCase()}
       </div>
       <p
         className="mb-4 font-mono text-[13px] leading-[1.7]"
-        style={{ color: "#94A3B8" }}
+        style={{ color: "#5A5D63" }}
       >
         {citation}
       </p>
       <button
         onClick={handleCopy}
-        className="inline-flex items-center gap-2 rounded-[8px] px-4 py-2 text-[12.5px] font-medium transition-all hover:bg-white/5"
+        className="inline-flex items-center gap-2 rounded-[8px] px-4 py-2 text-[12.5px] font-medium transition-all hover:bg-black/5"
         style={{
-          border: "1px solid rgba(255,255,255,0.1)",
-          color: copied ? "#34D399" : "#94A3B8",
+          border: "1px solid #D7D4CC",
+          color: copied ? "#059669" : "#5A5D63",
         }}
       >
         {copied ? (
@@ -440,10 +439,8 @@ function CiteBox({ pub }: { pub: Publication }) {
 // ─── Raw Bibliography ─────────────────────────────────────────────────────────
 
 function RawBibliography({ text }: { text: string }) {
-  // Split on blank lines to get one block per reference entry
   const rawBlocks = text.split(/\r?\n(?:\s*\r?\n)+/);
 
-  // If there are no blank-line separators, fall back to one line = one entry
   const blocks =
     rawBlocks.length > 1
       ? rawBlocks.map((b) => b.trim()).filter(Boolean)
@@ -461,15 +458,15 @@ function RawBibliography({ text }: { text: string }) {
             key={i}
             className="rounded-[10px] p-4"
             style={{
-              background: "rgba(255,255,255,0.025)",
-              border: "1px solid rgba(255,255,255,0.06)",
+              background: "#F2F0EA",
+              border: "1px solid #E3E1DA",
             }}
           >
             {lines.map((line, j) => (
               <div
                 key={j}
                 style={{
-                  color: j === 0 ? "#CBD5E1" : "#64748B",
+                  color: j === 0 ? "#1F2125" : "#8A8D93",
                   fontSize: "13.5px",
                   lineHeight: "1.75",
                   fontWeight: j === 0 ? 500 : 400,
@@ -514,23 +511,22 @@ function ArticlePage() {
 
   return (
     <div
-      className="relative min-h-screen"
-      style={{ background: "#050816", color: "#fff" }}
+      className="light-page relative min-h-screen"
+      style={{ background: "#FAFAF8", color: "#1F2125" }}
     >
       <SchemaOrg pub={pub} />
-      <BrandBackground />
       <SiteNav active="Insights" />
 
       <main className="mx-auto max-w-[1400px] px-6 lg:px-10">
         {/* ── Breadcrumb ── */}
         <nav
           className="flex items-center gap-1.5 py-6 text-[12.5px]"
-          style={{ color: "#475569" }}
+          style={{ color: "#8A8D93" }}
           aria-label="Breadcrumb"
         >
           <Link
             to="/insights"
-            className="transition-colors hover:text-white"
+            className="transition-colors hover:text-[#34506E]"
           >
             {t("nav.insights")}
           </Link>
@@ -547,7 +543,7 @@ function ArticlePage() {
           <ChevronRight className="h-3.5 w-3.5" />
           <span
             className="max-w-[300px] truncate"
-            style={{ color: "#94A3B8" }}
+            style={{ color: "#5A5D63" }}
           >
             {pub.title}
           </span>
@@ -569,8 +565,8 @@ function ArticlePage() {
 
           {/* Title */}
           <h1
-            className="mt-4 text-[38px] font-bold leading-[1.15] tracking-[-0.02em] lg:text-[46px]"
-            style={{ color: "#F1F5F9" }}
+            className="mt-4 text-[38px] font-medium leading-[1.15] tracking-[-0.02em] lg:text-[46px]"
+            style={{ color: "#1F2125" }}
           >
             {pub.title}
           </h1>
@@ -578,7 +574,7 @@ function ArticlePage() {
           {/* Subtitle */}
           <p
             className="mt-3 text-[17px] leading-[1.6]"
-            style={{ color: "#94A3B8" }}
+            style={{ color: "#5A5D63" }}
           >
             {pub.subtitle}
           </p>
@@ -587,8 +583,8 @@ function ArticlePage() {
           <div
             className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 rounded-[12px] p-4"
             style={{
-              background: "rgba(255,255,255,0.03)",
-              border: "1px solid rgba(255,255,255,0.07)",
+              background: "#F2F0EA",
+              border: "1px solid #E3E1DA",
             }}
           >
             <div className="flex items-center gap-3">
@@ -596,15 +592,15 @@ function ArticlePage() {
                 src={portrait}
                 alt="Dr. Ephraim Mpofu"
                 className="h-10 w-10 rounded-full object-cover"
-                style={{ border: "2px solid rgba(139,92,246,0.4)" }}
+                style={{ border: "2px solid #D7D4CC" }}
               />
               <div>
-                <div className="text-[14px] font-semibold">
+                <div className="text-[14px] font-medium" style={{ color: "#1F2125" }}>
                   {pub.author}
                 </div>
                 <div
                   className="text-[12px]"
-                  style={{ color: "#64748B" }}
+                  style={{ color: "#8A8D93" }}
                 >
                   {t("article.authorRole")}
                 </div>
@@ -613,12 +609,12 @@ function ArticlePage() {
 
             <div
               className="hidden h-8 w-px lg:block"
-              style={{ background: "rgba(255,255,255,0.07)" }}
+              style={{ background: "#E3E1DA" }}
             />
 
             <div
               className="flex items-center gap-1.5 text-[13px]"
-              style={{ color: "#64748B" }}
+              style={{ color: "#8A8D93" }}
             >
               <Calendar className="h-3.5 w-3.5" />
               {pub.date}
@@ -626,7 +622,7 @@ function ArticlePage() {
 
             <div
               className="flex items-center gap-1.5 text-[13px]"
-              style={{ color: "#64748B" }}
+              style={{ color: "#8A8D93" }}
             >
               <Clock className="h-3.5 w-3.5" />
               {pub.readTime} {t("article.minRead")}
@@ -635,21 +631,21 @@ function ArticlePage() {
             <div className="ml-auto flex items-center gap-2">
               <button
                 onClick={() => setBookmarked((b) => !b)}
-                className="flex h-8 w-8 items-center justify-center rounded-[8px] transition-all hover:bg-white/5"
+                className="flex h-8 w-8 items-center justify-center rounded-[8px] transition-all hover:bg-black/5"
                 style={{
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  color: bookmarked ? "#A855F7" : "#64748B",
+                  border: "1px solid #E3E1DA",
+                  color: bookmarked ? "#34506E" : "#8A8D93",
                 }}
                 aria-label={bookmarked ? t("article.bookmarked") : t("article.bookmark")}
               >
-                <Bookmark className="h-3.5 w-3.5" fill={bookmarked ? "#A855F7" : "none"} />
+                <Bookmark className="h-3.5 w-3.5" fill={bookmarked ? "#34506E" : "none"} />
               </button>
               <button
                 onClick={handleCopyLink}
-                className="flex h-8 w-8 items-center justify-center rounded-[8px] transition-all hover:bg-white/5"
+                className="flex h-8 w-8 items-center justify-center rounded-[8px] transition-all hover:bg-black/5"
                 style={{
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  color: linkCopied ? "#34D399" : "#64748B",
+                  border: "1px solid #E3E1DA",
+                  color: linkCopied ? "#059669" : "#8A8D93",
                 }}
                 aria-label={t("article.share")}
               >
@@ -661,23 +657,16 @@ function ArticlePage() {
 
         {/* ── Hero Image ── */}
         {pub.heroImage && (
-          <div className="relative mb-10 overflow-hidden rounded-[20px]">
+          <div className="relative mb-10 overflow-hidden rounded-[20px]" style={{ border: "1px solid #E3E1DA" }}>
             <img
               src={pub.heroImage}
               alt={pub.title}
               className="h-[380px] w-full object-cover lg:h-[460px]"
             />
-            <div
-              className="pointer-events-none absolute inset-0"
-              style={{
-                background:
-                  "linear-gradient(180deg, transparent 40%, rgba(5,8,22,0.7) 100%)",
-              }}
-            />
             <div className="absolute bottom-5 left-6 right-6">
               <p
                 className="text-[12.5px]"
-                style={{ color: "rgba(255,255,255,0.55)" }}
+                style={{ color: "rgba(255,255,255,0.8)", textShadow: "0 1px 3px rgba(0,0,0,0.5)" }}
               >
                 {pub.heroCaption}
               </p>
@@ -693,19 +682,19 @@ function ArticlePage() {
             <div
               className="mb-10 rounded-[14px] p-6"
               style={{
-                background: "rgba(139,92,246,0.05)",
-                borderLeft: "3px solid #A855F7",
+                background: "#E9EFF4",
+                borderLeft: "3px solid #34506E",
               }}
             >
               <div
                 className="mb-2.5 text-[11px] font-bold tracking-[0.18em]"
-                style={{ color: "#A855F7" }}
+                style={{ color: "#34506E" }}
               >
                 {t("article.abstract").toUpperCase()}
               </div>
               <p
                 className="text-[15px] leading-[1.8]"
-                style={{ color: "#CBD5E1" }}
+                style={{ color: "#5A5D63" }}
               >
                 {pub.abstract}
               </p>
@@ -714,14 +703,14 @@ function ArticlePage() {
             {/* Article Body — Markdown */}
             <MarkdownBody body={pub.body} figures={pub.figures} />
 
-            {/* References — raw takes priority over structured */}
+            {/* References */}
             {(pub.rawReferences || pub.references.length > 0) && (
               <section className="mb-10">
                 <h2
-                  className="mb-5 text-[20px] font-bold"
+                  className="mb-5 text-[20px] font-medium"
                   style={{
-                    color: "#CBD5E1",
-                    borderBottom: "1px solid rgba(255,255,255,0.06)",
+                    color: "#1F2125",
+                    borderBottom: "1px solid #E3E1DA",
                     paddingBottom: "0.75rem",
                   }}
                 >
@@ -731,17 +720,16 @@ function ArticlePage() {
                 {pub.rawReferences ? (
                   <RawBibliography text={pub.rawReferences} />
                 ) : (
-                  // Structured references list
                   <ol className="space-y-4">
                     {pub.references.map((ref, i) => (
                       <li
                         key={ref.id}
                         className="flex gap-4 text-[13.5px] leading-[1.7]"
-                        style={{ color: "#94A3B8" }}
+                        style={{ color: "#5A5D63" }}
                       >
                         <span
                           className="mt-0.5 shrink-0 font-semibold tabular-nums"
-                          style={{ color: "#64748B" }}
+                          style={{ color: "#8A8D93" }}
                         >
                           [{i + 1}]
                         </span>
@@ -753,8 +741,8 @@ function ArticlePage() {
                               href={ref.url}
                               target="_blank"
                               rel="noreferrer"
-                              className="inline-flex items-center gap-1 transition-colors hover:text-white"
-                              style={{ color: "#A855F7" }}
+                              className="inline-flex items-center gap-1 transition-colors hover:opacity-70"
+                              style={{ color: "#34506E" }}
                             >
                               View <ExternalLink className="h-3 w-3" />
                             </a>
@@ -774,13 +762,13 @@ function ArticlePage() {
             <div
               className="mt-10 rounded-[18px] p-7"
               style={{
-                background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.08)",
+                background: "#F2F0EA",
+                border: "1px solid #E3E1DA",
               }}
             >
               <div
                 className="mb-4 text-[11px] font-bold tracking-[0.18em]"
-                style={{ color: "#64748B" }}
+                style={{ color: "#8A8D93" }}
               >
                 {t("article.aboutAuthor").toUpperCase()}
               </div>
@@ -789,18 +777,18 @@ function ArticlePage() {
                   src={portrait}
                   alt="Dr. Ephraim Mpofu"
                   className="h-[80px] w-[80px] shrink-0 rounded-[14px] object-cover"
-                  style={{ border: "2px solid rgba(139,92,246,0.35)" }}
+                  style={{ border: "2px solid #D7D4CC" }}
                 />
                 <div>
                   <h3
-                    className="text-[18px] font-bold"
-                    style={{ color: "#F1F5F9" }}
+                    className="text-[18px] font-medium"
+                    style={{ color: "#1F2125" }}
                   >
                     Dr. Ephraim Mpofu
                   </h3>
                   <div
                     className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-[12.5px]"
-                    style={{ color: "#64748B" }}
+                    style={{ color: "#8A8D93" }}
                   >
                     <span>{t("article.authorTitle")}</span>
                     <span>·</span>
@@ -810,14 +798,14 @@ function ArticlePage() {
                   </div>
                   <p
                     className="mt-3 text-[14px] leading-[1.75]"
-                    style={{ color: "#94A3B8" }}
+                    style={{ color: "#5A5D63" }}
                   >
                     {t("article.authorBio")}
                   </p>
                   <Link
                     to="/about"
-                    className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold transition-colors"
-                    style={{ color: "#A855F7" }}
+                    className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold transition-colors hover:opacity-70"
+                    style={{ color: "#34506E" }}
                   >
                     {t("article.viewProfile")} <ArrowLeft className="h-3.5 w-3.5 rotate-180" />
                   </Link>
@@ -834,13 +822,13 @@ function ArticlePage() {
                 <div
                   className="rounded-[14px] p-5"
                   style={{
-                    background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.07)",
+                    background: "#F2F0EA",
+                    border: "1px solid #E3E1DA",
                   }}
                 >
                   <div
                     className="mb-4 text-[10px] font-bold tracking-[0.2em]"
-                    style={{ color: "#64748B" }}
+                    style={{ color: "#8A8D93" }}
                   >
                     {t("article.toc").toUpperCase()}
                   </div>
@@ -854,12 +842,12 @@ function ArticlePage() {
                         style={
                           activeId === s.id
                             ? {
-                                background: "rgba(139,92,246,0.12)",
-                                color: "#C4B5FD",
-                                borderLeft: "2px solid #A855F7",
+                                background: "#E9EFF4",
+                                color: "#34506E",
+                                borderLeft: "2px solid #34506E",
                                 paddingLeft: "10px",
                               }
-                            : { color: "#64748B" }
+                            : { color: "#5A5D63" }
                         }
                       >
                         {s.heading}
@@ -869,17 +857,17 @@ function ArticlePage() {
                 </div>
               )}
 
-              {/* Categories */}
+              {/* Tags */}
               <div
                 className="rounded-[14px] p-5"
                 style={{
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.07)",
+                  background: "#F2F0EA",
+                  border: "1px solid #E3E1DA",
                 }}
               >
                 <div
                   className="mb-4 text-[10px] font-bold tracking-[0.2em]"
-                  style={{ color: "#64748B" }}
+                  style={{ color: "#8A8D93" }}
                 >
                   {t("article.tags").toUpperCase()}
                 </div>
@@ -889,9 +877,9 @@ function ArticlePage() {
                       key={tag}
                       className="rounded-full px-2.5 py-1 text-[11.5px] font-medium"
                       style={{
-                        background: "rgba(255,255,255,0.05)",
-                        border: "1px solid rgba(255,255,255,0.09)",
-                        color: "#94A3B8",
+                        background: "#EDEBE3",
+                        border: "1px solid #E3E1DA",
+                        color: "#5A5D63",
                       }}
                     >
                       {tag}
@@ -904,13 +892,13 @@ function ArticlePage() {
               <div
                 className="rounded-[14px] p-5"
                 style={{
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.07)",
+                  background: "#F2F0EA",
+                  border: "1px solid #E3E1DA",
                 }}
               >
                 <div
                   className="mb-4 text-[10px] font-bold tracking-[0.2em]"
-                  style={{ color: "#64748B" }}
+                  style={{ color: "#8A8D93" }}
                 >
                   {t("article.share").toUpperCase()}
                 </div>
@@ -919,10 +907,10 @@ function ArticlePage() {
                     href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(articleUrl)}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center gap-3 rounded-[9px] px-3.5 py-2.5 text-[13px] font-medium transition-all hover:bg-white/5"
+                    className="flex items-center gap-3 rounded-[9px] px-3.5 py-2.5 text-[13px] font-medium transition-all hover:bg-black/5"
                     style={{
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      color: "#94A3B8",
+                      border: "1px solid #E3E1DA",
+                      color: "#5A5D63",
                     }}
                   >
                     <Linkedin className="h-4 w-4 shrink-0" style={{ color: "#0A66C2" }} />
@@ -932,10 +920,10 @@ function ArticlePage() {
                     href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(articleUrl)}&text=${encodeURIComponent(pub.title)}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center gap-3 rounded-[9px] px-3.5 py-2.5 text-[13px] font-medium transition-all hover:bg-white/5"
+                    className="flex items-center gap-3 rounded-[9px] px-3.5 py-2.5 text-[13px] font-medium transition-all hover:bg-black/5"
                     style={{
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      color: "#94A3B8",
+                      border: "1px solid #E3E1DA",
+                      color: "#5A5D63",
                     }}
                   >
                     <Twitter className="h-4 w-4 shrink-0" style={{ color: "#1DA1F2" }} />
@@ -943,10 +931,10 @@ function ArticlePage() {
                   </a>
                   <button
                     onClick={handleCopyLink}
-                    className="flex items-center gap-3 rounded-[9px] px-3.5 py-2.5 text-left text-[13px] font-medium transition-all hover:bg-white/5"
+                    className="flex items-center gap-3 rounded-[9px] px-3.5 py-2.5 text-left text-[13px] font-medium transition-all hover:bg-black/5"
                     style={{
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      color: linkCopied ? "#34D399" : "#94A3B8",
+                      border: "1px solid #E3E1DA",
+                      color: linkCopied ? "#059669" : "#5A5D63",
                     }}
                   >
                     {linkCopied ? (
@@ -969,13 +957,13 @@ function ArticlePage() {
                 <div
                   className="rounded-[14px] p-5"
                   style={{
-                    background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.07)",
+                    background: "#F2F0EA",
+                    border: "1px solid #E3E1DA",
                   }}
                 >
                   <div
                     className="mb-4 text-[10px] font-bold tracking-[0.2em]"
-                    style={{ color: "#64748B" }}
+                    style={{ color: "#8A8D93" }}
                   >
                     {t("article.relatedArticles").toUpperCase()}
                   </div>
@@ -1004,13 +992,13 @@ function ArticlePage() {
                           </span>
                           <p
                             className="mt-0.5 line-clamp-2 text-[12.5px] font-medium leading-[1.4]"
-                            style={{ color: "#CBD5E1" }}
+                            style={{ color: "#1F2125" }}
                           >
                             {rel.title}
                           </p>
                           <div
                             className="mt-1 flex items-center gap-1 text-[11px]"
-                            style={{ color: "#475569" }}
+                            style={{ color: "#8A8D93" }}
                           >
                             <Calendar className="h-2.5 w-2.5" />
                             {rel.date}
@@ -1028,12 +1016,12 @@ function ArticlePage() {
         {/* ── Back to Insights ── */}
         <div
           className="border-t pb-10 pt-8"
-          style={{ borderColor: "rgba(255,255,255,0.06)" }}
+          style={{ borderColor: "#E3E1DA" }}
         >
           <Link
             to="/insights"
-            className="inline-flex items-center gap-2 text-[13.5px] font-medium transition-colors hover:text-white"
-            style={{ color: "#64748B" }}
+            className="inline-flex items-center gap-2 text-[13.5px] font-medium transition-colors hover:text-[#34506E]"
+            style={{ color: "#8A8D93" }}
           >
             <ArrowLeft className="h-4 w-4" />
             {t("article.backToInsights")}
