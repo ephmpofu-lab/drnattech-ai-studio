@@ -32,7 +32,7 @@ export const Route = createFileRoute("/de/about")({
       { property: "og:url", content: "https://drnattech.com/de/about" },
       {
         property: "og:image",
-        content: "https://drnattech.com/images/Dr%20Mpofu_purple2.webp",
+        content: "https://drnattech.com/images/Dr_Mpofu_purple-removebg-preview.png",
       },
       { name: "robots", content: "index, follow" },
     ],

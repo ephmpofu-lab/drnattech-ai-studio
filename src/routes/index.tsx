@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ArrowRight,
-  Box,
+  Cpu,
   Database,
   ShieldCheck,
   MapPin,
@@ -48,7 +48,7 @@ export const Route = createFileRoute("/")({
       { property: "og:url", content: "https://drnattech.com/" },
       {
         property: "og:image",
-        content: "https://drnattech.com/images/Dr%20Mpofu_purple2.webp",
+        content: "https://drnattech.com/images/Dr_Mpofu_purple-removebg-preview.png",
       },
       { name: "twitter:card", content: "summary_large_image" },
       {
@@ -88,36 +88,12 @@ export const Route = createFileRoute("/")({
 
 const homeFaq = [
   {
-    q: "What does an AI Solutions Architect do?",
-    a: "An AI Solutions Architect translates business problems into production-ready AI systems — designing architecture, multi-agent workflows, RAG and knowledge platforms, governance and intelligent automation that deliver measurable outcomes. Unlike a data scientist or ML engineer, an AI Solutions Architect owns the full system design: from business requirement through integration, governance, deployment and ongoing reliability.",
-  },
-  {
     q: "Who is Dr. Ephraim Mpofu?",
     a: "Dr. Ephraim Mpofu is an AI Solutions Architect and KI-Architekt (Künstliche Intelligenz Architekt) based in Vienna, Austria. He holds a PhD (Dr.nat.techn.) from BOKU University Vienna, created the AISA, SKAIDO and Three Structural Laws frameworks, and builds enterprise AI systems that work in production. He serves organisations across Austria, Germany, Switzerland and the broader EU.",
   },
   {
     q: "What is the EU AI Act and how does it affect enterprise AI systems?",
     a: "The EU AI Act classifies AI systems by risk level. High-risk systems — such as those used in insurance claims processing, HR screening and credit scoring — require documented risk assessments, full audit trails, human-in-the-loop oversight mechanisms and transparency documentation. The Act's high-risk obligations apply from August 2026. Dr. Mpofu designs enterprise AI architectures that embed these requirements from day one, avoiding the significant cost and risk of compliance retrofitting.",
-  },
-  {
-    q: "Do you work with German-speaking clients across the DACH region?",
-    a: "Yes. Dr. Mpofu works with enterprises across Austria (Österreich), Germany (Deutschland) and Switzerland — the DACH region — as well as broader EU markets. He designs AI systems (KI-Systeme) that meet both local business requirements and EU regulatory obligations including the EU AI Act (EU KI-Verordnung) and GDPR. German-language engagement is available.",
-  },
-  {
-    q: "Which proprietary AI frameworks has Dr. Ephraim Mpofu developed?",
-    a: "Dr. Mpofu developed a suite of five proprietary frameworks: the AISA Framework (Strategic AI Engagement Model), the SKAIDO Framework (six-phase end-to-end AI implementation methodology), the Three Structural Laws (architectural principles preventing fraud and silent failure), the Four Workflow Layers (scalable automation architecture), and Knowledge Architecture (enterprise RAG and knowledge system design). All are designed for production enterprise environments.",
-  },
-  {
-    q: "What is RAG and why does it matter for enterprise knowledge systems?",
-    a: "Retrieval-Augmented Generation (RAG) is an AI architecture pattern that connects large language models to an organisation's own knowledge base — enabling accurate, source-cited responses grounded in internal data, without hallucination. Dr. Mpofu implements enterprise RAG systems using vector databases, semantic retrieval layers and governance frameworks to deliver reliable, auditable AI knowledge platforms at scale.",
-  },
-  {
-    q: "What industries do you build AI systems for?",
-    a: "Dr. Mpofu has delivered AI systems across insurance, financial services, human resources, knowledge management, sustainability and regulatory compliance. Industry-specific systems include an Insurance Claims Intelligence Platform (80% processing time reduction), an AI Career Intelligence Operating System and enterprise Knowledge Architecture platforms — all designed for production deployment with full auditability.",
-  },
-  {
-    q: "How quickly can an enterprise AI system be designed and deployed?",
-    a: "Using the SKAIDO Framework, a production-ready enterprise AI system typically takes 6–16 weeks from discovery call to live deployment. Simple intelligent automation workflows can be delivered in 2–4 weeks; complex multi-agent platforms with RAG knowledge architecture, governance layers and full audit trail design take 12–20 weeks. Every engagement begins with a structured discovery and architecture phase before any code is written.",
   },
 ];
 
@@ -166,7 +142,7 @@ function HomeStructuredData() {
         description:
           "PhD-credentialed AI Solutions Architect and KI-Architekt based in Vienna, Austria. Specialises in enterprise AI systems, RAG knowledge platforms, multi-agent workflows and EU AI Act compliance architecture. Serves organisations across the DACH region and EU.",
         url: "https://drnattech.com",
-        image: "https://drnattech.com/images/Dr%20Mpofu_purple2.webp",
+        image: "https://drnattech.com/images/Dr_Mpofu_purple-removebg-preview.png",
         alumniOf: {
           "@type": "CollegeOrUniversity",
           name: "BOKU University Vienna",
@@ -318,14 +294,15 @@ function HomeStructuredData() {
    PAGE
    ============================================================ */
 
+const CLASSIFIER_ROUTE = "/eu-ai-act-classifier" as const;
+
 export function Home() {
   return (
     <div
-      className="relative min-h-screen overflow-hidden"
-      style={{ backgroundColor: "#050816" }}
+      className="light-page relative min-h-screen overflow-hidden"
+      style={{ backgroundColor: "#FAFAF8" }}
     >
       <HomeStructuredData />
-      <BrandBackground />
       <SiteNav active="Home" />
       <main className="mx-auto max-w-[1280px] px-6 pb-20 lg:px-10">
         <Hero />
@@ -334,7 +311,6 @@ export function Home() {
         <WhatIBuild />
         <EuAiActStrip />
         <FrameworksSection />
-        <AgentCard />
         <HomeFaqSection />
         <FinalCta />
         <SiteFooter />
@@ -376,16 +352,16 @@ function TypedText() {
 
   return (
     <span className="inline-flex items-center">
-      <span style={{ color: "#C4B5FD" }}>{(phrases[phraseIdx] ?? "").slice(0, charIdx)}</span>
+      <span style={{ color: "#34506E" }}>{(phrases[phraseIdx] ?? "").slice(0, charIdx)}</span>
       <span
         className="ml-[1px] inline-block w-[2px] h-[1em] rounded-full align-middle"
-        style={{ background: "#A855F7", animation: "blink-caret 1s step-end infinite" }}
+        style={{ background: "#34506E", animation: "blink-caret 1s step-end infinite" }}
       />
     </span>
   );
 }
 
-const CAPABILITY_ICONS = [Box, Database, ShieldCheck];
+const CAPABILITY_ICONS = [Cpu, Database, ShieldCheck];
 
 function Hero() {
   const { t } = useTranslation("common");
@@ -393,87 +369,74 @@ function Hero() {
   const capabilities = CAPABILITY_ICONS.map((Icon, i) => ({ Icon, ...caps[i] }));
   return (
     <section
-      className="grid grid-cols-1 gap-5 pt-10 lg:grid-cols-[2fr_1.8fr_1.5fr] lg:gap-6 lg:pt-14"
+      className="grid grid-cols-1 gap-5 pt-10 lg:grid-cols-[2fr_1.5fr] lg:gap-6 lg:pt-14"
       aria-label="Dr. Ephraim Mpofu — AI Solutions Architect Vienna"
     >
       {/* LEFT — value proposition */}
       <div className="flex flex-col justify-center">
         <span
-          className="inline-flex w-fit items-center gap-2 rounded-full px-3.5 py-1.5 text-[10.5px] font-bold uppercase tracking-[0.2em]"
+          className="inline-flex w-fit items-center gap-2 rounded-full px-3.5 py-1.5 text-[10.5px] font-semibold uppercase tracking-[0.2em]"
           style={{
-            background: "rgba(139,92,246,0.10)",
-            border: "1px solid rgba(139,92,246,0.32)",
-            color: "#C4B5FD",
+            background: "#E9EFF4",
+            border: "1px solid #D7D4CC",
+            color: "#34506E",
           }}
         >
           <span
             className="h-1.5 w-1.5 rounded-full"
-            style={{ background: "#A855F7", boxShadow: "0 0 8px #A855F7" }}
+            style={{ background: "#34506E" }}
           />
           {t("home.heroBadge")}
         </span>
 
-        <h1 className="mt-6 text-[42px] font-bold leading-[1.04] tracking-tight text-white sm:text-[48px] lg:text-[54px]">
-          {t("home.heroTitleMain")}<span className="text-gradient-brand">{t("home.heroTitleGradient")}</span>
+        <h1 className="mt-6 text-[42px] font-medium leading-[1.04] tracking-tight sm:text-[48px] lg:text-[54px]" style={{ color: "#1F2125" }}>
+          {t("home.heroTitleMain")}<span style={{ color: "#34506E" }}>{t("home.heroTitleGradient")}</span>
         </h1>
 
-        <div className="mt-3 text-[16px] font-medium" style={{ color: "#9CA3AF" }}>
+        <div className="mt-3 text-[16px] font-medium" style={{ color: "#5A5D63" }}>
           <TypedText />
         </div>
 
-        <p className="mt-5 max-w-md text-[15px] leading-relaxed" style={{ color: "#9CA3AF" }}>
+        <p className="mt-5 max-w-md text-[15px] leading-[1.7]" style={{ color: "#5A5D63" }}>
           {t("home.heroDesc")}
         </p>
 
         <div className="mt-8 flex flex-wrap gap-3">
           <Link
             to="/portfolio"
-            className="inline-flex items-center gap-2 rounded-[10px] px-5 py-3 text-[13.5px] font-semibold text-white shadow-lg transition-all hover:scale-[1.03]"
-            style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
+            className="inline-flex items-center gap-2 rounded-[10px] px-5 py-3 text-[13.5px] font-semibold transition-all hover:opacity-90"
+            style={{ background: "#34506E", color: "#FAFAF8" }}
           >
             {t("home.viewWork")} <ArrowRight className="h-4 w-4" />
           </Link>
           <Link
-            to="/ai-agent"
-            className="inline-flex items-center gap-2 rounded-[10px] px-5 py-3 text-[13.5px] font-semibold text-white transition-all hover:bg-white/5"
-            style={{ border: "1px solid rgba(255,255,255,0.14)" }}
+            to={CLASSIFIER_ROUTE}
+            className="inline-flex items-center gap-2 rounded-[10px] px-5 py-3 text-[13.5px] font-semibold transition-all hover:bg-black/5"
+            style={{ border: "1px solid #D7D4CC", color: "#1F2125" }}
           >
-            <Bot className="h-4 w-4" /> {t("home.talkAgent")}
+            <ShieldCheck className="h-4 w-4" style={{ color: "#34506E" }} /> EU AI Act Classifier
           </Link>
         </div>
 
         <div className="mt-6 flex flex-wrap items-center gap-3">
           <div
             className="inline-flex w-fit items-center gap-2 text-[12.5px] font-medium"
-            style={{ color: "#9CA3AF" }}
+            style={{ color: "#5A5D63" }}
           >
-            <MapPin className="h-4 w-4" style={{ color: "#A855F7" }} />
+            <MapPin className="h-4 w-4" style={{ color: "#34506E" }} />
             Vienna, Austria · DACH &amp; EU
           </div>
           <span
-            className="rounded-md px-2 py-0.5 text-[9.5px] font-bold uppercase tracking-[0.14em]"
+            className="rounded-md px-2 py-0.5 text-[9.5px] font-semibold uppercase tracking-[0.14em]"
             style={{
-              background: "rgba(139,92,246,0.12)",
-              border: "1px solid rgba(139,92,246,0.28)",
-              color: "#A855F7",
+              background: "#E9EFF4",
+              border: "1px solid #D7D4CC",
+              color: "#34506E",
             }}
           >
             KI-Architekt
           </span>
         </div>
-      </div>
-
-      {/* CENTER — hero portrait */}
-      <div className="relative hidden min-h-[500px] overflow-hidden lg:block">
-        <img
-          src="/images/Dr Mpofu_purple2.webp"
-          alt="Dr. Ephraim Mpofu — AI Solutions Architect and KI-Architekt based in Vienna, Austria"
-          className="absolute inset-0 h-full w-full object-cover object-top"
-        />
-        <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-28"
-          style={{ background: "linear-gradient(to bottom, transparent, #050816)" }}
-        />
       </div>
 
       {/* RIGHT — 3 capability cards */}
@@ -483,22 +446,22 @@ function Hero() {
             key={title}
             className="flex items-start gap-3 rounded-[14px] p-4"
             style={{
-              background: "rgba(7,11,28,0.75)",
-              border: "1px solid rgba(255,255,255,0.08)",
+              background: "#F2F0EA",
+              border: "1px solid #E3E1DA",
             }}
           >
             <div
               className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px]"
               style={{
-                background: "rgba(139,92,246,0.15)",
-                border: "1px solid rgba(139,92,246,0.30)",
+                background: "#E9EFF4",
+                border: "1px solid #D7D4CC",
               }}
             >
-              <Icon className="h-4 w-4" style={{ color: "#C4B5FD" }} />
+              <Icon className="h-4 w-4" style={{ color: "#34506E" }} />
             </div>
             <div>
-              <div className="text-[13px] font-bold text-white">{title}</div>
-              <div className="mt-0.5 text-[11px] leading-snug" style={{ color: "#9CA3AF" }}>
+              <div className="text-[13px] font-medium" style={{ color: "#1F2125" }}>{title}</div>
+              <div className="mt-0.5 text-[11px] leading-snug" style={{ color: "#5A5D63" }}>
                 {desc}
               </div>
             </div>
@@ -507,7 +470,7 @@ function Hero() {
         <Link
           to="/contact"
           className="mt-1 inline-flex items-center gap-1.5 text-[12px] font-semibold"
-          style={{ color: "#A855F7" }}
+          style={{ color: "#34506E" }}
         >
           {t("home.letsBuild")} <ArrowRight className="h-3 w-3" />
         </Link>
@@ -533,21 +496,21 @@ function TrustBar() {
           <div
             key={value}
             className="flex min-w-[140px] flex-1 flex-col items-center justify-center px-5 py-4"
-            style={i > 0 ? { borderLeft: "1px solid rgba(255,255,255,0.06)" } : undefined}
+            style={i > 0 ? { borderLeft: "1px solid #E3E1DA" } : undefined}
           >
             <div
               className="mb-2 flex h-7 w-7 items-center justify-center rounded-full"
               style={{
-                background: "rgba(139,92,246,0.15)",
-                border: "1px solid rgba(139,92,246,0.25)",
+                background: "#E9EFF4",
+                border: "1px solid #D7D4CC",
               }}
             >
-              <Icon className="h-3.5 w-3.5" style={{ color: "#A855F7" }} />
+              <Icon className="h-3.5 w-3.5" style={{ color: "#34506E" }} />
             </div>
-            <div className="text-gradient-brand text-[24px] font-bold leading-none">
+            <div className="text-gradient-brand text-[24px] font-medium leading-none">
               {value}
             </div>
-            <div className="mt-1.5 text-center text-[11px] font-medium" style={{ color: "#9CA3AF" }}>
+            <div className="mt-1.5 text-center text-[11px] font-medium" style={{ color: "#8A8D93" }}>
               {label}
             </div>
           </div>
@@ -569,25 +532,25 @@ function EuAiActStrip() {
       <div
         className="rounded-xl px-5 py-3"
         style={{
-          background: "rgba(139,92,246,0.05)",
-          border: "1px solid rgba(139,92,246,0.20)",
+          background: "#E9EFF4",
+          border: "1px solid #D7D4CC",
         }}
       >
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           <div
-            className="shrink-0 text-[9px] font-bold uppercase tracking-[0.22em]"
-            style={{ color: "#A855F7" }}
+            className="shrink-0 text-[9px] font-semibold uppercase tracking-[0.22em]"
+            style={{ color: "#34506E" }}
           >
             {t("home.euActBadge")}
           </div>
           <div
             className="hidden h-3.5 w-px lg:block"
-            style={{ background: "rgba(139,92,246,0.30)" }}
+            style={{ background: "#D7D4CC" }}
           />
           {euAiActSignals.map((signal) => (
             <div key={signal} className="flex items-center gap-1.5">
-              <ShieldCheck className="h-3 w-3 shrink-0" style={{ color: "#A855F7" }} />
-              <span className="text-[11px] font-medium" style={{ color: "#9CA3AF" }}>
+              <ShieldCheck className="h-3 w-3 shrink-0" style={{ color: "#34506E" }} />
+              <span className="text-[11px] font-medium" style={{ color: "#5A5D63" }}>
                 {signal}
               </span>
             </div>
@@ -602,7 +565,7 @@ function EuAiActStrip() {
    3. WHAT I BUILD
    ============================================================ */
 
-const BUILD_ICONS = [Box, Database, ShieldCheck];
+const BUILD_ICONS = [Cpu, Database, ShieldCheck];
 const BUILD_LINKS = ["/portfolio", "/frameworks", "/frameworks"] as const;
 
 function WhatIBuild() {
@@ -613,12 +576,12 @@ function WhatIBuild() {
     <section className="mt-14 lg:mt-16" aria-label="Services">
       <div className="mb-8">
         <div
-          className="text-[10px] font-bold uppercase tracking-[0.22em]"
-          style={{ color: "#8B8B9A" }}
+          className="text-[10px] font-semibold uppercase tracking-[0.22em]"
+          style={{ color: "#8A8D93" }}
         >
           {t("home.buildLabel")}
         </div>
-        <h2 className="mt-2.5 text-[28px] font-bold leading-tight text-white lg:text-[34px]">
+        <h2 className="mt-2.5 text-[28px] font-medium leading-tight lg:text-[34px]" style={{ color: "#1F2125" }}>
           {t("home.buildTitle")}
         </h2>
       </div>
@@ -629,20 +592,20 @@ function WhatIBuild() {
             <div
               className="flex h-10 w-10 items-center justify-center rounded-xl"
               style={{
-                background: "rgba(139,92,246,0.12)",
-                border: "1px solid rgba(139,92,246,0.28)",
+                background: "#E9EFF4",
+                border: "1px solid #D7D4CC",
               }}
             >
-              <Icon className="h-5 w-5" style={{ color: "#C4B5FD" }} />
+              <Icon className="h-5 w-5" style={{ color: "#34506E" }} />
             </div>
-            <h3 className="mt-4 text-[18px] font-bold text-white">{title}</h3>
-            <p className="mt-2.5 flex-1 text-[13px] leading-relaxed" style={{ color: "#9CA3AF" }}>
+            <h3 className="mt-4 text-[18px] font-medium" style={{ color: "#1F2125" }}>{title}</h3>
+            <p className="mt-2.5 flex-1 text-[13px] leading-[1.7]" style={{ color: "#5A5D63" }}>
               {desc}
             </p>
             <Link
               to={to}
               className="mt-5 inline-flex items-center gap-1.5 text-[12.5px] font-semibold"
-              style={{ color: "#A855F7" }}
+              style={{ color: "#34506E" }}
             >
               {linkLabel} <ArrowRight className="h-3.5 w-3.5" />
             </Link>
@@ -702,9 +665,9 @@ function RagDashboard() {
   return (
     <div
       className="rounded-[14px] p-5"
-      style={{ background: "rgba(7,11,28,0.88)", border: "1px solid rgba(255,255,255,0.07)" }}
+      style={{ background: "#F2F0EA", border: "1px solid #E3E1DA" }}
     >
-      <div className="mb-3 text-[11px] font-bold text-white">{t("home.ragOverview")}</div>
+      <div className="mb-3 text-[11px] font-semibold" style={{ color: "#1F2125" }}>{t("home.ragOverview")}</div>
 
       {/* 4 live metric cards */}
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
@@ -712,10 +675,10 @@ function RagDashboard() {
           <div
             key={m.label}
             className="rounded-[8px] p-2.5"
-            style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}
+            style={{ background: "#FAFAF8", border: "1px solid #E3E1DA" }}
           >
-            <div className="mb-1 text-[9.5px]" style={{ color: "#6B7280" }}>{m.label}</div>
-            <div className="text-[15px] font-bold text-white">{m.value}</div>
+            <div className="mb-1 text-[9.5px]" style={{ color: "#8A8D93" }}>{m.label}</div>
+            <div className="text-[15px] font-semibold" style={{ color: "#1F2125" }}>{m.value}</div>
           </div>
         ))}
       </div>
@@ -723,15 +686,15 @@ function RagDashboard() {
       <div className="mt-4 grid grid-cols-1 items-start gap-4 sm:grid-cols-[1fr_auto_auto]">
         {/* Knowledge base real stats */}
         <div>
-          <div className="mb-1.5 text-[9.5px]" style={{ color: "#6B7280" }}>{t("home.ragKb")}</div>
+          <div className="mb-1.5 text-[9.5px]" style={{ color: "#8A8D93" }}>{t("home.ragKb")}</div>
           <div
             className="rounded-[8px] p-3 space-y-2"
-            style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)" }}
+            style={{ background: "#FAFAF8", border: "1px solid #E3E1DA" }}
           >
             {kbData.map((row) => (
               <div key={row.label} className="flex items-center justify-between">
-                <span className="text-[10px]" style={{ color: "#9CA3AF" }}>{row.label}</span>
-                <span className="text-[11px] font-bold text-white">{row.value}</span>
+                <span className="text-[10px]" style={{ color: "#5A5D63" }}>{row.label}</span>
+                <span className="text-[11px] font-semibold" style={{ color: "#1F2125" }}>{row.value}</span>
               </div>
             ))}
           </div>
@@ -739,17 +702,17 @@ function RagDashboard() {
 
         {/* Success rate donut — live */}
         <div className="flex flex-col items-center">
-          <div className="mb-1.5 text-[9.5px]" style={{ color: "#6B7280" }}>{t("home.ragSuccessRate")}</div>
+          <div className="mb-1.5 text-[9.5px]" style={{ color: "#8A8D93" }}>{t("home.ragSuccessRate")}</div>
           <svg width="70" height="70" viewBox="0 0 70 70">
-            <circle cx="35" cy="35" r={r} fill="none" stroke="rgba(139,92,246,0.15)" strokeWidth="8" />
+            <circle cx="35" cy="35" r={r} fill="none" stroke="#E9EFF4" strokeWidth="8" />
             <circle
               cx="35" cy="35" r={r}
-              fill="none" stroke="#A855F7" strokeWidth="8"
+              fill="none" stroke="#34506E" strokeWidth="8"
               strokeDasharray={`${filled} ${circ}`}
               strokeLinecap="round"
               transform="rotate(-90 35 35)"
             />
-            <text x="35" y="40" textAnchor="middle" style={{ fontSize: 13, fontWeight: 700, fill: "#fff" }}>
+            <text x="35" y="40" textAnchor="middle" style={{ fontSize: 13, fontWeight: 600, fill: "#1F2125" }}>
               {stats.successRate}%
             </text>
           </svg>
@@ -757,15 +720,15 @@ function RagDashboard() {
 
         {/* Knowledge categories — real document breakdown */}
         <div>
-          <div className="mb-2 text-[9.5px]" style={{ color: "#6B7280" }}>{t("home.ragCategories")}</div>
+          <div className="mb-2 text-[9.5px]" style={{ color: "#8A8D93" }}>{t("home.ragCategories")}</div>
           <div className="space-y-1.5">
             {ragSources.map((s, i) => (
               <div key={s.name} className="flex items-center gap-2">
-                <div className="w-[72px] shrink-0 text-right text-[9.5px]" style={{ color: "#9CA3AF" }}>{sourceNames[i]}</div>
-                <div className="h-1.5 w-[80px] overflow-hidden rounded-full" style={{ background: "rgba(255,255,255,0.08)" }}>
-                  <div className="h-full rounded-full" style={{ width: `${Math.round(s.pct / 0.45)}%`, background: "#8B5CF6" }} />
+                <div className="w-[72px] shrink-0 text-right text-[9.5px]" style={{ color: "#5A5D63" }}>{sourceNames[i]}</div>
+                <div className="h-1.5 w-[80px] overflow-hidden rounded-full" style={{ background: "#E3E1DA" }}>
+                  <div className="h-full rounded-full" style={{ width: `${Math.round(s.pct / 0.45)}%`, background: "#34506E" }} />
                 </div>
-                <div className="w-[24px] text-[9.5px]" style={{ color: "#6B7280" }}>{s.pct}%</div>
+                <div className="w-[24px] text-[9.5px]" style={{ color: "#8A8D93" }}>{s.pct}%</div>
               </div>
             ))}
           </div>
@@ -787,28 +750,28 @@ function FeaturedCaseStudy() {
 
           <div className="flex flex-col justify-center">
             <span
-              className="inline-flex w-fit items-center rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em]"
-              style={{ background: "rgba(139,92,246,0.14)", border: "1px solid rgba(139,92,246,0.32)", color: "#C4B5FD" }}
+              className="inline-flex w-fit items-center rounded-md px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em]"
+              style={{ background: "#E9EFF4", border: "1px solid #D7D4CC", color: "#34506E" }}
             >
               {t("home.caseStudyBadge")}
             </span>
 
-            <h2 className="mt-4 text-[28px] font-bold leading-[1.12] text-white lg:text-[32px]">
+            <h2 className="mt-4 text-[28px] font-medium leading-[1.12] lg:text-[32px]" style={{ color: "#1F2125" }}>
               {t("home.caseStudyTitle1")}<br />{t("home.caseStudyTitle2")}
             </h2>
 
-            <p className="mt-3 text-[13.5px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-              {before}<span style={{ color: "#E2E8F0" }}>{highlight}</span>{after}
+            <p className="mt-3 text-[13.5px] leading-[1.7]" style={{ color: "#5A5D63" }}>
+              {before}<span style={{ color: "#1F2125" }}>{highlight}</span>{after}
             </p>
-            <p className="mt-3 text-[13.5px] leading-relaxed" style={{ color: "#9CA3AF" }}>
+            <p className="mt-3 text-[13.5px] leading-[1.7]" style={{ color: "#5A5D63" }}>
               {t("home.caseStudyDesc2")}{" "}
-              <span style={{ color: "#E2E8F0" }}>{t("home.caseStudyLaws")}</span>{" "}
+              <span style={{ color: "#1F2125" }}>{t("home.caseStudyLaws")}</span>{" "}
               {t("home.caseStudyDesc2b")}
             </p>
 
             <div
               className="mt-4 h-[140px] overflow-hidden rounded-[10px]"
-              style={{ border: "1px solid rgba(255,255,255,0.07)" }}
+              style={{ border: "1px solid #E3E1DA" }}
             >
               <img
                 src="/images/WF02_RAG_Knowledge_Intelligence.webp"
@@ -825,8 +788,8 @@ function FeaturedCaseStudy() {
             <div className="flex justify-end">
               <Link
                 to="/portfolio"
-                className="inline-flex items-center gap-2 rounded-[10px] px-5 py-2.5 text-[13px] font-semibold text-white transition-all hover:scale-[1.02]"
-                style={{ border: "1px solid rgba(139,92,246,0.4)", background: "rgba(139,92,246,0.12)" }}
+                className="inline-flex items-center gap-2 rounded-[10px] px-5 py-2.5 text-[13px] font-semibold transition-all hover:opacity-80"
+                style={{ border: "1px solid #D7D4CC", color: "#1F2125" }}
               >
                 {t("home.viewCaseStudy")} <ArrowRight className="h-3.5 w-3.5" />
               </Link>
@@ -850,13 +813,13 @@ function FrameworkLayersVisual() {
   const layerDefs = [
     {
       ty: 28,
-      top: "#A855F7", left: "#6D28D9", right: "#7C3AED",
-      glow: "rgba(168,85,247,0.38)", label: "AI Governance",
+      top: "#34506E", left: "#1E3A52", right: "#284B64",
+      glow: "rgba(52,80,110,0.25)", label: "AI Governance",
     },
     {
       ty: 62,
-      top: "#6366F1", left: "#4338CA", right: "#4F46E5",
-      glow: "rgba(99,102,241,0.32)", label: "Knowledge Arch.",
+      top: "#4B7096", left: "#2E5070", right: "#3A6080",
+      glow: "rgba(75,112,150,0.22)", label: "Knowledge Arch.",
     },
     {
       ty: 96,
@@ -881,8 +844,8 @@ function FrameworkLayersVisual() {
     >
       <defs>
         <radialGradient id="fwbg" cx="50%" cy="55%" r="65%">
-          <stop offset="0%" stopColor="#A855F7" stopOpacity="0.10" />
-          <stop offset="100%" stopColor="#A855F7" stopOpacity="0" />
+          <stop offset="0%" stopColor="#34506E" stopOpacity="0.06" />
+          <stop offset="100%" stopColor="#34506E" stopOpacity="0" />
         </radialGradient>
       </defs>
       <rect x="0" y="0" width={viewW} height={viewH} fill="url(#fwbg)" />
@@ -917,28 +880,24 @@ function FrameworksSection() {
     <section className="mt-5" aria-label="Proprietary AI frameworks">
       <div
         className="glass-card grid grid-cols-1 gap-10 p-8 lg:grid-cols-[1fr_1fr] lg:items-center lg:p-12"
-        style={{
-          background:
-            "radial-gradient(ellipse at 75% 50%, rgba(139,92,246,0.08) 0%, transparent 65%), rgba(7,11,28,0.8)",
-        }}
       >
         <div>
           <div
-            className="text-[10px] font-bold uppercase tracking-[0.22em]"
-            style={{ color: "#8B8B9A" }}
+            className="text-[10px] font-semibold uppercase tracking-[0.22em]"
+            style={{ color: "#8A8D93" }}
           >
             {t("home.frameworksLabel")}
           </div>
-          <h2 className="mt-4 text-[28px] font-bold leading-tight text-white lg:text-[34px]">
+          <h2 className="mt-4 text-[28px] font-medium leading-tight lg:text-[34px]" style={{ color: "#1F2125" }}>
             {t("home.frameworksTitle")}
           </h2>
-          <p className="mt-4 max-w-lg text-[14px] leading-relaxed" style={{ color: "#9CA3AF" }}>
+          <p className="mt-4 max-w-lg text-[14px] leading-[1.7]" style={{ color: "#5A5D63" }}>
             {t("home.frameworksDesc")}
           </p>
           <Link
             to="/frameworks"
-            className="mt-8 inline-flex items-center gap-2 rounded-[10px] px-6 py-3 text-[13.5px] font-semibold text-white transition-all hover:scale-[1.02]"
-            style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
+            className="mt-8 inline-flex items-center gap-2 rounded-[10px] px-6 py-3 text-[13.5px] font-semibold transition-all hover:opacity-90"
+            style={{ background: "#34506E", color: "#FAFAF8" }}
           >
             {t("home.exploreFrameworks")} <ArrowRight className="h-4 w-4" />
           </Link>
@@ -961,21 +920,21 @@ function PublicationIllustration() {
     <svg viewBox="0 0 90 100" className="h-[90px] w-auto shrink-0 opacity-80" aria-hidden="true">
       <g transform="rotate(-6 45 52)">
         <rect x="10" y="15" width="56" height="70" rx="5"
-          fill="rgba(139,92,246,0.10)" stroke="rgba(139,92,246,0.28)" strokeWidth="1.2" />
+          fill="#E9EFF4" stroke="#D7D4CC" strokeWidth="1.2" />
       </g>
       <g transform="rotate(-2.5 45 52)">
         <rect x="10" y="12" width="56" height="70" rx="5"
-          fill="rgba(139,92,246,0.16)" stroke="rgba(139,92,246,0.36)" strokeWidth="1.2" />
+          fill="#E0E8F0" stroke="#C8D4DC" strokeWidth="1.2" />
       </g>
       <rect x="10" y="8" width="56" height="72" rx="5"
-        fill="rgba(7,11,28,0.94)" stroke="rgba(139,92,246,0.58)" strokeWidth="1.3" />
+        fill="#EDEBE3" stroke="#34506E" strokeWidth="1.3" />
       <rect x="17" y="16" width="42" height="7" rx="3"
-        fill="rgba(168,85,247,0.28)" />
-      <line x1="17" y1="31" x2="60" y2="31" stroke="rgba(255,255,255,0.16)" strokeWidth="1.1" strokeLinecap="round" />
-      <line x1="17" y1="39" x2="56" y2="39" stroke="rgba(255,255,255,0.10)" strokeWidth="1" strokeLinecap="round" />
-      <line x1="17" y1="47" x2="58" y2="47" stroke="rgba(255,255,255,0.10)" strokeWidth="1" strokeLinecap="round" />
-      <line x1="17" y1="55" x2="53" y2="55" stroke="rgba(255,255,255,0.07)" strokeWidth="1" strokeLinecap="round" />
-      <line x1="17" y1="63" x2="57" y2="63" stroke="rgba(255,255,255,0.07)" strokeWidth="1" strokeLinecap="round" />
+        fill="#D0DCEA" />
+      <line x1="17" y1="31" x2="60" y2="31" stroke="#C8C5BD" strokeWidth="1.1" strokeLinecap="round" />
+      <line x1="17" y1="39" x2="56" y2="39" stroke="#D0CEC8" strokeWidth="1" strokeLinecap="round" />
+      <line x1="17" y1="47" x2="58" y2="47" stroke="#D0CEC8" strokeWidth="1" strokeLinecap="round" />
+      <line x1="17" y1="55" x2="53" y2="55" stroke="#D8D6D0" strokeWidth="1" strokeLinecap="round" />
+      <line x1="17" y1="63" x2="57" y2="63" stroke="#D8D6D0" strokeWidth="1" strokeLinecap="round" />
     </svg>
   );
 }
@@ -984,16 +943,16 @@ function GovernanceIllustration() {
   return (
     <svg viewBox="0 0 90 100" className="h-[90px] w-auto shrink-0 opacity-80" aria-hidden="true">
       <rect x="8" y="18" width="36" height="62" rx="3"
-        fill="rgba(139,92,246,0.18)" stroke="rgba(139,92,246,0.48)" strokeWidth="1.3" />
+        fill="#E9EFF4" stroke="#34506E" strokeWidth="1.3" />
       <rect x="5" y="18" width="6" height="62" rx="2.5"
-        fill="rgba(168,85,247,0.42)" stroke="rgba(139,92,246,0.48)" strokeWidth="0.8" />
-      <line x1="14" y1="34" x2="38" y2="34" stroke="rgba(255,255,255,0.13)" strokeWidth="0.9" />
-      <line x1="14" y1="42" x2="36" y2="42" stroke="rgba(255,255,255,0.09)" strokeWidth="0.9" />
-      <line x1="14" y1="50" x2="38" y2="50" stroke="rgba(255,255,255,0.09)" strokeWidth="0.9" />
+        fill="#B8C8D8" stroke="#34506E" strokeWidth="0.8" />
+      <line x1="14" y1="34" x2="38" y2="34" stroke="#C8C5BD" strokeWidth="0.9" />
+      <line x1="14" y1="42" x2="36" y2="42" stroke="#D0CEC8" strokeWidth="0.9" />
+      <line x1="14" y1="50" x2="38" y2="50" stroke="#D0CEC8" strokeWidth="0.9" />
       <path d="M56 12 L78 18 L78 40 Q78 56 56 64 Q34 56 34 40 L34 18 Z"
-        fill="rgba(139,92,246,0.14)" stroke="rgba(168,85,247,0.52)" strokeWidth="1.4" />
+        fill="#E9EFF4" stroke="#34506E" strokeWidth="1.4" />
       <polyline points="46,38 53,46 68,30"
-        stroke="#A855F7" strokeWidth="2.2"
+        stroke="#34506E" strokeWidth="2.2"
         strokeLinecap="round" strokeLinejoin="round" fill="none" />
     </svg>
   );
@@ -1009,22 +968,22 @@ function AuthoritySection() {
         <div className="flex items-start justify-between gap-4">
           <div className="flex flex-col flex-1">
             <div
-              className="text-[10px] font-bold uppercase tracking-[0.22em]"
-              style={{ color: "#8B8B9A" }}
+              className="text-[10px] font-semibold uppercase tracking-[0.22em]"
+              style={{ color: "#8A8D93" }}
             >
               {t("home.researchLabel")}
             </div>
-            <div className="mt-4 text-[48px] font-bold leading-none text-gradient-brand">9+</div>
-            <div className="mt-2 text-[15px] font-semibold text-white">
+            <div className="mt-4 text-[48px] font-medium leading-none text-gradient-brand">9+</div>
+            <div className="mt-2 text-[15px] font-medium" style={{ color: "#1F2125" }}>
               {t("home.researchTitle")}
             </div>
-            <p className="mt-2.5 text-[13px] leading-relaxed" style={{ color: "#9CA3AF" }}>
+            <p className="mt-2.5 text-[13px] leading-[1.7]" style={{ color: "#5A5D63" }}>
               {t("home.researchDesc")}
             </p>
             <Link
               to="/publications"
-              className="mt-5 inline-flex w-fit items-center gap-2 rounded-lg px-5 py-2.5 text-[13px] font-semibold text-white"
-              style={{ border: "1px solid rgba(255,255,255,0.15)" }}
+              className="mt-5 inline-flex w-fit items-center gap-2 rounded-lg px-5 py-2.5 text-[13px] font-semibold"
+              style={{ border: "1px solid #D7D4CC", color: "#1F2125" }}
             >
               {t("home.viewPublications")} <ArrowRight className="h-3.5 w-3.5" />
             </Link>
@@ -1040,31 +999,31 @@ function AuthoritySection() {
         <div className="flex items-start justify-between gap-4">
           <div className="flex flex-col flex-1">
             <div
-              className="text-[10px] font-bold uppercase tracking-[0.22em]"
-              style={{ color: "#8B8B9A" }}
+              className="text-[10px] font-semibold uppercase tracking-[0.22em]"
+              style={{ color: "#8A8D93" }}
             >
               {t("home.featuredInsightLabel")}
             </div>
             <div
               className="mt-4 inline-flex w-fit rounded-md px-2.5 py-1 text-[11px] font-semibold"
               style={{
-                background: "rgba(139,92,246,0.12)",
-                border: "1px solid rgba(139,92,246,0.28)",
-                color: "#C4B5FD",
+                background: "#E9EFF4",
+                border: "1px solid #D7D4CC",
+                color: "#34506E",
               }}
             >
               {t("home.featuredInsightBadge")}
             </div>
-            <h3 className="mt-3 text-[20px] font-bold leading-tight text-white">
+            <h3 className="mt-3 text-[20px] font-medium leading-tight" style={{ color: "#1F2125" }}>
               {t("home.featuredInsightTitle")}
             </h3>
-            <p className="mt-2.5 flex-1 text-[13px] leading-relaxed" style={{ color: "#9CA3AF" }}>
+            <p className="mt-2.5 flex-1 text-[13px] leading-[1.7]" style={{ color: "#5A5D63" }}>
               {t("home.featuredInsightDesc")}
             </p>
             <Link
               to="/insights"
-              className="mt-5 inline-flex w-fit items-center gap-2 rounded-lg px-5 py-2.5 text-[13px] font-semibold text-white"
-              style={{ border: "1px solid rgba(255,255,255,0.15)" }}
+              className="mt-5 inline-flex w-fit items-center gap-2 rounded-lg px-5 py-2.5 text-[13px] font-semibold"
+              style={{ border: "1px solid #D7D4CC", color: "#1F2125" }}
             >
               {t("home.readArticle")} <ArrowRight className="h-3.5 w-3.5" />
             </Link>
@@ -1122,8 +1081,7 @@ function AgentCard() {
       <div
         className="glass-card overflow-hidden"
         style={{
-          background: "linear-gradient(135deg, rgba(139,92,246,0.09), rgba(7,11,28,0.92))",
-          border: "1px solid rgba(139,92,246,0.22)",
+          border: "1px solid #E3E1DA",
         }}
       >
         <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr]">
@@ -1134,14 +1092,14 @@ function AgentCard() {
               className="mb-5 flex h-14 w-14 items-center justify-center"
               style={{
                 clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
-                background: "linear-gradient(135deg, #7C3AED, #A855F7)",
+                background: "#34506E",
               }}
             >
               <Bot className="h-6 w-6 text-white" />
             </div>
 
-            <h2 className="text-[22px] font-bold text-white">{t("home.agentTitle")}</h2>
-            <p className="mt-2 max-w-[400px] text-[13.5px] leading-relaxed" style={{ color: "#9CA3AF" }}>
+            <h2 className="text-[22px] font-medium" style={{ color: "#1F2125" }}>{t("home.agentTitle")}</h2>
+            <p className="mt-2 max-w-[400px] text-[13.5px] leading-[1.7]" style={{ color: "#5A5D63" }}>
               {t("home.agentDesc")}
             </p>
 
@@ -1150,11 +1108,11 @@ function AgentCard() {
                 <button
                   key={topic}
                   onClick={() => sendQuery(topic)}
-                  className="rounded-full px-3 py-1 text-[11.5px] font-medium transition-colors hover:bg-white/10"
+                  className="rounded-full px-3 py-1 text-[11.5px] font-medium transition-colors hover:bg-black/5"
                   style={{
-                    background: "rgba(255,255,255,0.06)",
-                    border: "1px solid rgba(255,255,255,0.11)",
-                    color: "#D1D5DB",
+                    background: "#E9EFF4",
+                    border: "1px solid #D7D4CC",
+                    color: "#5A5D63",
                   }}
                 >
                   {topic}
@@ -1166,12 +1124,12 @@ function AgentCard() {
           {/* RIGHT — inline chat panel */}
           <div
             className="flex flex-col justify-between p-6"
-            style={{ background: "rgba(5,8,22,0.6)", borderLeft: "1px solid rgba(139,92,246,0.14)" }}
+            style={{ background: "#EDEBE3", borderLeft: "1px solid #E3E1DA" }}
           >
             <div className="min-h-[100px] overflow-y-auto">
               <div
-                className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em]"
-                style={{ color: "#6B7280" }}
+                className="mb-4 text-[10px] font-semibold uppercase tracking-[0.2em]"
+                style={{ color: "#8A8D93" }}
               >
                 {t("home.agentLabel")}
               </div>
@@ -1179,7 +1137,7 @@ function AgentCard() {
               {!userMsg && (
                 <div
                   className="inline-block rounded-[12px] rounded-tl-none px-4 py-2.5 text-[13px] font-medium text-white"
-                  style={{ background: "linear-gradient(135deg, #7C3AED, #A855F7)", maxWidth: "90%" }}
+                  style={{ background: "#34506E", maxWidth: "90%" }}
                 >
                   {t("home.agentGreeting")}
                 </div>
@@ -1190,23 +1148,23 @@ function AgentCard() {
                   {/* User message */}
                   <div className="flex justify-end">
                     <div
-                      className="rounded-[12px] rounded-tr-none px-3 py-2 text-[12.5px] text-white"
-                      style={{ background: "rgba(139,92,246,0.25)", maxWidth: "85%" }}
+                      className="rounded-[12px] rounded-tr-none px-3 py-2 text-[12.5px]"
+                      style={{ background: "#E9EFF4", border: "1px solid #D7D4CC", color: "#1F2125", maxWidth: "85%" }}
                     >
                       {userMsg}
                     </div>
                   </div>
                   {/* Agent response */}
                   {loading ? (
-                    <div className="flex items-center gap-1.5 px-1" style={{ color: "#6B7280" }}>
-                      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-purple-400" style={{ animationDelay: "0ms" }} />
-                      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-purple-400" style={{ animationDelay: "150ms" }} />
-                      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-purple-400" style={{ animationDelay: "300ms" }} />
+                    <div className="flex items-center gap-1.5 px-1" style={{ color: "#8A8D93" }}>
+                      <span className="h-1.5 w-1.5 animate-bounce rounded-full" style={{ background: "#34506E", animationDelay: "0ms" }} />
+                      <span className="h-1.5 w-1.5 animate-bounce rounded-full" style={{ background: "#34506E", animationDelay: "150ms" }} />
+                      <span className="h-1.5 w-1.5 animate-bounce rounded-full" style={{ background: "#34506E", animationDelay: "300ms" }} />
                     </div>
                   ) : agentMsg ? (
                     <div
                       className="inline-block rounded-[12px] rounded-tl-none px-4 py-2.5 text-[12.5px] leading-relaxed text-white"
-                      style={{ background: "linear-gradient(135deg, #7C3AED, #A855F7)", maxWidth: "90%" }}
+                      style={{ background: "#34506E", maxWidth: "90%" }}
                     >
                       {agentMsg}
                     </div>
@@ -1221,18 +1179,19 @@ function AgentCard() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder={t("home.agentPlaceholder")}
-                className="flex-1 rounded-[8px] px-3 py-2.5 text-[12.5px] text-white outline-none"
+                className="flex-1 rounded-[8px] px-3 py-2.5 text-[12.5px] outline-none"
                 style={{
-                  background: "rgba(255,255,255,0.05)",
-                  border: "1px solid rgba(255,255,255,0.09)",
-                  caretColor: "#A855F7",
+                  background: "#FAFAF8",
+                  border: "1px solid #E3E1DA",
+                  color: "#1F2125",
+                  caretColor: "#34506E",
                 }}
               />
               <button
                 type="submit"
                 disabled={loading}
                 className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] transition-opacity hover:opacity-90 disabled:opacity-40"
-                style={{ background: "linear-gradient(135deg, #7C3AED, #A855F7)" }}
+                style={{ background: "#34506E" }}
                 aria-label="Send"
               >
                 <ArrowRight className="h-4 w-4 text-white" />
@@ -1247,7 +1206,99 @@ function AgentCard() {
 }
 
 /* ============================================================
-   8. FAQ SECTION — visible + schema-backed
+   8. EU AI ACT ASSESSMENT TEASER
+   ============================================================ */
+
+function AssessmentTeaser() {
+  return (
+    <section className="mt-5" aria-label="EU AI Act Risk Classifier">
+      <div
+        className="glass-card overflow-hidden"
+        style={{
+          border: "1px solid #E3E1DA",
+        }}
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr]">
+          {/* Left */}
+          <div className="p-8 lg:p-10">
+            <div
+              className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl"
+              style={{
+                background: "#34506E",
+                border: "1px solid #2A4159",
+              }}
+            >
+              <ShieldCheck className="h-5 w-5 text-white" />
+            </div>
+            <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.22em]" style={{ color: "#34506E" }}>
+              Free Compliance Tool
+            </div>
+            <h2 className="text-[20px] font-medium lg:text-[24px]" style={{ color: "#1F2125" }}>
+              EU AI Act Risk Classifier
+            </h2>
+            <p className="mt-2 max-w-[440px] text-[13.5px] leading-[1.7]" style={{ color: "#5A5D63" }}>
+              Not sure if your AI system is High-Risk under Regulation (EU) 2024/1689?
+              Take the free 5-minute assessment and get a tailored compliance roadmap.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-2">
+              {["5 min assessment", "No sign-up", "Instant results", "Free to use"].map((chip) => (
+                <span
+                  key={chip}
+                  className="rounded-full px-3 py-1 text-[11.5px] font-medium"
+                  style={{
+                    background: "#E9EFF4",
+                    border: "1px solid #D7D4CC",
+                    color: "#34506E",
+                  }}
+                >
+                  {chip}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Right */}
+          <div
+            className="flex flex-col justify-center p-6 lg:p-8"
+            style={{
+              background: "#EDEBE3",
+              borderTop: "1px solid #E3E1DA",
+            }}
+          >
+            <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em]" style={{ color: "#8A8D93" }}>
+              Risk Tiers
+            </div>
+            {[
+              { label: "Prohibited", color: "#DC2626", bg: "rgba(220,38,38,0.06)", icon: "⊘" },
+              { label: "High Risk", color: "#C2410C", bg: "rgba(194,65,12,0.06)", icon: "⚠" },
+              { label: "Limited Risk", color: "#92400E", bg: "rgba(146,64,14,0.06)", icon: "◎" },
+              { label: "Minimal Risk", color: "#166534", bg: "rgba(22,101,52,0.06)", icon: "✦" },
+            ].map(({ label, color, bg, icon }) => (
+              <div
+                key={label}
+                className="mb-2 flex items-center gap-3 rounded-lg px-3 py-2"
+                style={{ background: bg, border: `1px solid ${color}28` }}
+              >
+                <span style={{ color, fontSize: 14 }}>{icon}</span>
+                <span className="text-[12.5px] font-medium" style={{ color }}>{label}</span>
+              </div>
+            ))}
+            <Link
+              to={CLASSIFIER_ROUTE}
+              className="mt-4 inline-flex items-center justify-center gap-2 rounded-[10px] px-5 py-3 text-[13.5px] font-semibold text-white transition-all hover:opacity-90"
+              style={{ background: "#34506E" }}
+            >
+              Start Free Assessment <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   9. FAQ SECTION — visible + schema-backed
    ============================================================ */
 
 function HomeFaqSection() {
@@ -1257,15 +1308,15 @@ function HomeFaqSection() {
     <section className="mt-14 lg:mt-16" aria-label="Frequently asked questions">
       <div className="mb-8">
         <div
-          className="text-[10px] font-bold uppercase tracking-[0.22em]"
-          style={{ color: "#8B8B9A" }}
+          className="text-[10px] font-semibold uppercase tracking-[0.22em]"
+          style={{ color: "#8A8D93" }}
         >
           {t("home.faqLabel")}
         </div>
-        <h2 className="mt-2.5 text-[28px] font-bold leading-tight text-white lg:text-[34px]">
+        <h2 className="mt-2.5 text-[28px] font-medium leading-tight lg:text-[34px]" style={{ color: "#1F2125" }}>
           {t("home.faqTitle")}
         </h2>
-        <p className="mt-2 text-[14px]" style={{ color: "#9CA3AF" }}>
+        <p className="mt-2 text-[14px]" style={{ color: "#5A5D63" }}>
           {t("home.faqDesc")}
         </p>
       </div>
@@ -1276,23 +1327,23 @@ function HomeFaqSection() {
             key={item.q}
             className="group rounded-[14px] p-5"
             style={{
-              background: "rgba(7,11,28,0.75)",
-              border: "1px solid rgba(255,255,255,0.08)",
+              background: "#F2F0EA",
+              border: "1px solid #E3E1DA",
             }}
           >
             <summary
-              className="flex cursor-pointer list-none items-start justify-between gap-4 text-[13.5px] font-semibold text-white"
-              style={{ userSelect: "none" }}
+              className="flex cursor-pointer list-none items-start justify-between gap-4 text-[13.5px] font-medium"
+              style={{ userSelect: "none", color: "#1F2125" }}
             >
               <span>{item.q}</span>
               <ArrowRight
                 className="mt-0.5 h-4 w-4 shrink-0 rotate-90 transition-transform group-open:rotate-[270deg]"
-                style={{ color: "#A855F7" }}
+                style={{ color: "#34506E" }}
               />
             </summary>
             <p
-              className="mt-3.5 text-[13px] leading-relaxed"
-              style={{ color: "#9CA3AF" }}
+              className="mt-3.5 text-[13px] leading-[1.7]"
+              style={{ color: "#5A5D63" }}
             >
               {item.a}
             </p>
@@ -1314,28 +1365,22 @@ function FinalCta() {
     <section className="mt-5 mb-5" aria-label="Contact call to action">
       <div
         className="glass-card grid grid-cols-1 items-center gap-6 p-7 lg:grid-cols-[1fr_auto] lg:gap-10 lg:p-9"
-        style={{
-          background:
-            "linear-gradient(135deg, rgba(139,92,246,0.16), rgba(20,20,40,0.6))",
-        }}
       >
         <div className="flex items-center gap-5">
           <div
             className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl"
             style={{
-              background:
-                "linear-gradient(135deg, rgba(139,92,246,0.35), rgba(168,85,247,0.20))",
-              border: "1px solid rgba(139,92,246,0.55)",
-              boxShadow: "0 0 28px -6px rgba(139,92,246,0.70)",
+              background: "#E9EFF4",
+              border: "1px solid #D7D4CC",
             }}
           >
-            <Rocket className="h-6 w-6" style={{ color: "#C4B5FD" }} />
+            <Rocket className="h-6 w-6" style={{ color: "#34506E" }} />
           </div>
           <div>
-            <h2 className="text-[22px] font-bold leading-tight text-white lg:text-[26px]">
+            <h2 className="text-[22px] font-medium leading-tight lg:text-[26px]" style={{ color: "#1F2125" }}>
               {t("home.ctaTitle")}
             </h2>
-            <p className="mt-1.5 text-[13.5px] leading-relaxed" style={{ color: "#9CA3AF" }}>
+            <p className="mt-1.5 text-[13.5px] leading-[1.7]" style={{ color: "#5A5D63" }}>
               {t("home.ctaDesc")}
             </p>
           </div>
@@ -1344,15 +1389,15 @@ function FinalCta() {
         <div className="flex flex-col gap-3 lg:items-end">
           <Link
             to="/portfolio"
-            className="inline-flex items-center gap-2 rounded-[10px] px-6 py-3 text-[13.5px] font-semibold text-white transition-all hover:scale-[1.02] whitespace-nowrap"
-            style={{ background: "linear-gradient(135deg,#A855F7,#7C3AED)" }}
+            className="inline-flex items-center gap-2 rounded-[10px] px-6 py-3 text-[13.5px] font-semibold transition-all hover:opacity-90 whitespace-nowrap"
+            style={{ background: "#34506E", color: "#FAFAF8" }}
           >
             {t("home.ctaViewWork")} <ArrowRight className="h-4 w-4" />
           </Link>
           <Link
             to={agentHref}
-            className="inline-flex items-center gap-2 rounded-[10px] px-6 py-3 text-[13.5px] font-semibold text-white transition-all hover:bg-white/5 whitespace-nowrap"
-            style={{ border: "1px solid rgba(255,255,255,0.15)" }}
+            className="inline-flex items-center gap-2 rounded-[10px] px-6 py-3 text-[13.5px] font-semibold transition-all hover:bg-black/5 whitespace-nowrap"
+            style={{ border: "1px solid #D7D4CC", color: "#1F2125" }}
           >
             <Bot className="h-4 w-4" /> {t("home.ctaTalkAgent")}
           </Link>

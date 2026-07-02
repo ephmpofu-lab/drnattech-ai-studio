@@ -1,4 +1,4 @@
-﻿import type React from "react";
+import type React from "react";
 import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
@@ -34,7 +34,6 @@ import {
 } from "lucide-react";
 import { SiteNav } from "@/components/brand/SiteNav";
 import { SiteFooter } from "@/components/brand/SiteFooter";
-import { BrandBackground } from "@/components/brand/Background";
 
 /* ============================================================
    ROUTE — meta, hreflang, canonical
@@ -66,7 +65,7 @@ export const Route = createFileRoute("/about")({
       { property: "og:url", content: "https://drnattech.com/about" },
       {
         property: "og:image",
-        content: "https://drnattech.com/images/Dr%20Mpofu_purple2.webp",
+        content: "https://drnattech.com/images/Dr_Mpofu_purple-removebg-preview.png",
       },
       { name: "twitter:card", content: "summary_large_image" },
       {
@@ -169,7 +168,7 @@ function AboutStructuredData() {
         description:
           "PhD-credentialed AI Solutions Architect and KI-Architekt based in Vienna, Austria. Creator of the SKAIDO, AISA and Three Structural Laws frameworks. Specialises in enterprise AI systems, RAG knowledge platforms, multi-agent architectures and EU AI Act compliance. Has been designing and delivering production AI systems since January 2026. Serves the DACH region and EU.",
         url: "https://drnattech.com",
-        image: "https://drnattech.com/images/Dr%20Mpofu_purple2.webp",
+        image: "https://drnattech.com/images/Dr_Mpofu_purple-removebg-preview.png",
         alumniOf: {
           "@type": "CollegeOrUniversity",
           name: "BOKU University Vienna",
@@ -321,11 +320,10 @@ function AboutStructuredData() {
 export function AboutPage() {
   return (
     <div
-      className="relative min-h-screen overflow-hidden"
-      style={{ backgroundColor: "#050816" }}
+      className="light-page relative min-h-screen overflow-hidden"
+      style={{ backgroundColor: "#FAFAF8" }}
     >
       <AboutStructuredData />
-      <BrandBackground />
       <SiteNav active="About" />
       <main className="mx-auto max-w-[1280px] px-6 pb-20 lg:px-10">
         <Hero />
@@ -355,7 +353,7 @@ function CredentialGlyph({ g }: { g: string }) {
     return (
       <div
         className={box}
-        style={{ background: "rgba(42,173,78,0.14)", border: "1px solid rgba(42,173,78,0.3)" }}
+        style={{ background: "rgba(42,173,78,0.12)", border: "1px solid rgba(42,173,78,0.28)" }}
       >
         <svg width="18" height="22" viewBox="0 0 28 34" fill="none">
           <rect x="1" y="1" width="7" height="32" rx="2.5" fill="#2AAD4E" />
@@ -370,7 +368,7 @@ function CredentialGlyph({ g }: { g: string }) {
     return (
       <div
         className={box}
-        style={{ background: "rgba(255,255,255,0.92)", border: "1px solid rgba(255,255,255,0.2)" }}
+        style={{ background: "#FFFFFF", border: "1px solid #E3E1DA" }}
       >
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
           <path fill="#4285F4" d="M23.745 12.27c0-.79-.07-1.54-.19-2.27h-11.3v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.58v3h3.86c2.26-2.09 3.56-5.17 3.56-8.82z" />
@@ -381,13 +379,12 @@ function CredentialGlyph({ g }: { g: string }) {
       </div>
     );
   }
-  /* ai — purple AI glyph */
   return (
     <div
       className={box}
-      style={{ background: "rgba(139,92,246,0.14)", border: "1px solid rgba(139,92,246,0.38)" }}
+      style={{ background: "#E9EFF4", border: "1px solid #D7D4CC" }}
     >
-      <Boxes className="h-4 w-4" style={{ color: "#C4B5FD" }} />
+      <Boxes className="h-4 w-4" style={{ color: "#34506E" }} />
     </div>
   );
 }
@@ -408,9 +405,9 @@ function Hero() {
           <span
             className="inline-flex w-fit items-center rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.22em]"
             style={{
-              background: "rgba(139,92,246,0.12)",
-              border: "1px solid rgba(139,92,246,0.32)",
-              color: "#C4B5FD",
+              background: "#E9EFF4",
+              border: "1px solid #D7D4CC",
+              color: "#34506E",
             }}
           >
             {t("about.heroBadge")}
@@ -418,39 +415,39 @@ function Hero() {
           <span
             className="inline-flex w-fit items-center rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em]"
             style={{
-              background: "rgba(139,92,246,0.08)",
-              border: "1px solid rgba(139,92,246,0.22)",
-              color: "#A855F7",
+              background: "#E9EFF4",
+              border: "1px solid #D7D4CC",
+              color: "#34506E",
             }}
           >
             {t("about.heroBadge2")}
           </span>
         </div>
 
-        <h1 className="mt-5 text-[38px] font-bold leading-[1.06] tracking-tight text-white lg:text-[48px]">
+        <h1 className="mt-5 text-[38px] font-medium leading-[1.06] tracking-tight lg:text-[48px]" style={{ color: "#1F2125" }}>
           {t("about.heroTitle1")}{" "}
           <span className="text-gradient-brand">{t("about.heroTitle2")}</span>
         </h1>
 
-        <p className="mt-5 text-[15px] leading-relaxed" style={{ color: "#9CA3AF" }}>
+        <p className="mt-5 text-[15px] leading-relaxed" style={{ color: "#5A5D63" }}>
           {t("about.heroDesc1")}
         </p>
-        <p className="mt-4 text-[14.5px] leading-relaxed" style={{ color: "#9CA3AF" }}>
-          {t("about.heroDesc2")} <strong style={{ color: "#fff" }}>{t("about.heroLangEn")}</strong> and <strong style={{ color: "#fff" }}>{t("about.heroLangDe")}</strong>.
+        <p className="mt-4 text-[14.5px] leading-relaxed" style={{ color: "#5A5D63" }}>
+          {t("about.heroDesc2")} <strong style={{ color: "#1F2125" }}>{t("about.heroLangEn")}</strong> and <strong style={{ color: "#1F2125" }}>{t("about.heroLangDe")}</strong>.
         </p>
 
         <div className="mt-8 flex flex-wrap gap-3">
           <Link
             to={agentHref}
-            className="inline-flex items-center gap-2 rounded-[10px] px-5 py-3 text-[13.5px] font-semibold text-white shadow-lg transition-all hover:scale-[1.03]"
-            style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
+            className="inline-flex items-center gap-2 rounded-[10px] px-5 py-3 text-[13.5px] font-semibold transition-all hover:opacity-90"
+            style={{ background: "#34506E", color: "#FAFAF8" }}
           >
             <Bot className="h-4 w-4" /> {t("about.askAgent")}
           </Link>
           <Link
             to="/portfolio"
-            className="inline-flex items-center gap-2 rounded-[10px] px-5 py-3 text-[13.5px] font-semibold text-white transition-all hover:bg-white/5"
-            style={{ border: "1px solid rgba(255,255,255,0.14)" }}
+            className="inline-flex items-center gap-2 rounded-[10px] px-5 py-3 text-[13.5px] font-semibold transition-all hover:bg-black/5"
+            style={{ border: "1px solid #D7D4CC", color: "#1F2125" }}
           >
             {t("about.viewPortfolio")}
           </Link>
@@ -461,8 +458,8 @@ function Hero() {
             <div key={c.title} className="flex items-center gap-3">
               <CredentialGlyph g={c.glyph} />
               <div className="leading-tight">
-                <div className="text-[12px] font-bold text-white">{c.title}</div>
-                <div className="text-[11px]" style={{ color: "#9CA3AF" }}>{c.sub}</div>
+                <div className="text-[12px] font-bold" style={{ color: "#1F2125" }}>{c.title}</div>
+                <div className="text-[11px]" style={{ color: "#5A5D63" }}>{c.sub}</div>
               </div>
             </div>
           ))}
@@ -472,16 +469,16 @@ function Hero() {
       {/* RIGHT — portrait */}
       <div
         className="relative hidden min-h-[540px] overflow-hidden rounded-[18px] lg:block"
-        style={{ border: "1px solid rgba(255,255,255,0.06)" }}
+        style={{ border: "1px solid #E3E1DA" }}
       >
         <img
-          src="/images/Dr Mpofu_purple2.webp"
+          src="/images/Dr_Mpofu_purple-removebg-preview.png"
           alt="Dr. Ephraim Mpofu — AI Solutions Architect and KI-Architekt based in Vienna, Austria"
           className="absolute inset-0 h-full w-full object-cover object-top"
         />
         <div
           className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-32"
-          style={{ background: "linear-gradient(to bottom, transparent, #050816)" }}
+          style={{ background: "linear-gradient(to bottom, transparent, #FAFAF8)" }}
         />
       </div>
     </section>
@@ -506,16 +503,16 @@ function AuthorityMetrics() {
           <div
             key={m.value + m.a}
             className="flex min-w-[130px] flex-1 flex-col items-center justify-center px-4 py-4"
-            style={i > 0 ? { borderLeft: "1px solid rgba(255,255,255,0.06)" } : undefined}
+            style={i > 0 ? { borderLeft: "1px solid #E3E1DA" } : undefined}
           >
             <div
               className="mb-2 flex h-7 w-7 items-center justify-center rounded-full"
-              style={{ background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.25)" }}
+              style={{ background: "#E9EFF4", border: "1px solid #D7D4CC" }}
             >
-              <m.icon className="h-3.5 w-3.5" style={{ color: "#A855F7" }} />
+              <m.icon className="h-3.5 w-3.5" style={{ color: "#34506E" }} />
             </div>
             <div className="text-gradient-brand text-[22px] font-bold leading-none">{m.value}</div>
-            <div className="mt-1 text-center text-[10.5px] font-medium leading-tight" style={{ color: "#9CA3AF" }}>
+            <div className="mt-1 text-center text-[10.5px] font-medium leading-tight" style={{ color: "#5A5D63" }}>
               {m.a}<br />{m.b}
             </div>
           </div>
@@ -531,8 +528,8 @@ function AuthorityMetrics() {
 
 function SkaidoVisual() {
   const nodes = [
-    { l: "S", c: "#A855F7" },
-    { l: "K", c: "#6366F1" },
+    { l: "S", c: "#34506E" },
+    { l: "K", c: "#4B7096" },
     { l: "A", c: "#3B82F6" },
     { l: "I", c: "#14B8A6" },
     { l: "D", c: "#F59E0B" },
@@ -549,7 +546,7 @@ function SkaidoVisual() {
             {n.l}
           </div>
           {i < nodes.length - 1 && (
-            <ArrowRight className="h-3 w-3 shrink-0" style={{ color: "rgba(255,255,255,0.28)" }} />
+            <ArrowRight className="h-3 w-3 shrink-0" style={{ color: "rgba(0,0,0,0.2)" }} />
           )}
         </div>
       ))}
@@ -562,22 +559,21 @@ function ThreeLawsVisual() {
     <div className="flex items-center justify-center gap-3">
       <div
         className="flex h-12 w-12 items-center justify-center rounded-xl"
-        style={{ background: "rgba(139,92,246,0.14)", border: "1.5px solid rgba(139,92,246,0.45)" }}
+        style={{ background: "#E9EFF4", border: "1.5px solid #D7D4CC" }}
       >
-        <Scale className="h-6 w-6" style={{ color: "#A855F7" }} />
+        <Scale className="h-6 w-6" style={{ color: "#34506E" }} />
       </div>
       <div
         className="flex h-12 w-12 items-center justify-center rounded-xl"
-        style={{ background: "rgba(20,184,166,0.14)", border: "1.5px solid rgba(20,184,166,0.45)" }}
+        style={{ background: "rgba(20,184,166,0.12)", border: "1.5px solid rgba(20,184,166,0.38)" }}
       >
         <Database className="h-6 w-6" style={{ color: "#14B8A6" }} />
       </div>
       <div
         className="flex h-12 w-12 items-center justify-center rounded-full"
         style={{
-          background: "rgba(34,197,94,0.12)",
-          border: "1.5px solid rgba(34,197,94,0.55)",
-          boxShadow: "0 0 20px rgba(34,197,94,0.25)",
+          background: "rgba(34,197,94,0.10)",
+          border: "1.5px solid rgba(34,197,94,0.45)",
         }}
       >
         <Eye className="h-6 w-6" style={{ color: "#22C55E" }} />
@@ -592,7 +588,7 @@ function WorkflowLayersVisual() {
       <ellipse cx="80" cy="82" rx="60" ry="5" fill="rgba(245,158,11,0.18)" />
       <path d="M10 72 L150 72 L138 58 L22 58 Z" fill="#F59E0B" opacity="0.88" />
       <path d="M22 54 L138 54 L126 40 L34 40 Z" fill="#14B8A6" opacity="0.88" />
-      <path d="M34 36 L126 36 L114 22 L46 22 Z" fill="#A855F7" opacity="0.92" />
+      <path d="M34 36 L126 36 L114 22 L46 22 Z" fill="#34506E" opacity="0.92" />
     </svg>
   );
 }
@@ -600,21 +596,21 @@ function WorkflowLayersVisual() {
 function KnowledgeArchVisual() {
   return (
     <svg viewBox="0 0 160 90" className="mx-auto w-full max-w-[180px]" aria-hidden="true">
-      <line x1="28" y1="22" x2="62" y2="38" stroke="rgba(99,102,241,0.5)" strokeWidth="1.2" />
-      <line x1="28" y1="68" x2="62" y2="54" stroke="rgba(99,102,241,0.5)" strokeWidth="1.2" />
-      <line x1="132" y1="22" x2="98" y2="38" stroke="rgba(99,102,241,0.5)" strokeWidth="1.2" />
-      <line x1="132" y1="68" x2="98" y2="54" stroke="rgba(99,102,241,0.5)" strokeWidth="1.2" />
-      <circle cx="28" cy="22" r="8" fill="none" stroke="rgba(99,102,241,0.65)" strokeWidth="1.5" />
-      <circle cx="28" cy="68" r="8" fill="none" stroke="rgba(99,102,241,0.65)" strokeWidth="1.5" />
-      <circle cx="132" cy="22" r="8" fill="none" stroke="rgba(99,102,241,0.65)" strokeWidth="1.5" />
-      <circle cx="132" cy="68" r="8" fill="none" stroke="rgba(99,102,241,0.65)" strokeWidth="1.5" />
-      <circle cx="28" cy="22" r="3.5" fill="#6366F1" />
-      <circle cx="28" cy="68" r="3.5" fill="#6366F1" />
-      <circle cx="132" cy="22" r="3.5" fill="#6366F1" />
-      <circle cx="132" cy="68" r="3.5" fill="#6366F1" />
-      <ellipse cx="80" cy="36" rx="24" ry="7" fill="rgba(168,85,247,0.55)" stroke="rgba(168,85,247,0.8)" strokeWidth="1" />
-      <rect x="56" y="36" width="48" height="20" fill="rgba(139,92,246,0.32)" />
-      <ellipse cx="80" cy="56" rx="24" ry="7" fill="rgba(139,92,246,0.55)" stroke="rgba(139,92,246,0.8)" strokeWidth="1" />
+      <line x1="28" y1="22" x2="62" y2="38" stroke="rgba(52,80,110,0.5)" strokeWidth="1.2" />
+      <line x1="28" y1="68" x2="62" y2="54" stroke="rgba(52,80,110,0.5)" strokeWidth="1.2" />
+      <line x1="132" y1="22" x2="98" y2="38" stroke="rgba(52,80,110,0.5)" strokeWidth="1.2" />
+      <line x1="132" y1="68" x2="98" y2="54" stroke="rgba(52,80,110,0.5)" strokeWidth="1.2" />
+      <circle cx="28" cy="22" r="8" fill="none" stroke="rgba(52,80,110,0.65)" strokeWidth="1.5" />
+      <circle cx="28" cy="68" r="8" fill="none" stroke="rgba(52,80,110,0.65)" strokeWidth="1.5" />
+      <circle cx="132" cy="22" r="8" fill="none" stroke="rgba(52,80,110,0.65)" strokeWidth="1.5" />
+      <circle cx="132" cy="68" r="8" fill="none" stroke="rgba(52,80,110,0.65)" strokeWidth="1.5" />
+      <circle cx="28" cy="22" r="3.5" fill="#34506E" />
+      <circle cx="28" cy="68" r="3.5" fill="#34506E" />
+      <circle cx="132" cy="22" r="3.5" fill="#34506E" />
+      <circle cx="132" cy="68" r="3.5" fill="#34506E" />
+      <ellipse cx="80" cy="36" rx="24" ry="7" fill="rgba(52,80,110,0.5)" stroke="rgba(52,80,110,0.75)" strokeWidth="1" />
+      <rect x="56" y="36" width="48" height="20" fill="rgba(52,80,110,0.25)" />
+      <ellipse cx="80" cy="56" rx="24" ry="7" fill="rgba(52,80,110,0.45)" stroke="rgba(52,80,110,0.7)" strokeWidth="1" />
     </svg>
   );
 }
@@ -641,25 +637,25 @@ function MethodologyCard({
     <div
       className="flex flex-col rounded-[18px] p-6"
       style={{
-        background: "rgba(7,11,28,0.8)",
-        border: "1px solid rgba(255,255,255,0.08)",
+        background: "#F2F0EA",
+        border: "1px solid #E3E1DA",
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-white">
+      <div className="text-center text-[11px] font-bold uppercase tracking-[0.18em]" style={{ color: "#1F2125" }}>
         {title}
       </div>
       <div className="my-6 flex flex-1 items-center justify-center">
         <Visual />
       </div>
-      <p className="mb-2 text-[12.5px] leading-relaxed" style={{ color: "#9CA3AF" }}>
+      <p className="mb-2 text-[12.5px] leading-relaxed" style={{ color: "#5A5D63" }}>
         {desc}
       </p>
       <p
         className="mb-3 text-[11.5px] leading-relaxed overflow-hidden"
         style={{
-          color: "#A855F7",
+          color: "#34506E",
           maxHeight: hovered ? "60px" : "0",
           opacity: hovered ? 1 : 0,
           transition: "opacity 0.3s ease, max-height 0.3s ease",
@@ -669,8 +665,8 @@ function MethodologyCard({
       </p>
       <Link
         to={link}
-        className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg px-4 py-2.5 text-[12.5px] font-semibold transition-all hover:bg-purple-500/10"
-        style={{ border: "1px solid rgba(139,92,246,0.45)", color: "#A855F7" }}
+        className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg px-4 py-2.5 text-[12.5px] font-semibold transition-all hover:bg-[#E9EFF4]"
+        style={{ border: "1px solid #D7D4CC", color: "#34506E" }}
       >
         {cta} <ArrowRight className="h-3.5 w-3.5" />
       </Link>
@@ -690,10 +686,10 @@ function MyMethodology() {
   return (
     <section ref={ref} className="mt-14 lg:mt-16" aria-label="Methodology and proprietary frameworks">
       <div className="mb-8 text-center">
-        <h2 className="text-[28px] font-bold text-white lg:text-[34px]">
+        <h2 className="text-[28px] font-medium lg:text-[34px]" style={{ color: "#1F2125" }}>
           {t("about.methodologyTitle")}
         </h2>
-        <p className="mx-auto mt-2 max-w-xl text-[14px]" style={{ color: "#9CA3AF" }}>
+        <p className="mx-auto mt-2 max-w-xl text-[14px]" style={{ color: "#5A5D63" }}>
           {t("about.methodologyDesc")}
         </p>
       </div>
@@ -722,7 +718,7 @@ function PythonSvg() {
 
 function OpenAiSvg() {
   return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="white">
+    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="#1F2125">
       <path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zm-9.022 12.609a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zm-1.26-10.408a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.896zm16.597 3.855l-5.843-3.37 2.019-1.168a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.4-.676zm2.01-3.023l-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135l-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08L8.704 5.46a.795.795 0 0 0-.393.681zm1.097-2.365l2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z" />
     </svg>
   );
@@ -794,7 +790,7 @@ function PineconeSvg() {
 
 function GitHubSvg() {
   return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="white">
+    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="#1F2125">
       <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
     </svg>
   );
@@ -825,18 +821,18 @@ const techItems: Array<{ icon: React.ReactNode; label: string }> = [
   { icon: <GitHubSvg />,    label: "GitHub"              },
   { icon: <PythonSvg />,    label: "Python"              },
   { icon: <PowerBISvg />,   label: "Power BI"            },
-  { icon: <Code {...lc("h-4 w-4", { color: "#C4B5FD" })} />,          label: "REST APIs"           },
-  { icon: <Zap {...lc("h-4 w-4", { color: "#C4B5FD" })} />,           label: "Webhooks"            },
-  { icon: <Bot {...lc("h-4 w-4", { color: "#C4B5FD" })} />,           label: "AI Agents"           },
-  { icon: <GitMerge {...lc("h-4 w-4", { color: "#C4B5FD" })} />,      label: "Workflow Automation" },
-  { icon: <MessageSquare {...lc("h-4 w-4", { color: "#C4B5FD" })} />, label: "Prompt Engineering"  },
+  { icon: <Code {...lc("h-4 w-4", { color: "#34506E" })} />,          label: "REST APIs"           },
+  { icon: <Zap {...lc("h-4 w-4", { color: "#34506E" })} />,           label: "Webhooks"            },
+  { icon: <Bot {...lc("h-4 w-4", { color: "#34506E" })} />,           label: "AI Agents"           },
+  { icon: <GitMerge {...lc("h-4 w-4", { color: "#34506E" })} />,      label: "Workflow Automation" },
+  { icon: <MessageSquare {...lc("h-4 w-4", { color: "#34506E" })} />, label: "Prompt Engineering"  },
 ];
 
 function TechPill({ item }: { item: (typeof techItems)[number] }) {
   return (
     <div
-      className="inline-flex items-center gap-2.5 rounded-xl px-4 py-2 text-[13px] font-medium text-white"
-      style={{ background: "rgba(7,11,28,0.85)", border: "1px solid rgba(255,255,255,0.10)" }}
+      className="inline-flex items-center gap-2.5 rounded-xl px-4 py-2 text-[13px] font-medium"
+      style={{ background: "#F2F0EA", border: "1px solid #E3E1DA", color: "#1F2125" }}
     >
       <div className="flex h-5 w-5 shrink-0 items-center justify-center">
         {item.icon}
@@ -852,10 +848,10 @@ function TechnologiesSection() {
     <section className="mt-5" aria-label="Technologies and platforms">
       <div className="glass-card px-6 py-7">
         <div className="mb-6 text-center">
-          <h2 className="text-[22px] font-bold text-white lg:text-[26px]">
+          <h2 className="text-[22px] font-medium lg:text-[26px]" style={{ color: "#1F2125" }}>
             {t("about.techTitle")}
           </h2>
-          <p className="mx-auto mt-1.5 max-w-xl text-[13.5px]" style={{ color: "#9CA3AF" }}>
+          <p className="mx-auto mt-1.5 max-w-xl text-[13.5px]" style={{ color: "#5A5D63" }}>
             {t("about.techDesc")}
           </p>
         </div>
@@ -896,8 +892,8 @@ function MyJourney() {
   return (
     <section ref={ref} className="mt-14 lg:mt-16" aria-label="Professional journey">
       <div className="mb-10 text-center">
-        <h2 className="text-[28px] font-bold text-white lg:text-[34px]">{t("about.journeyTitle")}</h2>
-        <p className="mx-auto mt-2 max-w-xl text-[14px]" style={{ color: "#9CA3AF" }}>
+        <h2 className="text-[28px] font-medium lg:text-[34px]" style={{ color: "#1F2125" }}>{t("about.journeyTitle")}</h2>
+        <p className="mx-auto mt-2 max-w-xl text-[14px]" style={{ color: "#5A5D63" }}>
           {t("about.journeyDesc")}
         </p>
       </div>
@@ -907,8 +903,7 @@ function MyJourney() {
         <div
           className="absolute left-[10%] right-[10%] top-[36px] h-px"
           style={{
-            background:
-              "linear-gradient(90deg, transparent 0%, #8B5CF6 6%, #A855F7 50%, #8B5CF6 94%, transparent 100%)",
+            background: "linear-gradient(90deg, transparent 0%, #34506E 6%, #34506E 94%, transparent 100%)",
           }}
         />
         <div className="grid grid-cols-5 gap-4">
@@ -917,17 +912,16 @@ function MyJourney() {
               <div
                 className="relative z-10 flex h-[72px] w-[72px] items-center justify-center rounded-full"
                 style={{
-                  background: "rgba(5,8,22,0.95)",
-                  border: "1.5px solid rgba(139,92,246,0.65)",
-                  boxShadow: inView ? "0 0 28px rgba(139,92,246,0.55)" : "0 0 24px rgba(139,92,246,0.32)",
+                  background: "#FAFAF8",
+                  border: "1.5px solid #D7D4CC",
                   opacity: inView ? 1 : 0,
-                  transition: `opacity 0.5s ease ${index * 0.15}s, box-shadow 0.5s ease ${index * 0.15}s`,
+                  transition: `opacity 0.5s ease ${index * 0.15}s`,
                 }}
               >
-                <Icon className="h-8 w-8" style={{ color: "#C4B5FD" }} />
+                <Icon className="h-8 w-8" style={{ color: "#34506E" }} />
               </div>
-              <div className="mt-4 text-[13.5px] font-bold text-white">{title}</div>
-              <div className="mt-2 text-[12px] leading-relaxed" style={{ color: "#9CA3AF" }}>
+              <div className="mt-4 text-[13.5px] font-medium" style={{ color: "#1F2125" }}>{title}</div>
+              <div className="mt-2 text-[12px] leading-relaxed" style={{ color: "#5A5D63" }}>
                 {desc}
               </div>
             </div>
@@ -939,25 +933,24 @@ function MyJourney() {
       <div className="relative flex flex-col gap-6 pl-8 lg:hidden">
         <div
           className="absolute left-[19px] top-0 bottom-0 w-px"
-          style={{ background: "linear-gradient(to bottom, #8B5CF6, #A855F7, #8B5CF6)" }}
+          style={{ background: "linear-gradient(to bottom, #34506E, #34506E)" }}
         />
         {journeySteps.map(({ Icon, title, desc }, index) => (
           <div key={title} className="flex items-start gap-4">
             <div
               className="relative -left-[29px] flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
               style={{
-                background: "rgba(5,8,22,0.95)",
-                border: "1.5px solid rgba(139,92,246,0.65)",
-                boxShadow: inView ? "0 0 18px rgba(139,92,246,0.5)" : "0 0 14px rgba(139,92,246,0.3)",
+                background: "#FAFAF8",
+                border: "1.5px solid #D7D4CC",
                 opacity: inView ? 1 : 0,
-                transition: `opacity 0.5s ease ${index * 0.15}s, box-shadow 0.5s ease ${index * 0.15}s`,
+                transition: `opacity 0.5s ease ${index * 0.15}s`,
               }}
             >
-              <Icon className="h-5 w-5" style={{ color: "#C4B5FD" }} />
+              <Icon className="h-5 w-5" style={{ color: "#34506E" }} />
             </div>
             <div className="-ml-4 flex-1">
-              <div className="text-[13.5px] font-bold text-white">{title}</div>
-              <div className="mt-1 text-[12px] leading-relaxed" style={{ color: "#9CA3AF" }}>{desc}</div>
+              <div className="text-[13.5px] font-medium" style={{ color: "#1F2125" }}>{title}</div>
+              <div className="mt-1 text-[12px] leading-relaxed" style={{ color: "#5A5D63" }}>{desc}</div>
             </div>
           </div>
         ))}
@@ -1010,10 +1003,10 @@ function WorldMap() {
   return (
     <div className="glass-card overflow-hidden">
       <div className="px-6 pt-5 pb-2">
-        <div className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: "#8B8B9A" }}>
+        <div className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: "#8A8D93" }}>
           {t("about.mapTitle")}
         </div>
-        <p className="mt-0.5 text-[12px]" style={{ color: "#6B7280" }}>
+        <p className="mt-0.5 text-[12px]" style={{ color: "#5A5D63" }}>
           {t("about.mapSub")}
         </p>
       </div>
@@ -1030,9 +1023,9 @@ function WorldMap() {
                 key={geo.rsmKey}
                 geography={geo}
                 style={{
-                  default: { fill: "rgba(139,92,246,0.07)", stroke: "rgba(139,92,246,0.18)", strokeWidth: 0.5, outline: "none" },
-                  hover:   { fill: "rgba(139,92,246,0.07)", stroke: "rgba(139,92,246,0.18)", strokeWidth: 0.5, outline: "none" },
-                  pressed: { fill: "rgba(139,92,246,0.07)", stroke: "rgba(139,92,246,0.18)", strokeWidth: 0.5, outline: "none" },
+                  default: { fill: "rgba(52,80,110,0.07)", stroke: "rgba(52,80,110,0.2)", strokeWidth: 0.5, outline: "none" },
+                  hover:   { fill: "rgba(52,80,110,0.07)", stroke: "rgba(52,80,110,0.2)", strokeWidth: 0.5, outline: "none" },
+                  pressed: { fill: "rgba(52,80,110,0.07)", stroke: "rgba(52,80,110,0.2)", strokeWidth: 0.5, outline: "none" },
                 }}
               />
             ))
@@ -1050,11 +1043,10 @@ function WorldMap() {
               <circle
                 r={isActive ? 8 : 5}
                 style={{
-                  fill: isActive ? "#A855F7" : "rgba(168,85,247,0.45)",
-                  stroke: "#A855F7",
+                  fill: isActive ? "#34506E" : "rgba(52,80,110,0.45)",
+                  stroke: "#34506E",
                   strokeWidth: 1.5,
                   cursor: "pointer",
-                  filter: isActive ? "drop-shadow(0 0 6px #A855F7)" : undefined,
                   transition: "all 0.18s ease",
                 }}
               />
@@ -1062,7 +1054,7 @@ function WorldMap() {
                 <text
                   textAnchor="middle"
                   y={-14}
-                  style={{ fontSize: 9, fontFamily: "Inter, sans-serif", fill: "#fff", pointerEvents: "none" }}
+                  style={{ fontSize: 9, fontFamily: "Inter, sans-serif", fill: "#1F2125", pointerEvents: "none" }}
                 >
                   {loc.name}
                 </text>
@@ -1078,21 +1070,21 @@ function WorldMap() {
           maxHeight: active ? 120 : 0,
           overflow: "hidden",
           transition: "max-height 0.3s ease",
-          borderTop: active ? "1px solid rgba(255,255,255,0.07)" : "none",
+          borderTop: active ? "1px solid #E3E1DA" : "none",
         }}
       >
         {active && (
           <div className="flex items-start justify-between gap-4 px-6 py-4">
             <div>
-              <div className="text-[15px] font-bold text-white">{active.name}</div>
-              <div className="mt-0.5 text-[12.5px] font-semibold" style={{ color: "#A855F7" }}>{active.role}</div>
-              <div className="text-[12px] mt-0.5" style={{ color: "#9CA3AF" }}>{active.org}</div>
-              <div className="text-[11px] mt-0.5" style={{ color: "#6B7280" }}>{active.period}</div>
+              <div className="text-[15px] font-medium" style={{ color: "#1F2125" }}>{active.name}</div>
+              <div className="mt-0.5 text-[12.5px] font-semibold" style={{ color: "#34506E" }}>{active.role}</div>
+              <div className="text-[12px] mt-0.5" style={{ color: "#5A5D63" }}>{active.org}</div>
+              <div className="text-[11px] mt-0.5" style={{ color: "#8A8D93" }}>{active.period}</div>
             </div>
             <button
               onClick={() => setActive(null)}
               className="shrink-0 text-[18px] leading-none"
-              style={{ color: "#6B7280" }}
+              style={{ color: "#8A8D93" }}
               aria-label={t("about.mapClose")}
             >
               ×
@@ -1105,7 +1097,7 @@ function WorldMap() {
 }
 
 const educationTimeline = [
-  { year: "2021–2025", degree: "PhD (Dr.nat.techn.)", field: "Natural Technology", inst: "BOKU University Vienna", color: "#A855F7" },
+  { year: "2021–2025", degree: "PhD (Dr.nat.techn.)", field: "Natural Technology", inst: "BOKU University Vienna", color: "#34506E" },
   { year: "2019–2020", degree: "Exchange", field: "Resources & Environmental Management", inst: "Beijing Normal University, China", color: "#3B82F6" },
   { year: "2018–2020", degree: "MSc", field: "Sustainable Urban Planning & Development", inst: "University of Johannesburg", color: "#F59E0B" },
   { year: "2013–2017", degree: "BSc", field: "Environmental Science & Health", inst: "NUST Zimbabwe", color: "#10B981" },
@@ -1115,25 +1107,24 @@ function EducationTimeline() {
   const { t } = useTranslation("common");
   return (
     <div className="glass-card p-6 flex-1">
-      <div className="text-[10px] font-bold uppercase tracking-[0.22em] mb-5" style={{ color: "#8B8B9A" }}>
+      <div className="text-[10px] font-bold uppercase tracking-[0.22em] mb-5" style={{ color: "#8A8D93" }}>
         {t("about.educationTitle")}
       </div>
       <div className="relative pl-5">
-        {/* Gradient spine */}
         <div
           className="absolute left-[6px] top-1 bottom-1 w-px"
-          style={{ background: "linear-gradient(to bottom, #A855F7, #3B82F6, #F59E0B, #10B981)" }}
+          style={{ background: "linear-gradient(to bottom, #34506E, #3B82F6, #F59E0B, #10B981)" }}
         />
         <div className="space-y-5">
           {educationTimeline.map((item) => (
             <div key={item.degree + item.year} className="relative pl-5">
               <div
                 className="absolute left-[-4px] top-[5px] h-[10px] w-[10px] rounded-full"
-                style={{ background: item.color, boxShadow: `0 0 8px ${item.color}88` }}
+                style={{ background: item.color }}
               />
               <div className="text-[10px] font-bold mb-0.5" style={{ color: item.color }}>{item.year}</div>
-              <div className="text-[13px] font-bold text-white">{item.degree} — {item.field}</div>
-              <div className="text-[11.5px] mt-0.5" style={{ color: "#9CA3AF" }}>{item.inst}</div>
+              <div className="text-[13px] font-medium" style={{ color: "#1F2125" }}>{item.degree} — {item.field}</div>
+              <div className="text-[11.5px] mt-0.5" style={{ color: "#5A5D63" }}>{item.inst}</div>
             </div>
           ))}
         </div>
@@ -1209,7 +1200,7 @@ function Certifications() {
   const { t } = useTranslation("common");
   return (
     <div className="glass-card p-6">
-      <div className="text-[10px] font-bold uppercase tracking-[0.22em] mb-5" style={{ color: "#8B8B9A" }}>
+      <div className="text-[10px] font-bold uppercase tracking-[0.22em] mb-5" style={{ color: "#8A8D93" }}>
         {t("about.certsTitle")}
       </div>
       <div className="space-y-3">
@@ -1217,12 +1208,12 @@ function Certifications() {
           <div
             key={name}
             className="flex items-center gap-4 rounded-[10px] p-3"
-            style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}
+            style={{ background: "#F2F0EA", border: "1px solid #E3E1DA" }}
           >
             <Logo />
             <div className="flex-1 min-w-0">
-              <div className="text-[12.5px] font-bold text-white leading-tight">{name}</div>
-              <div className="text-[11px] mt-0.5" style={{ color: "#9CA3AF" }}>{detail}</div>
+              <div className="text-[12.5px] font-medium leading-tight" style={{ color: "#1F2125" }}>{name}</div>
+              <div className="text-[11px] mt-0.5" style={{ color: "#5A5D63" }}>{detail}</div>
             </div>
             {link && (
               <a href={link} target="_blank" rel="noopener noreferrer" aria-label="Verify certificate">
@@ -1234,8 +1225,8 @@ function Certifications() {
       </div>
 
       {/* Affiliations strip */}
-      <div className="mt-5 border-t pt-4" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
-        <div className="text-[10px] font-bold uppercase tracking-[0.18em] mb-2.5" style={{ color: "#8B8B9A" }}>
+      <div className="mt-5 border-t pt-4" style={{ borderColor: "#E3E1DA" }}>
+        <div className="text-[10px] font-bold uppercase tracking-[0.18em] mb-2.5" style={{ color: "#8A8D93" }}>
           {t("about.verifyTitle")}
         </div>
         <div className="flex flex-wrap gap-2">
@@ -1245,11 +1236,11 @@ function Certifications() {
               href={v.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 rounded-[6px] px-2.5 py-1.5 text-[11px] font-semibold transition-colors hover:bg-white/8"
+              className="inline-flex items-center gap-1 rounded-[6px] px-2.5 py-1.5 text-[11px] font-semibold transition-colors hover:bg-[#E9EFF4]"
               style={{
-                background: "rgba(139,92,246,0.09)",
-                border: "1px solid rgba(139,92,246,0.22)",
-                color: "#C4B5FD",
+                background: "#E9EFF4",
+                border: "1px solid #D7D4CC",
+                color: "#34506E",
               }}
             >
               {v.label}
@@ -1266,10 +1257,7 @@ function BackgroundSection() {
   const ref = useScrollReveal<HTMLElement>(100);
   return (
     <section ref={ref} className="mt-5 space-y-4" aria-label="Professional background and credentials">
-      {/* World map — full width */}
       <WorldMap />
-
-      {/* 2-col row: education timeline + certifications */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_1fr]">
         <EducationTimeline />
         <Certifications />
@@ -1297,10 +1285,10 @@ function PrinciplesAndExpertise() {
 
       {/* LEFT — Principles */}
       <div className="glass-card p-6 lg:p-8">
-        <div className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: "#8B8B9A" }}>
+        <div className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: "#8A8D93" }}>
           {t("about.principlesLabel")}
         </div>
-        <h3 className="mt-1.5 text-[18px] font-bold text-white">
+        <h3 className="mt-1.5 text-[18px] font-medium" style={{ color: "#1F2125" }}>
           {t("about.principlesTitle")}
         </h3>
 
@@ -1311,22 +1299,19 @@ function PrinciplesAndExpertise() {
               <div className="flex flex-col items-center text-center" style={{ maxWidth: 110 }}>
                 <div
                   className="flex h-10 w-10 items-center justify-center rounded-full"
-                  style={{
-                    background: "rgba(139,92,246,0.14)",
-                    border: "1px solid rgba(139,92,246,0.40)",
-                  }}
+                  style={{ background: "#E9EFF4", border: "1px solid #D7D4CC" }}
                 >
-                  <Icon className="h-5 w-5" style={{ color: "#C4B5FD" }} />
+                  <Icon className="h-5 w-5" style={{ color: "#34506E" }} />
                 </div>
-                <div className="mt-2.5 text-[12.5px] font-bold text-white">{title}</div>
-                <div className="mt-1 text-[11px] leading-snug" style={{ color: "#9CA3AF" }}>
+                <div className="mt-2.5 text-[12.5px] font-medium" style={{ color: "#1F2125" }}>{title}</div>
+                <div className="mt-1 text-[11px] leading-snug" style={{ color: "#5A5D63" }}>
                   {desc}
                 </div>
               </div>
               {i < principles.length - 1 && (
                 <div
                   className="mx-1 mt-[18px] shrink-0 text-[20px] font-light"
-                  style={{ color: "rgba(139,92,246,0.28)" }}
+                  style={{ color: "#D7D4CC" }}
                 >
                   ·
                 </div>
@@ -1341,13 +1326,13 @@ function PrinciplesAndExpertise() {
             <div key={title} className="flex items-start gap-3">
               <div
                 className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
-                style={{ background: "rgba(139,92,246,0.14)", border: "1px solid rgba(139,92,246,0.4)" }}
+                style={{ background: "#E9EFF4", border: "1px solid #D7D4CC" }}
               >
-                <Icon className="h-4 w-4" style={{ color: "#C4B5FD" }} />
+                <Icon className="h-4 w-4" style={{ color: "#34506E" }} />
               </div>
               <div>
-                <div className="text-[13px] font-bold text-white">{title}</div>
-                <div className="mt-0.5 text-[11px] leading-snug" style={{ color: "#9CA3AF" }}>{desc}</div>
+                <div className="text-[13px] font-medium" style={{ color: "#1F2125" }}>{title}</div>
+                <div className="mt-0.5 text-[11px] leading-snug" style={{ color: "#5A5D63" }}>{desc}</div>
               </div>
             </div>
           ))}
@@ -1356,10 +1341,10 @@ function PrinciplesAndExpertise() {
 
       {/* RIGHT — Core Expertise */}
       <div className="glass-card p-6 lg:p-8">
-        <div className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: "#8B8B9A" }}>
+        <div className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: "#8A8D93" }}>
           {t("about.expertiseLabel")}
         </div>
-        <h3 className="mt-1.5 text-[18px] font-bold text-white">
+        <h3 className="mt-1.5 text-[18px] font-medium" style={{ color: "#1F2125" }}>
           {t("about.expertiseTitle")}
         </h3>
 
@@ -1368,15 +1353,12 @@ function PrinciplesAndExpertise() {
             <div key={title} className="flex flex-col items-center text-center">
               <div
                 className="flex h-12 w-12 items-center justify-center rounded-xl"
-                style={{
-                  background: "rgba(139,92,246,0.12)",
-                  border: "1px solid rgba(139,92,246,0.28)",
-                }}
+                style={{ background: "#E9EFF4", border: "1px solid #D7D4CC" }}
               >
-                <Icon className="h-6 w-6" style={{ color: "#C4B5FD" }} />
+                <Icon className="h-6 w-6" style={{ color: "#34506E" }} />
               </div>
-              <div className="mt-2.5 text-[12px] font-bold leading-tight text-white">{title}</div>
-              <div className="text-[11px] leading-tight" style={{ color: "#9CA3AF" }}>{sub}</div>
+              <div className="mt-2.5 text-[12px] font-medium leading-tight" style={{ color: "#1F2125" }}>{title}</div>
+              <div className="text-[11px] leading-tight" style={{ color: "#5A5D63" }}>{sub}</div>
             </div>
           ))}
         </div>
@@ -1395,13 +1377,13 @@ function AboutFaqSection() {
   return (
     <section className="mt-14 lg:mt-16" aria-label="Frequently asked questions">
       <div className="mb-8">
-        <div className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: "#8B8B9A" }}>
+        <div className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: "#8A8D93" }}>
           {t("about.faqLabel")}
         </div>
-        <h2 className="mt-2.5 text-[28px] font-bold leading-tight text-white lg:text-[34px]">
+        <h2 className="mt-2.5 text-[28px] font-medium leading-tight lg:text-[34px]" style={{ color: "#1F2125" }}>
           {t("about.faqTitle")}
         </h2>
-        <p className="mt-2 text-[14px]" style={{ color: "#9CA3AF" }}>
+        <p className="mt-2 text-[14px]" style={{ color: "#5A5D63" }}>
           {t("about.faqDesc")}
         </p>
       </div>
@@ -1412,21 +1394,21 @@ function AboutFaqSection() {
             key={item.q}
             className="group rounded-[14px] p-5"
             style={{
-              background: "rgba(7,11,28,0.75)",
-              border: "1px solid rgba(255,255,255,0.08)",
+              background: "#F2F0EA",
+              border: "1px solid #E3E1DA",
             }}
           >
             <summary
-              className="flex cursor-pointer list-none items-start justify-between gap-4 text-[13.5px] font-semibold text-white"
-              style={{ userSelect: "none" }}
+              className="flex cursor-pointer list-none items-start justify-between gap-4 text-[13.5px] font-semibold"
+              style={{ userSelect: "none", color: "#1F2125" }}
             >
               <span>{item.q}</span>
               <ArrowRight
                 className="mt-0.5 h-4 w-4 shrink-0 rotate-90 transition-transform group-open:rotate-[270deg]"
-                style={{ color: "#A855F7" }}
+                style={{ color: "#34506E" }}
               />
             </summary>
-            <p className="mt-3.5 text-[13px] leading-relaxed" style={{ color: "#9CA3AF" }}>
+            <p className="mt-3.5 text-[13px] leading-relaxed" style={{ color: "#5A5D63" }}>
               {item.a}
             </p>
           </details>
@@ -1448,25 +1430,24 @@ function CTA() {
       <div
         className="glass-card grid grid-cols-1 items-center gap-6 p-7 lg:grid-cols-[auto_1fr_auto] lg:gap-10 lg:p-9"
         style={{
-          background: "linear-gradient(135deg, rgba(139,92,246,0.16), rgba(20,20,40,0.6))",
+          background: "linear-gradient(135deg, #E9EFF4, rgba(242,240,234,0.8))",
         }}
       >
         <div
           className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl"
           style={{
-            background: "linear-gradient(135deg, rgba(139,92,246,0.35), rgba(168,85,247,0.20))",
-            border: "1px solid rgba(139,92,246,0.55)",
-            boxShadow: "0 0 28px -6px rgba(139,92,246,0.70)",
+            background: "#E9EFF4",
+            border: "1px solid #D7D4CC",
           }}
         >
-          <Rocket className="h-7 w-7" style={{ color: "#C4B5FD" }} />
+          <Rocket className="h-7 w-7" style={{ color: "#34506E" }} />
         </div>
 
         <div>
-          <h2 className="text-[22px] font-bold leading-tight text-white lg:text-[26px]">
+          <h2 className="text-[22px] font-medium leading-tight lg:text-[26px]" style={{ color: "#1F2125" }}>
             {t("about.ctaTitle")}
           </h2>
-          <p className="mt-1.5 text-[13.5px] leading-relaxed" style={{ color: "#9CA3AF" }}>
+          <p className="mt-1.5 text-[13.5px] leading-relaxed" style={{ color: "#5A5D63" }}>
             {t("about.ctaDesc")}
           </p>
         </div>
@@ -1474,15 +1455,15 @@ function CTA() {
         <div className="flex flex-col gap-3 lg:items-end">
           <Link
             to={agentHref}
-            className="inline-flex items-center gap-2 rounded-[10px] px-6 py-3 text-[13.5px] font-semibold text-white transition-all hover:scale-[1.02] whitespace-nowrap"
-            style={{ background: "linear-gradient(135deg, #8B5CF6, #A855F7)" }}
+            className="inline-flex items-center gap-2 rounded-[10px] px-6 py-3 text-[13.5px] font-semibold transition-all hover:opacity-90 whitespace-nowrap"
+            style={{ background: "#34506E", color: "#FAFAF8" }}
           >
             <Bot className="h-4 w-4" /> {t("about.ctaAskAgent")}
           </Link>
           <Link
             to="/portfolio"
-            className="inline-flex items-center gap-2 rounded-[10px] px-6 py-3 text-[13.5px] font-semibold text-white transition-all hover:bg-white/5 whitespace-nowrap"
-            style={{ border: "1px solid rgba(255,255,255,0.15)" }}
+            className="inline-flex items-center gap-2 rounded-[10px] px-6 py-3 text-[13.5px] font-semibold transition-all hover:bg-black/5 whitespace-nowrap"
+            style={{ border: "1px solid #D7D4CC", color: "#1F2125" }}
           >
             {t("about.ctaViewPortfolio")} <ArrowRight className="h-4 w-4" />
           </Link>
@@ -1491,4 +1472,3 @@ function CTA() {
     </section>
   );
 }
-

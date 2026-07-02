@@ -170,3 +170,17 @@ summary:focus-visible {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
 }
+
+/* ── Light page overrides (homepage only) ────────────────────── */
+.light-page .glass-card {
+  background: #F2F0EA;
+  border: 1px solid #E3E1DA;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+.light-page .text-gradient-brand {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  color: #34506E;
+}

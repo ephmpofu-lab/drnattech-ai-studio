@@ -1,6 +1,7 @@
 type Props = {
   size?: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
   className?: string;
+  color?: string;
 };
 
 /*
@@ -19,7 +20,7 @@ const fontSizes = {
   "3xl": 56,
 } as const;
 
-export function Signature({ size = "md", className = "" }: Props) {
+export function Signature({ size = "md", className = "", color = "#ffffff" }: Props) {
   const fontSize = fontSizes[size];
   return (
     <span
@@ -31,7 +32,7 @@ export function Signature({ size = "md", className = "" }: Props) {
         fontSize,
         lineHeight: 1.1,
         letterSpacing: "0.2em",
-        color: "#ffffff",
+        color,
         whiteSpace: "nowrap",
         textTransform: "uppercase",
       }}

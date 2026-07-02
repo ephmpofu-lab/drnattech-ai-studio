@@ -47,27 +47,30 @@ export function SiteFooter() {
       <div className="mx-auto max-w-[1280px] px-6 lg:px-10">
         <div
           className="pt-8 pb-5"
-          style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
+          style={{ borderTop: "1px solid #E3E1DA" }}
         >
           <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-[1.2fr_0.9fr_0.9fr_0.9fr_0.9fr]">
             {/* Brand */}
             <div>
-              <Signature size="lg" />
-              <div className="mt-4 text-[14px] font-bold text-white">Dr. Ephraim Mpofu</div>
-              <div className="mt-1 text-[11.5px] font-semibold" style={{ color: "#A855F7" }}>
+              <Signature size="lg" color="#1F2125" />
+              <div className="mt-4 text-[14px] font-bold" style={{ color: "#1F2125" }}>Dr. Ephraim Mpofu</div>
+              <div className="mt-1 text-[11.5px] font-semibold" style={{ color: "#34506E" }}>
                 {t("footer.role")}
               </div>
-              <div className="mt-1 text-[11.5px]" style={{ color: "#A3A3B2" }}>
+              <div className="mt-1 text-[11.5px]" style={{ color: "#5A5D63" }}>
                 {t("footer.credentials")}
               </div>
-              <div className="mt-2 text-[11px] leading-[1.6]" style={{ color: "#A3A3B2" }}>
+              <div className="mt-2 text-[11px] leading-[1.6]" style={{ color: "#5A5D63" }}>
                 {t("footer.description")}
               </div>
             </div>
 
             {/* Navigation */}
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-white">
+              <div
+                className="text-[11px] font-bold uppercase tracking-[0.2em]"
+                style={{ color: "#1F2125" }}
+              >
                 {t("footer.sections.navigation")}
               </div>
               <ul className="mt-4 space-y-2.5">
@@ -75,8 +78,10 @@ export function SiteFooter() {
                   <li key={n.labelKey}>
                     <Link
                       to={n.to}
-                      className="text-[13px] transition-colors hover:text-white"
-                      style={{ color: "#A3A3B2" }}
+                      className="text-[13px] transition-colors"
+                      style={{ color: "#5A5D63" }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = "#1F2125")}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = "#5A5D63")}
                     >
                       {t(n.labelKey as string)}
                     </Link>
@@ -87,7 +92,10 @@ export function SiteFooter() {
 
             {/* Frameworks */}
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-white">
+              <div
+                className="text-[11px] font-bold uppercase tracking-[0.2em]"
+                style={{ color: "#1F2125" }}
+              >
                 {t("footer.sections.frameworks")}
               </div>
               <ul className="mt-4 space-y-2.5">
@@ -95,8 +103,10 @@ export function SiteFooter() {
                   <li key={f.labelKey}>
                     <Link
                       to={f.to}
-                      className="text-[13px] transition-colors hover:text-white"
-                      style={{ color: "#A3A3B2" }}
+                      className="text-[13px] transition-colors"
+                      style={{ color: "#5A5D63" }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = "#1F2125")}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = "#5A5D63")}
                     >
                       {f.labelKey}
                     </Link>
@@ -107,7 +117,10 @@ export function SiteFooter() {
 
             {/* Authority */}
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-white">
+              <div
+                className="text-[11px] font-bold uppercase tracking-[0.2em]"
+                style={{ color: "#1F2125" }}
+              >
                 {t("footer.sections.authority")}
               </div>
               <ul className="mt-4 space-y-2.5">
@@ -115,8 +128,10 @@ export function SiteFooter() {
                   <li key={r.labelKey}>
                     <a
                       href={r.href}
-                      className="text-[13px] transition-colors hover:text-white"
-                      style={{ color: "#A3A3B2" }}
+                      className="text-[13px] transition-colors"
+                      style={{ color: "#5A5D63" }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = "#1F2125")}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = "#5A5D63")}
                     >
                       {t(r.labelKey)}
                     </a>
@@ -127,7 +142,10 @@ export function SiteFooter() {
 
             {/* Connect */}
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-white">
+              <div
+                className="text-[11px] font-bold uppercase tracking-[0.2em]"
+                style={{ color: "#1F2125" }}
+              >
                 {t("footer.sections.connect")}
               </div>
               <ul className="mt-4 space-y-2.5">
@@ -135,10 +153,12 @@ export function SiteFooter() {
                   <li key={c.labelKey}>
                     <a
                       href={c.href}
-                      className="inline-flex items-center gap-2 text-[13px] transition-colors hover:text-white"
-                      style={{ color: "#A3A3B2" }}
+                      className="inline-flex items-center gap-2 text-[13px] transition-colors"
+                      style={{ color: "#5A5D63" }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = "#1F2125")}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = "#5A5D63")}
                     >
-                      <c.icon className="h-3.5 w-3.5" style={{ color: "#A855F7" }} />
+                      <c.icon className="h-3.5 w-3.5" style={{ color: "#34506E" }} />
                       {t(c.labelKey)}
                     </a>
                   </li>
@@ -149,11 +169,11 @@ export function SiteFooter() {
 
           <div
             className="mt-8 flex flex-wrap items-center justify-between gap-3 pt-5 text-[12px]"
-            style={{ borderTop: "1px solid rgba(255,255,255,0.06)", color: "#6B7280" }}
+            style={{ borderTop: "1px solid #E3E1DA", color: "#8A8D93" }}
           >
             <span>{t("footer.tagline")}</span>
             <span>
-              <span style={{ color: "#A855F7" }}>♥</span> {t("footer.location")}
+              <span style={{ color: "#34506E" }}>♥</span> {t("footer.location")}
             </span>
           </div>
         </div>
