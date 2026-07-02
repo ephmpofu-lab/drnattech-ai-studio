@@ -33,6 +33,12 @@ export const Route = createFileRoute("/eu-ai-act-classifier")({
 type Step = "q1" | "q2" | "q3" | "q4" | "q5" | "q6" | "q7";
 type Result = "prohibited" | "high" | "limited" | "minimal";
 
+type NavResult = {
+  nextStep: Step | null;
+  prohibitedFlag?: string;
+  highRiskFlag?: boolean;
+};
+
 /* ─── Questions ──────────────────────────────────────────────── */
 
 const QUESTIONS: Record<
@@ -132,16 +138,47 @@ const QUESTIONS: Record<
 };
 
 /* ─── Navigation logic ───────────────────────────────────────── */
+/* Never terminates at "prohibited" — accumulates flags and continues */
 
-function getNext(step: Step, answer: boolean | string[]): Step | Result {
-  if (step === "q1") return answer === true ? "q2" : "q7";
-  if (step === "q2") return answer === true ? "prohibited" : "q3";
-  if (step === "q3") return answer === true ? "prohibited" : "q4";
-  if (step === "q4") return answer === true ? "q5" : "q6";
-  if (step === "q5") return answer === true ? "prohibited" : "high";
-  if (step === "q6") return (answer as string[]).length > 0 ? "high" : "q7";
-  if (step === "q7") return answer === true ? "limited" : "minimal";
-  return "minimal";
+function getNavigation(step: Step, answer: boolean | string[]): NavResult {
+  if (step === "q1") return { nextStep: answer === true ? "q2" : "q7" };
+  if (step === "q2") {
+    if (answer === true) {
+      return {
+        nextStep: "q3",
+        prohibitedFlag:
+          "Subliminal or manipulative techniques targeting users' vulnerabilities (Article 5(1)(a–b))",
+      };
+    }
+    return { nextStep: "q3" };
+  }
+  if (step === "q3") {
+    if (answer === true) {
+      return {
+        nextStep: "q4",
+        prohibitedFlag:
+          "Systematic social scoring of individuals by public authorities (Article 5(1)(c))",
+      };
+    }
+    return { nextStep: "q4" };
+  }
+  if (step === "q4") return { nextStep: answer === true ? "q5" : "q6" };
+  if (step === "q5") {
+    if (answer === true) {
+      return {
+        nextStep: "q6",
+        prohibitedFlag:
+          "Real-time remote biometric identification in publicly accessible spaces (Article 5(1)(h))",
+      };
+    }
+    // Biometric classification (not real-time public) → high risk
+    return { nextStep: "q6", highRiskFlag: true };
+  }
+  if (step === "q6") {
+    return { nextStep: "q7", highRiskFlag: (answer as string[]).length > 0 };
+  }
+  // q7 is handled directly in handleAnswer
+  return { nextStep: null };
 }
 
 /* ─── Result content ─────────────────────────────────────────── */
@@ -300,24 +337,65 @@ function ClassifierPage() {
 
 function Assessment() {
   const [step, setStep] = useState<Step>("q1");
-  const [result, setResult] = useState<Result | null>(null);
   const [history, setHistory] = useState<Step[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
 
+  const [prohibitedFlags, setProhibitedFlags] = useState<string[]>([]);
+  const [highRisk, setHighRisk] = useState(false);
+  const [terminalResult, setTerminalResult] = useState<"limited" | "minimal" | null>(null);
+  const [done, setDone] = useState(false);
+
+  // Set when a prohibited answer is given — shows inline warning on the current question
+  const [inlineWarning, setInlineWarning] = useState<{
+    flag: string;
+    nextStep: Step | null;
+  } | null>(null);
+
   function handleAnswer(answer: boolean | string[]) {
-    const next = getNext(step, answer);
-    if (next === "prohibited" || next === "high" || next === "limited" || next === "minimal") {
-      setResult(next as Result);
-    } else {
-      setHistory((h) => [...h, step]);
-      setStep(next as Step);
-      setSelected([]);
+    // q7 always ends the assessment
+    if (step === "q7") {
+      setTerminalResult(answer === true ? "limited" : "minimal");
+      setDone(true);
+      return;
     }
+
+    const nav = getNavigation(step, answer);
+
+    if (nav.highRiskFlag) setHighRisk(true);
+
+    if (nav.prohibitedFlag) {
+      setProhibitedFlags((f) => [...f, nav.prohibitedFlag!]);
+      setInlineWarning({ flag: nav.prohibitedFlag!, nextStep: nav.nextStep });
+      return;
+    }
+
+    if (nav.nextStep === null) {
+      setDone(true);
+      return;
+    }
+
+    setHistory((h) => [...h, step]);
+    setStep(nav.nextStep);
+    setSelected([]);
+  }
+
+  function continuePastWarning() {
+    const warn = inlineWarning;
+    setInlineWarning(null);
+    if (!warn || warn.nextStep === null) {
+      setDone(true);
+      return;
+    }
+    setHistory((h) => [...h, step]);
+    setStep(warn.nextStep);
+    setSelected([]);
   }
 
   function goBack() {
-    if (result) {
-      setResult(null);
+    if (inlineWarning) {
+      // User wants to change their answer — undo the prohibited flag
+      setProhibitedFlags((f) => f.slice(0, -1));
+      setInlineWarning(null);
       return;
     }
     const prev = history[history.length - 1];
@@ -330,18 +408,29 @@ function Assessment() {
 
   function reset() {
     setStep("q1");
-    setResult(null);
     setHistory([]);
     setSelected([]);
+    setProhibitedFlags([]);
+    setHighRisk(false);
+    setTerminalResult(null);
+    setDone(false);
+    setInlineWarning(null);
   }
 
-  if (result) {
-    return <ResultCard result={result} onBack={goBack} onReset={reset} />;
+  if (done) {
+    return (
+      <ComprehensiveResult
+        prohibitedFlags={prohibitedFlags}
+        highRisk={highRisk}
+        terminalResult={terminalResult}
+        onReset={reset}
+      />
+    );
   }
 
   const q = QUESTIONS[step];
   const progress = STEP_PROGRESS[step];
-  const canGoBack = history.length > 0;
+  const canGoBack = history.length > 0 || !!inlineWarning;
 
   return (
     <div>
@@ -383,7 +472,51 @@ function Assessment() {
           {q.hint}
         </p>
 
-        {q.type === "yesno" ? (
+        {inlineWarning ? (
+          /* Prohibited practice detected — show inline alert */
+          <div
+            className="mt-6 rounded-[14px]"
+            style={{ background: "#FEF2F2", border: "1.5px solid #FECACA" }}
+          >
+            <div className="p-5">
+              <div className="flex items-start gap-3">
+                <XCircle
+                  className="h-5 w-5 shrink-0 mt-0.5"
+                  style={{ color: "#DC2626" }}
+                />
+                <div className="flex-1">
+                  <div
+                    className="text-[10.5px] font-bold uppercase tracking-[0.18em] mb-1.5"
+                    style={{ color: "#DC2626" }}
+                  >
+                    Article 5 — Prohibited Practice Detected
+                  </div>
+                  <p
+                    className="text-[13.5px] font-semibold leading-snug"
+                    style={{ color: "#1F2125" }}
+                  >
+                    {inlineWarning.flag}
+                  </p>
+                  <p
+                    className="mt-2 text-[12.5px] leading-relaxed"
+                    style={{ color: "#5A5D63" }}
+                  >
+                    This triggers a prohibited classification under the EU AI Act. Continue the
+                    assessment to get the complete compliance picture — including any additional
+                    obligations for your system.
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={continuePastWarning}
+                className="mt-4 inline-flex items-center gap-2 rounded-[10px] px-5 py-2.5 text-[13px] font-semibold transition-all hover:opacity-90"
+                style={{ background: "#DC2626", color: "#FAFAF8" }}
+              >
+                Continue to Full Assessment <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        ) : q.type === "yesno" ? (
           <div className="mt-8 grid grid-cols-2 gap-4">
             <button
               onClick={() => handleAnswer(true)}
@@ -420,9 +553,7 @@ function Assessment() {
                     key={opt.id}
                     onClick={() =>
                       setSelected((s) =>
-                        s.includes(opt.id)
-                          ? s.filter((x) => x !== opt.id)
-                          : [...s, opt.id]
+                        s.includes(opt.id) ? s.filter((x) => x !== opt.id) : [...s, opt.id]
                       )
                     }
                     className="rounded-[12px] p-4 text-left transition-all"
@@ -489,23 +620,130 @@ function Assessment() {
           onMouseEnter={(e) => (e.currentTarget.style.color = "#1F2125")}
           onMouseLeave={(e) => (e.currentTarget.style.color = "#8A8D93")}
         >
-          <ArrowLeft className="h-3.5 w-3.5" /> Back
+          <ArrowLeft className="h-3.5 w-3.5" />
+          {inlineWarning ? "Back — change my answer" : "Back"}
         </button>
       )}
     </div>
   );
 }
 
-/* ─── Result card ────────────────────────────────────────────── */
+/* ─── Comprehensive results ──────────────────────────────────── */
 
-function ResultCard({
-  result,
-  onBack,
+function ComprehensiveResult({
+  prohibitedFlags,
+  highRisk,
+  terminalResult,
   onReset,
 }: {
-  result: Result;
-  onBack: () => void;
+  prohibitedFlags: string[];
+  highRisk: boolean;
+  terminalResult: "limited" | "minimal" | null;
   onReset: () => void;
+}) {
+  const sections: Result[] = [];
+  if (prohibitedFlags.length > 0) sections.push("prohibited");
+  if (highRisk) sections.push("high");
+  if (terminalResult === "limited") sections.push("limited");
+  // Minimal only shown when no other tier applies
+  if (sections.length === 0) sections.push(terminalResult ?? "minimal");
+
+  const isMulti = sections.length > 1;
+
+  return (
+    <div>
+      {/* Multi-tier summary banner */}
+      {isMulti && (
+        <div
+          className="mb-4 rounded-[16px] p-5"
+          style={{ background: "#F2F0EA", border: "1px solid #E3E1DA" }}
+        >
+          <div
+            className="text-[10.5px] font-bold uppercase tracking-[0.18em] mb-1"
+            style={{ color: "#8A8D93" }}
+          >
+            Full Compliance Assessment
+          </div>
+          <p className="text-[14px] font-medium" style={{ color: "#1F2125" }}>
+            Your AI system has {sections.length} compliance tiers to address. The most severe is
+            shown first — each section lists its specific obligations.
+          </p>
+        </div>
+      )}
+
+      {/* Tier sections stacked */}
+      <div className={isMulti ? "space-y-5" : ""}>
+        {sections.map((result) => (
+          <TierSection
+            key={result}
+            result={result}
+            prohibitedFlags={result === "prohibited" ? prohibitedFlags : undefined}
+          />
+        ))}
+      </div>
+
+      {/* CTA */}
+      <div
+        className="mt-5 rounded-[16px] p-6 lg:p-8"
+        style={{ background: "#E9EFF4", border: "1px solid #D7D4CC" }}
+      >
+        <h3 className="text-[17px] font-medium" style={{ color: "#1F2125" }}>
+          Need help achieving compliance?
+        </h3>
+        <p className="mt-1.5 text-[13.5px] leading-relaxed" style={{ color: "#5A5D63" }}>
+          Dr. Ephraim Mpofu designs EU AI Act-compliant enterprise AI architectures — embedding
+          compliance from day one rather than retrofitting it. Book a strategy call or ask the AI
+          agent.
+        </p>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <Link
+            to="/contact"
+            className="inline-flex items-center gap-2 rounded-[10px] px-5 py-2.5 text-[13.5px] font-semibold transition-all hover:opacity-90"
+            style={{ background: "#34506E", color: "#FAFAF8" }}
+          >
+            Book a Strategy Call
+          </Link>
+          <Link
+            to="/ai-agent"
+            className="inline-flex items-center gap-2 rounded-[10px] px-5 py-2.5 text-[13.5px] font-semibold transition-all hover:bg-black/5"
+            style={{ border: "1px solid #D7D4CC", color: "#1F2125" }}
+          >
+            <Bot className="h-4 w-4" style={{ color: "#34506E" }} /> Ask My AI Agent
+          </Link>
+        </div>
+      </div>
+
+      {/* Reset */}
+      <div className="mt-5">
+        <button
+          onClick={onReset}
+          className="inline-flex items-center gap-1.5 text-[13px] transition-colors"
+          style={{ color: "#8A8D93" }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "#1F2125")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "#8A8D93")}
+        >
+          <RotateCcw className="h-3.5 w-3.5" /> Start over
+        </button>
+      </div>
+
+      <p className="mt-6 text-[11px] leading-relaxed" style={{ color: "#8A8D93" }}>
+        This tool provides a general indication only and does not constitute legal advice. EU AI
+        Act classification depends on technical implementation details, jurisdiction, and evolving
+        regulatory guidance. Consult a qualified legal or compliance professional for binding
+        advice.
+      </p>
+    </div>
+  );
+}
+
+/* ─── Single tier result card ────────────────────────────────── */
+
+function TierSection({
+  result,
+  prohibitedFlags,
+}: {
+  result: Result;
+  prohibitedFlags?: string[];
 }) {
   const r = RESULTS[result];
   const { Icon } = r;
@@ -550,11 +788,42 @@ function ResultCard({
         <p className="mt-2 text-[13.5px] leading-relaxed" style={{ color: "#5A5D63" }}>
           {r.detail}
         </p>
+
+        {/* Specific violations detected for prohibited tier */}
+        {prohibitedFlags && prohibitedFlags.length > 0 && (
+          <div
+            className="mt-4 rounded-[12px] p-4"
+            style={{
+              background: "rgba(255,255,255,0.5)",
+              border: `1px solid ${r.border}`,
+            }}
+          >
+            <div
+              className="text-[10.5px] font-bold uppercase tracking-[0.16em] mb-2.5"
+              style={{ color: r.color }}
+            >
+              Detected Violations
+            </div>
+            <ul className="space-y-2">
+              {prohibitedFlags.map((flag, i) => (
+                <li key={i} className="flex items-start gap-2">
+                  <XCircle
+                    className="h-3.5 w-3.5 shrink-0 mt-0.5"
+                    style={{ color: r.color }}
+                  />
+                  <span className="text-[12.5px] leading-snug" style={{ color: "#1F2125" }}>
+                    {flag}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
 
       {/* Obligations */}
       <div
-        className="mt-4 rounded-[16px] p-6"
+        className="mt-3 rounded-[16px] p-6"
         style={{ background: "#F2F0EA", border: "1px solid #E3E1DA" }}
       >
         <h3
@@ -579,7 +848,7 @@ function ResultCard({
       </div>
 
       {/* Timeline + Penalty */}
-      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div
           className="rounded-[14px] p-5"
           style={{ background: "#F2F0EA", border: "1px solid #E3E1DA" }}
@@ -609,67 +878,6 @@ function ResultCard({
           </div>
         </div>
       </div>
-
-      {/* CTA */}
-      <div
-        className="mt-4 rounded-[16px] p-6 lg:p-8"
-        style={{ background: "#E9EFF4", border: "1px solid #D7D4CC" }}
-      >
-        <h3 className="text-[17px] font-medium" style={{ color: "#1F2125" }}>
-          Need help achieving compliance?
-        </h3>
-        <p className="mt-1.5 text-[13.5px] leading-relaxed" style={{ color: "#5A5D63" }}>
-          Dr. Ephraim Mpofu designs EU AI Act-compliant enterprise AI architectures — embedding
-          compliance from day one rather than retrofitting it. Book a strategy call or ask the AI
-          agent.
-        </p>
-        <div className="mt-5 flex flex-wrap gap-3">
-          <Link
-            to="/contact"
-            className="inline-flex items-center gap-2 rounded-[10px] px-5 py-2.5 text-[13.5px] font-semibold transition-all hover:opacity-90"
-            style={{ background: "#34506E", color: "#FAFAF8" }}
-          >
-            Book a Strategy Call
-          </Link>
-          <Link
-            to="/ai-agent"
-            className="inline-flex items-center gap-2 rounded-[10px] px-5 py-2.5 text-[13.5px] font-semibold transition-all hover:bg-black/5"
-            style={{ border: "1px solid #D7D4CC", color: "#1F2125" }}
-          >
-            <Bot className="h-4 w-4" style={{ color: "#34506E" }} /> Ask My AI Agent
-          </Link>
-        </div>
-      </div>
-
-      {/* Reset / back */}
-      <div className="mt-5 flex items-center gap-4">
-        <button
-          onClick={onBack}
-          className="inline-flex items-center gap-1.5 text-[13px] transition-colors"
-          style={{ color: "#8A8D93" }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "#1F2125")}
-          onMouseLeave={(e) => (e.currentTarget.style.color = "#8A8D93")}
-        >
-          <ArrowLeft className="h-3.5 w-3.5" /> Back to last question
-        </button>
-        <span style={{ color: "#E3E1DA" }}>·</span>
-        <button
-          onClick={onReset}
-          className="inline-flex items-center gap-1.5 text-[13px] transition-colors"
-          style={{ color: "#8A8D93" }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "#1F2125")}
-          onMouseLeave={(e) => (e.currentTarget.style.color = "#8A8D93")}
-        >
-          <RotateCcw className="h-3.5 w-3.5" /> Start over
-        </button>
-      </div>
-
-      <p className="mt-6 text-[11px] leading-relaxed" style={{ color: "#8A8D93" }}>
-        This tool provides a general indication only and does not constitute legal advice. EU AI
-        Act classification depends on technical implementation details, jurisdiction, and evolving
-        regulatory guidance. Consult a qualified legal or compliance professional for binding
-        advice.
-      </p>
     </div>
   );
 }

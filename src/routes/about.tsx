@@ -250,7 +250,7 @@ function AboutStructuredData() {
           "Three Structural Laws",
           "GDPR-Aligned AI",
           "High-Risk AI System Classification",
-          "Natural Technology",
+          "Governance Research",
           "Environmental Systems",
         ],
         sameAs: [
@@ -1097,7 +1097,7 @@ function WorldMap() {
 }
 
 const educationTimeline = [
-  { year: "2021–2025", degree: "PhD (Dr.nat.techn.)", field: "Natural Technology", inst: "BOKU University Vienna", color: "#34506E" },
+  { year: "2021–2025", degree: "PhD (Dr.nat.techn.)", field: "Governance Research", inst: "BOKU University Vienna", color: "#34506E" },
   { year: "2019–2020", degree: "Exchange", field: "Resources & Environmental Management", inst: "Beijing Normal University, China", color: "#3B82F6" },
   { year: "2018–2020", degree: "MSc", field: "Sustainable Urban Planning & Development", inst: "University of Johannesburg", color: "#F59E0B" },
   { year: "2013–2017", degree: "BSc", field: "Environmental Science & Health", inst: "NUST Zimbabwe", color: "#10B981" },
