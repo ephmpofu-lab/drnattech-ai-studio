@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SiteNav } from "@/components/brand/SiteNav";
 import { SiteFooter } from "@/components/brand/SiteFooter";
 import {
@@ -628,6 +628,107 @@ function Assessment() {
   );
 }
 
+/* ─── Gauge helpers ──────────────────────────────────────────── */
+
+function polarXY(cx: number, cy: number, r: number, deg: number) {
+  const rad = (deg * Math.PI) / 180;
+  return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+}
+
+function arcPath(cx: number, cy: number, ro: number, ri: number, a1: number, a2: number) {
+  const p1 = polarXY(cx, cy, ro, a1);
+  const p2 = polarXY(cx, cy, ro, a2);
+  const p3 = polarXY(cx, cy, ri, a2);
+  const p4 = polarXY(cx, cy, ri, a1);
+  const large = a2 - a1 > 180 ? 1 : 0;
+  return `M${p1.x},${p1.y} A${ro},${ro} 0 ${large} 1 ${p2.x},${p2.y} L${p3.x},${p3.y} A${ri},${ri} 0 ${large} 0 ${p4.x},${p4.y}Z`;
+}
+
+// Gauge arcs run from 180° (left) → 270° (top) → 360° (right), clockwise on screen
+const GAUGE_ZONES = [
+  { result: "minimal"    as Result, from: 180, to: 225, color: "#16A34A", short: "MIN"  },
+  { result: "limited"    as Result, from: 225, to: 270, color: "#34506E", short: "LTD"  },
+  { result: "high"       as Result, from: 270, to: 315, color: "#D97706", short: "HIGH" },
+  { result: "prohibited" as Result, from: 315, to: 360, color: "#DC2626", short: "PROH" },
+];
+
+// SVG rotate angle so needle (pointing up by default) aims at zone midpoint
+const NEEDLE_ROTATE: Record<Result, number> = {
+  minimal:    -67.5,
+  limited:    -22.5,
+  high:        22.5,
+  prohibited:  67.5,
+};
+
+function RiskGauge({ topResult }: { topResult: Result }) {
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setReady(true), 80);
+    return () => clearTimeout(t);
+  }, []);
+
+  const cx = 100, cy = 100, ro = 76, ri = 52, gap = 2.5, needleLen = 60;
+  const r = RESULTS[topResult];
+
+  return (
+    <svg
+      viewBox="0 0 200 110"
+      aria-label={`Risk gauge showing ${r.level}`}
+      className="w-full max-w-[300px]"
+    >
+      {/* Background track */}
+      <path d={arcPath(cx, cy, ro + 2, ri - 2, 180, 360)} fill="#E3E1DA" />
+
+      {/* Coloured zone arcs */}
+      {GAUGE_ZONES.map((z) => (
+        <path
+          key={z.result}
+          d={arcPath(cx, cy, ro, ri, z.from + gap, z.to - gap)}
+          fill={z.color}
+          opacity={topResult === z.result ? 1 : 0.2}
+        />
+      ))}
+
+      {/* Animated needle */}
+      <g
+        style={{
+          transform: `rotate(${ready ? NEEDLE_ROTATE[topResult] : -90}deg)`,
+          transformOrigin: `${cx}px ${cy}px`,
+          transition: "transform 1s cubic-bezier(0.34, 1.56, 0.64, 1)",
+        }}
+      >
+        <line
+          x1={cx} y1={cy} x2={cx} y2={cy - needleLen}
+          stroke="#1F2125" strokeWidth="2.5" strokeLinecap="round"
+        />
+        <circle cx={cx} cy={cy - needleLen} r="3.5" fill={r.color} />
+      </g>
+
+      {/* Centre cap */}
+      <circle cx={cx} cy={cy} r="7.5" fill="#E3E1DA" />
+      <circle cx={cx} cy={cy} r="5"   fill="#1F2125" />
+
+      {/* Zone labels just outside the arc */}
+      {GAUGE_ZONES.map((z) => {
+        const mid = (z.from + z.to) / 2;
+        const lp  = polarXY(cx, cy, ro + 12, mid);
+        return (
+          <text
+            key={z.result}
+            x={lp.x} y={lp.y}
+            textAnchor="middle" dominantBaseline="middle"
+            fontSize="6" fontWeight="700"
+            fill={z.color}
+            opacity={topResult === z.result ? 1 : 0.35}
+          >
+            {z.short}
+          </text>
+        );
+      })}
+    </svg>
+  );
+}
+
 /* ─── Comprehensive results ──────────────────────────────────── */
 
 function ComprehensiveResult({
@@ -648,33 +749,56 @@ function ComprehensiveResult({
   // Minimal only shown when no other tier applies
   if (sections.length === 0) sections.push(terminalResult ?? "minimal");
 
-  const isMulti = sections.length > 1;
+  const topResult = sections[0];
+  const r = RESULTS[topResult];
 
   return (
     <div>
-      {/* Multi-tier summary banner */}
-      {isMulti && (
-        <div
-          className="mb-4 rounded-[16px] p-5"
-          style={{ background: "#F2F0EA", border: "1px solid #E3E1DA" }}
-        >
-          <div
-            className="text-[10.5px] font-bold uppercase tracking-[0.18em] mb-1"
-            style={{ color: "#8A8D93" }}
-          >
-            Full Compliance Assessment
-          </div>
-          <p className="text-[14px] font-medium" style={{ color: "#1F2125" }}>
-            Your AI system has {sections.length} compliance tiers to address. The most severe is
-            shown first — each section lists its specific obligations.
-          </p>
-        </div>
-      )}
+      {/* ── Gauge card ── */}
+      <div
+        className="rounded-[20px] p-6 lg:p-8 flex flex-col items-center text-center"
+        style={{ background: "#F2F0EA", border: "1px solid #E3E1DA" }}
+      >
+        <RiskGauge topResult={topResult} />
 
-      {/* Tier sections stacked */}
-      <div className={isMulti ? "space-y-5" : ""}>
+        <div className="mt-3 text-[34px] font-semibold leading-none" style={{ color: r.color }}>
+          {r.level}
+        </div>
+        <div
+          className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.2em]"
+          style={{ color: r.color, opacity: 0.75 }}
+        >
+          {r.badge}
+        </div>
+        <div className="mt-2 text-[13px]" style={{ color: "#5A5D63" }}>
+          {r.penalty}
+        </div>
+
+        {/* Additional tiers */}
+        {sections.length > 1 && (
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+            <span className="text-[11px]" style={{ color: "#8A8D93" }}>Also detected:</span>
+            {sections.slice(1).map((s) => {
+              const sr = RESULTS[s];
+              const SrIcon = sr.Icon;
+              return (
+                <span
+                  key={s}
+                  className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[10.5px] font-semibold"
+                  style={{ background: sr.bg, border: `1px solid ${sr.border}`, color: sr.color }}
+                >
+                  <SrIcon className="h-3 w-3" /> {sr.level}
+                </span>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* ── Per-tier obligation cards ── */}
+      <div className="mt-4 space-y-3">
         {sections.map((result) => (
-          <TierSection
+          <ObligationCard
             key={result}
             result={result}
             prohibitedFlags={result === "prohibited" ? prohibitedFlags : undefined}
@@ -682,9 +806,9 @@ function ComprehensiveResult({
         ))}
       </div>
 
-      {/* CTA */}
+      {/* ── CTA ── */}
       <div
-        className="mt-5 rounded-[16px] p-6 lg:p-8"
+        className="mt-4 rounded-[16px] p-6 lg:p-8"
         style={{ background: "#E9EFF4", border: "1px solid #D7D4CC" }}
       >
         <h3 className="text-[17px] font-medium" style={{ color: "#1F2125" }}>
@@ -692,8 +816,7 @@ function ComprehensiveResult({
         </h3>
         <p className="mt-1.5 text-[13.5px] leading-relaxed" style={{ color: "#5A5D63" }}>
           Dr. Ephraim Mpofu designs EU AI Act-compliant enterprise AI architectures — embedding
-          compliance from day one rather than retrofitting it. Book a strategy call or ask the AI
-          agent.
+          compliance from day one rather than retrofitting it.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
           <Link
@@ -729,16 +852,15 @@ function ComprehensiveResult({
       <p className="mt-6 text-[11px] leading-relaxed" style={{ color: "#8A8D93" }}>
         This tool provides a general indication only and does not constitute legal advice. EU AI
         Act classification depends on technical implementation details, jurisdiction, and evolving
-        regulatory guidance. Consult a qualified legal or compliance professional for binding
-        advice.
+        regulatory guidance. Consult a qualified legal or compliance professional for binding advice.
       </p>
     </div>
   );
 }
 
-/* ─── Single tier result card ────────────────────────────────── */
+/* ─── Per-tier obligation card ───────────────────────────────── */
 
-function TierSection({
+function ObligationCard({
   result,
   prohibitedFlags,
 }: {
@@ -746,138 +868,81 @@ function TierSection({
   prohibitedFlags?: string[];
 }) {
   const r = RESULTS[result];
-  const { Icon } = r;
+  const Icon = r.Icon;
 
   return (
-    <div>
-      {/* Result header */}
+    <div className="rounded-[16px] overflow-hidden" style={{ border: `1.5px solid ${r.border}` }}>
+      {/* Coloured header strip */}
       <div
-        className="rounded-[20px] p-7 lg:p-10"
-        style={{ background: r.bg, border: `1.5px solid ${r.border}` }}
+        className="flex items-center gap-2.5 px-5 py-3"
+        style={{ background: r.bg }}
       >
-        <div className="flex items-start gap-4">
-          <div
-            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl"
-            style={{ background: "rgba(255,255,255,0.6)", border: `1px solid ${r.border}` }}
-          >
-            <Icon className="h-6 w-6" style={{ color: r.color }} />
-          </div>
-          <div>
-            <span
-              className="inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-[0.18em]"
-              style={{
-                background: "rgba(255,255,255,0.7)",
-                color: r.color,
-                border: `1px solid ${r.border}`,
-              }}
-            >
-              {r.badge}
-            </span>
-            <h2
-              className="mt-2 text-[28px] font-medium lg:text-[34px]"
-              style={{ color: r.color }}
-            >
-              {r.level}
-            </h2>
-          </div>
-        </div>
+        <Icon className="h-4 w-4 shrink-0" style={{ color: r.color }} />
+        <span
+          className="text-[10.5px] font-bold uppercase tracking-[0.16em]"
+          style={{ color: r.color }}
+        >
+          {r.badge}
+        </span>
+        <span className="ml-auto text-[10.5px]" style={{ color: r.color, opacity: 0.7 }}>
+          {r.timeline}
+        </span>
+      </div>
 
-        <p className="mt-4 text-[15px] font-medium leading-snug" style={{ color: "#1F2125" }}>
-          {r.summary}
-        </p>
-        <p className="mt-2 text-[13.5px] leading-relaxed" style={{ color: "#5A5D63" }}>
-          {r.detail}
-        </p>
-
-        {/* Specific violations detected for prohibited tier */}
+      <div className="px-5 py-4" style={{ background: "#FAFAF8" }}>
+        {/* Violations (prohibited tier only) */}
         {prohibitedFlags && prohibitedFlags.length > 0 && (
-          <div
-            className="mt-4 rounded-[12px] p-4"
-            style={{
-              background: "rgba(255,255,255,0.5)",
-              border: `1px solid ${r.border}`,
-            }}
-          >
+          <div className="mb-4">
             <div
-              className="text-[10.5px] font-bold uppercase tracking-[0.16em] mb-2.5"
+              className="text-[10px] font-bold uppercase tracking-[0.15em] mb-2"
               style={{ color: r.color }}
             >
               Detected Violations
             </div>
-            <ul className="space-y-2">
+            <ul className="space-y-1.5">
               {prohibitedFlags.map((flag, i) => (
                 <li key={i} className="flex items-start gap-2">
-                  <XCircle
-                    className="h-3.5 w-3.5 shrink-0 mt-0.5"
-                    style={{ color: r.color }}
-                  />
-                  <span className="text-[12.5px] leading-snug" style={{ color: "#1F2125" }}>
+                  <XCircle className="h-3.5 w-3.5 shrink-0 mt-0.5" style={{ color: r.color }} />
+                  <span className="text-[12px] leading-snug" style={{ color: "#1F2125" }}>
                     {flag}
                   </span>
                 </li>
               ))}
             </ul>
+            <div className="mt-3 border-t" style={{ borderColor: "#E3E1DA" }} />
           </div>
         )}
-      </div>
 
-      {/* Obligations */}
-      <div
-        className="mt-3 rounded-[16px] p-6"
-        style={{ background: "#F2F0EA", border: "1px solid #E3E1DA" }}
-      >
-        <h3
-          className="text-[11px] font-bold uppercase tracking-[0.18em]"
+        {/* Obligations */}
+        <div
+          className="text-[10px] font-bold uppercase tracking-[0.15em] mb-2.5"
           style={{ color: "#8A8D93" }}
         >
           Key Obligations
-        </h3>
-        <ul className="mt-3 space-y-2.5">
+        </div>
+        <ul className="space-y-2">
           {r.obligations.map((o) => (
-            <li key={o} className="flex items-start gap-2.5">
+            <li key={o} className="flex items-start gap-2">
               <div
-                className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full"
+                className="mt-[6px] h-1.5 w-1.5 shrink-0 rounded-full"
                 style={{ background: r.color }}
               />
-              <span className="text-[13.5px] leading-relaxed" style={{ color: "#1F2125" }}>
+              <span className="text-[13px] leading-relaxed" style={{ color: "#1F2125" }}>
                 {o}
               </span>
             </li>
           ))}
         </ul>
-      </div>
 
-      {/* Timeline + Penalty */}
-      <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <div
-          className="rounded-[14px] p-5"
-          style={{ background: "#F2F0EA", border: "1px solid #E3E1DA" }}
-        >
-          <div
-            className="text-[10.5px] font-bold uppercase tracking-[0.16em]"
-            style={{ color: "#8A8D93" }}
-          >
-            Timeline
-          </div>
-          <div className="mt-1.5 text-[13.5px] font-medium" style={{ color: "#1F2125" }}>
-            {r.timeline}
-          </div>
-        </div>
-        <div
-          className="rounded-[14px] p-5"
-          style={{ background: "#F2F0EA", border: "1px solid #E3E1DA" }}
-        >
-          <div
-            className="text-[10.5px] font-bold uppercase tracking-[0.16em]"
-            style={{ color: "#8A8D93" }}
-          >
-            Maximum Penalty
-          </div>
-          <div className="mt-1.5 text-[13.5px] font-medium" style={{ color: "#1F2125" }}>
+        {/* Penalty inline */}
+        <div className="mt-4 pt-3 border-t" style={{ borderColor: "#E3E1DA" }}>
+          <span className="text-[11.5px]" style={{ color: "#5A5D63" }}>Max penalty: </span>
+          <span className="text-[11.5px] font-semibold" style={{ color: "#1F2125" }}>
             {r.penalty}
-          </div>
+          </span>
         </div>
       </div>
     </div>
   );
 }
+
