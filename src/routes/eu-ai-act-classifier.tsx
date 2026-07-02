@@ -11,6 +11,7 @@ import {
   RotateCcw,
   Bot,
   ChevronRight,
+  ChevronDown,
 } from "lucide-react";
 
 export const Route = createFileRoute("/eu-ai-act-classifier")({
@@ -37,6 +38,11 @@ type NavResult = {
   nextStep: Step | null;
   prohibitedFlag?: string;
   highRiskFlag?: boolean;
+};
+
+type AnswerEntry = {
+  step: Step;
+  display: string;
 };
 
 /* ─── Questions ──────────────────────────────────────────────── */
@@ -135,6 +141,16 @@ const QUESTIONS: Record<
     hint: "Synthetic media includes AI-generated images, audio, video (deepfakes), or text presented as factual.",
     type: "yesno",
   },
+};
+
+const QUESTION_SHORT: Record<Step, string> = {
+  q1: "Affects individual people?",
+  q2: "Uses manipulative techniques?",
+  q3: "Social scoring for authorities?",
+  q4: "Uses biometric data?",
+  q5: "Real-time biometric ID in public spaces?",
+  q6: "High-risk domains selected",
+  q7: "Chatbot or synthetic media?",
 };
 
 /* ─── Navigation logic ───────────────────────────────────────── */
@@ -341,9 +357,12 @@ function Assessment() {
   const [selected, setSelected] = useState<string[]>([]);
 
   const [prohibitedFlags, setProhibitedFlags] = useState<string[]>([]);
+  const [prohibitedSources, setProhibitedSources] = useState<Step[]>([]);
   const [highRisk, setHighRisk] = useState(false);
+  const [highRiskTriggers, setHighRiskTriggers] = useState<string[]>([]);
   const [terminalResult, setTerminalResult] = useState<"limited" | "minimal" | null>(null);
   const [done, setDone] = useState(false);
+  const [answerLog, setAnswerLog] = useState<AnswerEntry[]>([]);
 
   // Set when a prohibited answer is given — shows inline warning on the current question
   const [inlineWarning, setInlineWarning] = useState<{
@@ -351,7 +370,17 @@ function Assessment() {
     nextStep: Step | null;
   } | null>(null);
 
+  function formatAnswer(s: Step, answer: boolean | string[]): string {
+    if (typeof answer === "boolean") return answer ? "Yes" : "No";
+    if ((answer as string[]).length === 0) return "None";
+    const opts = QUESTIONS.q6.options!;
+    return (answer as string[]).map(id => opts.find(o => o.id === id)?.label ?? id).join(" · ");
+  }
+
   function handleAnswer(answer: boolean | string[]) {
+    // Log the answer
+    setAnswerLog(log => [...log, { step, display: formatAnswer(step, answer) }]);
+
     // q7 always ends the assessment
     if (step === "q7") {
       setTerminalResult(answer === true ? "limited" : "minimal");
@@ -361,12 +390,26 @@ function Assessment() {
 
     const nav = getNavigation(step, answer);
 
-    if (nav.highRiskFlag) setHighRisk(true);
-
     if (nav.prohibitedFlag) {
-      setProhibitedFlags((f) => [...f, nav.prohibitedFlag!]);
+      setProhibitedFlags(f => [...f, nav.prohibitedFlag!]);
+      setProhibitedSources(s => [...s, step]);
       setInlineWarning({ flag: nav.prohibitedFlag!, nextStep: nav.nextStep });
       return;
+    }
+
+    if (nav.highRiskFlag) {
+      setHighRisk(true);
+      if (step === "q5") {
+        setHighRiskTriggers(t => [
+          ...t,
+          "Biometric data processing (Q4: Yes) — not real-time public (Q5: No)",
+        ]);
+      } else if (step === "q6") {
+        const domains = answer as string[];
+        const opts = QUESTIONS.q6.options!;
+        const labels = domains.map(id => opts.find(o => o.id === id)?.label ?? id);
+        setHighRiskTriggers(t => [...t, `High-risk domains (Q6): ${labels.join(" · ")}`]);
+      }
     }
 
     if (nav.nextStep === null) {
@@ -374,7 +417,7 @@ function Assessment() {
       return;
     }
 
-    setHistory((h) => [...h, step]);
+    setHistory(h => [...h, step]);
     setStep(nav.nextStep);
     setSelected([]);
   }
@@ -386,23 +429,26 @@ function Assessment() {
       setDone(true);
       return;
     }
-    setHistory((h) => [...h, step]);
+    setHistory(h => [...h, step]);
     setStep(warn.nextStep);
     setSelected([]);
   }
 
   function goBack() {
     if (inlineWarning) {
-      // User wants to change their answer — undo the prohibited flag
-      setProhibitedFlags((f) => f.slice(0, -1));
+      // User wants to change their answer — undo the prohibited flag and the logged answer
+      setProhibitedFlags(f => f.slice(0, -1));
+      setProhibitedSources(s => s.slice(0, -1));
+      setAnswerLog(log => log.slice(0, -1));
       setInlineWarning(null);
       return;
     }
     const prev = history[history.length - 1];
     if (prev) {
-      setHistory((h) => h.slice(0, -1));
+      setHistory(h => h.slice(0, -1));
       setStep(prev);
       setSelected([]);
+      setAnswerLog(log => log.slice(0, -1));
     }
   }
 
@@ -411,18 +457,24 @@ function Assessment() {
     setHistory([]);
     setSelected([]);
     setProhibitedFlags([]);
+    setProhibitedSources([]);
     setHighRisk(false);
+    setHighRiskTriggers([]);
     setTerminalResult(null);
     setDone(false);
     setInlineWarning(null);
+    setAnswerLog([]);
   }
 
   if (done) {
     return (
       <ComprehensiveResult
         prohibitedFlags={prohibitedFlags}
+        prohibitedSources={prohibitedSources}
         highRisk={highRisk}
+        highRiskTriggers={highRiskTriggers}
         terminalResult={terminalResult}
+        answerLog={answerLog}
         onReset={reset}
       />
     );
@@ -733,15 +785,23 @@ function RiskGauge({ topResult }: { topResult: Result }) {
 
 function ComprehensiveResult({
   prohibitedFlags,
+  prohibitedSources,
   highRisk,
+  highRiskTriggers,
   terminalResult,
+  answerLog,
   onReset,
 }: {
   prohibitedFlags: string[];
+  prohibitedSources: Step[];
   highRisk: boolean;
+  highRiskTriggers: string[];
   terminalResult: "limited" | "minimal" | null;
+  answerLog: AnswerEntry[];
   onReset: () => void;
 }) {
+  const [showAnswers, setShowAnswers] = useState(false);
+
   const sections: Result[] = [];
   if (prohibitedFlags.length > 0) sections.push("prohibited");
   if (highRisk) sections.push("high");
@@ -751,6 +811,12 @@ function ComprehensiveResult({
 
   const topResult = sections[0];
   const r = RESULTS[topResult];
+
+  // Build trigger strings per tier
+  const prohibitedTriggers = prohibitedSources.map(
+    (s) => `Q${s.slice(1)}: ${QUESTION_SHORT[s]} — Yes`
+  );
+  const limitedTrigger = ["Q7: Chatbot or virtual assistant / synthetic media — Yes"];
 
   return (
     <div>
@@ -795,13 +861,73 @@ function ComprehensiveResult({
         )}
       </div>
 
+      {/* ── Your answers collapsible ── */}
+      {answerLog.length > 0 && (
+        <div
+          className="mt-3 rounded-[14px] overflow-hidden"
+          style={{ border: "1px solid #E3E1DA" }}
+        >
+          <button
+            onClick={() => setShowAnswers(v => !v)}
+            className="w-full flex items-center justify-between px-5 py-3 text-left transition-colors"
+            style={{ background: "#F2F0EA" }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#EDEBE3")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "#F2F0EA")}
+          >
+            <span className="text-[11px] font-bold uppercase tracking-[0.16em]" style={{ color: "#5A5D63" }}>
+              Your assessment answers
+            </span>
+            <ChevronDown
+              className="h-3.5 w-3.5 transition-transform duration-200"
+              style={{
+                color: "#8A8D93",
+                transform: showAnswers ? "rotate(180deg)" : "rotate(0deg)",
+              }}
+            />
+          </button>
+          {showAnswers && (
+            <div className="px-5 py-3" style={{ background: "#FAFAF8" }}>
+              <div className="space-y-2">
+                {answerLog.map((entry, i) => (
+                  <div key={i} className="flex items-baseline gap-3">
+                    <span
+                      className="shrink-0 rounded px-1.5 py-0.5 text-[9.5px] font-bold uppercase tracking-wide"
+                      style={{ background: "#E9EFF4", color: "#34506E" }}
+                    >
+                      Q{entry.step.slice(1)}
+                    </span>
+                    <span className="text-[12px]" style={{ color: "#5A5D63" }}>
+                      {QUESTION_SHORT[entry.step]}
+                    </span>
+                    <span
+                      className="ml-auto shrink-0 text-[12px] font-semibold"
+                      style={{ color: "#1F2125" }}
+                    >
+                      {entry.display}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* ── Per-tier obligation cards ── */}
-      <div className="mt-4 space-y-3">
+      <div className="mt-3 space-y-3">
         {sections.map((result) => (
           <ObligationCard
             key={result}
             result={result}
             prohibitedFlags={result === "prohibited" ? prohibitedFlags : undefined}
+            prohibitedSources={result === "prohibited" ? prohibitedSources : undefined}
+            triggeredBy={
+              result === "high"
+                ? highRiskTriggers
+                : result === "limited"
+                ? limitedTrigger
+                : undefined
+            }
           />
         ))}
       </div>
@@ -812,26 +938,28 @@ function ComprehensiveResult({
         style={{ background: "#E9EFF4", border: "1px solid #D7D4CC" }}
       >
         <h3 className="text-[17px] font-medium" style={{ color: "#1F2125" }}>
-          Need help achieving compliance?
+          Have questions about your result?
         </h3>
         <p className="mt-1.5 text-[13.5px] leading-relaxed" style={{ color: "#5A5D63" }}>
-          Dr. Ephraim Mpofu designs EU AI Act-compliant enterprise AI architectures — embedding
-          compliance from day one rather than retrofitting it.
+          Ask the AI Agent for immediate guidance on your specific obligations — or speak directly
+          with Dr. Mpofu for a personalised compliance roadmap.
         </p>
-        <div className="mt-5 flex flex-wrap gap-3">
+        <div className="mt-5 flex flex-wrap items-center gap-4">
           <Link
-            to="/contact"
+            to="/ai-agent"
             className="inline-flex items-center gap-2 rounded-[10px] px-5 py-2.5 text-[13.5px] font-semibold transition-all hover:opacity-90"
             style={{ background: "#34506E", color: "#FAFAF8" }}
           >
-            Book a Strategy Call
+            <Bot className="h-4 w-4" /> Ask My AI Agent
           </Link>
           <Link
-            to="/ai-agent"
-            className="inline-flex items-center gap-2 rounded-[10px] px-5 py-2.5 text-[13.5px] font-semibold transition-all hover:bg-black/5"
-            style={{ border: "1px solid #D7D4CC", color: "#1F2125" }}
+            to="/contact"
+            className="text-[13px] font-medium transition-colors"
+            style={{ color: "#5A5D63" }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "#1F2125")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "#5A5D63")}
           >
-            <Bot className="h-4 w-4" style={{ color: "#34506E" }} /> Ask My AI Agent
+            Talk to an expert →
           </Link>
         </div>
       </div>
@@ -863,9 +991,13 @@ function ComprehensiveResult({
 function ObligationCard({
   result,
   prohibitedFlags,
+  prohibitedSources,
+  triggeredBy,
 }: {
   result: Result;
   prohibitedFlags?: string[];
+  prohibitedSources?: Step[];
+  triggeredBy?: string[];
 }) {
   const r = RESULTS[result];
   const Icon = r.Icon;
@@ -889,8 +1021,30 @@ function ObligationCard({
         </span>
       </div>
 
+      {/* "Triggered by" section for high / limited tiers */}
+      {triggeredBy && triggeredBy.length > 0 && (
+        <div
+          className="px-5 py-3"
+          style={{ background: r.bg, borderBottom: `1px solid ${r.border}` }}
+        >
+          <div
+            className="text-[9.5px] font-bold uppercase tracking-[0.18em] mb-1.5"
+            style={{ color: r.color, opacity: 0.65 }}
+          >
+            Why this applies to your system
+          </div>
+          <div className="space-y-0.5">
+            {triggeredBy.map((t, i) => (
+              <div key={i} className="text-[11.5px] leading-snug" style={{ color: r.color }}>
+                → {t}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="px-5 py-4" style={{ background: "#FAFAF8" }}>
-        {/* Violations (prohibited tier only) */}
+        {/* Violations (prohibited tier only) with Q-number chips */}
         {prohibitedFlags && prohibitedFlags.length > 0 && (
           <div className="mb-4">
             <div
@@ -899,13 +1053,21 @@ function ObligationCard({
             >
               Detected Violations
             </div>
-            <ul className="space-y-1.5">
+            <ul className="space-y-2">
               {prohibitedFlags.map((flag, i) => (
                 <li key={i} className="flex items-start gap-2">
                   <XCircle className="h-3.5 w-3.5 shrink-0 mt-0.5" style={{ color: r.color }} />
-                  <span className="text-[12px] leading-snug" style={{ color: "#1F2125" }}>
+                  <span className="flex-1 text-[12px] leading-snug" style={{ color: "#1F2125" }}>
                     {flag}
                   </span>
+                  {prohibitedSources?.[i] && (
+                    <span
+                      className="shrink-0 rounded px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide"
+                      style={{ background: "#FEE2E2", color: r.color }}
+                    >
+                      Q{prohibitedSources[i].slice(1)}
+                    </span>
+                  )}
                 </li>
               ))}
             </ul>
@@ -945,4 +1107,3 @@ function ObligationCard({
     </div>
   );
 }
-
