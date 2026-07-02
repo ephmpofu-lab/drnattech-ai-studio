@@ -67,6 +67,7 @@
     "viewWork": "Meine Arbeit ansehen",
     "talkAgent": "Mit meinem Agenten sprechen",
     "letsBuild": "Lassen Sie uns gemeinsam bauen",
+    "classifierTeaser": "Unsicher, ob Ihr KI-System unter die EU-KI-Verordnung fällt? Finden Sie es in 2 Minuten heraus — kostenlos, keine Anmeldung erforderlich.",
     "capabilities": [
       { "title": "KI-Entwicklung", "desc": "End-to-End Enterprise-KI-Entwicklung — LLM-Integration, Multi-Agenten-Orchestrierung, Produktions-Deployment und Agent-zu-Agent-Koordinations-Frameworks für Skalierbarkeit." },
       { "title": "KI-Architektur", "desc": "Skalierbare KI-Grundlagen — Wissensplattformen, RAG-Pipelines, Vektordatenbanken, semantische Suche und die technischen Schichten, auf denen Enterprise-KI-Systeme aufbauen." },

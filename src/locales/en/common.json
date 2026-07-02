@@ -67,6 +67,7 @@
     "viewWork": "View My Work",
     "talkAgent": "Talk to My Agent",
     "letsBuild": "Let's build together",
+    "classifierTeaser": "Not sure if your AI system falls under the EU AI Act? Find out in 2 minutes — free, no sign-up required.",
     "capabilities": [
       { "title": "AI Development", "desc": "End-to-end enterprise AI development — LLM integration, multi-agent orchestration, production deployment and agent-to-agent coordination frameworks built for scale." },
       { "title": "AI Architecture", "desc": "Scalable AI foundations — knowledge platforms, RAG pipelines, vector databases, semantic search and the technical layers enterprise AI systems run on." },

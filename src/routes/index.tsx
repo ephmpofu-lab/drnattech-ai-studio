@@ -399,12 +399,23 @@ function Hero() {
           >
             {t("home.viewWork")} <ArrowRight className="h-4 w-4" />
           </Link>
+        </div>
+
+        {/* EU AI Act Classifier teaser */}
+        <div
+          className="mt-5 rounded-[14px] p-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+          style={{ background: "#F2F0EA", border: "1px solid #E3E1DA" }}
+        >
+          <p className="text-[12.5px] leading-snug" style={{ color: "#5A5D63" }}>
+            <span className="font-semibold" style={{ color: "#1F2125" }}>EU AI Act Classifier —</span>{" "}
+            {t("home.classifierTeaser")}
+          </p>
           <Link
             to={CLASSIFIER_ROUTE}
-            className="inline-flex items-center gap-2 rounded-[10px] px-5 py-3 text-[13.5px] font-semibold transition-all hover:bg-black/5"
-            style={{ border: "1px solid #D7D4CC", color: "#1F2125" }}
+            className="inline-flex shrink-0 items-center gap-2 rounded-[10px] px-4 py-2.5 text-[12.5px] font-semibold transition-all hover:opacity-90"
+            style={{ background: "#34506E", color: "#FAFAF8" }}
           >
-            <ShieldCheck className="h-4 w-4" style={{ color: "#34506E" }} /> EU AI Act Classifier
+            <ShieldCheck className="h-3.5 w-3.5" /> Assess Free
           </Link>
         </div>
 
