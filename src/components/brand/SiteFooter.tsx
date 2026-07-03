@@ -14,17 +14,10 @@ export function SiteFooter() {
     { labelKey: "nav.home", to: locale === "de" ? "/de" : "/" },
     { labelKey: "nav.about", to: `${prefix}/about` },
     { labelKey: "nav.portfolio", to: `${prefix}/portfolio` },
-    { labelKey: "nav.frameworks", to: `${prefix}/frameworks` },
+    { labelKey: "nav.aisa", to: `/aisa` },
     { labelKey: "nav.aiAgent", to: `${prefix}/ai-agent` },
     { labelKey: "nav.insights", to: `${prefix}/insights` },
     { labelKey: "nav.contact", to: `${prefix}/contact` },
-  ] as const;
-
-  const frameworks = [
-    { labelKey: "AISA — AI Solutions Architecture", to: `${prefix}/frameworks` },
-    { labelKey: "Three Structural Laws", to: `${prefix}/frameworks` },
-    { labelKey: "Knowledge Architecture", to: `${prefix}/frameworks` },
-    { labelKey: "Four Workflow Layers", to: `${prefix}/frameworks` },
   ] as const;
 
   const resources = [
@@ -49,7 +42,7 @@ export function SiteFooter() {
           className="pt-8 pb-5"
           style={{ borderTop: "1px solid #E3E1DA" }}
         >
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-[1.2fr_0.9fr_0.9fr_0.9fr_0.9fr]">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-[1.2fr_0.9fr_0.9fr_0.9fr]">
             {/* Brand */}
             <div>
               <Signature size="lg" color="#1F2125" />
@@ -84,31 +77,6 @@ export function SiteFooter() {
                       onMouseLeave={(e) => (e.currentTarget.style.color = "#5A5D63")}
                     >
                       {t(n.labelKey as string)}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Frameworks */}
-            <div>
-              <div
-                className="text-[11px] font-bold uppercase tracking-[0.2em]"
-                style={{ color: "#1F2125" }}
-              >
-                {t("footer.sections.frameworks")}
-              </div>
-              <ul className="mt-4 space-y-2.5">
-                {frameworks.map((f) => (
-                  <li key={f.labelKey}>
-                    <Link
-                      to={f.to}
-                      className="text-[13px] transition-colors"
-                      style={{ color: "#5A5D63" }}
-                      onMouseEnter={(e) => (e.currentTarget.style.color = "#1F2125")}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = "#5A5D63")}
-                    >
-                      {f.labelKey}
                     </Link>
                   </li>
                 ))}
