@@ -29,10 +29,10 @@ export function SiteFooter() {
   ] as const;
 
   const connect = [
-    { labelKey: "footer.social.linkedin", icon: Linkedin, href: "#" },
-    { labelKey: "footer.social.github", icon: Github, href: "#" },
-    { labelKey: "footer.social.youtube", icon: Youtube, href: "#" },
-    { labelKey: "footer.social.email", icon: Mail, href: "mailto:hello@drnat.tech" },
+    { labelKey: "footer.social.linkedin", icon: Linkedin, href: "https://www.linkedin.com/in/dr-ephraim-mpofu-a340608b/" },
+    { labelKey: "footer.social.github", icon: Github, href: "https://github.com/ephmpofu-lab" },
+    { labelKey: "footer.social.youtube", icon: Youtube, href: "https://www.youtube.com/@AIArchitectureCompliance" },
+    { labelKey: "footer.social.email", icon: Mail, href: "mailto:ephmpofu@gmail.com" },
   ] as const;
 
   return (
@@ -121,6 +121,8 @@ export function SiteFooter() {
                   <li key={c.labelKey}>
                     <a
                       href={c.href}
+                      target={c.href.startsWith("mailto:") ? undefined : "_blank"}
+                      rel={c.href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
                       className="inline-flex items-center gap-2 text-[13px] transition-colors"
                       style={{ color: "#5A5D63" }}
                       onMouseEnter={(e) => (e.currentTarget.style.color = "#1F2125")}
