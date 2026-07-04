@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { SiteNav } from "@/components/brand/SiteNav";
 import { SiteFooter } from "@/components/brand/SiteFooter";
 import {
@@ -349,12 +350,96 @@ function ClassifierPage() {
   );
 }
 
+/* ─── Step dots progress indicator ──────────────────────────── */
+
+const ALL_STEPS: Step[] = ["q1", "q2", "q3", "q4", "q5", "q6", "q7"];
+
+function StepDots({ current, answered }: { current: Step; answered: Step[] }) {
+  return (
+    <div className="mb-6">
+      <div className="flex items-center">
+        {ALL_STEPS.map((s, i) => {
+          const done = answered.includes(s);
+          const active = s === current;
+          return (
+            <div key={s} className="flex flex-1 items-center">
+              {/* Connector line before each dot (except first) */}
+              {i > 0 && (
+                <div
+                  style={{
+                    flex: 1,
+                    height: 2,
+                    borderRadius: 1,
+                    background: done ? "#34506E" : "#E3E1DA",
+                    transition: "background 0.4s ease",
+                  }}
+                />
+              )}
+              {/* Dot */}
+              <div
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: "50%",
+                  flexShrink: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: done ? "#34506E" : active ? "#FAFAF8" : "#F2F0EA",
+                  border: active
+                    ? "2px solid #34506E"
+                    : done
+                    ? "none"
+                    : "1.5px solid #E3E1DA",
+                  boxShadow: active ? "0 0 0 5px rgba(52,80,110,0.12)" : "none",
+                  fontSize: 11,
+                  fontWeight: 700,
+                  color: done ? "#fff" : active ? "#34506E" : "#B0B3B8",
+                  transition: "all 0.35s ease",
+                }}
+              >
+                {done ? (
+                  <svg width="11" height="9" viewBox="0 0 11 9" fill="none">
+                    <path
+                      d="M1 4.5L3.8 7.5L10 1"
+                      stroke="white"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                ) : (
+                  i + 1
+                )}
+              </div>
+              {/* Connector line after last dot */}
+              {i === ALL_STEPS.length - 1 && <div style={{ flex: 1 }} />}
+            </div>
+          );
+        })}
+      </div>
+      <div className="mt-2 flex items-center justify-between">
+        <span className="text-[11px]" style={{ color: "#8A8D93" }}>
+          Question {QUESTIONS[current].number} of 7
+        </span>
+        <span className="text-[10px]" style={{ color: "#B0B3B8" }}>
+          may resolve earlier ·{" "}
+          <span style={{ color: "#34506E", fontWeight: 600 }}>
+            {STEP_PROGRESS[current]}%
+          </span>
+        </span>
+      </div>
+    </div>
+  );
+}
+
 /* ─── Assessment state machine ───────────────────────────────── */
 
 function Assessment() {
   const [step, setStep] = useState<Step>("q1");
   const [history, setHistory] = useState<Step[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
+  const [direction, setDirection] = useState<"fwd" | "bwd">("fwd");
 
   const [prohibitedFlags, setProhibitedFlags] = useState<string[]>([]);
   const [prohibitedSources, setProhibitedSources] = useState<Step[]>([]);
@@ -417,6 +502,7 @@ function Assessment() {
       return;
     }
 
+    setDirection("fwd");
     setHistory(h => [...h, step]);
     setStep(nav.nextStep);
     setSelected([]);
@@ -429,6 +515,7 @@ function Assessment() {
       setDone(true);
       return;
     }
+    setDirection("fwd");
     setHistory(h => [...h, step]);
     setStep(warn.nextStep);
     setSelected([]);
@@ -436,7 +523,6 @@ function Assessment() {
 
   function goBack() {
     if (inlineWarning) {
-      // User wants to change their answer — undo the prohibited flag and the logged answer
       setProhibitedFlags(f => f.slice(0, -1));
       setProhibitedSources(s => s.slice(0, -1));
       setAnswerLog(log => log.slice(0, -1));
@@ -445,6 +531,7 @@ function Assessment() {
     }
     const prev = history[history.length - 1];
     if (prev) {
+      setDirection("bwd");
       setHistory(h => h.slice(0, -1));
       setStep(prev);
       setSelected([]);
@@ -481,29 +568,28 @@ function Assessment() {
   }
 
   const q = QUESTIONS[step];
-  const progress = STEP_PROGRESS[step];
   const canGoBack = history.length > 0 || !!inlineWarning;
 
   return (
     <div>
-      {/* Progress bar */}
-      <div className="mb-6">
-        <div
-          className="mb-1.5 flex items-center justify-between text-[11px]"
-          style={{ color: "#8A8D93" }}
-        >
-          <span>Question {q.number} of up to 7</span>
-          <span>{progress}%</span>
-        </div>
-        <div className="h-1.5 w-full rounded-full" style={{ background: "#E3E1DA" }}>
-          <div
-            className="h-full rounded-full transition-all duration-500"
-            style={{ width: `${progress}%`, background: "#34506E" }}
-          />
-        </div>
-      </div>
+      {/* Step dots */}
+      <StepDots current={step} answered={history} />
 
-      {/* Question card */}
+      {/* Animated question card */}
+      <AnimatePresence mode="wait" custom={direction}>
+        <motion.div
+          key={step}
+          custom={direction}
+          variants={{
+            enter: (d: "fwd" | "bwd") => ({ x: d === "fwd" ? 48 : -48, opacity: 0 }),
+            center: { x: 0, opacity: 1 },
+            exit: (d: "fwd" | "bwd") => ({ x: d === "fwd" ? -48 : 48, opacity: 0 }),
+          }}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
+        >
       <div
         className="rounded-[20px] p-7 lg:p-10"
         style={{ background: "#F2F0EA", border: "1px solid #E3E1DA" }}
@@ -663,6 +749,8 @@ function Assessment() {
           </div>
         )}
       </div>
+        </motion.div>
+      </AnimatePresence>
 
       {canGoBack && (
         <button
