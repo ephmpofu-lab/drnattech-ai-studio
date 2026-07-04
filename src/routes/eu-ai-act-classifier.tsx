@@ -13,6 +13,12 @@ import {
   Bot,
   ChevronRight,
   ChevronDown,
+  Sparkles,
+  Zap,
+  BarChart2,
+  Eye,
+  MessageSquare,
+  type LucideIcon,
 } from "lucide-react";
 
 export const Route = createFileRoute("/eu-ai-act-classifier")({
@@ -45,6 +51,108 @@ type AnswerEntry = {
   step: Step;
   display: string;
 };
+
+type AiType = "generative" | "agentic" | "predictive" | "vision" | "nlp";
+
+interface AiTypeInfo {
+  id: AiType;
+  Icon: LucideIcon;
+  behavior: string;
+  examples: string;
+  typeName: string;
+  typeSubtitle: string;
+  educationText: string;
+  regulatoryArticle: string;
+  keyObligations: string[];
+}
+
+const AI_TYPES: AiTypeInfo[] = [
+  {
+    id: "generative",
+    Icon: Sparkles,
+    behavior: "It generates new content — text, images, code, audio or video — in response to prompts or instructions",
+    examples: "e.g. AI writing assistants, image generators, code copilots, voice synthesis",
+    typeName: "Generative AI",
+    typeSubtitle: "General Purpose AI Model (GPAI) — EU AI Act Title VIII",
+    educationText:
+      "Generative AI can produce human-like content across many domains from a single model. The EU AI Act introduced dedicated GPAI provisions (Title VIII) that apply regardless of where or how the model is deployed — including to organisations that integrate third-party GPAI models into their products.",
+    regulatoryArticle: "Articles 51–56 · Title VIII",
+    keyObligations: [
+      "Publish technical documentation summarising model capabilities and limitations",
+      "Ensure training data copyright compliance and maintain a data summary",
+      "Label all AI-generated content — especially synthetic media and deepfakes (Article 50)",
+      "If training compute exceeds 10²⁵ FLOPs: adversarial testing + mandatory incident reporting to the EU AI Office",
+    ],
+  },
+  {
+    id: "agentic",
+    Icon: Zap,
+    behavior: "It works autonomously across multiple steps — planning, deciding and taking actions — without a human approving each individual step",
+    examples: "e.g. AI agents that browse the web, manage calendars, send emails, execute code or control other software",
+    typeName: "Agentic AI",
+    typeSubtitle: "Autonomous AI Systems — Emerging Regulatory Category",
+    educationText:
+      "Agentic AI systems make sequential decisions and take real-world actions with minimal human intervention between steps. The EU AI Act does not yet have a standalone 'agentic AI' category, but human oversight requirements (Article 14) apply most critically to these systems — the more autonomous the system, the higher the compliance burden and personal liability exposure.",
+    regulatoryArticle: "Article 9 (Risk Management) · Article 14 (Human Oversight)",
+    keyObligations: [
+      "Define and document human oversight mechanisms — who can intervene and how",
+      "Establish a clear accountability chain for actions the agent takes autonomously",
+      "If operating in a high-risk domain: a mandatory human override capability is required",
+      "Prepare for rapidly evolving regulatory guidance — this is the most watched AI category in 2025–2026",
+    ],
+  },
+  {
+    id: "predictive",
+    Icon: BarChart2,
+    behavior: "It analyses historical data to predict an outcome, score or classification — such as risk, likelihood, fraud or eligibility",
+    examples: "e.g. credit scoring, fraud detection, CV screening, medical diagnosis support, churn prediction",
+    typeName: "Predictive ML",
+    typeSubtitle: "Machine Learning — Primary Annex III High-Risk Category",
+    educationText:
+      "Predictive ML is the most established AI category and the primary focus of the EU AI Act's Annex III high-risk classification. If your system influences decisions about people in regulated domains — employment, credit, healthcare, education or justice — it almost certainly qualifies as high-risk and requires full compliance before deployment.",
+    regulatoryArticle: "Annex III · Articles 9–15",
+    keyObligations: [
+      "Implement a risk management system maintained across the full AI lifecycle",
+      "Document training data governance, quality controls and bias evaluation",
+      "Complete a conformity assessment before deployment in any high-risk setting",
+      "Maintain accuracy, robustness and fairness metrics — monitored continuously post-deployment",
+    ],
+  },
+  {
+    id: "vision",
+    Icon: Eye,
+    behavior: "It processes images or video to identify, classify, track or analyse objects, scenes, faces or human behaviour",
+    examples: "e.g. facial recognition, CCTV analytics, medical imaging AI, quality control cameras, autonomous vehicle perception",
+    typeName: "Computer Vision",
+    typeSubtitle: "Visual AI — Biometric & Surveillance Exposure",
+    educationText:
+      "Computer Vision systems have the most direct exposure to the EU AI Act's prohibited practices — particularly when they process biometric data or are deployed in public spaces. If your system identifies, categorises or tracks individuals using physical or behavioural characteristics, specific prohibitions may apply before you even reach the risk tier classification.",
+    regulatoryArticle: "Article 5 (Prohibitions) · Annex III · Article 26",
+    keyObligations: [
+      "If processing biometric data: DPIA under GDPR is required as a prerequisite to deployment",
+      "Real-time facial recognition in publicly accessible spaces is prohibited except narrow law-enforcement exceptions",
+      "Biometric categorisation by ethnicity, gender or emotion carries automatic high-risk classification",
+      "Document all camera locations, data retention periods and access control policies",
+    ],
+  },
+  {
+    id: "nlp",
+    Icon: MessageSquare,
+    behavior: "It reads, interprets, classifies or responds to human language — text or speech — but does not generate substantial new content",
+    examples: "e.g. sentiment analysis, document classification, customer service chatbots, speech-to-text, content moderation",
+    typeName: "NLP / Language AI",
+    typeSubtitle: "Natural Language Processing — Transparency & Domain Obligations",
+    educationText:
+      "Non-generative NLP systems — classifiers, chatbots, transcription tools — primarily face Article 50 transparency obligations when interacting with users, and Annex III high-risk classification if deployed in regulated domains. The key distinction from Generative AI is that NLP processes and classifies language without producing large volumes of novel content.",
+    regulatoryArticle: "Article 50 (Transparency) · Annex III",
+    keyObligations: [
+      "Disclose clearly to users that they are interacting with an AI system — not a human (Article 50)",
+      "If used in employment screening, interview tools or performance monitoring: high-risk classification applies",
+      "If used in justice, law enforcement, credit decisions or medical triage: high-risk classification applies",
+      "Maintain documentation of the system's purpose, decision logic and known limitations",
+    ],
+  },
+];
 
 /* ─── Questions ──────────────────────────────────────────────── */
 
@@ -350,6 +458,212 @@ function ClassifierPage() {
   );
 }
 
+/* ─── AI Type selector (Step 0) ─────────────────────────────── */
+
+function TypeSelector({ onSelect }: { onSelect: (t: AiType) => void }) {
+  const [hovered, setHovered] = useState<AiType | null>(null);
+  const [chosen, setChosen] = useState<AiType | null>(null);
+
+  const info = chosen ? AI_TYPES.find((t) => t.id === chosen)! : null;
+
+  return (
+    <div>
+      <div
+        className="rounded-[20px] p-7 lg:p-10"
+        style={{ background: "#F2F0EA", border: "1px solid #E3E1DA" }}
+      >
+        <p
+          className="text-[11px] font-bold uppercase tracking-[0.2em]"
+          style={{ color: "#8A8D93" }}
+        >
+          Before we begin
+        </p>
+        <h2
+          className="mt-3 text-[20px] font-medium leading-snug lg:text-[24px]"
+          style={{ color: "#1F2125" }}
+        >
+          What does your AI system <em>do</em>?
+        </h2>
+        <p className="mt-2 text-[13.5px] leading-relaxed" style={{ color: "#5A5D63" }}>
+          Don't worry about the technical category — pick the description that best matches how
+          your system behaves from a user's perspective.
+        </p>
+
+        {/* Behavior cards */}
+        <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {AI_TYPES.map((t) => {
+            const isChosen = chosen === t.id;
+            const isHovered = hovered === t.id;
+            return (
+              <button
+                key={t.id}
+                onClick={() => setChosen(t.id)}
+                onMouseEnter={() => setHovered(t.id)}
+                onMouseLeave={() => setHovered(null)}
+                className="rounded-[14px] p-4 text-left transition-all"
+                style={{
+                  background: isChosen ? "#E9EFF4" : isHovered ? "#EEF4F8" : "#FAFAF8",
+                  border: isChosen
+                    ? "1.5px solid #34506E"
+                    : isHovered
+                    ? "1.5px solid #B8C9D9"
+                    : "1px solid #E3E1DA",
+                  transform: isChosen ? "none" : isHovered ? "scale(1.01)" : "none",
+                }}
+              >
+                <div className="flex items-center gap-2.5">
+                  <div
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px]"
+                    style={{
+                      background: isChosen ? "#34506E" : "#E9EFF4",
+                    }}
+                  >
+                    <t.Icon
+                      className="h-4 w-4"
+                      style={{ color: isChosen ? "#FAFAF8" : "#34506E" }}
+                    />
+                  </div>
+                  {isChosen && (
+                    <div
+                      className="ml-auto flex h-4 w-4 shrink-0 items-center justify-center rounded-full"
+                      style={{ background: "#34506E" }}
+                    >
+                      <svg width="8" height="6" viewBox="0 0 8 6" fill="none">
+                        <path
+                          d="M1 3L3 5L7 1"
+                          stroke="white"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+                <p
+                  className="mt-3 text-[12.5px] leading-snug"
+                  style={{ color: isChosen ? "#34506E" : "#1F2125", fontWeight: isChosen ? 500 : 400 }}
+                >
+                  {t.behavior}
+                </p>
+                <p
+                  className="mt-2 text-[11px] leading-relaxed"
+                  style={{ color: "#8A8D93" }}
+                >
+                  {t.examples}
+                </p>
+              </button>
+            );
+          })}
+          {/* "None / Not sure" card */}
+          <button
+            onClick={() => onSelect("predictive")}
+            className="rounded-[14px] p-4 text-left transition-all"
+            style={{
+              background: "#FAFAF8",
+              border: "1px dashed #D7D4CC",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "#F2F0EA";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "#FAFAF8";
+            }}
+          >
+            <p className="text-[12.5px]" style={{ color: "#8A8D93" }}>
+              None of these fit, or I'm not sure
+            </p>
+            <p className="mt-1.5 text-[11px]" style={{ color: "#B0B3B8" }}>
+              We'll treat your system as Predictive ML and proceed with the standard risk questions.
+            </p>
+          </button>
+        </div>
+
+        {/* Reveal panel — appears after selection */}
+        <AnimatePresence>
+          {info && (
+            <motion.div
+              key={info.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+              className="mt-6 rounded-[16px] overflow-hidden"
+              style={{ border: "1.5px solid #D7D4CC" }}
+            >
+              {/* Type reveal header */}
+              <div
+                className="flex items-start gap-3 px-5 py-4"
+                style={{ background: "#E9EFF4" }}
+              >
+                <div
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px]"
+                  style={{ background: "#34506E" }}
+                >
+                  <info.Icon className="h-4.5 w-4.5 h-[18px] w-[18px]" style={{ color: "#FAFAF8" }} />
+                </div>
+                <div className="flex-1">
+                  <div
+                    className="text-[10px] font-bold uppercase tracking-[0.2em]"
+                    style={{ color: "#34506E", opacity: 0.7 }}
+                  >
+                    Your AI type is
+                  </div>
+                  <div className="text-[18px] font-semibold leading-tight" style={{ color: "#1F2125" }}>
+                    {info.typeName}
+                  </div>
+                  <div className="text-[11px]" style={{ color: "#5A5D63" }}>
+                    {info.typeSubtitle}
+                  </div>
+                </div>
+              </div>
+
+              {/* Education + obligations */}
+              <div className="px-5 py-4" style={{ background: "#FAFAF8" }}>
+                <p className="text-[13px] leading-relaxed" style={{ color: "#5A5D63" }}>
+                  {info.educationText}
+                </p>
+
+                <div className="mt-4">
+                  <div
+                    className="text-[9.5px] font-bold uppercase tracking-[0.18em] mb-2"
+                    style={{ color: "#34506E" }}
+                  >
+                    Key regulatory obligations · {info.regulatoryArticle}
+                  </div>
+                  <ul className="space-y-2">
+                    {info.keyObligations.map((ob, i) => (
+                      <li key={i} className="flex items-start gap-2.5">
+                        <span
+                          className="mt-[3px] h-3.5 w-3.5 shrink-0 flex items-center justify-center rounded-full text-[8px] font-bold"
+                          style={{ background: "#E9EFF4", color: "#34506E" }}
+                        >
+                          {i + 1}
+                        </span>
+                        <span className="text-[12.5px] leading-snug" style={{ color: "#1F2125" }}>
+                          {ob}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <button
+                  onClick={() => onSelect(info.id)}
+                  className="mt-5 inline-flex items-center gap-2 rounded-[10px] px-6 py-2.5 text-[13.5px] font-semibold transition-all hover:opacity-90"
+                  style={{ background: "#34506E", color: "#FAFAF8" }}
+                >
+                  Continue to Risk Assessment <ChevronRight className="h-4 w-4" />
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
+
 /* ─── Step dots progress indicator ──────────────────────────── */
 
 const ALL_STEPS: Step[] = ["q1", "q2", "q3", "q4", "q5", "q6", "q7"];
@@ -436,6 +750,7 @@ function StepDots({ current, answered }: { current: Step; answered: Step[] }) {
 /* ─── Assessment state machine ───────────────────────────────── */
 
 function Assessment() {
+  const [aiType, setAiType] = useState<AiType | null>(null);
   const [step, setStep] = useState<Step>("q1");
   const [history, setHistory] = useState<Step[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
@@ -540,6 +855,7 @@ function Assessment() {
   }
 
   function reset() {
+    setAiType(null);
     setStep("q1");
     setHistory([]);
     setSelected([]);
@@ -553,9 +869,14 @@ function Assessment() {
     setAnswerLog([]);
   }
 
+  if (!aiType) {
+    return <TypeSelector onSelect={(t) => setAiType(t)} />;
+  }
+
   if (done) {
     return (
       <ComprehensiveResult
+        aiType={aiType}
         prohibitedFlags={prohibitedFlags}
         prohibitedSources={prohibitedSources}
         highRisk={highRisk}
@@ -869,9 +1190,85 @@ function RiskGauge({ topResult }: { topResult: Result }) {
   );
 }
 
+/* ─── AI Type result card ────────────────────────────────────── */
+
+function AiTypeResultCard({ aiType }: { aiType: AiType }) {
+  const info = AI_TYPES.find((t) => t.id === aiType)!;
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <div
+      className="mt-3 rounded-[16px] overflow-hidden"
+      style={{ border: "1.5px solid #D7D4CC" }}
+    >
+      <button
+        onClick={() => setExpanded((v) => !v)}
+        className="w-full flex items-center gap-3 px-5 py-3.5 text-left transition-colors"
+        style={{ background: "#E9EFF4" }}
+        onMouseEnter={(e) => (e.currentTarget.style.background = "#DDE8F0")}
+        onMouseLeave={(e) => (e.currentTarget.style.background = "#E9EFF4")}
+      >
+        <div
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px]"
+          style={{ background: "#34506E" }}
+        >
+          <info.Icon className="h-[16px] w-[16px]" style={{ color: "#FAFAF8" }} />
+        </div>
+        <div className="flex-1">
+          <div className="text-[10px] font-bold uppercase tracking-[0.18em]" style={{ color: "#34506E", opacity: 0.7 }}>
+            Your AI type
+          </div>
+          <div className="text-[14px] font-semibold leading-tight" style={{ color: "#1F2125" }}>
+            {info.typeName}
+          </div>
+          <div className="text-[10.5px]" style={{ color: "#5A5D63" }}>
+            {info.typeSubtitle}
+          </div>
+        </div>
+        <ChevronDown
+          className="h-4 w-4 shrink-0 transition-transform duration-200"
+          style={{ color: "#8A8D93", transform: expanded ? "rotate(180deg)" : "rotate(0deg)" }}
+        />
+      </button>
+
+      {expanded && (
+        <div className="px-5 py-4" style={{ background: "#FAFAF8" }}>
+          <p className="text-[13px] leading-relaxed" style={{ color: "#5A5D63" }}>
+            {info.educationText}
+          </p>
+          <div className="mt-4">
+            <div
+              className="text-[9.5px] font-bold uppercase tracking-[0.18em] mb-2"
+              style={{ color: "#34506E" }}
+            >
+              Type-specific obligations · {info.regulatoryArticle}
+            </div>
+            <ul className="space-y-2">
+              {info.keyObligations.map((ob, i) => (
+                <li key={i} className="flex items-start gap-2.5">
+                  <span
+                    className="mt-[3px] h-3.5 w-3.5 shrink-0 flex items-center justify-center rounded-full text-[8px] font-bold"
+                    style={{ background: "#E9EFF4", color: "#34506E" }}
+                  >
+                    {i + 1}
+                  </span>
+                  <span className="text-[12.5px] leading-snug" style={{ color: "#1F2125" }}>
+                    {ob}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ─── Comprehensive results ──────────────────────────────────── */
 
 function ComprehensiveResult({
+  aiType,
   prohibitedFlags,
   prohibitedSources,
   highRisk,
@@ -880,6 +1277,7 @@ function ComprehensiveResult({
   answerLog,
   onReset,
 }: {
+  aiType: AiType;
   prohibitedFlags: string[];
   prohibitedSources: Step[];
   highRisk: boolean;
@@ -1000,6 +1398,9 @@ function ComprehensiveResult({
           )}
         </div>
       )}
+
+      {/* ── AI type card ── */}
+      <AiTypeResultCard aiType={aiType} />
 
       {/* ── Per-tier obligation cards ── */}
       <div className="mt-3 space-y-3">
