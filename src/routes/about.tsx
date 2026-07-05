@@ -1,36 +1,25 @@
-import type React from "react";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight,
+  BarChart2,
   BookOpen,
   Bot,
   Brain,
+  Boxes,
   Clock,
-  Code,
-  Database,
   ExternalLink,
-  Eye,
-  GitMerge,
-  Globe,
   Layers,
-  Layers2,
-  LayoutGrid,
-  MessageSquare,
-  Network,
   Puzzle,
   Rocket,
-  Scale,
-  Search,
-  Settings2,
+  Server,
   ShieldCheck,
-  Target,
   TrendingUp,
-  Boxes,
   Zap,
+  type LucideIcon,
 } from "lucide-react";
 import { SiteNav } from "@/components/brand/SiteNav";
 import { SiteFooter } from "@/components/brand/SiteFooter";
@@ -108,7 +97,7 @@ export const Route = createFileRoute("/about")({
 });
 
 /* ============================================================
-   FAQ DATA — about-specific, used in schema + visible section
+   FAQ DATA — schema-backed (structured data only, not visible)
    ============================================================ */
 
 const aboutFaq = [
@@ -314,34 +303,6 @@ function AboutStructuredData() {
 }
 
 /* ============================================================
-   PAGE
-   ============================================================ */
-
-export function AboutPage() {
-  return (
-    <div
-      className="light-page relative min-h-screen overflow-hidden"
-      style={{ backgroundColor: "#FAFAF8" }}
-    >
-      <AboutStructuredData />
-      <SiteNav active="About" />
-      <main className="mx-auto max-w-[1280px] px-6 pb-20 lg:px-10">
-        <Hero />
-        <AuthorityMetrics />
-        <BackgroundSection />
-        <MyJourney />
-        <MyMethodology />
-        <TechnologiesSection />
-        <PrinciplesAndExpertise />
-        <AboutFaqSection />
-        <CTA />
-        <SiteFooter />
-      </main>
-    </div>
-  );
-}
-
-/* ============================================================
    1. HERO
    ============================================================ */
 
@@ -523,444 +484,161 @@ function AuthorityMetrics() {
 }
 
 /* ============================================================
-   3. MY METHODOLOGY — 4 framework cards
+   3. CORE COMPETENCIES
    ============================================================ */
 
-function SkaidoVisual() {
-  const nodes = [
-    { l: "S", c: "#34506E" },
-    { l: "K", c: "#4B7096" },
-    { l: "A", c: "#3B82F6" },
-    { l: "I", c: "#14B8A6" },
-    { l: "D", c: "#F59E0B" },
-    { l: "O", c: "#EF4444" },
-  ];
-  return (
-    <div className="flex flex-wrap items-center justify-center gap-1">
-      {nodes.map((n, i) => (
-        <div key={n.l} className="flex items-center gap-1">
-          <div
-            className="flex h-9 w-9 items-center justify-center rounded-full text-[14px] font-bold text-white"
-            style={{ background: n.c }}
-          >
-            {n.l}
-          </div>
-          {i < nodes.length - 1 && (
-            <ArrowRight className="h-3 w-3 shrink-0" style={{ color: "rgba(0,0,0,0.2)" }} />
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
+const COMPETENCY_CATEGORIES = [
+  {
+    id: "ml",
+    Icon: Brain,
+    category: "AI & ML Engineering",
+    skills: ["Python", "PyTorch", "TensorFlow", "Deep Learning", "CNNs", "Computer Vision", "YOLO", "NLP", "LLMs", "RAG", "Feature Engineering"],
+  },
+  {
+    id: "agentic",
+    Icon: Zap,
+    category: "Agentic & Workflow AI",
+    skills: ["LangGraph", "n8n", "Multi-Agent Systems", "MCP", "Vector Databases", "Workflow Automation", "Supabase"],
+  },
+  {
+    id: "cloud",
+    Icon: Server,
+    category: "Cloud AI & MLOps",
+    skills: ["Azure AI (AI-103)", "Azure ML", "MLOps", "Docker", "CI/CD", "FastAPI", "ONNX", "Model Deployment"],
+  },
+  {
+    id: "data",
+    Icon: BarChart2,
+    category: "Data Science & Analytics",
+    skills: ["Power BI", "Statistical Modelling", "Data Visualisation", "SQL", "Pandas", "NumPy", "PoC Design", "Business Intelligence"],
+  },
+  {
+    id: "governance",
+    Icon: ShieldCheck,
+    category: "AI Governance & Compliance",
+    skills: ["EU AI Act", "ISO/IEC 42001", "DSGVO", "Responsible AI", "Risk Classification", "Compliance Strategy"],
+  },
+  {
+    id: "research",
+    Icon: BookOpen,
+    category: "Research & Knowledge Translation",
+    skills: ["9 SCI Publications", "Technical Training", "Systems Thinking", "Scientific Documentation"],
+  },
+] as const;
 
-function ThreeLawsVisual() {
-  return (
-    <div className="flex items-center justify-center gap-3">
-      <div
-        className="flex h-12 w-12 items-center justify-center rounded-xl"
-        style={{ background: "#E9EFF4", border: "1.5px solid #D7D4CC" }}
-      >
-        <Scale className="h-6 w-6" style={{ color: "#34506E" }} />
-      </div>
-      <div
-        className="flex h-12 w-12 items-center justify-center rounded-xl"
-        style={{ background: "rgba(20,184,166,0.12)", border: "1.5px solid rgba(20,184,166,0.38)" }}
-      >
-        <Database className="h-6 w-6" style={{ color: "#14B8A6" }} />
-      </div>
-      <div
-        className="flex h-12 w-12 items-center justify-center rounded-full"
-        style={{
-          background: "rgba(34,197,94,0.10)",
-          border: "1.5px solid rgba(34,197,94,0.45)",
-        }}
-      >
-        <Eye className="h-6 w-6" style={{ color: "#22C55E" }} />
-      </div>
-    </div>
-  );
-}
-
-function WorkflowLayersVisual() {
-  return (
-    <svg viewBox="0 0 160 88" className="mx-auto w-full max-w-[180px]" aria-hidden="true">
-      <ellipse cx="80" cy="82" rx="60" ry="5" fill="rgba(245,158,11,0.18)" />
-      <path d="M10 72 L150 72 L138 58 L22 58 Z" fill="#F59E0B" opacity="0.88" />
-      <path d="M22 54 L138 54 L126 40 L34 40 Z" fill="#14B8A6" opacity="0.88" />
-      <path d="M34 36 L126 36 L114 22 L46 22 Z" fill="#34506E" opacity="0.92" />
-    </svg>
-  );
-}
-
-function KnowledgeArchVisual() {
-  return (
-    <svg viewBox="0 0 160 90" className="mx-auto w-full max-w-[180px]" aria-hidden="true">
-      <line x1="28" y1="22" x2="62" y2="38" stroke="rgba(52,80,110,0.5)" strokeWidth="1.2" />
-      <line x1="28" y1="68" x2="62" y2="54" stroke="rgba(52,80,110,0.5)" strokeWidth="1.2" />
-      <line x1="132" y1="22" x2="98" y2="38" stroke="rgba(52,80,110,0.5)" strokeWidth="1.2" />
-      <line x1="132" y1="68" x2="98" y2="54" stroke="rgba(52,80,110,0.5)" strokeWidth="1.2" />
-      <circle cx="28" cy="22" r="8" fill="none" stroke="rgba(52,80,110,0.65)" strokeWidth="1.5" />
-      <circle cx="28" cy="68" r="8" fill="none" stroke="rgba(52,80,110,0.65)" strokeWidth="1.5" />
-      <circle cx="132" cy="22" r="8" fill="none" stroke="rgba(52,80,110,0.65)" strokeWidth="1.5" />
-      <circle cx="132" cy="68" r="8" fill="none" stroke="rgba(52,80,110,0.65)" strokeWidth="1.5" />
-      <circle cx="28" cy="22" r="3.5" fill="#34506E" />
-      <circle cx="28" cy="68" r="3.5" fill="#34506E" />
-      <circle cx="132" cy="22" r="3.5" fill="#34506E" />
-      <circle cx="132" cy="68" r="3.5" fill="#34506E" />
-      <ellipse cx="80" cy="36" rx="24" ry="7" fill="rgba(52,80,110,0.5)" stroke="rgba(52,80,110,0.75)" strokeWidth="1" />
-      <rect x="56" y="36" width="48" height="20" fill="rgba(52,80,110,0.25)" />
-      <ellipse cx="80" cy="56" rx="24" ry="7" fill="rgba(52,80,110,0.45)" stroke="rgba(52,80,110,0.7)" strokeWidth="1" />
-    </svg>
-  );
-}
-
-const METHODOLOGY_VISUALS = [SkaidoVisual, ThreeLawsVisual, WorkflowLayersVisual, KnowledgeArchVisual];
-
-function MethodologyCard({
-  title,
-  Visual,
-  desc,
-  hoverDetail,
-  cta,
-  link,
+function CompetencyCard({
+  category,
+  Icon,
+  skills,
 }: {
-  title: string;
-  Visual: () => React.ReactElement;
-  desc: string;
-  hoverDetail: string;
-  cta: string;
-  link: "/frameworks";
+  category: string;
+  Icon: LucideIcon;
+  skills: readonly string[];
 }) {
-  const [hovered, setHovered] = useState(false);
   return (
     <div
       className="flex flex-col rounded-[18px] p-6"
-      style={{
-        background: "#F2F0EA",
-        border: "1px solid #E3E1DA",
-      }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      style={{ background: "#F2F0EA", border: "1px solid #E3E1DA" }}
     >
-      <div className="text-center text-[11px] font-bold uppercase tracking-[0.18em]" style={{ color: "#1F2125" }}>
-        {title}
-      </div>
-      <div className="my-6 flex flex-1 items-center justify-center">
-        <Visual />
-      </div>
-      <p className="mb-2 text-[12.5px] leading-relaxed" style={{ color: "#5A5D63" }}>
-        {desc}
-      </p>
-      <p
-        className="mb-3 text-[11.5px] leading-relaxed overflow-hidden"
-        style={{
-          color: "#34506E",
-          maxHeight: hovered ? "60px" : "0",
-          opacity: hovered ? 1 : 0,
-          transition: "opacity 0.3s ease, max-height 0.3s ease",
-        }}
+      <div
+        className="text-center text-[10.5px] font-bold uppercase tracking-[0.18em]"
+        style={{ color: "#1F2125" }}
       >
-        {hoverDetail}
-      </p>
+        {category}
+      </div>
+
+      <div className="my-5 flex items-center justify-center">
+        <div
+          className="flex h-14 w-14 items-center justify-center rounded-2xl"
+          style={{ background: "#E9EFF4", border: "1px solid #D7D4CC" }}
+        >
+          <Icon className="h-7 w-7" style={{ color: "#34506E" }} />
+        </div>
+      </div>
+
+      <div className="flex flex-wrap justify-center gap-1.5">
+        {skills.map((skill) => (
+          <span
+            key={skill}
+            className="inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-medium"
+            style={{ background: "#FAFAF8", border: "1px solid #E3E1DA", color: "#1F2125" }}
+          >
+            {skill}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function CoreCompetencies() {
+  const ref = useScrollReveal<HTMLElement>(100);
+  return (
+    <section ref={ref} className="mt-10 lg:mt-12" aria-label="Core competencies">
+      <div className="mb-7">
+        <div
+          className="text-[10px] font-bold uppercase tracking-[0.22em]"
+          style={{ color: "#8A8D93" }}
+        >
+          Core Competencies
+        </div>
+        <h2
+          className="mt-2 text-[28px] font-medium lg:text-[34px]"
+          style={{ color: "#1F2125" }}
+        >
+          What I Build With
+        </h2>
+        <p
+          className="mt-2 max-w-xl text-[14px]"
+          style={{ color: "#5A5D63" }}
+        >
+          Six capability domains — from model engineering through governance — applied across every enterprise AI engagement.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {COMPETENCY_CATEGORIES.map((c) => (
+          <CompetencyCard key={c.id} {...c} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   4. AI STRATEGY LINK
+   ============================================================ */
+
+function AiStrategyLink() {
+  return (
+    <div
+      className="mt-4 flex flex-col gap-4 rounded-[16px] px-6 py-5 sm:flex-row sm:items-center sm:justify-between"
+      style={{ background: "#E9EFF4", border: "1px solid #D7D4CC" }}
+    >
+      <div>
+        <div
+          className="text-[10px] font-bold uppercase tracking-[0.2em]"
+          style={{ color: "#34506E" }}
+        >
+          My Methodology
+        </div>
+        <p className="mt-0.5 text-[13.5px] leading-snug" style={{ color: "#5A5D63" }}>
+          These competencies are applied through AISA — a structured 6-phase enterprise AI methodology covering Discover, Govern, Architect, Build, Deploy and Operate.
+        </p>
+      </div>
       <Link
-        to={link}
-        className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg px-4 py-2.5 text-[12.5px] font-semibold transition-all hover:bg-[#E9EFF4]"
-        style={{ border: "1px solid #D7D4CC", color: "#34506E" }}
+        to="/aisa"
+        className="inline-flex shrink-0 items-center gap-2 rounded-[10px] px-5 py-2.5 text-[13px] font-semibold transition-all hover:opacity-90"
+        style={{ background: "#34506E", color: "#FAFAF8" }}
       >
-        {cta} <ArrowRight className="h-3.5 w-3.5" />
+        Explore AI Strategy <ArrowRight className="h-4 w-4" />
       </Link>
     </div>
   );
 }
 
-function MyMethodology() {
-  const { t } = useTranslation("common");
-  const methodText = t("about.methodologyCards", { returnObjects: true }) as Array<{
-    title: string; desc: string; hoverDetail: string; cta: string;
-  }>;
-  const methodologyCards = METHODOLOGY_VISUALS.map((Visual, i) => ({
-    Visual, link: "/frameworks" as const, ...methodText[i],
-  }));
-  const ref = useScrollReveal<HTMLElement>(150);
-  return (
-    <section ref={ref} className="mt-14 lg:mt-16" aria-label="Methodology and proprietary frameworks">
-      <div className="mb-8 text-center">
-        <h2 className="text-[28px] font-medium lg:text-[34px]" style={{ color: "#1F2125" }}>
-          {t("about.methodologyTitle")}
-        </h2>
-        <p className="mx-auto mt-2 max-w-xl text-[14px]" style={{ color: "#5A5D63" }}>
-          {t("about.methodologyDesc")}
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {methodologyCards.map((card) => (
-          <MethodologyCard key={card.title} {...card} />
-        ))}
-      </div>
-    </section>
-  );
-}
-
 /* ============================================================
-   4. TECHNOLOGIES I WORK WITH
-   ============================================================ */
-
-function PythonSvg() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5">
-      <path d="M11.914 0C5.82 0 6.2 2.656 6.2 2.656l.007 2.752h5.814v.826H3.9S0 5.789 0 11.969c0 6.18 3.403 5.959 3.403 5.959h2.034v-2.867s-.109-3.402 3.35-3.402h5.766s3.24.052 3.24-3.131V3.129S18.28 0 11.914 0zm-3.21 1.81a1.044 1.044 0 1 1 0 2.088 1.044 1.044 0 0 1 0-2.088z" fill="#3776AB" />
-      <path d="M12.086 24c6.094 0 5.714-2.656 5.714-2.656l-.007-2.752h-5.814v-.826h8.121S24 18.211 24 12.031c0-6.18-3.403-5.959-3.403-5.959H18.563v2.867s.109 3.402-3.35 3.402H9.447s-3.24-.052-3.24 3.131v5.4S5.72 24 12.086 24zm3.21-1.81a1.044 1.044 0 1 1 0-2.088 1.044 1.044 0 0 1 0 2.088z" fill="#FFD43B" />
-    </svg>
-  );
-}
-
-function OpenAiSvg() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="#1F2125">
-      <path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zm-9.022 12.609a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zm-1.26-10.408a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.896zm16.597 3.855l-5.843-3.37 2.019-1.168a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.4-.676zm2.01-3.023l-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135l-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08L8.704 5.46a.795.795 0 0 0-.393.681zm1.097-2.365l2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z" />
-    </svg>
-  );
-}
-
-function ClaudeSvg() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none">
-      <circle cx="12" cy="12" r="11" fill="#CC785C" />
-      <path d="M8.5 16.5L12 7.5L15.5 16.5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-      <line x1="9.8" y1="13.5" x2="14.2" y2="13.5" stroke="white" strokeWidth="1.8" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function AzureSvg() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none">
-      <path d="M11.5 3L4 18.5H9.5L13.5 11L17 18.5H22L14.5 3H11.5Z" fill="#0078D4" />
-      <path d="M13.5 11L17 18.5H10.5L13.5 11Z" fill="#50E6FF" opacity="0.8" />
-    </svg>
-  );
-}
-
-function N8nSvg() {
-  return (
-    <svg viewBox="0 0 48 24" className="h-5 w-auto">
-      <rect width="48" height="24" rx="5" fill="#EA4B71" />
-      <text x="50%" y="50%" textAnchor="middle" dominantBaseline="central" fill="white" fontSize="11" fontWeight="800" fontFamily="monospace">n8n</text>
-    </svg>
-  );
-}
-
-function SupabaseSvg() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none">
-      <path d="M11.9 1.036c-.015-.986-1.26-1.41-1.874-.637L.764 12.05C.199 12.768.752 13.8 1.676 13.8h7.526l-1.078 9.128c.015.986 1.26 1.409 1.875.637l9.263-11.653c.565-.718.012-1.75-.912-1.75h-7.526L11.9 1.036Z" fill="#3ECF8E" />
-    </svg>
-  );
-}
-
-function PostgresSvg() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none">
-      <ellipse cx="12" cy="12" rx="10" ry="10" fill="#336791" />
-      <path d="M7 8h4.5c1.5 0 2.5.5 2.5 2s-1 2-2.5 2H7V8zm0 4h5c1.8 0 3 .8 3 2.2 0 1.5-1.2 2.3-3 2.3H7V12z" fill="white" opacity="0.9" />
-    </svg>
-  );
-}
-
-function LangChainSvg() {
-  return (
-    <svg viewBox="0 0 28 24" className="h-5 w-auto" fill="none">
-      <rect x="1" y="8" width="11" height="8" rx="4" stroke="#1CB855" strokeWidth="2" fill="none" />
-      <rect x="16" y="8" width="11" height="8" rx="4" stroke="#1CB855" strokeWidth="2" fill="none" />
-      <line x1="12" y1="12" x2="16" y2="12" stroke="#1CB855" strokeWidth="2" />
-    </svg>
-  );
-}
-
-function PineconeSvg() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none">
-      <path d="M12 2L7 10h3v3L5 20h5l2-3 2 3h5l-5-7v-3h3L12 2z" fill="#0F172A" stroke="#6C47FF" strokeWidth="0.5" />
-      <path d="M12 2L9 8h2v2l-4 6h3.5l1.5-2.5L13.5 16H17l-4-6V8h2L12 2z" fill="#6C47FF" />
-    </svg>
-  );
-}
-
-function GitHubSvg() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="#1F2125">
-      <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-    </svg>
-  );
-}
-
-function PowerBISvg() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none">
-      <rect x="2" y="14" width="4" height="8" rx="1" fill="#F2C811" />
-      <rect x="8" y="9" width="4" height="13" rx="1" fill="#F2C811" opacity="0.85" />
-      <rect x="14" y="4" width="4" height="18" rx="1" fill="#F2C811" opacity="0.7" />
-      <rect x="20" y="1" width="2" height="21" rx="1" fill="#F2C811" opacity="0.55" />
-    </svg>
-  );
-}
-
-const lc = (cls: string, style?: React.CSSProperties) => ({ className: cls, style });
-
-const techItems: Array<{ icon: React.ReactNode; label: string }> = [
-  { icon: <OpenAiSvg />,    label: "OpenAI"              },
-  { icon: <ClaudeSvg />,    label: "Claude"              },
-  { icon: <AzureSvg />,     label: "Azure AI"            },
-  { icon: <N8nSvg />,       label: "n8n"                 },
-  { icon: <SupabaseSvg />,  label: "Supabase"            },
-  { icon: <PostgresSvg />,  label: "PostgreSQL"          },
-  { icon: <LangChainSvg />, label: "LangChain"           },
-  { icon: <PineconeSvg />,  label: "Pinecone"            },
-  { icon: <GitHubSvg />,    label: "GitHub"              },
-  { icon: <PythonSvg />,    label: "Python"              },
-  { icon: <PowerBISvg />,   label: "Power BI"            },
-  { icon: <Code {...lc("h-4 w-4", { color: "#34506E" })} />,          label: "REST APIs"           },
-  { icon: <Zap {...lc("h-4 w-4", { color: "#34506E" })} />,           label: "Webhooks"            },
-  { icon: <Bot {...lc("h-4 w-4", { color: "#34506E" })} />,           label: "AI Agents"           },
-  { icon: <GitMerge {...lc("h-4 w-4", { color: "#34506E" })} />,      label: "Workflow Automation" },
-  { icon: <MessageSquare {...lc("h-4 w-4", { color: "#34506E" })} />, label: "Prompt Engineering"  },
-];
-
-function TechPill({ item }: { item: (typeof techItems)[number] }) {
-  return (
-    <div
-      className="inline-flex items-center gap-2.5 rounded-xl px-4 py-2 text-[13px] font-medium"
-      style={{ background: "#F2F0EA", border: "1px solid #E3E1DA", color: "#1F2125" }}
-    >
-      <div className="flex h-5 w-5 shrink-0 items-center justify-center">
-        {item.icon}
-      </div>
-      {item.label}
-    </div>
-  );
-}
-
-function TechnologiesSection() {
-  const { t } = useTranslation("common");
-  return (
-    <section className="mt-5" aria-label="Technologies and platforms">
-      <div className="glass-card px-6 py-7">
-        <div className="mb-6 text-center">
-          <h2 className="text-[22px] font-medium lg:text-[26px]" style={{ color: "#1F2125" }}>
-            {t("about.techTitle")}
-          </h2>
-          <p className="mx-auto mt-1.5 max-w-xl text-[13.5px]" style={{ color: "#5A5D63" }}>
-            {t("about.techDesc")}
-          </p>
-        </div>
-        <div className="flex flex-wrap justify-center gap-2.5">
-          {techItems.map((item) => (
-            <TechPill key={item.label} item={item} />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ============================================================
-   5. MY JOURNEY — horizontal connected timeline
-   ============================================================ */
-
-const JOURNEY_ICONS = [BookOpen, Globe, Brain, Zap, Boxes];
-
-function MyJourney() {
-  const { t } = useTranslation("common");
-  const journeyText = t("about.journeySteps", { returnObjects: true }) as Array<{ title: string; desc: string }>;
-  const journeySteps = JOURNEY_ICONS.map((Icon, i) => ({ Icon, ...journeyText[i] }));
-  const [inView, setInView] = useState(false);
-  const ref = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setInView(true); obs.disconnect(); } },
-      { threshold: 0.2 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-
-  return (
-    <section ref={ref} className="mt-14 lg:mt-16" aria-label="Professional journey">
-      <div className="mb-10 text-center">
-        <h2 className="text-[28px] font-medium lg:text-[34px]" style={{ color: "#1F2125" }}>{t("about.journeyTitle")}</h2>
-        <p className="mx-auto mt-2 max-w-xl text-[14px]" style={{ color: "#5A5D63" }}>
-          {t("about.journeyDesc")}
-        </p>
-      </div>
-
-      {/* Desktop timeline */}
-      <div className="relative hidden lg:block">
-        <div
-          className="absolute left-[10%] right-[10%] top-[36px] h-px"
-          style={{
-            background: "linear-gradient(90deg, transparent 0%, #34506E 6%, #34506E 94%, transparent 100%)",
-          }}
-        />
-        <div className="grid grid-cols-5 gap-4">
-          {journeySteps.map(({ Icon, title, desc }, index) => (
-            <div key={title} className="flex flex-col items-center text-center">
-              <div
-                className="relative z-10 flex h-[72px] w-[72px] items-center justify-center rounded-full"
-                style={{
-                  background: "#FAFAF8",
-                  border: "1.5px solid #D7D4CC",
-                  opacity: inView ? 1 : 0,
-                  transition: `opacity 0.5s ease ${index * 0.15}s`,
-                }}
-              >
-                <Icon className="h-8 w-8" style={{ color: "#34506E" }} />
-              </div>
-              <div className="mt-4 text-[13.5px] font-medium" style={{ color: "#1F2125" }}>{title}</div>
-              <div className="mt-2 text-[12px] leading-relaxed" style={{ color: "#5A5D63" }}>
-                {desc}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Mobile: vertical stack */}
-      <div className="relative flex flex-col gap-6 pl-8 lg:hidden">
-        <div
-          className="absolute left-[19px] top-0 bottom-0 w-px"
-          style={{ background: "linear-gradient(to bottom, #34506E, #34506E)" }}
-        />
-        {journeySteps.map(({ Icon, title, desc }, index) => (
-          <div key={title} className="flex items-start gap-4">
-            <div
-              className="relative -left-[29px] flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
-              style={{
-                background: "#FAFAF8",
-                border: "1.5px solid #D7D4CC",
-                opacity: inView ? 1 : 0,
-                transition: `opacity 0.5s ease ${index * 0.15}s`,
-              }}
-            >
-              <Icon className="h-5 w-5" style={{ color: "#34506E" }} />
-            </div>
-            <div className="-ml-4 flex-1">
-              <div className="text-[13.5px] font-medium" style={{ color: "#1F2125" }}>{title}</div>
-              <div className="mt-1 text-[12px] leading-relaxed" style={{ color: "#5A5D63" }}>{desc}</div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-/* ============================================================
-   5b. PROFESSIONAL BACKGROUND & VERIFIED CREDENTIALS
+   5. PROFESSIONAL BACKGROUND & VERIFIED CREDENTIALS
    ============================================================ */
 
 const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
@@ -1064,7 +742,6 @@ function WorldMap() {
         })}
       </ComposableMap>
 
-      {/* Info panel — shown only when a pin is active */}
       <div
         style={{
           maxHeight: active ? 120 : 0,
@@ -1224,7 +901,6 @@ function Certifications() {
         ))}
       </div>
 
-      {/* Affiliations strip */}
       <div className="mt-5 border-t pt-4" style={{ borderColor: "#E3E1DA" }}>
         <div className="text-[10px] font-bold uppercase tracking-[0.18em] mb-2.5" style={{ color: "#8A8D93" }}>
           {t("about.verifyTitle")}
@@ -1256,7 +932,7 @@ function Certifications() {
 function BackgroundSection() {
   const ref = useScrollReveal<HTMLElement>(100);
   return (
-    <section ref={ref} className="mt-5 space-y-4" aria-label="Professional background and credentials">
+    <section ref={ref} className="mt-10 space-y-4" aria-label="Professional background and credentials">
       <WorldMap />
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_1fr]">
         <EducationTimeline />
@@ -1267,159 +943,7 @@ function BackgroundSection() {
 }
 
 /* ============================================================
-   6. ARCHITECTURAL PRINCIPLES + CORE EXPERTISE
-   ============================================================ */
-
-const PRINCIPLE_ICONS = [Target, Eye, ShieldCheck, Layers, TrendingUp];
-const EXPERTISE_ICONS = [Layers2, BookOpen, LayoutGrid, Network, Search, Settings2];
-
-function PrinciplesAndExpertise() {
-  const { t } = useTranslation("common");
-  const principleText = t("about.principles", { returnObjects: true }) as Array<{ title: string; desc: string }>;
-  const principles = PRINCIPLE_ICONS.map((Icon, i) => ({ Icon, ...principleText[i] }));
-  const expertiseText = t("about.expertise", { returnObjects: true }) as Array<{ title: string; sub: string }>;
-  const expertiseItems = EXPERTISE_ICONS.map((Icon, i) => ({ Icon, ...expertiseText[i] }));
-  const ref = useScrollReveal<HTMLElement>(200);
-  return (
-    <section ref={ref} className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-2" aria-label="Principles and expertise">
-
-      {/* LEFT — Principles */}
-      <div className="glass-card p-6 lg:p-8">
-        <div className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: "#8A8D93" }}>
-          {t("about.principlesLabel")}
-        </div>
-        <h3 className="mt-1.5 text-[18px] font-medium" style={{ color: "#1F2125" }}>
-          {t("about.principlesTitle")}
-        </h3>
-
-        {/* Horizontal row on lg */}
-        <div className="mt-6 hidden items-start justify-between gap-1 lg:flex">
-          {principles.map(({ Icon, title, desc }, i) => (
-            <div key={title} className="flex items-start gap-0">
-              <div className="flex flex-col items-center text-center" style={{ maxWidth: 110 }}>
-                <div
-                  className="flex h-10 w-10 items-center justify-center rounded-full"
-                  style={{ background: "#E9EFF4", border: "1px solid #D7D4CC" }}
-                >
-                  <Icon className="h-5 w-5" style={{ color: "#34506E" }} />
-                </div>
-                <div className="mt-2.5 text-[12.5px] font-medium" style={{ color: "#1F2125" }}>{title}</div>
-                <div className="mt-1 text-[11px] leading-snug" style={{ color: "#5A5D63" }}>
-                  {desc}
-                </div>
-              </div>
-              {i < principles.length - 1 && (
-                <div
-                  className="mx-1 mt-[18px] shrink-0 text-[20px] font-light"
-                  style={{ color: "#D7D4CC" }}
-                >
-                  ·
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Mobile: 2-col grid */}
-        <div className="mt-6 grid grid-cols-2 gap-4 lg:hidden">
-          {principles.map(({ Icon, title, desc }) => (
-            <div key={title} className="flex items-start gap-3">
-              <div
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
-                style={{ background: "#E9EFF4", border: "1px solid #D7D4CC" }}
-              >
-                <Icon className="h-4 w-4" style={{ color: "#34506E" }} />
-              </div>
-              <div>
-                <div className="text-[13px] font-medium" style={{ color: "#1F2125" }}>{title}</div>
-                <div className="mt-0.5 text-[11px] leading-snug" style={{ color: "#5A5D63" }}>{desc}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* RIGHT — Core Expertise */}
-      <div className="glass-card p-6 lg:p-8">
-        <div className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: "#8A8D93" }}>
-          {t("about.expertiseLabel")}
-        </div>
-        <h3 className="mt-1.5 text-[18px] font-medium" style={{ color: "#1F2125" }}>
-          {t("about.expertiseTitle")}
-        </h3>
-
-        <div className="mt-6 grid grid-cols-3 gap-5">
-          {expertiseItems.map(({ Icon, title, sub }) => (
-            <div key={title} className="flex flex-col items-center text-center">
-              <div
-                className="flex h-12 w-12 items-center justify-center rounded-xl"
-                style={{ background: "#E9EFF4", border: "1px solid #D7D4CC" }}
-              >
-                <Icon className="h-6 w-6" style={{ color: "#34506E" }} />
-              </div>
-              <div className="mt-2.5 text-[12px] font-medium leading-tight" style={{ color: "#1F2125" }}>{title}</div>
-              <div className="text-[11px] leading-tight" style={{ color: "#5A5D63" }}>{sub}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ============================================================
-   7. FAQ SECTION — visible accordion + schema-backed
-   ============================================================ */
-
-function AboutFaqSection() {
-  const { t } = useTranslation("common");
-  const faqItems = t("about.faq", { returnObjects: true }) as Array<{ q: string; a: string }>;
-  return (
-    <section className="mt-14 lg:mt-16" aria-label="Frequently asked questions">
-      <div className="mb-8">
-        <div className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: "#8A8D93" }}>
-          {t("about.faqLabel")}
-        </div>
-        <h2 className="mt-2.5 text-[28px] font-medium leading-tight lg:text-[34px]" style={{ color: "#1F2125" }}>
-          {t("about.faqTitle")}
-        </h2>
-        <p className="mt-2 text-[14px]" style={{ color: "#5A5D63" }}>
-          {t("about.faqDesc")}
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-        {faqItems.map((item) => (
-          <details
-            key={item.q}
-            className="group rounded-[14px] p-5"
-            style={{
-              background: "#F2F0EA",
-              border: "1px solid #E3E1DA",
-            }}
-          >
-            <summary
-              className="flex cursor-pointer list-none items-start justify-between gap-4 text-[13.5px] font-semibold"
-              style={{ userSelect: "none", color: "#1F2125" }}
-            >
-              <span>{item.q}</span>
-              <ArrowRight
-                className="mt-0.5 h-4 w-4 shrink-0 rotate-90 transition-transform group-open:rotate-[270deg]"
-                style={{ color: "#34506E" }}
-              />
-            </summary>
-            <p className="mt-3.5 text-[13px] leading-relaxed" style={{ color: "#5A5D63" }}>
-              {item.a}
-            </p>
-          </details>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-/* ============================================================
-   8. FINAL CTA
+   6. FINAL CTA
    ============================================================ */
 
 function CTA() {
@@ -1470,5 +994,30 @@ function CTA() {
         </div>
       </div>
     </section>
+  );
+}
+
+/* ============================================================
+   PAGE — Hero → Metrics → Competencies → Methodology → Background → CTA
+   ============================================================ */
+
+export function AboutPage() {
+  return (
+    <div
+      className="light-page relative min-h-screen overflow-hidden"
+      style={{ backgroundColor: "#FAFAF8" }}
+    >
+      <AboutStructuredData />
+      <SiteNav active="About" />
+      <main className="mx-auto max-w-[1280px] px-6 pb-20 lg:px-10">
+        <Hero />
+        <AuthorityMetrics />
+        <CoreCompetencies />
+        <AiStrategyLink />
+        <BackgroundSection />
+        <CTA />
+        <SiteFooter />
+      </main>
+    </div>
   );
 }

@@ -481,12 +481,19 @@ function GovernanceStrip() {
    3. FEATURED SYSTEMS
    ============================================================ */
 
-const PORTFOLIO_FILTERS = ["All", "Insurance AI", "Career AI", "Knowledge Management"] as const;
+const PORTFOLIO_FILTERS = [
+  "All",
+  "AI & ML Engineering",
+  "Agentic & Workflow AI",
+  "Cloud AI & MLOps",
+  "AI Governance & Compliance",
+] as const;
 type PortfolioFilter = (typeof PORTFOLIO_FILTERS)[number];
 
 const featuredSystemsData = [
   {
-    category: "Insurance AI" as PortfolioFilter,
+    category: "AI Governance & Compliance" as PortfolioFilter,
+    competencies: ["AI & ML Engineering", "Agentic & Workflow AI", "Cloud AI & MLOps", "AI Governance & Compliance"] as PortfolioFilter[],
     badge: "01",
     title: "Insurance Claims Intelligence Platform",
     description: "Multi-agent system that automates the entire claims lifecycle — fraud detection, AI-powered triage, decision support and EU AI Act-compliant audit trail for high-risk AI classification.",
@@ -508,7 +515,8 @@ const featuredSystemsData = [
     href: "/portfolio/insurance-claims-intelligence-platform",
   },
   {
-    category: "Career AI" as PortfolioFilter,
+    category: "Agentic & Workflow AI" as PortfolioFilter,
+    competencies: ["AI & ML Engineering", "Agentic & Workflow AI", "Cloud AI & MLOps"] as PortfolioFilter[],
     badge: "02",
     title: "AI Career Intelligence Operating System",
     description: "End-to-end platform that analyses CVs, matches opportunities, personalises applications and tracks outcomes.",
@@ -530,7 +538,8 @@ const featuredSystemsData = [
     href: "/portfolio/career-intelligence-operating-system",
   },
   {
-    category: "Knowledge Management" as PortfolioFilter,
+    category: "AI & ML Engineering" as PortfolioFilter,
+    competencies: ["AI & ML Engineering", "Agentic & Workflow AI"] as PortfolioFilter[],
     badge: "03",
     title: "Knowledge Architecture Operating System",
     description: "Enterprise RAG (Retrieval-Augmented Generation) system for knowledge acquisition, semantic vector indexing with Pinecone and Supabase, and governance — designed to prevent AI hallucination through structured retrieval architecture.",
@@ -554,30 +563,23 @@ const featuredSystemsData = [
 
 function FeaturedSystems() {
   const [filter, setFilter] = useState<PortfolioFilter>("All");
-  const visible = featuredSystemsData.filter((s) => filter === "All" || s.category === filter);
+  const visible = featuredSystemsData.filter(
+    (s) => filter === "All" || s.competencies.includes(filter)
+  );
 
   return (
     <section className="mt-14">
       {/* Header */}
-      <div className="flex items-end justify-between flex-wrap gap-4">
-        <div>
-          <h2 className="text-[28px] font-medium" style={{ color: "#1F2125" }}>
-            Featured Enterprise Systems
-          </h2>
-          <p className="mt-1 text-[13.5px]" style={{ color: "#5A5D63" }}>
-            Complex AI systems. Real business impact. EU AI Act-compliant from day one.
-          </p>
-        </div>
-        <a
-          href="#"
-          className="hidden items-center gap-1.5 text-[13px] font-semibold transition-colors hover:opacity-70 sm:flex"
-          style={{ color: "#34506E" }}
-        >
-          View All Systems <ArrowRight className="h-4 w-4" />
-        </a>
+      <div className="mb-2">
+        <h2 className="text-[28px] font-medium" style={{ color: "#1F2125" }}>
+          Featured Enterprise Systems
+        </h2>
+        <p className="mt-1 text-[13.5px]" style={{ color: "#5A5D63" }}>
+          Each system demonstrates applied competencies — filter by domain to see which projects prove which skills.
+        </p>
       </div>
 
-      {/* Filter tabs */}
+      {/* Competency filter tabs */}
       <div className="mt-5 flex flex-wrap gap-2">
         {PORTFOLIO_FILTERS.map((f) => (
           <button
@@ -608,6 +610,7 @@ function FeaturedSystems() {
             imagePosition={s.imagePosition}
             impacts={s.impacts}
             technologies={s.technologies}
+            competencies={s.competencies}
             href={s.href}
           />
         ))}
@@ -636,6 +639,7 @@ function CaseStudyCard({
   imagePosition = "left top",
   impacts,
   technologies,
+  competencies,
   href,
 }: {
   badge: string;
@@ -646,6 +650,7 @@ function CaseStudyCard({
   imagePosition?: string;
   impacts: Impact[];
   technologies: string[];
+  competencies: PortfolioFilter[];
   href: string;
 }) {
   const inner = (
@@ -730,8 +735,30 @@ function CaseStudyCard({
         </div>
       </div>
 
-      {/* Technologies */}
+      {/* Competency domains */}
       <div className="mt-4 px-5">
+        <div className="mb-2 text-[9.5px] font-bold uppercase tracking-[0.18em]" style={{ color: "#8A8D93" }}>
+          COMPETENCY DOMAINS
+        </div>
+        <div className="flex flex-wrap gap-1.5">
+          {competencies.filter((c) => c !== "All").map((c) => (
+            <span
+              key={c}
+              className="rounded-full px-2 py-0.5 text-[10px] font-semibold"
+              style={{
+                background: "#E9EFF4",
+                border: "1.5px solid #D7D4CC",
+                color: "#34506E",
+              }}
+            >
+              {c}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Technologies */}
+      <div className="mt-3 px-5">
         <div className="mb-2 text-[9.5px] font-bold uppercase tracking-[0.18em]" style={{ color: "#8A8D93" }}>
           TECHNOLOGIES
         </div>
@@ -741,9 +768,9 @@ function CaseStudyCard({
               key={t}
               className="rounded-full px-2 py-0.5 text-[10.5px] font-medium"
               style={{
-                background: "#E9EFF4",
-                border: "1px solid #D7D4CC",
-                color: "#34506E",
+                background: "#F2F0EA",
+                border: "1px solid #E3E1DA",
+                color: "#5A5D63",
               }}
             >
               {t}
