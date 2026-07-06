@@ -285,7 +285,7 @@ function HomeStructuredData() {
    PAGE
    ============================================================ */
 
-const CLASSIFIER_ROUTE = "https://github.com/ephmpofu-lab/eu-ai-act-classifier" as const;
+const CLASSIFIER_ROUTE = "https://eu-ai-act-classifier.vercel.app" as const;
 
 export function Home() {
   return (

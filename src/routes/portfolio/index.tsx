@@ -595,7 +595,7 @@ const featuredSystemsData = [
       { value: "Free", label: "Open Source Tool", highlight: false },
     ],
     technologies: ["React", "TypeScript", "Vite", "Tailwind CSS v4", "Recharts", "Lucide React"],
-    href: "https://github.com/ephmpofu-lab/eu-ai-act-classifier",
+    href: "https://eu-ai-act-classifier.vercel.app",
   },
 ];
 
