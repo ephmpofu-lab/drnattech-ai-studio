@@ -152,16 +152,14 @@
     "heroBadge2": "KI-Architekt · Wien",
     "heroTitle1": "Der Kopf hinter produktiven",
     "heroTitle2": "KI-Systemen",
-    "heroDesc1": "Ich verbinde wissenschaftliche Strenge mit einem Engineering-Mindset, um Enterprise-KI-Systeme zu entwerfen — Multi-Agenten-Architekturen, RAG-Wissensplattformen und EU-KI-Verordnung-konforme Governance — die echte Geschäftsprobleme lösen und zuverlässig in der Produktion skalieren.",
-    "heroDesc2": "Nach vier Jahren Doktorforschung an der BOKU Universität Wien — einschließlich einer mehrländerübergreifenden Landschafts-Governance-Initiative in Südafrika für die Weltbank IBRD, peer-reviewed Publikationen und Universitätslehre — wechselte ich im Januar 2026 in die Enterprise-KI-Systemarchitektur. Die Governance-, System- und Datenstrenge, die durch diese Forschung aufgebaut wurde, bildet nun die Grundlage meines KI-System-Designs: auditierbar, regulierungsbereit und für die Produktion konzipiert. Ich berate und liefere auf",
+    "heroDesc1": "Ich verbinde wissenschaftliche Strenge mit einem Engineering-Mindset, um Enterprise-KI-Systeme zu entwerfen: Multi-Agenten-Architekturen, RAG-Wissensplattformen und EU-KI-Verordnung-konforme Governance, die echte Geschäftsprobleme lösen und zuverlässig in der Produktion skalieren.",
+    "heroDesc2": "Nach vier Jahren Doktorforschung an der BOKU Universität Wien, einschließlich einer mehrländerübergreifenden Landschafts-Governance-Initiative in Südafrika für die Weltbank IBRD, peer-reviewed Publikationen und Universitätslehre, wechselte ich im Januar 2026 in die Enterprise-KI-Systemarchitektur. Die Governance-, System- und Datenstrenge, die durch diese Forschung aufgebaut wurde, bildet nun die Grundlage meines KI-System-Designs: auditierbar, regulierungsbereit und für die Produktion konzipiert. Ich berate und liefere auf",
     "heroLangEn": "Englisch",
     "heroLangDe": "Deutsch",
     "askAgent": "KI-Agenten fragen",
     "viewPortfolio": "Portfolio ansehen",
     "credentials": [
-      { "title": "PhD (Dr.nat.techn.) — BOKU Universität Wien", "sub": "Wissenschaftliche Strenge, angewandt auf Enterprise-KI-System-Design" },
-      { "title": "Enterprise-KI-Systemarchitekt", "sub": "Im Aufbau seit Januar 2026 · DACH & EU" },
-      { "title": "Google Analytics · Azure AI · NEBOSH zertifiziert", "sub": "Daten- & quantitative Forschungspraxis seit 2016" }
+      { "title": "PhD (Dr.nat.techn.) · BOKU Universität Wien", "sub": "Wissenschaftliche Strenge, angewandt auf Enterprise-KI-System-Design" }
     ],
     "metrics": [
       { "value": "12+", "a": "KI-Systeme", "b": "geliefert" },
@@ -190,7 +188,7 @@
       { "title": "Bauen & Liefern", "desc": "Seit Januar 2026 — 12+ produktive KI-Systeme in den Bereichen Versicherung, HR-Technologie, Wissensmanagement und Enterprise-Automatisierung für DACH- und EU-Organisationen entworfen und geliefert." }
     ],
     "mapTitle": "Wo ich gearbeitet und studiert habe",
-    "mapSub": "Wählen Sie eine Markierung aus, um mehr zu erfahren",
+    "mapSub": "Fahren Sie über eine Markierung, um jedes Kapitel zu erkunden",
     "mapClose": "Schließen",
     "educationTitle": "Akademischer Werdegang",
     "certsTitle": "Zertifizierungen",

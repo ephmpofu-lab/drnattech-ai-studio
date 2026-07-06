@@ -15,7 +15,6 @@ import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as FrameworksThreeStructuralLawsRouteImport } from './routes/frameworks-three-structural-laws'
 import { Route as FrameworksSkaidoRouteImport } from './routes/frameworks-skaido'
 import { Route as FrameworksRouteImport } from './routes/frameworks'
-import { Route as EuAiActClassifierRouteImport } from './routes/eu-ai-act-classifier'
 import { Route as DeRouteImport } from './routes/de'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AisaV2RouteImport } from './routes/aisa-v2'
@@ -71,11 +70,6 @@ const FrameworksSkaidoRoute = FrameworksSkaidoRouteImport.update({
 const FrameworksRoute = FrameworksRouteImport.update({
   id: '/frameworks',
   path: '/frameworks',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EuAiActClassifierRoute = EuAiActClassifierRouteImport.update({
-  id: '/eu-ai-act-classifier',
-  path: '/eu-ai-act-classifier',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DeRoute = DeRouteImport.update({
@@ -217,7 +211,6 @@ export interface FileRoutesByFullPath {
   '/aisa-v2': typeof AisaV2Route
   '/contact': typeof ContactRoute
   '/de': typeof DeRouteWithChildren
-  '/eu-ai-act-classifier': typeof EuAiActClassifierRoute
   '/frameworks': typeof FrameworksRoute
   '/frameworks-skaido': typeof FrameworksSkaidoRoute
   '/frameworks-three-structural-laws': typeof FrameworksThreeStructuralLawsRoute
@@ -250,7 +243,6 @@ export interface FileRoutesByTo {
   '/aisa': typeof AisaRoute
   '/aisa-v2': typeof AisaV2Route
   '/contact': typeof ContactRoute
-  '/eu-ai-act-classifier': typeof EuAiActClassifierRoute
   '/frameworks': typeof FrameworksRoute
   '/frameworks-skaido': typeof FrameworksSkaidoRoute
   '/frameworks-three-structural-laws': typeof FrameworksThreeStructuralLawsRoute
@@ -282,7 +274,6 @@ export interface FileRoutesById {
   '/aisa-v2': typeof AisaV2Route
   '/contact': typeof ContactRoute
   '/de': typeof DeRouteWithChildren
-  '/eu-ai-act-classifier': typeof EuAiActClassifierRoute
   '/frameworks': typeof FrameworksRoute
   '/frameworks-skaido': typeof FrameworksSkaidoRoute
   '/frameworks-three-structural-laws': typeof FrameworksThreeStructuralLawsRoute
@@ -318,7 +309,6 @@ export interface FileRouteTypes {
     | '/aisa-v2'
     | '/contact'
     | '/de'
-    | '/eu-ai-act-classifier'
     | '/frameworks'
     | '/frameworks-skaido'
     | '/frameworks-three-structural-laws'
@@ -351,7 +341,6 @@ export interface FileRouteTypes {
     | '/aisa'
     | '/aisa-v2'
     | '/contact'
-    | '/eu-ai-act-classifier'
     | '/frameworks'
     | '/frameworks-skaido'
     | '/frameworks-three-structural-laws'
@@ -382,7 +371,6 @@ export interface FileRouteTypes {
     | '/aisa-v2'
     | '/contact'
     | '/de'
-    | '/eu-ai-act-classifier'
     | '/frameworks'
     | '/frameworks-skaido'
     | '/frameworks-three-structural-laws'
@@ -417,7 +405,6 @@ export interface RootRouteChildren {
   AisaV2Route: typeof AisaV2Route
   ContactRoute: typeof ContactRoute
   DeRoute: typeof DeRouteWithChildren
-  EuAiActClassifierRoute: typeof EuAiActClassifierRoute
   FrameworksRoute: typeof FrameworksRoute
   FrameworksSkaidoRoute: typeof FrameworksSkaidoRoute
   FrameworksThreeStructuralLawsRoute: typeof FrameworksThreeStructuralLawsRoute
@@ -469,13 +456,6 @@ declare module '@tanstack/react-router' {
       path: '/frameworks'
       fullPath: '/frameworks'
       preLoaderRoute: typeof FrameworksRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/eu-ai-act-classifier': {
-      id: '/eu-ai-act-classifier'
-      path: '/eu-ai-act-classifier'
-      fullPath: '/eu-ai-act-classifier'
-      preLoaderRoute: typeof EuAiActClassifierRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/de': {
@@ -741,7 +721,6 @@ const rootRouteChildren: RootRouteChildren = {
   AisaV2Route: AisaV2Route,
   ContactRoute: ContactRoute,
   DeRoute: DeRouteWithChildren,
-  EuAiActClassifierRoute: EuAiActClassifierRoute,
   FrameworksRoute: FrameworksRoute,
   FrameworksSkaidoRoute: FrameworksSkaidoRoute,
   FrameworksThreeStructuralLawsRoute: FrameworksThreeStructuralLawsRoute,

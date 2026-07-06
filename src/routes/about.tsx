@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
@@ -10,16 +10,11 @@ import {
   Bot,
   Brain,
   Boxes,
-  Clock,
   ExternalLink,
-  Layers,
-  Puzzle,
   Rocket,
   Server,
   ShieldCheck,
-  TrendingUp,
   Zap,
-  type LucideIcon,
 } from "lucide-react";
 import { SiteNav } from "@/components/brand/SiteNav";
 import { SiteFooter } from "@/components/brand/SiteFooter";
@@ -306,7 +301,7 @@ function AboutStructuredData() {
    1. HERO
    ============================================================ */
 
-const CREDENTIAL_GLYPHS = ["boku", "ai", "google"];
+const CREDENTIAL_GLYPHS = ["boku"];
 
 function CredentialGlyph({ g }: { g: string }) {
   const box = "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg";
@@ -325,6 +320,18 @@ function CredentialGlyph({ g }: { g: string }) {
       </div>
     );
   }
+  if (g === "microsoft") {
+    return (
+      <div className={box} style={{ background: "#FFFFFF", border: "1px solid #E3E1DA" }}>
+        <svg viewBox="0 0 22 22" width="18" height="18">
+          <rect x="0"  y="0"  width="10" height="10" fill="#F25022" />
+          <rect x="12" y="0"  width="10" height="10" fill="#7FBA00" />
+          <rect x="0"  y="12" width="10" height="10" fill="#00A4EF" />
+          <rect x="12" y="12" width="10" height="10" fill="#FFB900" />
+        </svg>
+      </div>
+    );
+  }
   if (g === "google") {
     return (
       <div
@@ -337,6 +344,16 @@ function CredentialGlyph({ g }: { g: string }) {
           <path fill="#FBBC05" d="M5.525 14.29c-.25-.72-.38-1.49-.38-2.29s.14-1.57.38-2.29V6.62H1.625a11.86 11.86 0 000 10.76l3.9-3.09z" />
           <path fill="#EA4335" d="M12.255 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C18.205 1.19 15.495 0 12.255 0c-4.64 0-8.74 2.7-10.71 6.62l3.9 3.09c.95-2.85 3.6-4.96 6.81-4.96z" />
         </svg>
+      </div>
+    );
+  }
+  if (g === "nebosh") {
+    return (
+      <div
+        className={box}
+        style={{ background: "#1A3260", border: "1px solid #1A3260" }}
+      >
+        <span className="text-[9px] font-black leading-none" style={{ color: "#FFFFFF", letterSpacing: "0.02em" }}>NEB</span>
       </div>
     );
   }
@@ -414,7 +431,7 @@ function Hero() {
           </Link>
         </div>
 
-        <div className="mt-8 flex flex-col gap-3.5 sm:flex-row sm:flex-wrap">
+        <div className="mt-8 flex flex-col gap-3">
           {credentials.map((c) => (
             <div key={c.title} className="flex items-center gap-3">
               <CredentialGlyph g={c.glyph} />
@@ -424,6 +441,21 @@ function Hero() {
               </div>
             </div>
           ))}
+          <div className="flex flex-wrap gap-x-5 gap-y-3 pt-1">
+            {[
+              { g: "microsoft", title: "Azure AI Apps & Agents Dev. Associate", sub: "Microsoft Certified" },
+              { g: "google",    title: "Data Analytics Professional Certificate", sub: "Google / Coursera" },
+              { g: "nebosh",   title: "Environmental Health & Safety Certificate", sub: "NEBOSH ICG" },
+            ].map((c) => (
+              <div key={c.g} className="flex items-center gap-2.5">
+                <CredentialGlyph g={c.g} />
+                <div className="leading-tight">
+                  <div className="text-[11px] font-bold" style={{ color: "#1F2125" }}>{c.title}</div>
+                  <div className="text-[10px]" style={{ color: "#5A5D63" }}>{c.sub}</div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -433,8 +465,8 @@ function Hero() {
         style={{ border: "1px solid #E3E1DA" }}
       >
         <img
-          src="/images/Dr_Mpofu_purple-removebg-preview.png"
-          alt="Dr. Ephraim Mpofu — AI Solutions Architect and KI-Architekt based in Vienna, Austria"
+          src="/images/Dr%20Ephraim.webp"
+          alt="Dr. Ephraim Mpofu, AI Solutions Architect and KI-Architekt based in Vienna, Austria"
           className="absolute inset-0 h-full w-full object-cover object-top"
         />
         <div
@@ -446,160 +478,197 @@ function Hero() {
   );
 }
 
-/* ============================================================
-   2. AUTHORITY METRICS
-   ============================================================ */
-
-const METRIC_ICONS = [Puzzle, Clock, TrendingUp, ShieldCheck, Layers];
-
-function AuthorityMetrics() {
-  const { t } = useTranslation("common");
-  const metricText = t("about.metrics", { returnObjects: true }) as Array<{ value: string; a: string; b: string }>;
-  const metrics = METRIC_ICONS.map((icon, i) => ({ icon, ...metricText[i] }));
-  const ref = useScrollReveal<HTMLElement>(0);
-  return (
-    <section ref={ref} className="mt-5" aria-label="Impact metrics">
-      <div className="glass-card flex flex-wrap items-stretch">
-        {metrics.map((m, i) => (
-          <div
-            key={m.value + m.a}
-            className="flex min-w-[130px] flex-1 flex-col items-center justify-center px-4 py-4"
-            style={i > 0 ? { borderLeft: "1px solid #E3E1DA" } : undefined}
-          >
-            <div
-              className="mb-2 flex h-7 w-7 items-center justify-center rounded-full"
-              style={{ background: "#E9EFF4", border: "1px solid #D7D4CC" }}
-            >
-              <m.icon className="h-3.5 w-3.5" style={{ color: "#34506E" }} />
-            </div>
-            <div className="text-gradient-brand text-[22px] font-bold leading-none">{m.value}</div>
-            <div className="mt-1 text-center text-[10.5px] font-medium leading-tight" style={{ color: "#5A5D63" }}>
-              {m.a}<br />{m.b}
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
 
 /* ============================================================
-   3. CORE COMPETENCIES
+   3. CORE COMPETENCIES — sequential pipeline
    ============================================================ */
 
-const COMPETENCY_CATEGORIES = [
+const PIPELINE_STEPS = [
+  {
+    id: "data",
+    Icon: BarChart2,
+    domain: "Data Science & Analytics",
+    layer: "Understand the problem",
+    skills: ["Power BI", "Statistical Modelling", "Data Visualisation", "SQL", "Pandas", "NumPy", "PoC Design", "Business Intelligence"],
+  },
   {
     id: "ml",
     Icon: Brain,
-    category: "AI & ML Engineering",
+    domain: "AI & ML Engineering",
+    layer: "Build the intelligence",
     skills: ["Python", "PyTorch", "TensorFlow", "Deep Learning", "CNNs", "Computer Vision", "YOLO", "NLP", "LLMs", "RAG", "Feature Engineering"],
   },
   {
     id: "agentic",
     Icon: Zap,
-    category: "Agentic & Workflow AI",
+    domain: "Agentic & Workflow AI",
+    layer: "Orchestrate the system",
     skills: ["LangGraph", "n8n", "Multi-Agent Systems", "MCP", "Vector Databases", "Workflow Automation", "Supabase"],
   },
   {
     id: "cloud",
     Icon: Server,
-    category: "Cloud AI & MLOps",
+    domain: "Cloud AI & MLOps",
+    layer: "Deploy to production",
     skills: ["Azure AI (AI-103)", "Azure ML", "MLOps", "Docker", "CI/CD", "FastAPI", "ONNX", "Model Deployment"],
-  },
-  {
-    id: "data",
-    Icon: BarChart2,
-    category: "Data Science & Analytics",
-    skills: ["Power BI", "Statistical Modelling", "Data Visualisation", "SQL", "Pandas", "NumPy", "PoC Design", "Business Intelligence"],
   },
   {
     id: "governance",
     Icon: ShieldCheck,
-    category: "AI Governance & Compliance",
+    domain: "AI Governance & Compliance",
+    layer: "Govern at scale",
     skills: ["EU AI Act", "ISO/IEC 42001", "DSGVO", "Responsible AI", "Risk Classification", "Compliance Strategy"],
   },
-  {
-    id: "research",
-    Icon: BookOpen,
-    category: "Research & Knowledge Translation",
-    skills: ["9 SCI Publications", "Technical Training", "Systems Thinking", "Scientific Documentation"],
-  },
 ] as const;
-
-function CompetencyCard({
-  category,
-  Icon,
-  skills,
-}: {
-  category: string;
-  Icon: LucideIcon;
-  skills: readonly string[];
-}) {
-  return (
-    <div
-      className="flex flex-col rounded-[18px] p-6"
-      style={{ background: "#F2F0EA", border: "1px solid #E3E1DA" }}
-    >
-      <div
-        className="text-center text-[10.5px] font-bold uppercase tracking-[0.18em]"
-        style={{ color: "#1F2125" }}
-      >
-        {category}
-      </div>
-
-      <div className="my-5 flex items-center justify-center">
-        <div
-          className="flex h-14 w-14 items-center justify-center rounded-2xl"
-          style={{ background: "#E9EFF4", border: "1px solid #D7D4CC" }}
-        >
-          <Icon className="h-7 w-7" style={{ color: "#34506E" }} />
-        </div>
-      </div>
-
-      <div className="flex flex-wrap justify-center gap-1.5">
-        {skills.map((skill) => (
-          <span
-            key={skill}
-            className="inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-medium"
-            style={{ background: "#FAFAF8", border: "1px solid #E3E1DA", color: "#1F2125" }}
-          >
-            {skill}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 function CoreCompetencies() {
   const ref = useScrollReveal<HTMLElement>(100);
   return (
     <section ref={ref} className="mt-10 lg:mt-12" aria-label="Core competencies">
-      <div className="mb-7">
+      <div className="mb-8">
         <div
-          className="text-[10px] font-bold uppercase tracking-[0.22em]"
-          style={{ color: "#8A8D93" }}
+          className="text-[12px] font-bold uppercase tracking-[0.2em]"
+          style={{ color: "#34506E" }}
         >
-          Core Competencies
+          Skills
         </div>
         <h2
-          className="mt-2 text-[28px] font-medium lg:text-[34px]"
+          className="mt-1 text-[28px] font-medium lg:text-[34px]"
           style={{ color: "#1F2125" }}
         >
-          What I Build With
+          Core Competencies
         </h2>
         <p
           className="mt-2 max-w-xl text-[14px]"
           style={{ color: "#5A5D63" }}
         >
-          Six capability domains — from model engineering through governance — applied across every enterprise AI engagement.
+          Five sequential layers, from data foundations through to governed, production-ready AI.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {COMPETENCY_CATEGORIES.map((c) => (
-          <CompetencyCard key={c.id} {...c} />
-        ))}
+      {/* Pipeline steps */}
+      <div className="relative">
+        {/* Vertical spine */}
+        <div
+          className="pointer-events-none absolute left-[19px] top-0 bottom-0 w-[2px]"
+          style={{
+            background: "linear-gradient(to bottom, transparent 1%, #34506E 6%, #34506E 90%, transparent 99%)",
+            opacity: 0.35,
+          }}
+        />
+
+        <div className="flex flex-col">
+          {PIPELINE_STEPS.map((step, i) => (
+            <div key={step.id}>
+              {/* Step row */}
+              <div className="relative flex items-start gap-5">
+                {/* Numbered circle */}
+                <div className="relative z-10 shrink-0">
+                  <div
+                    className="flex h-10 w-10 items-center justify-center rounded-full text-[13px] font-bold"
+                    style={{
+                      background: "#34506E",
+                      color: "#FAFAF8",
+                      boxShadow: "0 0 0 3px #FAFAF8, 0 0 0 4px #E3E1DA",
+                    }}
+                  >
+                    {i + 1}
+                  </div>
+                </div>
+
+                {/* Content card */}
+                <div
+                  className="flex-1 rounded-[16px] p-5"
+                  style={{ background: "#F2F0EA", border: "1px solid #E3E1DA" }}
+                >
+                  {/* Domain header */}
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
+                      style={{ background: "#E9EFF4", border: "1px solid #D7D4CC" }}
+                    >
+                      <step.Icon className="h-[18px] w-[18px]" style={{ color: "#34506E" }} />
+                    </div>
+                    <div>
+                      <div className="text-[13px] font-bold leading-tight" style={{ color: "#1F2125" }}>
+                        {step.domain}
+                      </div>
+                      <div className="mt-0.5 text-[11px]" style={{ color: "#8A8D93" }}>
+                        {step.layer}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Skill pills */}
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {step.skills.map((skill) => (
+                      <span
+                        key={skill}
+                        className="inline-flex items-center rounded-full px-3 py-1 text-[12px] font-medium"
+                        style={{
+                          background: "#FAFAF8",
+                          border: "1px solid #E3E1DA",
+                          color: "#1F2125",
+                        }}
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Flow arrow connector between steps */}
+              {i < PIPELINE_STEPS.length - 1 && (
+                <div className="flex items-center py-1" style={{ paddingLeft: "14px" }}>
+                  <svg width="12" height="9" viewBox="0 0 12 9" fill="none" aria-hidden="true">
+                    <path d="M6 9L0 0H12L6 9Z" fill="#34506E" fillOpacity="0.45" />
+                  </svg>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Crosscutting strip — Research underpins all phases */}
+      <div className="mt-4 pl-[60px]">
+        <div
+          className="rounded-[16px] p-5"
+          style={{ background: "#E9EFF4", border: "1.5px dashed #C5D4E0" }}
+        >
+          <div className="mb-4 flex items-center gap-3">
+            <div
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
+              style={{ background: "#FAFAF8", border: "1px solid #D7D4CC" }}
+            >
+              <BookOpen className="h-[18px] w-[18px]" style={{ color: "#34506E" }} />
+            </div>
+            <div>
+              <div className="text-[13px] font-bold leading-tight" style={{ color: "#1F2125" }}>
+                Research & Knowledge Translation
+              </div>
+              <div className="mt-0.5 text-[11px]" style={{ color: "#8A8D93" }}>
+                Underpins all phases
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {(["9 SCI Publications", "Technical Training", "Systems Thinking", "Scientific Documentation"] as const).map((skill) => (
+              <span
+                key={skill}
+                className="inline-flex items-center rounded-full px-3 py-1 text-[12px] font-medium"
+                style={{
+                  background: "#FAFAF8",
+                  border: "1px solid #D7D4CC",
+                  color: "#1F2125",
+                }}
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -617,13 +686,13 @@ function AiStrategyLink() {
     >
       <div>
         <div
-          className="text-[10px] font-bold uppercase tracking-[0.2em]"
+          className="text-[12px] font-bold uppercase tracking-[0.2em]"
           style={{ color: "#34506E" }}
         >
-          My Methodology
+          My AI Implementation Strategy
         </div>
-        <p className="mt-0.5 text-[13.5px] leading-snug" style={{ color: "#5A5D63" }}>
-          These competencies are applied through AISA — a structured 6-phase enterprise AI methodology covering Discover, Govern, Architect, Build, Deploy and Operate.
+        <p className="mt-1 text-[13.5px] leading-snug" style={{ color: "#5A5D63" }}>
+          Grounded in research, software engineering principles, AI architecture theory, and regulatory frameworks — applied through AISA, a structured 6-phase methodology: Discover, Govern, Architect, Build, Deploy, Operate.
         </p>
       </div>
       <Link
@@ -646,6 +715,8 @@ const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"
 const mapLocations = [
   {
     name: "Zimbabwe",
+    flag: "🇿🇼",
+    labelOffset: [0, -22] as [number, number],
     coordinates: [30.0, -20.0] as [number, number],
     role: "BSc Environmental Science & Health",
     org: "NUST Zimbabwe",
@@ -653,6 +724,8 @@ const mapLocations = [
   },
   {
     name: "South Africa",
+    flag: "🇿🇦",
+    labelOffset: [0, 26] as [number, number],
     coordinates: [28.0, -26.2] as [number, number],
     role: "Analyst · Researcher · Planner",
     org: "World Bank IBRD · Huawei Technologies · University of Johannesburg",
@@ -660,6 +733,8 @@ const mapLocations = [
   },
   {
     name: "China",
+    flag: "🇨🇳",
+    labelOffset: [0, -22] as [number, number],
     coordinates: [116.4, 39.9] as [number, number],
     role: "Exchange Programme",
     org: "Beijing Normal University",
@@ -667,6 +742,8 @@ const mapLocations = [
   },
   {
     name: "Austria",
+    flag: "🇦🇹",
+    labelOffset: [0, -22] as [number, number],
     coordinates: [16.4, 48.2] as [number, number],
     role: "Researcher & Lecturer → AI Systems Architect",
     org: "BOKU University Vienna · Dr.NatTech",
@@ -676,7 +753,9 @@ const mapLocations = [
 
 function WorldMap() {
   const { t } = useTranslation("common");
-  const [active, setActive] = useState<(typeof mapLocations)[number] | null>(null);
+  const [hovered, setHovered] = useState<(typeof mapLocations)[number] | null>(null);
+  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
 
   return (
     <div className="glass-card overflow-hidden">
@@ -689,83 +768,107 @@ function WorldMap() {
         </p>
       </div>
 
-      <ComposableMap
-        projection="geoMercator"
-        projectionConfig={{ center: [42, 4], scale: 190 }}
-        style={{ width: "100%", height: 300 }}
-      >
-        <Geographies geography={GEO_URL}>
-          {({ geographies }) =>
-            geographies.map((geo) => (
-              <Geography
-                key={geo.rsmKey}
-                geography={geo}
-                style={{
-                  default: { fill: "rgba(52,80,110,0.07)", stroke: "rgba(52,80,110,0.2)", strokeWidth: 0.5, outline: "none" },
-                  hover:   { fill: "rgba(52,80,110,0.07)", stroke: "rgba(52,80,110,0.2)", strokeWidth: 0.5, outline: "none" },
-                  pressed: { fill: "rgba(52,80,110,0.07)", stroke: "rgba(52,80,110,0.2)", strokeWidth: 0.5, outline: "none" },
-                }}
-              />
-            ))
-          }
-        </Geographies>
-
-        {mapLocations.map((loc) => {
-          const isActive = active?.name === loc.name;
-          return (
-            <Marker
-              key={loc.name}
-              coordinates={loc.coordinates}
-              onClick={() => setActive(isActive ? null : loc)}
-            >
-              <circle
-                r={isActive ? 8 : 5}
-                style={{
-                  fill: isActive ? "#34506E" : "rgba(52,80,110,0.45)",
-                  stroke: "#34506E",
-                  strokeWidth: 1.5,
-                  cursor: "pointer",
-                  transition: "all 0.18s ease",
-                }}
-              />
-              {isActive && (
-                <text
-                  textAnchor="middle"
-                  y={-14}
-                  style={{ fontSize: 9, fontFamily: "Inter, sans-serif", fill: "#1F2125", pointerEvents: "none" }}
-                >
-                  {loc.name}
-                </text>
-              )}
-            </Marker>
-          );
-        })}
-      </ComposableMap>
-
       <div
-        style={{
-          maxHeight: active ? 120 : 0,
-          overflow: "hidden",
-          transition: "max-height 0.3s ease",
-          borderTop: active ? "1px solid #E3E1DA" : "none",
+        ref={containerRef}
+        className="relative"
+        onMouseMove={(e) => {
+          if (containerRef.current) {
+            const rect = containerRef.current.getBoundingClientRect();
+            setTooltipPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+          }
         }}
       >
-        {active && (
-          <div className="flex items-start justify-between gap-4 px-6 py-4">
-            <div>
-              <div className="text-[15px] font-medium" style={{ color: "#1F2125" }}>{active.name}</div>
-              <div className="mt-0.5 text-[12.5px] font-semibold" style={{ color: "#34506E" }}>{active.role}</div>
-              <div className="text-[12px] mt-0.5" style={{ color: "#5A5D63" }}>{active.org}</div>
-              <div className="text-[11px] mt-0.5" style={{ color: "#8A8D93" }}>{active.period}</div>
+        <ComposableMap
+          projection="geoMercator"
+          projectionConfig={{ center: [42, 4], scale: 190 }}
+          style={{ width: "100%", height: 300 }}
+        >
+          <Geographies geography={GEO_URL}>
+            {({ geographies }) =>
+              geographies.map((geo) => (
+                <Geography
+                  key={geo.rsmKey}
+                  geography={geo}
+                  style={{
+                    default: { fill: "rgba(52,80,110,0.07)", stroke: "rgba(52,80,110,0.2)", strokeWidth: 0.5, outline: "none" },
+                    hover:   { fill: "rgba(52,80,110,0.07)", stroke: "rgba(52,80,110,0.2)", strokeWidth: 0.5, outline: "none" },
+                    pressed: { fill: "rgba(52,80,110,0.07)", stroke: "rgba(52,80,110,0.2)", strokeWidth: 0.5, outline: "none" },
+                  }}
+                />
+              ))
+            }
+          </Geographies>
+
+          {mapLocations.map((loc) => {
+            const isHovered = hovered?.name === loc.name;
+            return (
+              <Marker key={loc.name} coordinates={loc.coordinates}>
+                <g
+                  onMouseEnter={() => setHovered(loc)}
+                  onMouseLeave={() => setHovered(null)}
+                >
+                  {/* Outer pulse ring */}
+                  <circle
+                    r={isHovered ? 17 : 13}
+                    fill={isHovered ? "rgba(52,80,110,0.18)" : "rgba(52,80,110,0.10)"}
+                    pointerEvents="none"
+                    style={{ transition: "r 0.2s ease, fill 0.2s ease" }}
+                  />
+                  {/* Main pin dot */}
+                  <circle
+                    r={isHovered ? 9 : 7}
+                    fill={isHovered ? "#34506E" : "#FAFAF8"}
+                    stroke="#34506E"
+                    strokeWidth={2}
+                    style={{ cursor: "pointer", transition: "all 0.2s ease" }}
+                  />
+                  {/* Flag + country label */}
+                  <text
+                    textAnchor="middle"
+                    x={loc.labelOffset[0]}
+                    y={loc.labelOffset[1]}
+                    style={{
+                      fontSize: 9.5,
+                      fontFamily: "Inter, system-ui, sans-serif",
+                      fontWeight: "600",
+                      fill: isHovered ? "#1F2125" : "#5A5D63",
+                      pointerEvents: "none",
+                      transition: "fill 0.2s ease",
+                    }}
+                  >
+                    {loc.flag} {loc.name}
+                  </text>
+                </g>
+              </Marker>
+            );
+          })}
+        </ComposableMap>
+
+        {/* Hover tooltip */}
+        {hovered && (
+          <div
+            className="pointer-events-none absolute z-20 rounded-[10px] shadow-lg"
+            style={{
+              left: Math.min(tooltipPos.x + 16, (containerRef.current?.clientWidth ?? 600) - 240),
+              top: Math.max(tooltipPos.y - 90, 8),
+              background: "#1F2125",
+              padding: "10px 14px",
+              minWidth: 190,
+              maxWidth: 240,
+            }}
+          >
+            <div className="text-[13px] font-bold" style={{ color: "#FAFAF8" }}>
+              {hovered.flag} {hovered.name}
             </div>
-            <button
-              onClick={() => setActive(null)}
-              className="shrink-0 text-[18px] leading-none"
-              style={{ color: "#8A8D93" }}
-              aria-label={t("about.mapClose")}
-            >
-              ×
-            </button>
+            <div className="mt-1.5 text-[12px] font-semibold" style={{ color: "#7BAFD4" }}>
+              {hovered.role}
+            </div>
+            <div className="mt-0.5 text-[11px] leading-snug" style={{ color: "#A8BFCE" }}>
+              {hovered.org}
+            </div>
+            <div className="mt-1 text-[10px]" style={{ color: "#6A7B8A" }}>
+              {hovered.period}
+            </div>
           </div>
         )}
       </div>
@@ -865,13 +968,6 @@ const certifications = [
   },
 ];
 
-const verifyLinks = [
-  { label: "ResearchGate", href: "https://www.researchgate.net/profile/Ephraim-Mpofu" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/ephraim-mpofu-a340608b/" },
-  { label: "T2S Doctoral School", href: "https://boku.ac.at/en/docservice/doctoral-studies/doktoratsschulen/transitions-to-sustainability-t2s/doctoral-candidates" },
-  { label: "FOGOS COST Action", href: "https://www.cost.eu/actions/CA23118/#tabs+Name:Working%20Groups%20and%20Membership" },
-  { label: "YouTube", href: "https://www.youtube.com/@ephraimmpofu_" },
-];
 
 function Certifications() {
   const { t } = useTranslation("common");
@@ -901,30 +997,6 @@ function Certifications() {
         ))}
       </div>
 
-      <div className="mt-5 border-t pt-4" style={{ borderColor: "#E3E1DA" }}>
-        <div className="text-[10px] font-bold uppercase tracking-[0.18em] mb-2.5" style={{ color: "#8A8D93" }}>
-          {t("about.verifyTitle")}
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {verifyLinks.map((v) => (
-            <a
-              key={v.label}
-              href={v.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 rounded-[6px] px-2.5 py-1.5 text-[11px] font-semibold transition-colors hover:bg-[#E9EFF4]"
-              style={{
-                background: "#E9EFF4",
-                border: "1px solid #D7D4CC",
-                color: "#34506E",
-              }}
-            >
-              {v.label}
-              <ExternalLink className="h-2.5 w-2.5" />
-            </a>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }
@@ -1011,7 +1083,6 @@ export function AboutPage() {
       <SiteNav active="About" />
       <main className="mx-auto max-w-[1280px] px-6 pb-20 lg:px-10">
         <Hero />
-        <AuthorityMetrics />
         <CoreCompetencies />
         <AiStrategyLink />
         <BackgroundSection />

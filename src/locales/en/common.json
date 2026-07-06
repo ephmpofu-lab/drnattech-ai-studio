@@ -152,16 +152,14 @@
     "heroBadge2": "KI-Architekt · Wien",
     "heroTitle1": "The Mind Behind Production",
     "heroTitle2": "AI Systems",
-    "heroDesc1": "I combine scientific rigour with engineering mindset to design enterprise AI systems — multi-agent architectures, RAG knowledge platforms and EU AI Act-compliant governance — that solve real business problems and scale reliably in production.",
-    "heroDesc2": "After four years of doctoral research at BOKU University Vienna's Transitions to Sustainability doctoral school — including a multi-country landscape governance initiative across Southern Africa delivered for the World Bank IBRD, peer-reviewed publications and university teaching — I transitioned into enterprise AI systems architecture in January 2026. The governance, systems and data rigour built through that research now underpin how I design AI systems: auditable, regulation-ready and built to last in production. I consult and deliver in",
+    "heroDesc1": "I combine scientific rigour with engineering mindset to design enterprise AI systems: multi-agent architectures, RAG knowledge platforms and EU AI Act-compliant governance, built to solve real business problems and scale reliably in production.",
+    "heroDesc2": "After four years of doctoral research at BOKU University Vienna's Transitions to Sustainability doctoral school, including a multi-country landscape governance initiative across Southern Africa for the World Bank IBRD, peer-reviewed publications and university teaching, I transitioned into enterprise AI systems architecture in January 2026. The governance, systems and data rigour built through that research now underpin how I design AI systems: auditable, regulation-ready and built to last in production. I consult and deliver in",
     "heroLangEn": "English",
     "heroLangDe": "Deutsch",
     "askAgent": "Ask My AI Agent",
     "viewPortfolio": "View Portfolio",
     "credentials": [
-      { "title": "PhD (Dr.nat.techn.) — BOKU University Vienna", "sub": "Scientific rigour applied to enterprise AI system design" },
-      { "title": "Enterprise AI Systems Architect", "sub": "Building since January 2026 · DACH & EU" },
-      { "title": "Google Analytics · Azure AI · NEBOSH Certified", "sub": "Data & quantitative research practice since 2016" }
+      { "title": "PhD (Dr.nat.techn.) · BOKU University Vienna", "sub": "Scientific rigour applied to enterprise AI system design" }
     ],
     "metrics": [
       { "value": "12+", "a": "AI Systems", "b": "Delivered" },
@@ -190,7 +188,7 @@
       { "title": "Building & Delivering", "desc": "Since January 2026 — designed and delivered 12+ production AI systems across insurance, HR technology, knowledge management and enterprise automation for DACH and EU organisations." }
     ],
     "mapTitle": "Where I've Worked & Studied",
-    "mapSub": "Select a pin to learn more",
+    "mapSub": "Hover a pin to explore each chapter",
     "mapClose": "Close",
     "educationTitle": "Academic Timeline",
     "certsTitle": "Certifications",

@@ -268,7 +268,7 @@ function HomeStructuredData() {
         description:
           "AISA is Dr. Ephraim Mpofu's proprietary 6-phase AI implementation methodology — problem definition, potential analysis, make-or-buy assessment, governance integration, deployment and evaluation — grounded in software engineering principles and governance science developed through doctoral research.",
         author: { "@id": "https://drnattech.com/#person" },
-        url: "https://drnattech.com/frameworks",
+        url: "https://drnattech.com/ai-strategy",
         about: { "@type": "Thing", name: "Enterprise AI Implementation Methodology" },
       },
     ],
@@ -285,7 +285,7 @@ function HomeStructuredData() {
    PAGE
    ============================================================ */
 
-const CLASSIFIER_ROUTE = "/eu-ai-act-classifier" as const;
+const CLASSIFIER_ROUTE = "https://github.com/ephmpofu-lab/eu-ai-act-classifier" as const;
 
 export function Home() {
   return (
@@ -410,13 +410,15 @@ function Hero() {
             <span className="font-semibold" style={{ color: "#1F2125" }}>EU AI Act Classifier —</span>{" "}
             {t("home.classifierTeaser")}
           </p>
-          <Link
-            to={CLASSIFIER_ROUTE}
+          <a
+            href={CLASSIFIER_ROUTE}
+            target="_blank"
+            rel="noreferrer"
             className="inline-flex shrink-0 items-center gap-2 rounded-[10px] px-4 py-2.5 text-[12.5px] font-semibold transition-all hover:opacity-90"
             style={{ background: "#34506E", color: "#FAFAF8" }}
           >
             <ShieldCheck className="h-3.5 w-3.5" /> Assess Free
-          </Link>
+          </a>
         </div>
 
         <div className="mt-6 flex flex-wrap items-center gap-3">
@@ -841,7 +843,7 @@ function FrameworksSection() {
             {t("home.frameworksDesc")}
           </p>
           <Link
-            to="/frameworks"
+            to="/aisa"
             className="mt-8 inline-flex items-center gap-2 rounded-[10px] px-6 py-3 text-[13.5px] font-semibold transition-all hover:opacity-90"
             style={{ background: "#34506E", color: "#FAFAF8" }}
           >
@@ -1229,13 +1231,15 @@ function AssessmentTeaser() {
                 <span className="text-[12.5px] font-medium" style={{ color }}>{label}</span>
               </div>
             ))}
-            <Link
-              to={CLASSIFIER_ROUTE}
+            <a
+              href={CLASSIFIER_ROUTE}
+              target="_blank"
+              rel="noreferrer"
               className="mt-4 inline-flex items-center justify-center gap-2 rounded-[10px] px-5 py-3 text-[13.5px] font-semibold text-white transition-all hover:opacity-90"
               style={{ background: "#34506E" }}
             >
               Start Free Assessment <ArrowRight className="h-4 w-4" />
-            </Link>
+            </a>
           </div>
         </div>
       </div>
