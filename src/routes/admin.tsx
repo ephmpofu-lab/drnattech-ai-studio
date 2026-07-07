@@ -169,6 +169,7 @@ function LoginScreen({ onSession }: { onSession: (s: Session) => void }) {
     e.preventDefault();
     setLoading(true);
     setError("");
+    if (!supabase) { setError("Supabase not configured."); setLoading(false); return; }
     const { data, error: err } = await supabase.auth.signInWithPassword({ email, password: pw });
     setLoading(false);
     if (err || !data.session) {
@@ -236,6 +237,7 @@ function Dashboard({ session }: { session: Session }) {
   const [lastFetch, setLastFetch] = useState("");
 
   const load = useCallback(async () => {
+    if (!supabase) return;
     setLoading(true);
     const since = new Date(Date.now() - days * 86400_000).toISOString();
     const { data, error } = await supabase
@@ -253,7 +255,7 @@ function Dashboard({ session }: { session: Session }) {
   useEffect(() => { void load(); }, [load]);
 
   async function signOut() {
-    await supabase.auth.signOut();
+    await supabase?.auth.signOut();
     location.reload();
   }
 
@@ -376,6 +378,7 @@ function AdminPage() {
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
+    if (!supabase) { setChecking(false); return; }
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
       setChecking(false);
