@@ -20,6 +20,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AisaV2RouteImport } from './routes/aisa-v2'
 import { Route as AisaRouteImport } from './routes/aisa'
 import { Route as AiAgentRouteImport } from './routes/ai-agent'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PortfolioIndexRouteImport } from './routes/portfolio/index'
@@ -95,6 +96,11 @@ const AisaRoute = AisaRouteImport.update({
 const AiAgentRoute = AiAgentRouteImport.update({
   id: '/ai-agent',
   path: '/ai-agent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -206,6 +212,7 @@ const DePortfolioCareerIntelligenceOperatingSystemRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/ai-agent': typeof AiAgentRoute
   '/aisa': typeof AisaRoute
   '/aisa-v2': typeof AisaV2Route
@@ -239,6 +246,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/ai-agent': typeof AiAgentRoute
   '/aisa': typeof AisaRoute
   '/aisa-v2': typeof AisaV2Route
@@ -269,6 +277,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/ai-agent': typeof AiAgentRoute
   '/aisa': typeof AisaRoute
   '/aisa-v2': typeof AisaV2Route
@@ -304,6 +313,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/admin'
     | '/ai-agent'
     | '/aisa'
     | '/aisa-v2'
@@ -337,6 +347,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/admin'
     | '/ai-agent'
     | '/aisa'
     | '/aisa-v2'
@@ -366,6 +377,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/admin'
     | '/ai-agent'
     | '/aisa'
     | '/aisa-v2'
@@ -400,6 +412,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRoute
   AiAgentRoute: typeof AiAgentRoute
   AisaRoute: typeof AisaRoute
   AisaV2Route: typeof AisaV2Route
@@ -491,6 +504,13 @@ declare module '@tanstack/react-router' {
       path: '/ai-agent'
       fullPath: '/ai-agent'
       preLoaderRoute: typeof AiAgentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -716,6 +736,7 @@ const PortfolioRouteWithChildren = PortfolioRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AdminRoute: AdminRoute,
   AiAgentRoute: AiAgentRoute,
   AisaRoute: AisaRoute,
   AisaV2Route: AisaV2Route,

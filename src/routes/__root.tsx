@@ -13,6 +13,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import i18n, { localeFromPathname } from "../lib/i18n";
 import { FloatingAgentBubble } from "@/components/brand/FloatingAgentBubble";
 import { ReadingProgressBar } from "@/components/brand/ReadingProgressBar";
+import { usePageTracking } from "@/hooks/usePageTracking";
 
 void i18n;
 
@@ -126,6 +127,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const { pathname } = useLocation();
+
+  usePageTracking();
 
   const locale = localeFromPathname(pathname);
   useEffect(() => {
