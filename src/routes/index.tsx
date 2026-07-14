@@ -379,16 +379,38 @@ function Hero() {
           {t("home.heroBadge")}
         </span>
 
-        <h1 className="mt-6 text-[42px] font-medium leading-[1.04] tracking-tight sm:text-[48px] lg:text-[54px]" style={{ color: "#1F2125" }}>
-          {t("home.heroTitleMain")}<span style={{ color: "#34506E" }}>{t("home.heroTitleGradient")}</span>
+        <h1 className="mt-5 text-[32px] font-medium leading-[1.1] tracking-tight sm:text-[36px] lg:text-[40px]" style={{ color: "#1F2125" }}>
+          Enterprise AI Built for<span style={{ color: "#34506E" }}> Production Reality.</span>
         </h1>
 
-        <div className="mt-3 text-[16px] font-medium" style={{ color: "#5A5D63" }}>
+        <div className="mt-2 text-[14px] font-medium" style={{ color: "#5A5D63" }}>
           <TypedText />
         </div>
 
-        <p className="mt-5 max-w-md text-[15px] leading-[1.7]" style={{ color: "#5A5D63" }}>
-          {t("home.heroDesc")}
+        {/* ── Problem statistics ── */}
+        <div className="mt-6 grid grid-cols-2 gap-2.5">
+          {[
+            { stat: "95%", label: "of enterprise generative AI fails to meet production expectations", source: "MIT GenAI Divide Report 2025" },
+            { stat: "42%", label: "of companies abandoned most AI initiatives in 2025 alone", source: "S&P Global Market Intelligence 2025" },
+            { stat: "26%", label: "of AI initiatives advance beyond the pilot phase", source: "MIT 2025" },
+            { stat: "56%", label: "increase in AI incidents in a single year — 233 documented cases", source: "Stanford AI Index 2025" },
+          ].map(({ stat, label, source }) => (
+            <div key={stat} className="rounded-[12px] p-3.5" style={{ background: "#F2F0EA", border: "1px solid #E3E1DA" }}>
+              <div className="text-[28px] font-semibold leading-none tracking-tight" style={{ color: "#34506E" }}>{stat}</div>
+              <div className="mt-1.5 text-[11.5px] leading-snug" style={{ color: "#1F2125" }}>{label}</div>
+              <div className="mt-1 text-[10px] font-medium" style={{ color: "#9CA3AF" }}>{source}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* ── Bridge copy ── */}
+        <p className="mt-5 text-[14px] leading-[1.75]" style={{ color: "#5A5D63" }}>
+          Most organisations approach AI implementation with the right tools and talented people. What they are missing is the connective layer: a research foundation that defines the real problem, a solution architecture that designs the right system, a governance framework that makes it accountable, and an implementation strategy that holds together under real operational conditions.
+        </p>
+
+        {/* ── Differentiator ── */}
+        <p className="mt-3 text-[13.5px] leading-[1.7] font-medium" style={{ color: "#1F2125", borderLeft: "2px solid #34506E", paddingLeft: "12px" }}>
+          AI that works in production is not just built — it is designed from first principle, tested against evidence, deployed with traceability, and governed for the long term.
         </p>
 
         <div className="mt-8 flex flex-wrap gap-3">
