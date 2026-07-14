@@ -371,27 +371,10 @@ function Hero() {
     >
       {/* LEFT */}
       <div className="flex flex-col justify-center">
-        <div className="flex flex-wrap items-center gap-2">
-          <span
-            className="inline-flex w-fit items-center rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.22em]"
-            style={{
-              background: "#E9EFF4",
-              border: "1px solid #D7D4CC",
-              color: "#34506E",
-            }}
-          >
-            {t("about.heroBadge")}
-          </span>
-          <span
-            className="inline-flex w-fit items-center rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em]"
-            style={{
-              background: "#E9EFF4",
-              border: "1px solid #D7D4CC",
-              color: "#34506E",
-            }}
-          >
-            {t("about.heroBadge2")}
-          </span>
+        <div className="flex flex-wrap items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: "#34506E" }}>
+          <span>{t("about.heroBadge")}</span>
+          <span style={{ color: "#D7D4CC" }}>·</span>
+          <span>{t("about.heroBadge2")}</span>
         </div>
 
         <h1 className="mt-5 text-[38px] font-medium leading-[1.06] tracking-tight lg:text-[48px]" style={{ color: "#1F2125" }}>

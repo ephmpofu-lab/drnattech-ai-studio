@@ -364,20 +364,9 @@ function Hero() {
     >
       {/* LEFT — value proposition */}
       <div className="flex flex-col justify-center">
-        <span
-          className="inline-flex w-fit items-center gap-2 rounded-full px-3.5 py-1.5 text-[10.5px] font-semibold uppercase tracking-[0.2em]"
-          style={{
-            background: "#E9EFF4",
-            border: "1px solid #D7D4CC",
-            color: "#34506E",
-          }}
-        >
-          <span
-            className="h-1.5 w-1.5 rounded-full"
-            style={{ background: "#34506E" }}
-          />
+        <div className="text-[10.5px] font-semibold uppercase tracking-[0.2em]" style={{ color: "#34506E" }}>
           {t("home.heroBadge")}
-        </span>
+        </div>
 
         <h1 className="mt-5 text-[32px] font-medium leading-[1.1] tracking-tight sm:text-[36px] lg:text-[40px]" style={{ color: "#1F2125" }}>
           Enterprise AI Built for<span style={{ color: "#34506E" }}> Production Reality.</span>
@@ -451,14 +440,7 @@ function Hero() {
             <MapPin className="h-4 w-4" style={{ color: "#34506E" }} />
             Vienna, Austria · DACH &amp; EU
           </div>
-          <span
-            className="rounded-md px-2 py-0.5 text-[9.5px] font-semibold uppercase tracking-[0.14em]"
-            style={{
-              background: "#E9EFF4",
-              border: "1px solid #D7D4CC",
-              color: "#34506E",
-            }}
-          >
+          <span className="text-[9.5px] font-semibold uppercase tracking-[0.14em]" style={{ color: "#34506E" }}>
             KI-Architekt
           </span>
         </div>
@@ -508,7 +490,7 @@ function Hero() {
    2. TRUST BAR
    ============================================================ */
 
-const TRUST_ICONS = [FileText, Clock, TrendingUp, Globe];
+const TRUST_ICONS = [FileText, Cpu, Clock, Globe, ShieldCheck, TrendingUp];
 
 function TrustBar() {
   const { t } = useTranslation("common");
@@ -520,7 +502,7 @@ function TrustBar() {
         {trustMetrics.map(({ Icon, value, label }, i) => (
           <div
             key={value}
-            className="flex min-w-[140px] flex-1 flex-col items-center justify-center px-5 py-4"
+            className="flex min-w-[110px] flex-1 flex-col items-center justify-center px-4 py-4"
             style={i > 0 ? { borderLeft: "1px solid #E3E1DA" } : undefined}
           >
             <div
@@ -719,12 +701,9 @@ function FeaturedCaseStudy() {
         <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[1fr_1.65fr]">
 
           <div className="flex flex-col justify-center">
-            <span
-              className="inline-flex w-fit items-center rounded-md px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em]"
-              style={{ background: "#E9EFF4", border: "1px solid #D7D4CC", color: "#34506E" }}
-            >
+            <div className="text-[10px] font-semibold uppercase tracking-[0.2em]" style={{ color: "#8A8D93" }}>
               {t("home.caseStudyBadge")}
-            </span>
+            </div>
 
             <h2 className="mt-4 text-[28px] font-medium leading-[1.12] lg:text-[32px]" style={{ color: "#1F2125" }}>
               {t("home.caseStudyTitle1")}<br />{t("home.caseStudyTitle2")}
@@ -974,14 +953,7 @@ function AuthoritySection() {
             >
               {t("home.featuredInsightLabel")}
             </div>
-            <div
-              className="mt-4 inline-flex w-fit rounded-md px-2.5 py-1 text-[11px] font-semibold"
-              style={{
-                background: "#E9EFF4",
-                border: "1px solid #D7D4CC",
-                color: "#34506E",
-              }}
-            >
+            <div className="mt-4 text-[10px] font-semibold uppercase tracking-[0.2em]" style={{ color: "#8A8D93" }}>
               {t("home.featuredInsightBadge")}
             </div>
             <h3 className="mt-3 text-[20px] font-medium leading-tight" style={{ color: "#1F2125" }}>
@@ -1073,17 +1045,13 @@ function AgentCard() {
               {t("home.agentDesc")}
             </p>
 
-            <div className="mt-5 flex flex-wrap gap-2">
+            <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2">
               {agentTopics.map((topic) => (
                 <button
                   key={topic}
                   onClick={() => sendQuery(topic)}
-                  className="rounded-full px-3 py-1 text-[11.5px] font-medium transition-colors hover:bg-black/5"
-                  style={{
-                    background: "#E9EFF4",
-                    border: "1px solid #D7D4CC",
-                    color: "#5A5D63",
-                  }}
+                  className="text-[11.5px] font-medium transition-colors hover:underline"
+                  style={{ color: "#34506E", background: "none", border: "none", padding: 0, cursor: "pointer" }}
                 >
                   {topic}
                 </button>
@@ -1210,17 +1178,9 @@ function AssessmentTeaser() {
               Not sure if your AI system is High-Risk under Regulation (EU) 2024/1689?
               Take the free 5-minute assessment and get a tailored compliance roadmap.
             </p>
-            <div className="mt-5 flex flex-wrap gap-2">
+            <div className="mt-5 flex flex-wrap gap-x-4 gap-y-1">
               {["5 min assessment", "No sign-up", "Instant results", "Free to use"].map((chip) => (
-                <span
-                  key={chip}
-                  className="rounded-full px-3 py-1 text-[11.5px] font-medium"
-                  style={{
-                    background: "#E9EFF4",
-                    border: "1px solid #D7D4CC",
-                    color: "#34506E",
-                  }}
-                >
+                <span key={chip} className="text-[11.5px] font-medium" style={{ color: "#5A5D63" }}>
                   {chip}
                 </span>
               ))}

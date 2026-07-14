@@ -76,9 +76,11 @@
     ],
     "trustMetrics": [
       { "value": "9+", "label": "Peer-Reviewed Publications" },
-      { "value": "3,500+", "label": "Hours Automated" },
-      { "value": "6", "label": "Industries Served" },
-      { "value": "DACH & EU", "label": "Vienna, Austria" }
+      { "value": "6+", "label": "Production AI Systems Deployed" },
+      { "value": "8", "label": "Years of Applied Research" },
+      { "value": "5", "label": "Countries of Research Delivery" },
+      { "value": "1", "label": "Live AI Governance Tool" },
+      { "value": "1", "label": "Published AI Implementation Framework" }
     ],
     "euActBadge": "EU AI Act Ready",
     "euSignals": [

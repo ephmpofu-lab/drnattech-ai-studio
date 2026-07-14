@@ -76,9 +76,11 @@
     ],
     "trustMetrics": [
       { "value": "9+", "label": "Peer-reviewed Publikationen" },
-      { "value": "3.500+", "label": "Automatisierte Stunden" },
-      { "value": "6", "label": "Bediente Branchen" },
-      { "value": "DACH & EU", "label": "Wien, Österreich" }
+      { "value": "6+", "label": "Produktive KI-Systeme ausgeliefert" },
+      { "value": "8", "label": "Jahre angewandte Forschung" },
+      { "value": "5", "label": "Länder der Forschungslieferung" },
+      { "value": "1", "label": "Live KI-Governance-Tool" },
+      { "value": "1", "label": "Veröffentlichtes KI-Implementierungsframework" }
     ],
     "euActBadge": "EU-KI-Verordnung bereit",
     "euSignals": [
