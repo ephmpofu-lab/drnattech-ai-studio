@@ -246,9 +246,9 @@ export function PortfolioPage() {
 
 const heroCapabilities = [
   {
-    icon: Layers,
-    title: "Architecture First",
-    sub: "Systems designed for scale and maintainability",
+    icon: BookOpen,
+    title: "Research First",
+    sub: "Every system begins with evidence, not assumptions",
   },
   {
     icon: TrendingUp,
