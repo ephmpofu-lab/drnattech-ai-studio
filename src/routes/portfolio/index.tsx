@@ -271,27 +271,10 @@ function HeroSection() {
   return (
     <section className="pt-10" aria-label="Portfolio of enterprise AI systems">
       <div className="max-w-[680px]">
-        <div className="flex flex-wrap items-center gap-2">
-          <span
-            className="inline-flex items-center rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.22em]"
-            style={{
-              background: "#E9EFF4",
-              border: "1px solid #D7D4CC",
-              color: "#34506E",
-            }}
-          >
-            PORTFOLIO
-          </span>
-          <span
-            className="inline-flex items-center rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em]"
-            style={{
-              background: "#E9EFF4",
-              border: "1px solid #D7D4CC",
-              color: "#34506E",
-            }}
-          >
-            KI-Architekt · Wien
-          </span>
+        <div className="flex flex-wrap items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: "#34506E" }}>
+          <span>PORTFOLIO</span>
+          <span style={{ color: "#D7D4CC" }}>·</span>
+          <span>KI-Architekt · Wien</span>
         </div>
 
         <h1
@@ -786,15 +769,7 @@ function CaseStudyCard({
         </div>
         <div className="flex flex-wrap gap-1.5">
           {competencies.filter((c) => c !== "All").map((c) => (
-            <span
-              key={c}
-              className="rounded-full px-2 py-0.5 text-[10px] font-semibold"
-              style={{
-                background: "#E9EFF4",
-                border: "1.5px solid #D7D4CC",
-                color: "#34506E",
-              }}
-            >
+            <span key={c} className="text-[10px] font-semibold" style={{ color: "#34506E" }}>
               {c}
             </span>
           ))}
@@ -808,15 +783,7 @@ function CaseStudyCard({
         </div>
         <div className="flex flex-wrap gap-1.5">
           {technologies.map((t) => (
-            <span
-              key={t}
-              className="rounded-full px-2 py-0.5 text-[10.5px] font-medium"
-              style={{
-                background: "#F2F0EA",
-                border: "1px solid #E3E1DA",
-                color: "#5A5D63",
-              }}
-            >
+            <span key={t} className="text-[10.5px] font-medium" style={{ color: "#5A5D63" }}>
               {t}
             </span>
           ))}
