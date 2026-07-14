@@ -376,13 +376,10 @@ function Hero() {
           <span style={{ color: "#D7D4CC" }}>·</span>
           <span>{t("about.heroBadge2")}</span>
         </div>
-        <div className="mt-2 text-[15px] font-medium tracking-wide" style={{ color: "#5A5D63" }}>
-          Research. Architecture. Governance.
-        </div>
 
-        <h1 className="mt-4 text-[38px] font-medium leading-[1.06] tracking-tight lg:text-[48px]" style={{ color: "#1F2125" }}>
-          {t("about.heroTitle1")}{" "}
-          <span className="text-gradient-brand">{t("about.heroTitle2")}</span>
+        <h1 className="mt-5 text-[30px] font-medium leading-[1.12] tracking-tight lg:text-[38px]" style={{ color: "#1F2125" }}>
+          Research. Architecture.{" "}
+          <span className="text-gradient-brand">Governance.</span>
         </h1>
 
         <p className="mt-5 text-[15px] leading-relaxed" style={{ color: "#5A5D63" }}>
