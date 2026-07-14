@@ -347,6 +347,12 @@ function HeroSection() {
 
 const kpis = [
   {
+    icon: Rocket,
+    value: "12+",
+    label: "AI Systems Delivered",
+    sub: "",
+  },
+  {
     icon: FileText,
     value: "9+",
     label: "SCI-indexed Publications",
@@ -359,7 +365,7 @@ const kpis = [
     sub: "",
   },
   {
-    icon: Rocket,
+    icon: Activity,
     value: "2",
     label: "Live Production Tools",
     sub: "",
@@ -384,7 +390,7 @@ function KpiStrip() {
             key={k.value + k.label}
             className="flex flex-1 items-center gap-4 px-6 py-5"
             style={{
-              minWidth: "180px",
+              minWidth: "130px",
               borderLeft: i > 0 ? "1px solid #E3E1DA" : "none",
             }}
           >
