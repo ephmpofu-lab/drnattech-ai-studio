@@ -347,28 +347,28 @@ function HeroSection() {
 
 const kpis = [
   {
+    icon: FileText,
+    value: "9+",
+    label: "SCI-indexed Publications",
+    sub: "",
+  },
+  {
+    icon: GitBranch,
+    value: "7",
+    label: "Open Source Projects",
+    sub: "",
+  },
+  {
     icon: Rocket,
-    value: "12+",
-    label: "Enterprise Systems",
-    sub: "Architected",
+    value: "2",
+    label: "Live Production Tools",
+    sub: "",
   },
   {
     icon: Clock,
-    value: "3,500+",
-    label: "Hours of Manual Work",
-    sub: "Automated",
-  },
-  {
-    icon: TrendingUp,
-    value: "70%",
-    label: "Average Process Time",
-    sub: "Reduction",
-  },
-  {
-    icon: ShieldCheck,
-    value: "100%",
-    label: "Production Deployment",
-    sub: "Success Rate",
+    value: "8",
+    label: "Years of Practice",
+    sub: "",
   },
 ];
 

@@ -228,30 +228,13 @@ function AuthorityHero() {
       {/* Left — copy */}
       <div>
         <div className="flex flex-wrap items-center gap-2">
-          <span
-            className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.22em]"
-            style={{
-              background: "#E9EFF4",
-              border: "1px solid #D7D4CC",
-              color: "#34506E",
-            }}
-          >
-            <span
-              className="h-1.5 w-1.5 rounded-full"
-              style={{ background: "#34506E" }}
-            />
-            {t("aiAgent.liveBadge")}
-          </span>
-          <span
-            className="inline-flex items-center rounded-full px-3 py-1 text-[10.5px] font-semibold"
-            style={{
-              background: "rgba(16,185,129,0.10)",
-              border: "1px solid rgba(16,185,129,0.28)",
-              color: "#059669",
-            }}
-          >
-            {t("aiAgent.freeBadge")}
-          </span>
+          <div className="flex flex-wrap items-center gap-3 text-[11px] font-bold uppercase tracking-[0.22em]">
+            <span className="flex items-center gap-1.5" style={{ color: "#34506E" }}>
+              <span className="h-1.5 w-1.5 rounded-full" style={{ background: "#34506E" }} />
+              {t("aiAgent.liveBadge")}
+            </span>
+            <span style={{ color: "#059669" }}>{t("aiAgent.freeBadge")}</span>
+          </div>
         </div>
 
         <h1 className="mt-5 text-[42px] font-medium leading-[1.06] tracking-tight sm:text-[50px] lg:text-[54px]" style={{ color: "#1F2125" }}>
@@ -818,14 +801,7 @@ function KnowledgeTransparency() {
           >
             {t("aiAgent.knowledgeLabel")}
           </div>
-          <span
-            className="inline-flex items-center gap-1.5 rounded-full px-3 py-0.5 text-[10px] font-semibold"
-            style={{
-              background: "rgba(16,185,129,0.10)",
-              border: "1px solid rgba(16,185,129,0.25)",
-              color: "#059669",
-            }}
-          >
+          <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold" style={{ color: "#059669" }}>
             <ShieldCheck className="h-3 w-3" />
             {t("aiAgent.knowledgePillar")}
           </span>
@@ -926,14 +902,7 @@ function KnowledgeTransparency() {
               <span className="min-w-0 flex-1 text-[13px]" style={{ color: "#1F2125" }}>
                 {doc.title}
               </span>
-              <span
-                className="shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold"
-                style={{
-                  background: `${doc.color}18`,
-                  border: `1px solid ${doc.color}30`,
-                  color: doc.color,
-                }}
-              >
+              <span className="shrink-0 text-[10px] font-semibold" style={{ color: doc.color }}>
                 {doc.badge}
               </span>
             </div>
@@ -1015,14 +984,7 @@ function FaqAndCta() {
         }}
       >
         <div className="relative flex flex-1 flex-col">
-          <div
-            className="inline-flex w-fit rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-[0.18em]"
-            style={{
-              background: "#E9EFF4",
-              border: "1px solid #D7D4CC",
-              color: "#34506E",
-            }}
-          >
+          <div className="text-[10px] font-bold uppercase tracking-[0.18em]" style={{ color: "#34506E" }}>
             {t("aiAgent.ctaBadge")}
           </div>
 

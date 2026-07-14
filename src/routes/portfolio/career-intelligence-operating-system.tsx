@@ -246,25 +246,12 @@ function CaseHeader() {
           <span style={{ color: "#5A5D63" }}>Case Study</span>
         </div>
 
-        <div className="mb-4 flex flex-wrap gap-2">
-          <span
-            className="inline-flex items-center rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em]"
-            style={{ background: "#E9EFF4", border: "1px solid #D7D4CC", color: "#34506E" }}
-          >
-            Multi-Agent AI
-          </span>
-          <span
-            className="inline-flex items-center rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em]"
-            style={{ background: "rgba(16,185,129,0.10)", border: "1px solid rgba(16,185,129,0.28)", color: "#059669" }}
-          >
-            GDPR-Compliant
-          </span>
-          <span
-            className="inline-flex items-center rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em]"
-            style={{ background: "rgba(96,165,250,0.10)", border: "1px solid rgba(96,165,250,0.25)", color: "#2563EB" }}
-          >
-            Career Intelligence
-          </span>
+        <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] font-bold uppercase tracking-[0.2em]">
+          <span style={{ color: "#34506E" }}>Multi-Agent AI</span>
+          <span style={{ color: "#D7D4CC" }}>·</span>
+          <span style={{ color: "#059669" }}>GDPR-Compliant</span>
+          <span style={{ color: "#D7D4CC" }}>·</span>
+          <span style={{ color: "#2563EB" }}>Career Intelligence</span>
         </div>
 
         <h1 className="text-[34px] font-medium leading-[1.08] tracking-tight sm:text-[42px] lg:text-[48px]" style={{ color: "#1F2125" }}>

@@ -143,16 +143,9 @@ export function ContactPage() {
         {/* HERO */}
         <section className="grid grid-cols-1 items-center gap-12 pt-16 pb-20 lg:grid-cols-[45fr_55fr] lg:gap-16 lg:pt-24 lg:pb-28">
           <div>
-            <span
-              className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[11px] font-semibold tracking-[0.22em]"
-              style={{
-                background: "#E9EFF4",
-                border: "1px solid #D7D4CC",
-                color: "#34506E",
-              }}
-            >
+            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: "#34506E" }}>
               <Sparkles className="h-3 w-3" /> {t("contact.badge")}
-            </span>
+            </div>
 
             <h1 className="mt-7 text-[44px] font-medium leading-[1.08] tracking-[-0.02em] md:text-[56px] lg:text-[64px]" style={{ color: "#1F2125" }}>
               {t("contact.heroTitle1")}{" "}

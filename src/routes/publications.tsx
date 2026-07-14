@@ -203,16 +203,9 @@ export function PublicationsPage() {
           </Link>
           <div className="mt-7 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-[760px]">
-              <span
-                className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold tracking-[0.22em]"
-                style={{
-                  background: "#E9EFF4",
-                  border: "1px solid #D7D4CC",
-                  color: "#34506E",
-                }}
-              >
+              <div className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: "#34506E" }}>
                 PUBLICATIONS LIBRARY
-              </span>
+              </div>
               <h1 className="mt-5 text-[48px] font-medium leading-[1.05] tracking-[-0.02em] lg:text-[60px]" style={{ color: "#1F2125" }}>
                 Academic{" "}
                 <span style={{ color: "#34506E" }}>Publications</span>
@@ -398,14 +391,7 @@ export function PublicationsPage() {
                 }}
               >
                 <div className="flex items-center justify-between">
-                  <span
-                    className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10.5px] font-semibold tracking-[0.2em]"
-                    style={{
-                      background: "#E9EFF4",
-                      color: "#34506E",
-                      border: "1px solid #D7D4CC",
-                    }}
-                  >
+                  <span className="inline-flex items-center gap-1.5 text-[10.5px] font-semibold tracking-[0.2em]" style={{ color: "#34506E" }}>
                     <FlaskConical className="h-3 w-3" /> {p.status.toUpperCase()}
                   </span>
                   <span className="text-[12px]" style={{ color: "#8A8D93" }}>

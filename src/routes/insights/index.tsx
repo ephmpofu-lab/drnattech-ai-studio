@@ -94,14 +94,7 @@ function PublicationCard({ pub }: { pub: Publication }) {
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <div className="absolute bottom-3 left-3">
-          <span
-            className="rounded-full px-2.5 py-1 text-[10px] font-bold tracking-[0.15em]"
-            style={{
-              background: `${pub.categoryColor}22`,
-              border: `1px solid ${pub.categoryColor}55`,
-              color: pub.categoryColor,
-            }}
-          >
+          <span className="text-[10px] font-bold tracking-[0.15em]" style={{ color: pub.categoryColor }}>
             {pub.category.toUpperCase()}
           </span>
         </div>
@@ -192,16 +185,9 @@ export function InsightsIndexPage() {
       >
         <div className="mx-auto max-w-[1400px] px-6 py-20 lg:px-10">
           <div className="max-w-[700px]">
-            <span
-              className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold tracking-[0.22em]"
-              style={{
-                background: "#E9EFF4",
-                border: "1px solid #D7D4CC",
-                color: "#34506E",
-              }}
-            >
+            <div className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: "#34506E" }}>
               {t("insights.badge")}
-            </span>
+            </div>
             <h1 className="mt-6 text-[52px] font-medium leading-[1.05] tracking-[-0.02em] lg:text-[64px]" style={{ color: "#1F2125" }}>
               {t("insights.heroTitle1")}{" "}
               <span style={{ color: "#34506E" }}>
@@ -293,13 +279,7 @@ export function InsightsIndexPage() {
                     }
                   >
                     <span>{t("insights.allArticles")}</span>
-                    <span
-                      className="rounded-full px-1.5 py-0.5 text-[10px] font-semibold"
-                      style={{
-                        background: "#EDEBE3",
-                        color: "#8A8D93",
-                      }}
-                    >
+                    <span className="text-[10px] font-semibold" style={{ color: "#8A8D93" }}>
                       {publications.length}
                     </span>
                   </button>
@@ -323,13 +303,7 @@ export function InsightsIndexPage() {
                       }
                     >
                       <span>{label}</span>
-                      <span
-                        className="rounded-full px-1.5 py-0.5 text-[10px] font-semibold"
-                        style={{
-                          background: "#EDEBE3",
-                          color: "#8A8D93",
-                        }}
-                      >
+                      <span className="text-[10px] font-semibold" style={{ color: "#8A8D93" }}>
                         {count}
                       </span>
                     </button>

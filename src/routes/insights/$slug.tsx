@@ -552,14 +552,7 @@ function ArticlePage() {
         {/* ── Article Header ── */}
         <header className="mb-8 max-w-[820px]">
           {/* Category badge */}
-          <span
-            className="inline-block rounded-full px-3 py-1 text-[11px] font-bold tracking-[0.15em]"
-            style={{
-              background: `${pub.categoryColor}18`,
-              border: `1px solid ${pub.categoryColor}40`,
-              color: pub.categoryColor,
-            }}
-          >
+          <span className="text-[11px] font-bold tracking-[0.15em]" style={{ color: pub.categoryColor }}>
             {pub.category.toUpperCase()}
           </span>
 
@@ -875,12 +868,8 @@ function ArticlePage() {
                   {pub.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="rounded-full px-2.5 py-1 text-[11.5px] font-medium"
-                      style={{
-                        background: "#EDEBE3",
-                        border: "1px solid #E3E1DA",
-                        color: "#5A5D63",
-                      }}
+                      className="text-[11.5px] font-medium"
+                      style={{ color: "#5A5D63" }}
                     >
                       {tag}
                     </span>
