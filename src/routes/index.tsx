@@ -388,14 +388,14 @@ function Hero() {
         </div>
 
         {/* ── Problem statistics ── */}
-        <div className="mt-6 grid grid-cols-2 gap-2.5">
+        <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-4">
           {[
             { stat: "95%", label: "of enterprise generative AI fails to meet production expectations", source: "MIT GenAI Divide Report 2025" },
             { stat: "42%", label: "of companies abandoned most AI initiatives in 2025 alone", source: "S&P Global Market Intelligence 2025" },
             { stat: "26%", label: "of AI initiatives advance beyond the pilot phase", source: "MIT 2025" },
             { stat: "56%", label: "increase in AI incidents in a single year — 233 documented cases", source: "Stanford AI Index 2025" },
           ].map(({ stat, label, source }) => (
-            <div key={stat} className="rounded-[12px] p-3.5" style={{ background: "#F2F0EA", border: "1px solid #E3E1DA" }}>
+            <div key={stat}>
               <div className="text-[28px] font-semibold leading-none tracking-tight" style={{ color: "#34506E" }}>{stat}</div>
               <div className="mt-1.5 text-[11.5px] leading-snug" style={{ color: "#1F2125" }}>{label}</div>
               <div className="mt-1 text-[10px] font-medium" style={{ color: "#9CA3AF" }}>{source}</div>
