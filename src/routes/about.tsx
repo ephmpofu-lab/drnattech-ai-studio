@@ -192,14 +192,6 @@ function AboutStructuredData() {
           },
           {
             "@type": "EducationalOccupationalCredential",
-            name: "Azure AI Certified",
-            recognizedBy: {
-              "@type": "Organization",
-              name: "Microsoft",
-            },
-          },
-          {
-            "@type": "EducationalOccupationalCredential",
             name: "NEBOSH Environmental Health and Safety Certificate",
             recognizedBy: {
               "@type": "Organization",
@@ -443,7 +435,6 @@ function Hero() {
           ))}
           <div className="flex flex-wrap gap-x-5 gap-y-3 pt-1">
             {[
-              { g: "microsoft", title: "Azure AI Apps & Agents Dev. Associate", sub: "Microsoft Certified" },
               { g: "google",    title: "Data Analytics Professional Certificate", sub: "Google / Coursera" },
               { g: "nebosh",   title: "Environmental Health & Safety Certificate", sub: "NEBOSH ICG" },
             ].map((c) => (
@@ -485,39 +476,46 @@ function Hero() {
 
 const PIPELINE_STEPS = [
   {
-    id: "data",
-    Icon: BarChart2,
-    domain: "Data Science & Analytics",
-    layer: "Understand the problem",
-    skills: ["Power BI", "Statistical Modelling", "Data Visualisation", "SQL", "Pandas", "NumPy", "PoC Design", "Business Intelligence"],
+    id: "research",
+    Icon: BookOpen,
+    domain: "Research and Strategy",
+    layer: "Define the right problem before building the wrong solution.",
+    skills: ["Research Methodology", "Evidence Synthesis", "Systems Thinking", "Business Analysis", "Process Design", "PoC Design"],
   },
   {
-    id: "ml",
+    id: "data",
+    Icon: BarChart2,
+    domain: "Data Science and Analytics",
+    layer: "Turn data into decisions.",
+    skills: ["Statistical Modelling", "Data Visualisation", "SQL", "Power BI", "Pandas", "NumPy", "Business Intelligence", "Google Data Analytics"],
+  },
+  {
+    id: "architecture",
     Icon: Brain,
-    domain: "AI & ML Engineering",
-    layer: "Build the intelligence",
-    skills: ["Python", "PyTorch", "TensorFlow", "Deep Learning", "CNNs", "Computer Vision", "YOLO", "NLP", "LLMs", "RAG", "Feature Engineering"],
+    domain: "Enterprise AI Architecture",
+    layer: "Design systems that work in production.",
+    skills: ["RAG Architecture", "LLM Systems", "Prompt Engineering", "Vector Databases", "API Integration", "Solution Architecture", "OpenAI API", "Claude API"],
   },
   {
     id: "agentic",
     Icon: Zap,
-    domain: "Agentic & Workflow AI",
-    layer: "Orchestrate the system",
-    skills: ["LangGraph", "n8n", "Multi-Agent Systems", "MCP", "Vector Databases", "Workflow Automation", "Supabase"],
+    domain: "Agentic Workflow and Automation",
+    layer: "Orchestrate intelligence across systems.",
+    skills: ["n8n", "LangGraph", "Multi-Agent Systems", "MCP", "REST APIs", "Webhooks", "Supabase", "Workflow Automation"],
   },
   {
-    id: "cloud",
-    Icon: Server,
-    domain: "Cloud AI & MLOps",
-    layer: "Deploy to production",
-    skills: ["Azure AI (AI-103)", "Azure ML", "MLOps", "Docker", "CI/CD", "FastAPI", "ONNX", "Model Deployment"],
+    id: "deployment",
+    Icon: Rocket,
+    domain: "AI Implementation and Deployment",
+    layer: "Deliver, integrate and scale.",
+    skills: ["Azure AI Foundry", "FastAPI", "Docker", "PostgreSQL", "CI/CD", "Technical Documentation"],
   },
   {
     id: "governance",
     Icon: ShieldCheck,
-    domain: "AI Governance & Compliance",
-    layer: "Govern at scale",
-    skills: ["EU AI Act", "ISO/IEC 42001", "DSGVO", "Responsible AI", "Risk Classification", "Compliance Strategy"],
+    domain: "AI Governance and Compliance",
+    layer: "Govern at scale. Build for accountability.",
+    skills: ["EU AI Act", "DSGVO/GDPR", "Responsible AI", "Risk Classification", "Compliance Strategy", "Human Oversight", "Audit Trail Design"],
   },
 ] as const;
 
@@ -542,7 +540,7 @@ function CoreCompetencies() {
           className="mt-2 max-w-xl text-[14px]"
           style={{ color: "#5A5D63" }}
         >
-          Five sequential layers, from data foundations through to governed, production-ready AI.
+          Six sequential layers, from research through to governed enterprise AI.
         </p>
       </div>
 
@@ -913,17 +911,6 @@ function EducationTimeline() {
   );
 }
 
-function MicrosoftLogo() {
-  return (
-    <svg viewBox="0 0 22 22" width="36" height="36">
-      <rect x="0"  y="0"  width="10" height="10" fill="#F25022" />
-      <rect x="12" y="0"  width="10" height="10" fill="#7FBA00" />
-      <rect x="0"  y="12" width="10" height="10" fill="#00A4EF" />
-      <rect x="12" y="12" width="10" height="10" fill="#FFB900" />
-    </svg>
-  );
-}
-
 function GoogleGLogo() {
   return (
     <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
@@ -947,12 +934,6 @@ function NeboshBadge() {
 }
 
 const certifications = [
-  {
-    Logo: MicrosoftLogo,
-    name: "Azure AI Apps & Agents Developer Associate",
-    detail: "Microsoft Certified (Beta)",
-    accent: "#0078D4",
-  },
   {
     Logo: GoogleGLogo,
     name: "Data Analytics Professional Certificate",
