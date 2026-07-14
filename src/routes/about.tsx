@@ -376,8 +376,11 @@ function Hero() {
           <span style={{ color: "#D7D4CC" }}>·</span>
           <span>{t("about.heroBadge2")}</span>
         </div>
+        <div className="mt-2 text-[15px] font-medium tracking-wide" style={{ color: "#5A5D63" }}>
+          Research. Architecture. Governance.
+        </div>
 
-        <h1 className="mt-5 text-[38px] font-medium leading-[1.06] tracking-tight lg:text-[48px]" style={{ color: "#1F2125" }}>
+        <h1 className="mt-4 text-[38px] font-medium leading-[1.06] tracking-tight lg:text-[48px]" style={{ color: "#1F2125" }}>
           {t("about.heroTitle1")}{" "}
           <span className="text-gradient-brand">{t("about.heroTitle2")}</span>
         </h1>
@@ -454,7 +457,60 @@ function Hero() {
 
 
 /* ============================================================
-   3. CORE COMPETENCIES — sequential pipeline
+   3. WHAT MAKES ME DIFFERENT
+   ============================================================ */
+
+const DIFFERENTIATORS = [
+  {
+    bold: "Research-grounded.",
+    text: "Every engagement begins with evidence synthesis and structured problem analysis before any system is designed.",
+  },
+  {
+    bold: "Principle-based.",
+    text: "Every system is built on three laws of architecture, four layers of orchestration and a law of minimalism. Structural rules, not design preferences.",
+  },
+  {
+    bold: "Governance by design.",
+    text: "Every workflow embeds traceability, auditability, accountability, responsibility and transparency from the first node. Not added at the end.",
+  },
+  {
+    bold: "Readable and robust.",
+    text: "Systems are deliberately designed so a non-technical stakeholder can follow the logic, a technical team can extend it and an auditor can verify it.",
+  },
+  {
+    bold: "Built to last.",
+    text: "Every system serves as a reliable baseline for continuous AI improvement over years, not just a deployment that works once.",
+  },
+] as const;
+
+function Differentiators() {
+  return (
+    <section className="mt-6" aria-label="What makes Dr. Ephraim Mpofu different">
+      <div className="glass-card p-7 lg:p-9">
+        <h2 className="text-[20px] font-medium" style={{ color: "#1F2125" }}>
+          What Makes Me Different
+        </h2>
+        <div className="mt-5 space-y-4">
+          {DIFFERENTIATORS.map(({ bold, text }) => (
+            <div key={bold} className="flex items-start gap-4">
+              <div
+                className="mt-[7px] h-[5px] w-[5px] shrink-0 rounded-full"
+                style={{ background: "#34506E" }}
+              />
+              <p className="text-[13.5px] leading-[1.75]" style={{ color: "#5A5D63" }}>
+                <span className="font-semibold" style={{ color: "#1F2125" }}>{bold}</span>{" "}
+                {text}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   4. CORE COMPETENCIES — sequential pipeline
    ============================================================ */
 
 const PIPELINE_STEPS = [
@@ -656,7 +712,7 @@ function CoreCompetencies() {
 }
 
 /* ============================================================
-   4. AI STRATEGY LINK
+   5. AI STRATEGY LINK
    ============================================================ */
 
 function AiStrategyLink() {
@@ -688,7 +744,7 @@ function AiStrategyLink() {
 }
 
 /* ============================================================
-   5. PROFESSIONAL BACKGROUND & VERIFIED CREDENTIALS
+   6. PROFESSIONAL BACKGROUND & VERIFIED CREDENTIALS
    ============================================================ */
 
 const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
@@ -979,7 +1035,7 @@ function BackgroundSection() {
 }
 
 /* ============================================================
-   6. FINAL CTA
+   7. FINAL CTA
    ============================================================ */
 
 function CTA() {
@@ -1047,6 +1103,7 @@ export function AboutPage() {
       <SiteNav active="About" />
       <main className="mx-auto max-w-[1280px] px-6 pb-20 lg:px-10">
         <Hero />
+        <Differentiators />
         <CoreCompetencies />
         <AiStrategyLink />
         <BackgroundSection />
