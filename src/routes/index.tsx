@@ -415,7 +415,7 @@ function Hero() {
         {/* EU AI Act Classifier teaser */}
         <div
           className="mt-5 rounded-[14px] p-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
-          style={{ background: "#F2F0EA", border: "1px solid #E3E1DA" }}
+          style={{ border: "1px solid #E3E1DA" }}
         >
           <p className="text-[12.5px] leading-snug" style={{ color: "#5A5D63" }}>
             <span className="font-semibold" style={{ color: "#1F2125" }}>EU AI Act Classifier —</span>{" "}
@@ -534,10 +534,7 @@ function EuAiActStrip() {
     <section className="mt-3" aria-label="EU AI Act compliance signals">
       <div
         className="rounded-xl px-5 py-3"
-        style={{
-          background: "#E9EFF4",
-          border: "1px solid #D7D4CC",
-        }}
+        style={{ border: "1px solid #E3E1DA" }}
       >
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           <div
@@ -611,10 +608,7 @@ function RagDashboard() {
   ];
 
   return (
-    <div
-      className="rounded-[14px] p-5"
-      style={{ background: "#F2F0EA", border: "1px solid #E3E1DA" }}
-    >
+    <div className="rounded-[14px] p-5" style={{ border: "1px solid #E3E1DA" }}>
       <div className="mb-3 text-[11px] font-semibold" style={{ color: "#1F2125" }}>{t("home.ragOverview")}</div>
 
       {/* 4 live metric cards */}
@@ -1058,7 +1052,7 @@ function AgentCard() {
           {/* RIGHT — inline chat panel */}
           <div
             className="flex flex-col justify-between p-6"
-            style={{ background: "#EDEBE3", borderLeft: "1px solid #E3E1DA" }}
+            style={{ borderLeft: "1px solid #E3E1DA" }}
           >
             <div className="min-h-[100px] overflow-y-auto">
               <div
@@ -1186,10 +1180,7 @@ function AssessmentTeaser() {
           {/* Right */}
           <div
             className="flex flex-col justify-center p-6 lg:p-8"
-            style={{
-              background: "#EDEBE3",
-              borderTop: "1px solid #E3E1DA",
-            }}
+            style={{ borderTop: "1px solid #E3E1DA" }}
           >
             <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em]" style={{ color: "#8A8D93" }}>
               Risk Tiers
@@ -1254,10 +1245,7 @@ function HomeFaqSection() {
           <details
             key={item.q}
             className="group rounded-[14px] p-5"
-            style={{
-              background: "#F2F0EA",
-              border: "1px solid #E3E1DA",
-            }}
+            style={{ border: "1px solid #E3E1DA" }}
           >
             <summary
               className="flex cursor-pointer list-none items-start justify-between gap-4 text-[13.5px] font-medium"
