@@ -451,11 +451,7 @@ function Hero() {
         {capabilities.map(({ Icon, title, desc }) => (
           <div
             key={title}
-            className="flex items-start gap-3 rounded-[14px] p-4"
-            style={{
-              background: "#F2F0EA",
-              border: "1px solid #E3E1DA",
-            }}
+            className="flex items-start gap-3 py-3"
           >
             <div
               className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px]"
