@@ -173,7 +173,7 @@ summary:focus-visible {
 
 /* ── Light page overrides (homepage only) ────────────────────── */
 .light-page .glass-card {
-  background: #F2F0EA;
+  background: #FFFFFF;
   border: 1px solid #E3E1DA;
   backdrop-filter: none;
   box-shadow: none;
